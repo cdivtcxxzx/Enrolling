@@ -1,0 +1,422 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data;
+using System.Text;
+using System.Data.SqlClient;
+using System.IO;
+
+
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+//using Common;
+//using Data; 
+
+
+/// <summary>
+///basic 的摘要说明
+///此类用于存方一些页面基础处理类,一些简单的类
+/// </summary>
+public class basic
+{
+
+
+
+
+    /// <summary>
+    /// 把Gridview中数据导入到Excel中
+    /// </summary>
+    /// <param name="gv">需要导出数据的Gridview</param>
+    /// <param name="dt">Gridview的数据源</param>
+    /// <param name="strFileName">默认的导出Excel的文件名</param>
+    /// <param name="bolPart">全部还是部分导出到Excel.部分：true. 全部：false</param>
+    public static void ToExcel(GridView gv, DataTable dt, string strFileName, bool bolPart)
+    {
+        HttpContext.Current.Response.ClearContent();
+        HttpContext.Current.Response.Buffer = true;
+        gv.AllowPaging = bolPart;//设置导出数据是全部还是部分
+        gv.DataSource = dt;
+        
+        gv.AllowPaging = false;
+        //gv.PageSize = 100;
+        //取消排序，取掉超链接
+        gv.AllowSorting = false;
+        gv.DataBind();
+
+        //循环遍历GridView中的每一列
+        for (int i = 0; i < gv.Columns.Count; i++) //设置每个单元格
+        {
+            gv.Columns[i].ItemStyle.HorizontalAlign = HorizontalAlign.Left;
+            
+         //gv.Columns[sfz]) .DataFormatString = "'{0}";
+            for (int j = 0; j < gv.Rows.Count; j++)
+            {
+                gv.Rows[j].Cells[i].Attributes.Add("style", "vnd.ms-excel.numberformat:@;");
+            }
+        }
+        //身份证前加"'"，在excel里才显示正确
+      //  ((BoundField)gv.Columns[sfz]).DataFormatString = "'{0}";
+        System.IO.StringWriter sw = new System.IO.StringWriter();
+        HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+        HttpContext.Current.Response.Clear();
+        HttpContext.Current.Response.Charset = "GB2312";
+        HttpContext.Current.Response.ContentEncoding = System.Text.Encoding.UTF8;
+
+        strFileName += ".xls";
+        HttpContext.Current.Response.ContentType = "application/ms-excel";
+        HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=" + HttpUtility.UrlPathEncode(strFileName));//设置默认文件名
+        HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+
+        //预防出现控件必须放在具有 runat=server 的窗体标记内的错误
+        Page page = new Page();
+        HtmlForm form = new HtmlForm();
+        gv.EnableViewState = false;
+        page.EnableEventValidation = false;
+        page.DesignerInitialize();
+        page.Controls.Add(form);
+        form.InnerHtml = "<table><tr><td>" + strFileName + "</td></tr></table>";
+        form.Controls.Add(gv);
+        page.RenderControl(htw);
+
+        HttpContext.Current.Response.Write(sw.ToString());
+        HttpContext.Current.Response.End();
+    }
+    /// <summary>
+    /// 把DataTable中数据导入到Excel中
+    /// </summary>
+    
+    /// <param name="dt">需导出的DATATABLE</param>
+    /// <param name="strFileName">默认的导出Excel的文件名</param>
+    /// <param name="strbt">表头自己以TABLE的TR方式构造一行数据,不需要请留空</param>
+    /// <param name="autotr">自动生头表头，字符以逗号隔开，flase自定义TR(strbt自己构造tr)</param>
+    /// <param name="tdlie">需多加的TD列，不需要设置为0</param>
+   /// <param name="sql">表中无数据时,输出的提示信息</param>
+    public static void DToExcel(DataTable dt, string strFileName,string strbt,bool autotr,int tdlie,string sql)
+    {
+        HttpContext.Current.Response.ClearContent();
+        HttpContext.Current.Response.Buffer = true;
+        
+        
+        
+       
+        //  ((BoundField)gv.Columns[sfz]).DataFormatString = "'{0}";
+        
+        HttpContext.Current.Response.Clear();
+        HttpContext.Current.Response.Charset = "GB2312";
+        HttpContext.Current.Response.ContentEncoding = System.Text.Encoding.UTF8;
+        string strFileName1 = strFileName;
+        strFileName += ".xls";
+        HttpContext.Current.Response.Buffer = true;
+        HttpContext.Current.Response.ContentType = "application/ms-excel";
+        HttpContext.Current.Response.AppendHeader("content-disposition", "attachment;filename=" + HttpUtility.UrlPathEncode(strFileName));//设置默认文件名
+        HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+
+
+
+
+        //Response.ClearContent();
+        
+        //Response.AppendHeader("content-disposition", string.Format("attachment; filename={0}", HttpUtility.UrlEncode("招生统计数据_按班级.xls", System.Text.Encoding.UTF8)));
+        //Response.ContentType = "application/ms-excel";
+
+
+
+
+
+
+        //预防出现控件必须放在具有 runat=server 的窗体标记内的错误
+        Page page = new Page();
+        HtmlForm form = new HtmlForm();
+        //gv.EnableViewState = false;
+        page.EnableEventValidation = false;
+        page.DesignerInitialize();
+        page.Controls.Add(form);
+
+        form.InnerHtml = "<head><style>Table,td{border:1px solid #000;Text-align:center;}</style></head><body ><table style=\"border:1px solid #000;\">";
+        if (strbt.Substring(strbt.Length - 8, 8) == "专业所拥有的班级" || strFileName1.Substring(0, 4) == "学生学籍")
+            {
+                // form.InnerHtml= form.InnerHtml+" <tr><td align=left colspan=" +  ( dt.Columns.Count+tdlie).ToString()+ "><font size='16px'>" +strbt.Substring(strbt.Length-8,8)+ "</font></td></tr>";
+      
+            }
+            else
+            {
+        form.InnerHtml= form.InnerHtml+" <tr><td align=left colspan=" +  ( dt.Columns.Count+tdlie).ToString()+ "><font size='16px'>" + strFileName1 + "</font></td></tr>";
+       
+            }
+            //表头
+        if (autotr)
+        {
+            //自动加表头
+            form.InnerHtml = form.InnerHtml + "<tr>";
+            string[] bts = strbt.ToString().Split(',');
+           foreach (string strLsz in bts)
+            {
+                if (strLsz == "班级" || strLsz == "姓名" || strLsz == "性别" || strLsz == "身份证号" || strLsz == "民族" || strLsz == "户籍详细地址" || strLsz == "户籍性质" || strLsz == "户籍所在省" || strLsz == "是否低保" || strLsz == "学生电话" || strLsz == "家长姓名" || strLsz == "家长电话")
+                {
+                    form.InnerHtml = form.InnerHtml + "<td bgcolor='#949694'><font color=red><b>" + strLsz + "</b></font></td>";
+                }
+                else
+                {
+                    form.InnerHtml = form.InnerHtml + "<td>" + strLsz + "</td>";
+                }
+
+
+
+
+
+               if (strLsz == "专业所拥有的班级"&& System.Web.HttpContext.Current.Session["xingsfbqk_zydm"]!=null) { 
+               //循环输出班级
+                   string sqlbj = "SELECT bjmc,zyid  FROM banjxx WHERE njdm='2013' and zyid='" + System.Web.HttpContext.Current.Session["xingsfbqk_zydm"].ToString() + "'";
+                   DataTable x = Sqlhelper.Serach(sqlbj);
+                   if (x.Rows.Count > 0)
+                   {
+                       for (int i = 0; i < x.Rows.Count; i++)
+                       {
+                           form.InnerHtml = form.InnerHtml + "<td><font color=red>" + x.Rows[i]["bjmc"].ToString() + "</font></td>";
+                       }
+                       form.InnerHtml = form.InnerHtml + "<td>" + " (如果需要上传,请不要改变单元格的位置,班级只能用提供的班级,如果还没有班级,请待教务分班后,再下载一次!)</td>";
+                   }
+                   else
+                   {
+                       form.InnerHtml = form.InnerHtml + "<td><font color=red>" + "未从教务系统获取到班级,请联系教务部门在教务系统中录入班级信息" + "</font></td>";
+         
+                   }
+
+               
+               }
+            }
+            form.InnerHtml = form.InnerHtml + "</tr>";
+        }
+        else
+        {
+            //自定义的表头
+            if (strbt.Length > 8)
+            {
+
+                if (strbt.Substring(0, 3) != "<tr")
+                {
+                    form.InnerHtml = form.InnerHtml + "<tr><td>" + strbt;
+                }
+                else
+                {
+                    form.InnerHtml = form.InnerHtml + strbt;
+                }
+                if (strbt.Substring(strbt.Length - 4, 4) != "/tr>")
+                {
+                    form.InnerHtml = form.InnerHtml + "</td></tr>";
+                }
+
+
+
+            }
+        }
+        //form.InnerHtml = form.InnerHtml + "<table style=\"border:1px solid #000;\">";
+        
+
+        //循环遍历DATATABLE中的每一行
+        for (int i = 0; i < dt.Rows.Count; i++) //设置每个单元格
+        {
+            //gv.Columns[i].ItemStyle.HorizontalAlign = HorizontalAlign.Left;
+            form.InnerHtml = form.InnerHtml + "<tr>";
+            //gv.Columns[sfz]) .DataFormatString = "'{0}";
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+                //镇,村,号,组,路
+                
+
+                if (dt.Columns[j].Caption == "现家庭详细地址")
+                {
+                    if (dt.Rows[i][j].ToString().Length < 2) 
+                    {
+                        dt.Rows[i][j] = dt.Rows[i]["户口所在地"].ToString(); 
+                    }
+                }
+                if (dt.Columns[j].Caption == "现家庭所在省")
+                {
+                    if (dt.Rows[i][j].ToString().Length < 2) { 
+                        dt.Rows[i][j] = dt.Rows[i]["户籍所在省"].ToString(); 
+                    }
+                }
+                if (dt.Columns[j].Caption == "现家庭所在市")
+                {
+                    if (dt.Rows[i][j].ToString().Length < 2) 
+                    { 
+                        dt.Rows[i][j] = dt.Rows[i]["户籍所在市"].ToString();
+                    }
+                }
+                if (dt.Columns[j].Caption == "现家庭所在区县")
+                {
+                    if (dt.Rows[i][j].ToString().Length < 2) { 
+                        dt.Rows[i][j] = dt.Rows[i]["户籍所在县"].ToString(); 
+                    }
+                }
+                //xuesjbsj.xjtszs,xuesjbsj.xjtszshi,xjtszx,xuesjbsj.xjtdz
+                //现家庭所在市	现家庭所在区县	现家庭详细地址
+
+
+
+
+                float a = 0;
+                DateTime b;
+                if (float.TryParse(dt.Rows[i][j].ToString(), out a) && dt.Rows[i][j].ToString().Length > 13) //判断是否可以转换为整型            
+                {
+                    //判断班级信息
+
+
+                    //身份证前加"'"，在excel里才显示正确
+                    if (DateTime.TryParse(dt.Rows[i][j].ToString(), out b))
+                    {
+                        form.InnerHtml = form.InnerHtml + "<td>" + dt.Rows[i][j].ToString() + "</td>";
+                    }
+                    else
+                    {
+                        form.InnerHtml = form.InnerHtml + "<td>'" + dt.Rows[i][j].ToString() + "</td>";
+
+                    }
+                }
+                else
+                {
+                    if (dt.Columns[j].Caption == "户口所在地")
+                    {
+                        if (dt.Rows[i][j].ToString().Contains("镇") || dt.Rows[i][j].ToString().Contains("村") || dt.Rows[i][j].ToString().Contains("号") || dt.Rows[i][j].ToString().Contains("组") || dt.Rows[i][j].ToString().Contains("栋"))
+                        {
+                            form.InnerHtml = form.InnerHtml + "<td>" + dt.Rows[i][j].ToString() + "</td>";
+                        }
+                        else
+                        {
+                            form.InnerHtml = form.InnerHtml + "<td bgcolor='#D1D2D3' style=\"text-align:left\"><font size=2 color=red>" + dt.Rows[i][j].ToString() + "</font></td>";
+                        }
+                    }
+                    else
+                    {
+                        //如果为空 填充为灰色
+                        //if (dt.Rows[i][j].ToString() == "")
+                        //{// bgcolor='#F0F4F0'
+                        //    form.InnerHtml = form.InnerHtml + "<td  bgcolor='#E0E1E2'>" + dt.Rows[i][j].ToString() + "</td>";
+                        //}
+                        //else
+                        //{
+
+                            form.InnerHtml = form.InnerHtml + "<td>" + dt.Rows[i][j].ToString() + "</td>";
+                        //}
+                    }
+                }
+
+            }
+            if (tdlie > 0)
+            {
+                for (int ii = 0; ii < tdlie; ii++)
+                {
+                    form.InnerHtml = form.InnerHtml + "<td></td>";
+                }
+            }
+             form.InnerHtml = form.InnerHtml + "</tr>";
+
+        }
+
+        if (sql.Length > 0&&dt.Rows.Count<1)
+        {
+            form.InnerHtml = form.InnerHtml + "<tr><td align=left colspan=" + (dt.Columns.Count + tdlie).ToString() + "><font color=red>" + sql + "</font></td></tr>";
+        }
+        form.InnerHtml = form.InnerHtml + "</table>";
+        //form.Controls.Add(dt);
+        System.IO.StringWriter sw = new System.IO.StringWriter();
+        HtmlTextWriter htw = new HtmlTextWriter(sw);
+        page.RenderControl(htw);
+
+        HttpContext.Current.Response.Write(sw.ToString());
+        HttpContext.Current.Response.End();
+    }
+   
+
+
+
+	public basic()
+	{
+
+		//
+		//TODO: 在此处添加构造函数逻辑
+		//
+	}
+    /// <summary>    
+    /// 获取客户端IP地址    
+    /// </summary>    
+    /// <returns></returns>   
+    public static string GetIPAddress()    {
+  string user_IP = string.Empty;       
+        if (System.Web.HttpContext.Current.Request.ServerVariables["HTTP_VIA"] != null)     
+        {            
+            if (System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] != null)      
+            {               
+                user_IP = System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"].ToString();        
+            }           
+            else        
+            {              
+                user_IP = System.Web.HttpContext.Current.Request.UserHostAddress;    
+            }       
+        }        
+        else       
+        {           
+            user_IP = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"].ToString();       
+        }        
+        return user_IP;   
+    }
+
+    /// <summary>
+    /// 弹出对话框
+    /// </summary>
+    /// <param name="page">要弹出对话框的页面，本页用this.Page</param>
+    /// 示例: basic.MsgBox(this.Page,"内容","-1");
+    /// <param name="values">弹出的内容</param>
+    /// <param name="URL">操作代码,及跳转的页面URL</param>
+    public static void MsgBox(System.Web.UI.Page page, string values,string URL)
+    {
+        switch (URL)
+        {
+            case "":
+                page.ClientScript.RegisterStartupScript(page.GetType(), "", "<script language=javascript>alert('" + values + "')</script>");
+                //显示信息
+                break;
+            case "-1":
+                page.ClientScript.RegisterStartupScript(page.GetType(), "", "<script language=javascript>alert('" + values + "');history.go(-1)</script>");
+                //显示信息并跳到上一页
+                break;
+            case "close":
+                page.ClientScript.RegisterStartupScript(page.GetType(), "", "<script language=javascript>alert('" + values + "');window.opener=null;window.close();</script>");
+                //显示信息并关闭页
+                break;
+            default:
+                page.ClientScript.RegisterStartupScript(page.GetType(), "", "<script language=javascript>alert('" + values + "');location='" + URL + "'</script>");
+                //显示信息并跳到至指定URL
+                break;
+        }
+     }
+    /// <summary>
+    /// POST,GET安全验证
+    /// </summary>
+    /// 示例: basic.saferequest("GET或POST名");
+    /// <param name="requestname">需安全处理的GET，POST值名</param>
+    /// <param name="type">加参数为字符串，不加参数为ET，POST值名</param>
+    public static void saferequest(string requestname)
+    {
+        string safestring = HttpContext.Current.Request[requestname];
+        //处理过滤（待写）
+    }
+    /// <summary>
+    /// 字符安全验证
+    /// </summary>   
+    /// 示例: basic.saferequest("值名或字符","1");
+    /// <param name="requestname">需安全处理的字符串</param>
+    /// <param name="type">加参数为字符串</param>
+    public static void saferequest(string requestname,string type)
+    {
+        string safestring = requestname;
+        //处理过滤（待写）
+    }
+}

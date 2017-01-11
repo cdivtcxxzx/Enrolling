@@ -1,0 +1,112 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	font-size: 12px;
+	font-family: "ËÎÌå", "ºÚÌå";
+	color: #3c5d88;
+}
+
+body {
+	background-color: #3c7fb5;
+}
+li {
+	list-style-type: none;
+}
+#box {
+	background-image: url(/admin/images/bj01.gif);
+	background-repeat: repeat-x;
+	height: 598px;
+}
+#main_box {
+	height: 575px;
+	width: 648px;
+	background-image: url(/admin/images/main.jpg);
+	margin-right: auto;
+	margin-left: auto;
+	position: relative;
+}
+#td_main {
+	text-align: center;
+	vertical-align: middle;
+}
+.text {
+	background-image: url(/admin/images/input01.gif);
+	height: 22px;
+	width: 138px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	background-repeat: no-repeat;
+	background-position: right top;
+	color: #000;
+	padding-left: 5px;
+	padding-top: 7px;
+}
+.text1 {
+	background-image: url(/admin/images/input02.gif);
+	height: 22px;
+	width: 71px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	background-repeat: no-repeat;
+	background-position: left top;
+	color: #000;
+	padding-left: 1px;
+	padding-top: 7px;
+}
+.button {
+	background-image: url(/admin/images/button01.gif);
+	height: 25px;
+	width: 64px;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	margin-right: 12px;
+}
+#form_box {
+	height: 195px;
+	width: 330px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: left;
+	position: absolute;
+	left: 171px;
+	top: 322px;
+}
+.label {
+	width: 120px;
+	display: block;
+	float: left;
+	text-align: right;
+	padding-right: 5px;
+	padding-top: 10px;
+	width: 100px;
+}
+#form_box .liStyle1{
+	padding-left: 120px;
+	padding-left: 105px;
+}
+#form_box li {
+	display: block;
+	min-height: 30px;
+	_height: 30px;
+	margin-top: 7px;
+}
+.label02 {
+	color: #000;
+	display: block;
+	margin-top: 7px;
+}
+.label02 input {
+	margin-bottom: -1px;
+	margin-right: 3px;
+	margin-left: -3px;
+}
+.footertext{
+	color:#93c0e6;
+}
+.footertext a{color:#93c0e6; text-decoration:none;}

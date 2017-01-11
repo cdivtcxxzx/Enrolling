@@ -1,0 +1,112 @@
+user_serial	user_no	user_lname	user_fname	user_depname	user_card	user_id
+20000343	914	张明	zhangming1	信息中心技术服务部	A3C877A7	511322198301052376
+
+
+USE [scm_main]
+GO
+
+/****** Object:  StoredProcedure [dbo].[updateCard]    Script Date: 11/30/2016 16:46:53 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+ALTER procedure [dbo].[updateCard]
+@card_type int = 100,
+@xf_style int = 2,
+@old_card_deal int = 0  --0退旧卡发新卡1挂掉卡发新卡，旧卡钱转新卡
+as 
+set nocount on
+
+	declare @user_flag int
+    declare @user_serial int
+    declare @card_hao varchar(50)
+    declare @new_card varchar(50)
+    declare @old_card varchar(50)
+	declare @user_no varchar(50)
+	declare @old_user_type int
+	declare @new_user_type int
+	declare @zh varchar(200)
+	declare @card_state int  --0正常1挂失2退卡3解挂
+	declare @count int
+	declare @result int
+
+    set @card_type = 100 
+
+    select  @count = count(1) from tmp_card
+    if @count = 0 return
+
+ 
+    ---处理卡变化的
+    select b.user_serial,isnull(a.user_card,'') new_card,isnull(b.user_card,'') old_card,isnull(a.card_state,0) card_state
+    into #tmp_update_CardChange
+	from tmp_card a 
+	inner join dt_user b on a.zh = b.zh
+	                     and (
+								(isnull(a.user_card,'') <> isnull(b.user_card,'') and isnull(a.user_card,'') <> '' and isnull(b.user_card,'') <> '')  --换卡 v2.04
+							  or (isnull(a.user_card,'') = isnull(b.user_card,'') and isnull(a.user_card,'') <> '' and isnull(a.card_state,0) > 0)     --挂失或退卡 v2.04
+							  or (isnull(a.user_card,'') <> '' and isnull(b.user_card,'') = '' and (isnull(a.card_state,0) = 0 or isnull(a.card_state,0) = 2)) --发卡或退卡 v2.04
+	                         )
+	--where ISNULL(a.user_type,0) <> 51
+    print '卡发生变化的数目:'+cast(@@rowcount	as varchar(20))   
+    declare cur_tt cursor for 
+	select * from #tmp_update_CardChange 
+	open cur_tt
+	FETCH NEXT FROM cur_tt into @user_serial,@new_card,@old_card,@card_state
+	while @@FETCH_STATUS = 0 
+	begin
+	    if (@new_card <> @old_card) and (@new_card <> '') and (@old_card <> '')   --换卡了
+        begin
+            if @old_card_deal = 0
+            begin
+				exec ClientPro_Card_back @user_serial,null,@old_card,null,null,@card_type,null,2,'syn','syn',null   --退旧卡
+ 				exec ClientPro_Card_add 'syn',2,'0000000000000001',@user_serial,@new_card,null,null,@card_type,0,0,'syn','syn',null  --发新卡
+            end;
+            else
+            begin
+				exec ClientPro_Card_replace @user_serial,2,null,null,@old_card,100,null,@new_card,100,0,'syn',null,'syn'  --挂旧卡发新卡，旧卡金额转新卡
+            end
+		end
+		else if (@new_card = @old_card) and (@new_card <> '') and (@card_state = 1)     --挂失了
+        begin
+			exec ClientPro_Card_loss @user_serial,@old_card,null,2,'syn','syn',null    --挂失
+		end
+		else if (@new_card <> '') and (@card_state = 2)    --退卡了
+        begin   
+            select @count = count(1) from dt_card where card_hao = @new_card
+            if @count > 0
+				exec ClientPro_Card_back @user_serial,null,@new_card,null,null,@card_type,null,2,'syn','syn',null  --退卡       
+		end
+		else if (@new_card <> '') and (@old_card = '') and (@card_state = 0)     --发新卡或卡解挂
+        begin	
+			select @count = count(1) from dt_card where card_hao = @new_card and card_type = 1
+            if @count > 0 
+				exec ClientPro_Card_unloss @user_serial,null,@new_card,@card_type,2,'syn','syn',null  -- 执行解挂
+			else
+				exec ClientPro_Card_add 'syn',2,'0000000000000001',@user_serial,@new_card,null,null,@card_type,0,0,'syn','syn',null  --发新卡
+		end
+
+	  	FETCH NEXT FROM cur_tt into @user_serial,@new_card,@old_card,@card_state
+	end
+	CLOSE cur_tt
+	DEALLOCATE cur_tt 
+	
+	
+	
+	
+	 
+  
+	drop table #tmp_update_CardChange
+
+
+
+return
+
+
+GO
+
+

@@ -1,0 +1,30 @@
+﻿<%@ page language="C#" autoeventwireup="true" inherits="_404, App_Web_ua32xoqm" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    <title>你访问的页面出现问题！</title>
+    <link rel="stylesheet" href="/nav_dh/icon/iconfont.css"/>
+    <link rel="stylesheet" href="/nav_dh/style.css"/>
+</head>
+<body>
+    <form id="form1" runat="server">
+<div style="margin-left:100px;">
+<br /><br />
+<div style="width:90%; font-size:20px; font-weight:bold; color:Red;">对不起，您访问的页面出现问题！</div>
+<br /><br />
+    <a href="/" style="background:#808080">点击返回首页</a>
+<div class="main">
+  <div class="myrow" id="errshow" runat="server" style="color:#000000;margin:30px;">
+
+           
+
+    </div>
+</div>
+</div>
+    </form>
+</body>
+</html>

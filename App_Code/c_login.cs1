@@ -1,0 +1,557 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data;
+using System.Data.SqlClient;
+using ServiceReference1;
+using System.Xml.Linq;
+
+/// <summary>
+///c_login 的摘要说明
+/// </summary>
+public class c_login:System.Web.UI.Page
+{
+    protected string strGetFromUum { get; set; }
+
+    protected struct UUM
+    {
+        public string guid;
+        public string yhqx;
+        public string lsz;
+        public string yhid;
+        public string xm ;
+        public string mm ;
+        public string uumzw;
+        public string lxdh ;
+        public DateTime dltime;
+        public int fwcs;
+        public UUM(string yhid)
+        {
+            this.guid = "";
+            this.yhqx = "";
+            this.lsz = "";
+            this.yhid = yhid;
+            this.xm = "";
+            this.mm = "";
+            this.uumzw = "";
+            this.lxdh = "";
+            this.dltime = DateTime.Now;
+            this.fwcs = 1;
+        }
+
+    }
+
+    UumDataServiceClient client = new UumDataServiceClient();
+
+    public c_login()
+    {}
+
+    /// <summary>
+    /// 用户登陆、用户所权限获取
+    /// </summary>
+    /// <param name="strUsername">用户名</param>
+    /// <param name="strPwd">密码</param>
+    /// <param name="Cache">是否设置自动登陆</param>
+    /// <param name="IsCookie">是否以cookie登陆</param>
+    /// <returns></returns>
+    public bool login(string strUsername, string strPwd, bool Cache, bool IsCookie)
+    {
+        if (IsCookie)
+        {
+            strPwd = md5.MD5Decrypt(strPwd, md5.GetKey());
+        }
+
+        strUsername = strUsername.Trim();
+        strPwd = strPwd.Trim();
+        //如果是Cookie登陆，需要对strPwd时行解密
+ 
+        //再次确定输入非空
+        if (strUsername != "" && strPwd != "")
+        {
+            strGetFromUum = client.GetUumData(new Dictionary<string, string>()
+                                 {
+                                    {"AuthCode","E97084F7-F7C3-467C-B548-E89E39B2007D"},
+                                    {"Flag","AuthUser"},
+                                    {"UserName",strUsername},
+                                    {"Password",strPwd},
+                                }
+                               );
+            XDocument xmlGetFromUum = XDocument.Parse(strGetFromUum);
+            string strNameGetFromUum = "";
+            string strUserNameGetFromUum = "";
+            UUM getUum=new UUM("");
+            foreach (var temp in xmlGetFromUum.Elements("Root").Elements("User"))
+            {
+                strNameGetFromUum = temp.Element("Name").Value;
+                strUserNameGetFromUum = temp.Element("UserName").Value;
+
+                getUum.guid = temp.Element("Id").Value;
+                getUum.yhid = strUsername;
+                getUum.xm = strNameGetFromUum;
+                getUum.uumzw = temp.Element("Title").Value;
+                getUum.lxdh = temp.Element("MobilePhone").Value;
+
+            }
+            if (strUserNameGetFromUum != "" && strUserNameGetFromUum == strUsername)
+            {//UUM通过验证
+                if (Cache)
+                {
+                    HttpCookie mycookie = new HttpCookie("LoginUser");
+
+                    mycookie.Values.Add("UserName", strUsername);
+                    mycookie.Values.Add("Name", strNameGetFromUum);
+                    mycookie.Values.Add("Pwd", md5.MD5Encrypt(strPwd,md5.GetKey()));//加密存于cookie
+
+                    mycookie.Expires = DateTime.Now.AddDays(7);
+                    HttpContext.Current.Response.AppendCookie(mycookie);
+                }
+                Session["UserName"] = strUsername;
+                Session["Name"] = strNameGetFromUum;
+                Session["Yhqx"] = this.getPowerFromYhqx(strUsername);
+                //登陆信息写入数据库
+                string sqlSerachByYhid = "SELECT * FROM yonghqx WHERE yhid=@yhid";
+                DataTable dt = Sqlhelper.Serach(sqlSerachByYhid, new SqlParameter("yhid", strUsername));
+                try
+                {
+                    if (dt.Rows.Count > 0)
+                    {//如果已经存在于数据库，则只修改登陆次数 ,将用户组写入session
+                        Session["Lsz"] = dt.Rows[0]["lsz"];
+                        string[] strLszs = dt.Rows[0]["lsz"].ToString().Split(',');
+                        if (Session["Lsz"].ToString() != "" && strLszs[0] != "" && Session["Yhqx"] != null)
+                        {
+                            foreach (string strLsz in strLszs)
+                            {
+                                XDocument zQx = this.getPowerFromZhuqx(strLsz);
+                                foreach (var temp in zQx.Elements("Root").Elements())
+                                {
+                                    string lanmStr = temp.Name.ToString();
+                                    XDocument sessionXML = XDocument.Parse(Session["Yhqx"].ToString());
+                                    //如果直接没有该栏目的权限，直接添加该栏目结点
+                                    if (sessionXML.Element("Root").Element(lanmStr) == null)
+                                    {
+                                        sessionXML.Element("Root").Add(temp);
+                                    }
+                                    else
+                                    {
+                                        foreach (var oper in temp.Elements())
+                                        {
+                                            string operStr = oper.Name.ToString();
+                                            if (sessionXML.Element("Root").Element(lanmStr).Element(operStr) == null)
+                                            {
+                                                sessionXML.Element("Root").Element(lanmStr).Add(oper);
+                                                Session["Yhqx"] = sessionXML.ToString();
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Session["Yhqx"] = "";
+                        }
+                        string sqlUpdate = "UPDATE yonghqx SET fwcs=@fwcs,dltime=@dltime WHERE yhid=@yhid";
+                        int fwcs = int.Parse(dt.Rows[0]["fwcs"].ToString()) + 1;
+                        if (Sqlhelper.ExcuteNonQuery(sqlUpdate, new SqlParameter("fwcs", fwcs.ToString()),new SqlParameter("dltime",DateTime.Now.ToString()),new SqlParameter("yhid",strUsername)) > 0)
+                            return true;
+                    }
+                    else
+                    {//不存在，刚新建一条记录 
+                        string sqlInsert = "INSERT INTO  yonghqx VALUES(@guid,@yhqx,@lsz,@yhid,@xm,@mm,@uumzw,@lxdh,@dltime,@fwcs)";
+                        //密码来自用户输入
+                        if (Sqlhelper.ExcuteNonQuery(sqlInsert,
+                            new SqlParameter("guid", getUum.guid),
+                            new SqlParameter("yhqx", ""),
+                            new SqlParameter("lsz", getUum.lsz),
+                            new SqlParameter("yhid", getUum.yhid),
+                            new SqlParameter("xm", getUum.xm),
+                            new SqlParameter("mm", strPwd),
+                            new SqlParameter("uumzw", getUum.uumzw),
+                            new SqlParameter("lxdh", getUum.lxdh),
+                            new SqlParameter("dltime", DateTime.Now.ToString()),
+                            new SqlParameter("fwcs", 1)) > 0)
+                            return true;
+                    }
+                }
+                catch
+                { 
+                
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {            
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 登陆验证
+    /// </summary>
+    /// <returns></returns>
+    public bool Loginyanzheng()
+    {
+        //HttpCookie mycookie = Request.Cookies["LoginUser"];
+        HttpCookie mycookie = HttpContext.Current.Request.Cookies["LoginUser"];
+        if (Session["UserName"] != null && Session["Name"] != null)
+            return true;
+        else if (mycookie != null)
+        {
+            string UsernameCookie = mycookie.Values["UserName"];
+            string PwdCookie = mycookie.Values["Pwd"];
+            if (UsernameCookie != null && UsernameCookie != "" && PwdCookie != null && PwdCookie != "")
+            {
+                if (this.login(UsernameCookie, PwdCookie, false, true))
+                {
+                    return true;
+                }
+                else
+                {//若修改密码后，cookie仍然存在，但还是无法正确登陆
+                    HttpContext.Current.Response.Redirect("~/Default.aspx");
+                    return false;
+                }
+            }
+            else
+            {
+                HttpContext.Current.Response.Redirect("~/Default.aspx");
+                return false;
+            }            
+        }
+        else
+        {
+            HttpContext.Current.Response.Redirect("~/Default.aspx");
+            return false;
+        }
+    }
+
+    ///// <summary>
+    ///// 获取用户权限
+    ///// </summary>
+    ///// <param name="Username">用户名</param>
+    ///// <param name="LmKeyWord">关键字</param>
+    ///// <returns>权限集合</returns>
+    //public List<XElement> getPower(string Username,string LmKeyWord)
+    //{
+    //    List<XElement> listXElementGroup = new List<XElement>();//获取用户权限集合
+    //    List<XElement> listXElementYhqx = new List<XElement>();//获取组权限集合
+    //    List<XElement> listXElementTemp = null;
+    //    string[] strLsz={};
+    //    string SqlString = "SELECT * FROM yonghqx WHERE yhid=@yhid";
+    //    try
+    //    {
+    //        DataTable dtQx = Sqlhelper.Serach(SqlString, new SqlParameter("yhid", Username));
+    //        if (dtQx.Rows.Count == 1)
+    //        {
+    //            DataRow row = dtQx.Rows[0];
+    //            string strYhqx = row["yhqx"].ToString();
+    //            strLsz = row["lsz"].ToString().Split(',');
+    //            XDocument xmlPowerYhqx = XDocument.Parse(strYhqx);
+    //            if(xmlPowerYhqx.Elements("Root").Elements(LmKeyWord).Elements() != null)
+    //                listXElementYhqx = xmlPowerYhqx.Elements("Root").Elements(LmKeyWord).Elements().ToList();
+    //        }
+    //        //获取用户组权限
+    //        if (this.getPowerFromZhuqx(strLsz[0]) != null)
+    //        {
+    //            //foreach (var tempListXElementGroup in getPowerFromZhuqx(strLsz[0]))
+    //            {
+    //                //if (tempListXElementGroup.Name == LmKeyWord)
+    //                    //listXElementGroup = tempListXElementGroup.Elements().ToList();
+    //            }
+    //        }
+    //        if (listXElementGroup != null && listXElementYhqx != null)
+    //        {
+    //            listXElementTemp = new List<XElement>(listXElementYhqx);
+    //            string s1 = "", s2 = "";
+    //            for (int i = 0; i < listXElementGroup.Count; i++)
+    //            {
+    //                s1 = listXElementGroup[i].ToString();
+    //                for (int j = 0; j < listXElementYhqx.Count; j++)
+    //                {
+    //                    s2 = listXElementYhqx[j].ToString();
+    //                    if (s1 == s2)
+    //                        break;
+    //                    if (j == listXElementYhqx.Count - 1)
+    //                        listXElementTemp.Add(listXElementGroup[i]);
+    //                }
+    //            }
+    //        }
+    //        else
+    //        {
+    //            listXElementTemp = (listXElementGroup != null ? listXElementGroup : listXElementYhqx);
+    //        }
+    //        return listXElementTemp;
+    //    }
+    //    catch
+    //    {
+    //        return null;
+    //    }
+
+    //}
+
+
+
+    /// <summary>
+    /// 获取用户所有权限集合
+    /// </summary>
+    /// <param name="Username">用户名</param>
+    /// <returns></returns>
+    public XDocument getPowerFromYhqx(string Username)
+    {
+        string SqlString = "SELECT * FROM yonghqx WHERE yhid=@yhid";
+        try
+        {
+            DataTable dtQx = Sqlhelper.Serach(SqlString, new SqlParameter("yhid", Username));
+            if (dtQx.Rows.Count ==1)
+            {
+                DataRow row = dtQx.Rows[0];
+                string strYhqx = row["yhqx"].ToString();
+                XDocument xmlPowerYhqx = XDocument.Parse(strYhqx);
+                if (xmlPowerYhqx.Elements("Root").Elements() != null)
+                    //return xmlPowerYhqx.Elements("Root").Elements().ToList();
+                    return xmlPowerYhqx;
+                else
+                    return null;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 获取组权限
+    /// </summary>
+    /// <param name="zid">组ID</param>
+    /// <returns></returns>
+    public XDocument getPowerFromZhuqx(string zid)
+    {
+        string SqlString = "SELECT * FROM zhuqx WHERE zid=@zid";
+        try
+        {
+            DataTable dtQx = Sqlhelper.Serach(SqlString, new SqlParameter("zid", zid));
+            if (dtQx.Rows.Count > 0)
+            {
+                DataRow row = dtQx.Rows[0];
+                string strZqx = row["zqx"].ToString();
+                XDocument xmlPowerZqx = XDocument.Parse(strZqx);
+                if (xmlPowerZqx.Elements("Root").Elements() != null)
+                    //return xmlPowerZqx.Elements("Root").Elements().ToList();
+                    return xmlPowerZqx;
+                else
+                    return null;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 权限验证
+    /// </summary>
+    /// <param name="yhid">用户名</param>
+    /// <param name="KeyWord">关键字</param>
+    /// <param name="operation">待验证权限</param>
+    /// <param name="type">1:只查询用户权限表,2:全部查询</param>
+    /// <returns></returns>
+    public bool powerYanzheng(string yhid, string KeyWord, string operation,string type)
+    {
+        try
+        {
+            //查询权限id
+            string strSqlQxidSerach = "SELECT qxid FROM quanxdm WHERE qxmc=@qxmc";
+            string strQxid = "";
+            DataTable dtQxid = Sqlhelper.Serach(strSqlQxidSerach, new SqlParameter("qxmc", operation));
+            if (dtQxid.Rows.Count > 0)
+            {
+                strQxid = dtQxid.Rows[0][0].ToString();
+            }
+            //查询是否验证
+            string strSqlLmidSerach = "SELECT sfqxyz FROM lanm WHERE lmmc=@lmmc";
+            string strSfqxyz = "";
+            DataTable dtLmid = Sqlhelper.Serach(strSqlLmidSerach, new SqlParameter("lmmc", KeyWord.Trim()));
+            if (dtLmid.Rows.Count > 0)
+            {
+                foreach (DataRow row in dtLmid.Rows)
+                {
+                    strSfqxyz = row["sfqxyz"].ToString();
+                }
+            }
+            //如果不需要验证，则直接通过验证
+            if (!strSfqxyz.Contains(strQxid))
+            {
+                return true;
+            }
+            switch (type)
+            {
+                //用户权限表中验证
+                case "1":
+                    //string strLsz = "";
+                    string SqlString = "SELECT * FROM yonghqx WHERE yhid=@yhid";
+                    DataTable dtQx = Sqlhelper.Serach(SqlString, new SqlParameter("yhid", yhid));
+                    if (dtQx.Rows.Count > 0)
+                    {
+                        DataRow row = dtQx.Rows[0];
+                        string strYhqx = row["yhqx"].ToString();
+                        //strLsz = row["lsz"].ToString();
+                        XDocument xml = XDocument.Parse(strYhqx);
+                        if (xml.Element("Root").Element(KeyWord).Element(operation) != null)
+                            return true;
+                        else
+                        {
+                            //string sqlStrZqx = "SELECT * FROM zhuqx WHERE zid=@zid";
+                            //DataTable dtZqx = Sqlhelper.Serach(sqlStrZqx, new SqlParameter("zid", strLsz));
+                            //if (dtZqx.Rows.Count > 0)
+                            //{
+                            //    bool tap = false;
+                            //    DataRow rowZqx = dtZqx.Rows[0];
+                            //    string[] zqx = rowZqx["zqx"].ToString().Split(',');
+                            //    foreach (string temp in zqx)
+                            //    {
+                            //        XDocument xmlTemp = XDocument.Parse(temp);
+                            //        if (xmlTemp.Elements("Root").Elements(KeyWord).Elements(operation) != null)
+                            //            tap = false;
+                            //    }
+                            //    return tap;
+                            //}
+                            //else
+                            return false;
+                        }
+                    }
+                    else
+                        return false;
+
+                //List<XElement> power = this.getPower(yhid, KeyWord);
+                //bool tab = false;
+                //if (power != null)
+                //{
+                //    for (int i = 0; i < power.Count; i++)
+                //    {
+                //        if (power[i].Name.ToString() == operation)
+                //        {
+                //            tab = true;
+                //        }
+                //    }
+                //    return tab;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
+
+                //session所有权限中验证
+                case "2":
+                    if (Session["Yhqx"] != null)
+                    {
+                        XDocument xml = XDocument.Parse(Session["Yhqx"].ToString());
+                        if (xml.Element("Root").Element(KeyWord).Element(operation) != null)
+                            return true;
+                    }
+                    return false;
+
+                default: return false;
+            }
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    /// <summary>
+    /// 权限验证（重载）
+    /// </summary>
+    /// <param name="zid">组权限ID</param>
+    /// <param name="keyword">栏目模块名称</param>
+    /// <param name="operation">操作（权限）名称</param>
+    /// <returns></returns>
+    public bool powerYanzheng(string zid, string keyword, string operation)
+    {
+        try
+        {
+            string sqlStrZqx = "SELECT * FROM zhuqx WHERE zid=@zid";
+            DataTable dtZqx = Sqlhelper.Serach(sqlStrZqx, new SqlParameter("zid", zid));
+            if (dtZqx.Rows.Count > 0)
+            {
+                DataRow rowZqx = dtZqx.Rows[0];
+                string zqx = rowZqx["zqx"].ToString();
+                XDocument xmlTemp = XDocument.Parse(zqx);
+                if (xmlTemp.Element("Root").Element(keyword).Element(operation) != null)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 隶属组权限验证
+    /// </summary>
+    /// <param name="lsz">用户权限表中隶属组数组</param>
+    /// <param name="keyword">栏目模块名称</param>
+    /// <param name="operation">操作（权限）名称</param>
+    /// <returns></returns>
+    public bool powerYanzheng(string[] lsz, string keyword, string operation)
+    {
+        foreach (string zid in lsz)
+        {
+            try
+            {
+                string sqlStrZqx = "SELECT * FROM zhuqx WHERE zid=@zid";
+                DataTable dtZqx = Sqlhelper.Serach(sqlStrZqx, new SqlParameter("zid", zid));
+                if (dtZqx.Rows.Count > 0)
+                {
+                    DataRow rowZqx = dtZqx.Rows[0];
+                    string zqx = rowZqx["zqx"].ToString();
+                    XDocument xmlTemp = XDocument.Parse(zqx);
+                    if (xmlTemp.Element("Root").Element(keyword).Element(operation) != null)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        return false;
+    }
+    //public List<XElement> getPowerFromZhuqx(string[] zid)
+    //{
+    //    foreach (string temp in zid)
+    //    { 
+    //        string sqlStrZqx = "SELECT * FROM zhuqx WHERE zid=@zid";
+    //        DataTable dtZqx = Sqlhelper.Serach(sqlStrZqx, new SqlParameter("zid", zid));
+    //        if (dtZqx.Rows.Count > 0)
+    //        {
+    //            DataRow rowZqx = dtZqx.Rows[0];
+    //            string zqx = rowZqx["zqx"].ToString();
+    //            XDocument xmlTemp = XDocument.Parse(zqx);
+    //        }
+    //    }
+    //    return null;
+    //}
+}   

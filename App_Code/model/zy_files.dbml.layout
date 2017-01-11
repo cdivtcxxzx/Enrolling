@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="zy_files">
+  <DataContextMoniker Name="/zy_filesDataContext" />
+  <nestedChildShapes>
+    <classShape Id="5d3a562c-d6fb-40b8-b9d2-19272dec8a23" absoluteBounds="4.125, 2, 2, 3.2907230631510416">
+      <DataClassMoniker Name="/zy_filesDataContext/ZY_FILES" />
+      <nestedChildShapes>
+        <elementListCompartment Id="98395572-5b70-4e10-b63d-d468ac141166" absoluteBounds="4.14, 2.46, 1.9700000000000002, 2.7307230631510415" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b6d2bc7c-8c2f-488f-b5a8-bbb5d292154c" absoluteBounds="1.875, 2, 2, 2.9086836751302081">
+      <DataClassMoniker Name="/zy_filesDataContext/ZY_FILES_MAPPING" />
+      <nestedChildShapes>
+        <elementListCompartment Id="74ded5a8-8eac-420e-9fce-ae116dfaf45e" absoluteBounds="1.8899999999999997, 2.46, 1.9700000000000002, 2.348683675130208" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
