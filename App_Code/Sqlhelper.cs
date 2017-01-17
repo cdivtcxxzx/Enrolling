@@ -184,7 +184,7 @@ public class Sqlhelper
                             }
                             catch { }
                             //写入日志
-                            Sqlhelper.ExcuteNonQuery("INSERT INTO [sqllog]    ([sql],[time],[ip],[url],[username],[bz],[laiyuan]) VALUES('" + sql + "','" + DateTime.Now.ToString() + "','" + ipok + "','" + urlok + "','" + username + "','SQL查询监控','学院网站')");
+                            Sqlhelper.ExcuteNonQuery("INSERT INTO [sqllog]    ([sql],[time],[ip],[url],[username],[bz],[laiyuan]) VALUES('" + sql + "','" + DateTime.Now.ToString() + "','" + ipok + "','" + urlok + "','" + username + "','SQL查询监控','迎新系统')");
                         }
                     }
                     catch
