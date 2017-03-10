@@ -64,7 +64,7 @@ public partial class nradmingl_kfgl : System.Web.UI.Page
         }
         #endregion
 
-
+    }
         
     #region 设置页面显示条数事件
     protected void PageSize_Go(object sender, EventArgs e)
