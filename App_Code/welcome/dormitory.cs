@@ -404,26 +404,26 @@ public class dormitory
     /// <param name="class_no">班级编号</param>
 
     /// <returns>datatable【校区编号、校区名称、宿舍主键、宿舍编号、学年、宿舍名、性别、房间类型编号、床位位置序号】</returns>
-    public static DataTable classgetdorm(string class_no)
-    {
-        DataTable dorm = new DataTable();
-        try
-        {
-            //
-            dorm = Sqlhelper.Serach("SELECT     Base_Campus.Campus_NO, Base_Campus.Campus_Name, Fresh_Dorm.PK_Dorm_NO, Fresh_Dorm.Dorm_NO, Fresh_Dorm.Year, Fresh_Dorm.Name,Fresh_Room.Gender, Fresh_Bed_Type.FK_Room_Type, Fresh_Bed_Type.Bed_Index FROM         Fresh_Class INNER JOIN    Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN    Base_Campus INNER JOIN    Fresh_Dorm INNER JOIN   Fresh_Bed_Type INNER JOIN   Fresh_Bed ON Fresh_Bed_Type.PK_Bed_Type = Fresh_Bed.FK_Bed_Type INNER JOIN Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO ON      Base_Campus.Campus_NO = Fresh_Dorm.Campus_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO where  Fresh_Bed_Class_Log.FK_class_NO=@classno ", new SqlParameter("classno", class_no));
-        }
-        catch (Exception err)
-        {
-            try
-            {
-                new c_log().logAdd("dormitory.cs", "classgetdorm", err.Message, "2", "zhangming1");//记录错误日志
-                throw;
-            }
-            catch { }
+    //public static DataTable classgetdorm(string class_no)
+    //{
+    //    DataTable dorm = new DataTable();
+    //    try
+    //    {
+    //        //
+    //        dorm = Sqlhelper.Serach("SELECT     Base_Campus.Campus_NO, Base_Campus.Campus_Name, Fresh_Dorm.PK_Dorm_NO, Fresh_Dorm.Dorm_NO, Fresh_Dorm.Year, Fresh_Dorm.Name,Fresh_Room.Gender, Fresh_Bed_Type.FK_Room_Type, Fresh_Bed_Type.Bed_Index FROM         Fresh_Class INNER JOIN    Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN    Base_Campus INNER JOIN    Fresh_Dorm INNER JOIN   Fresh_Bed_Type INNER JOIN   Fresh_Bed ON Fresh_Bed_Type.PK_Bed_Type = Fresh_Bed.FK_Bed_Type INNER JOIN Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO ON      Base_Campus.Campus_NO = Fresh_Dorm.Campus_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO where  Fresh_Bed_Class_Log.FK_class_NO=@classno ", new SqlParameter("classno", class_no));
+    //    }
+    //    catch (Exception err)
+    //    {
+    //        try
+    //        {
+    //            new c_log().logAdd("dormitory.cs", "classgetdorm", err.Message, "2", "zhangming1");//记录错误日志
+    //            throw;
+    //        }
+    //        catch { }
 
-        }
-        return dorm;
-    }
+    //    }
+    //    return dorm;
+    //}
 
     
 }
