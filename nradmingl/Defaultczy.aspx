@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Defaultgl.aspx.cs" Inherits="nradmingl_Defaultgl" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Defaultczy.aspx.cs" Inherits="nradmingl_Defaultczy" %>
 
 <!DOCTYPE html>
 
@@ -30,6 +30,7 @@
 						<div title="左侧导航菜单显示/隐藏" class="admin-side-toggle  hidden-xs">
 							<i class="fa fa-chevron-left" aria-hidden="true"></i>
 						</div>
+                        
 					</div>
                      
 					<ul class="layui-nav">
@@ -71,20 +72,92 @@
 				<div class="layui-side-scroll" id="admin-navbar-side" lay-filter="side"></div>
 			</div>
 			<div class="layui-body" style="bottom: 0;" id="admin-body">
-				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
+                <div style="width:500px;height:100%;float:left; margin-left:10px;margin-right:10px;">
+                    <blockquote class="layui-elem-quote">
+                        学生学号： <div class="layui-input-inline"><asp:TextBox ID="TextBox1" placeholder="请输入学生学号" cssClass="layui-input" runat="server"></asp:TextBox></div>
+                        <input type="button" value="查询" class="layui-btn layui-btn-small" id="button2" />
+                    </blockquote>
+                    <br />
+                    <fieldset class="layui-elem-field">
+  <legend>操作员状态</legend>
+  <div class="layui-field-box">
+      <table><tr><td style="width:50%;">迎新学年：<asp:Label ID="Label1" runat="server" Text="2016-2017学年"></asp:Label></td><td>迎新批次：<asp:Label ID="Label2" runat="server" Text="秋季统招迎新"></asp:Label></td>
+                       </tr>
+          <tr><td style="width:50%;"></td><td></td></tr>
+           <tr><td colspan="2" style="width:50%;">迎新服务时间：<asp:Label ID="Label3" runat="server" Text="2017年7月1日~2017年9月2日"></asp:Label></td></tr>
+           <tr><td style="width:50%;">操作员姓名：<asp:Label ID="Label4" runat="server" Text="张明"></asp:Label></td><td>登陆时间：<asp:Label ID="Label5" runat="server" Text="2017年3月15日"></asp:Label></td></tr>
+           <tr><td  colspan="2" style="width:50%;">当前事务操作：<asp:Label ID="Label6" runat="server" Text="迎新系统首页"></asp:Label></td></tr>
+          <tr><td style="width:50%;">预操作总人数：<asp:Label ID="Label7" runat="server" Text="100"></asp:Label></td><td>已操作总人数：<asp:Label ID="Label8" runat="server" Text="100"></asp:Label></td></tr>
+      </table>
+    
+      
+      
+      
+      
+      
+      
+      
+  </div>
+</fieldset>
+<br />
+
+                        <fieldset class="layui-elem-field">
+  <legend>学生状态</legend>
+  <div class="layui-field-box">
+    <table style="width:100%;font-size:16px;line-height:28px"><tr><td style="width:50%;border-right:1px solid #005CA3;padding-left:10px;padding-right:10px;">
+        学号：<asp:Label ID="xs_xh" runat="server" Text=""></asp:Label>
+        <br />
+        姓名：<asp:Label ID="xs_xm" runat="server" Text=""></asp:Label>
+        <br />
+        性别：<asp:Label ID="xs_sb" runat="server" Text=""></asp:Label>
+        <br />
+        身份证号：<asp:Label ID="xs_sfz" runat="server" Text=""></asp:Label>
+        <br />
+        学历层次：<asp:Label ID="xs_xl" runat="server" Text=""></asp:Label>
+        <br />
+        学院：<asp:Label ID="xs_xy" runat="server" Text=""></asp:Label>
+        <br />
+        专业：<asp:Label ID="xs_zy" runat="server" Text=""></asp:Label><br />
+        年级：<asp:Label ID="xs_nj" runat="server" Text=""></asp:Label><br />
+        班级名称：<asp:Label ID="xs_bj" runat="server" Text=""></asp:Label><br />
+        班主任：<asp:Label ID="xs_bzr" runat="server" Text=""></asp:Label><br />
+
+                                  </td>
+        <td style="width:50%;padding-left:10px;padding-right:10px;">
+            新生报到：<asp:Label ID="zt_xsbd" runat="server" Text=""></asp:Label>
+            <br />
+        缴纳学费：<asp:Label ID="zt_jnxf" runat="server" Text=""></asp:Label>
+            <br />
+        分配宿舍：<asp:Label ID="zt_fpss" runat="server" Text=""></asp:Label>
+            <br />
+        选择床上用品：<asp:Label ID="zt_xzcsyp" runat="server" Text=""></asp:Label>
+            <br />
+        领取床上用品：<asp:Label ID="zt_yqcsyp" runat="server" Text=""></asp:Label>
+            <br />
+        领取一卡通：<asp:Label ID="zt_lqykt" runat="server" Text=""></asp:Label>
+            <br />
+        选择宿舍：<asp:Label ID="zt_xcss" runat="server" Text=""></asp:Label><br />
+        宿舍入住：<asp:Label ID="zt_ssrz" runat="server" Text=""></asp:Label><br />
+       
+
+        </td></tr></table>
+  </div>
+</fieldset>
+                </div>
+				<div class="layui-tab admin-nav-card layui-tab-brief" style="border-left:1px solid  #005CA3" lay-filter="admin-tab">
                
 					<ul class="layui-tab-title">
 						<li class="layui-this">
 							<i class="fa fa-dashboard" aria-hidden="true"></i>
-							<cite>演示首页</cite>
+							<cite>学生自助首页</cite>
 						</li>
             
 					</ul>
                    
                   
 					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
-						<div class="layui-tab-item layui-show">
-							<iframe src="xys.aspx"></iframe>
+						<div class="layui-tab-item layui-show"  id="czmain" runat="server" >
+							<iframe id="iframeId"  src="/view/xszz-index.aspx"></iframe>
 						</div>
 					</div>
 				</div>
@@ -101,10 +174,11 @@
 			<script type="text/javascript" src="plugins/jquery.qrcode.min.js"></script>
              页面自动生成二维码ＪＳＯＶＥＲ-->
 			<script>
-            //忽略所有JS错误
-			    function killerrors() { return true; }
-			    window.onerror = killerrors;
-                //忽略错误结束,加载页面JS执行
+			    //忽略所有JS错误
+			    //function killerrors() { return true; }
+			    //window.onerror = killerrors;
+
+			    //忽略错误结束,加载页面JS执行
 
 
 			    layui.config({
@@ -135,28 +209,47 @@
 			        var $tabs = $body.children('ul.layui-tab-title');
 			        var $contents = $body.children('div.layui-tab-content');
 			        var tabFilter = 'admin-tab';
+			        //监听按钮事件
+			        var btnSearch = $('#button2').on('click', function () {
+			            console.log('s');
+
+			            //查询学生信息，更新
+
+                        //
+
+
+
+			            $('#iframeId').attr('src', 'SchoolMan1.aspx');
+			            
+
+			        });
 			        //监听点击事件
 			        navbar.on('click(side)', function (data) {
 			            var href = data.field.href;
 			            if (href === undefined || href === '') {
 			                return;
 			            }
-			            var iframe = '<iframe src="' + href + '"></iframe>';
+			            var iframe = '<iframe id="iframeId" src="' + href + '"></iframe>';
 			            var html = data.elem.html();
 			            var count = 0;
 			            var tabIndex;
+
 			            console.log($tabs);
+			            
 			            $tabs.find('li').each(function (i, e) {
+			                element.tabDelete(tabFilter, $(this).index()).init();
+
 			                var $cite = $(this).children('cite');
 			                if ($cite.text() === data.elem.find('cite').text()) {
-			                    count++;
+			                    //count++;
 			                    tabIndex = i;
 			                };
+                            
 			            });
 			            //tab不存在
 			            if (count === 0) {
 			                //添加删除样式
-			                html += '<i class="layui-icon layui-unselect layui-tab-close">&#x1006;</i>';
+			                //html += '<i class="layui-icon layui-unselect layui-tab-close">&#x1006;</i>';
 			                //添加tab
 			                element.tabAdd(tabFilter, {
 			                    title: html,
@@ -190,7 +283,7 @@
 			                $('#admin-side').width(0);
 			                $('#admin-body').css('left', '0');
 			                $(".admin-side-toggle").html("<i class='fa fa-chevron-right' aria-hidden='true'></i>");
-                            
+
 			            } else {
 			                $('#admin-side').width(180);
 			                $('#admin-body').css('left', '180px');
@@ -198,9 +291,9 @@
 			            }
 
 			        });
-			       
-			        
-			        
+
+
+
 			        //全屏控制
 			        $('.admin-side-full').on('click', function () {
 			            if (!$(this).attr('fullscreen')) {
@@ -237,21 +330,24 @@
 			            $('body').removeClass('site-mobile');
 			        });
 			    });
+
+
+
 			    function setCookie(name, value) {
 			        var Days = 30;
 			        var exp = new Date();
 			        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
 			        document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
 			    }
-			   
+
 			    //将当前页的ＵＲＬ宽高存入ＣＯＯＫＩＥ
-                
+
 			    setCookie('xwidth', screen.availWidth);
-                setCookie('xheight', screen.availHeight);
-                setCookie('xurl', window.location.href);
-                //生成当前页二维码ＣＯＤＥ
-                //$('#code').qrcode(window.location.href);
-                
+			    setCookie('xheight', screen.availHeight);
+			    setCookie('xurl', window.location.href);
+			    //生成当前页二维码ＣＯＤＥ
+			    //$('#code').qrcode(window.location.href);
+
 			</script>
 		</div>
   
