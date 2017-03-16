@@ -224,4 +224,206 @@ public class dormitory
         }
         return roomtype;
     }
+
+
+    /// <summary>
+    /// 功能描述：27、收费款项条目 获取某收费款项条目数据(学年，收费项目代码) :根据“学年”和“收费项目代码”返回“收费款项条目”datatable数据，否则返回datatable。
+    /// 编写人：张明
+    /// 创建时间：2017.2.20
+    /// 更新记录：无
+    /// 版本记录：v0.0.1
+    /// </summary>
+    /// <param name="year">学年</param>
+    /// <param name="chargedm">收费项目代码</param>
+    /// <returns>datatable【主键、收费项目代码、条目名称、收费标准、收费款项主键】</returns>
+    public static DataTable getfee_item(string year,string feecode)
+    {
+        DataTable fee_item = new DataTable();
+        try
+        {
+            //到房间类型表中使用类型主键查询房间类型相关信息；
+            fee_item = Sqlhelper.Serach("SELECT     TOP (1) Fresh_Fee_Item.PK_Fee_Item, Fresh_Fee_Item.FK_Fee, Fresh_Fee_Item.Fee_Code, Fresh_Fee_Item.Fee_Name, Fresh_Fee_Item.Fee_Amount FROM  Fresh_Fee_Item INNER JOIN Fresh_Fee ON Fresh_Fee_Item.FK_Fee = Fresh_Fee.PK_Fee_NO where fresh_fee.Year=@year and Fresh_Fee_Item.Fee_Code=@code", new SqlParameter("year", year), new SqlParameter("code", feecode));
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                new c_log().logAdd("dormitory.cs", "fee_item", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+        return fee_item;
+    }
+
+
+    /// <summary>
+    /// 功能描述：28、房间类型[] 获取某班级当前可用的预分房间类型列表(班级编号,性别) :根据“班级编号”，分类统计并返回该班级所在迎新学年、所在校区对应“性别”预分配房间中当前可用床位的“房间类型”列表的datatable数据，否则返回空datatable。
+    /// 编写人：张明
+    /// 创建时间：2017.2.20
+    /// 更新记录：无
+    /// 版本记录：v0.0.1
+    /// </summary>
+    /// <param name="class_no">班级编号</param>
+   
+    /// <returns>datatable【校区代码、校区名称、性别、房间类型主键、房间类型编码、收费项目代码、学年、房间布局简图、床位布局简图、房间类型名称】</returns>
+    public static DataTable classgetroomtype(string class_no, string gender)
+    {
+        DataTable roomtype = new DataTable();
+        try
+        {
+            //
+            roomtype = Sqlhelper.Serach("SELECT     Base_Campus.Campus_NO, Base_Campus.Campus_Name, Fresh_Room.Gender, Fresh_Room_Type.PK_Room_Type, Fresh_Room_Type.Type_NO,Fresh_Room_Type.Year, Fresh_Room_Type.Room_Layout, Fresh_Room_Type.Bed_Layout, Fresh_Room_Type.FK_Fee_Item, Fresh_Room_Type.Type_Name FROM         Fresh_Bed INNER JOIN  Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO INNER JOIN     Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type LEFT OUTER JOIN    Fresh_Bed_Class_Log INNER JOIN    Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO INNER JOIN   Base_Campus ON Fresh_Class.FK_Campus_NO = Base_Campus.Campus_NO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO where  Fresh_Bed_Class_Log.FK_class_NO=@classno and Fresh_Room.Gender=@gender", new SqlParameter("classno", class_no), new SqlParameter("gender", gender));
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                new c_log().logAdd("dormitory.cs", "classgetroomtype", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+        return roomtype;
+    }
+
+
+    /// <summary>
+    /// 功能描述：29、床位位置[] 获取某班级某房间类型可用床位位置列表(班级编号,性别,房间类型编号):
+    /// 根据“班级编号”，分类统计并返回该班级所在迎新学年、所在校区对应“性别”和“房间类型编号”的
+    /// 预分配房间中当前可用床位的“床位位置”列表的datatable数据，否则返回空datatable。
+    /// 编写人：张明
+    /// 创建时间：2017.2.20
+    /// 更新记录：无
+    /// 版本记录：v0.0.1
+    /// </summary>
+    /// <param name="class_no">班级编号</param>
+
+    /// <returns>datatable【校区编号、校区名称、性别、床位位置主键、床位类型、房间类型主键、床位位置序号、床位位置编号】</returns>
+    public static DataTable classgetbedtype(string class_no)
+    {
+        DataTable bedtype = new DataTable();
+        try
+        {
+            //
+            bedtype = Sqlhelper.Serach("SELECT     Base_Campus.Campus_NO, Base_Campus.Campus_Name, Fresh_Room.Gender, Fresh_Bed_Type.PK_Bed_Type, Fresh_Bed_Type.Type_Name, Fresh_Bed_Type.FK_Room_Type, Fresh_Bed_Type.Bed_Index, Fresh_Bed_Type.Bed_NO FROM         Fresh_Class INNER JOIN       Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO INNER JOIN      Base_Campus ON Fresh_Class.FK_Campus_NO = Base_Campus.Campus_NO RIGHT OUTER JOIN    Fresh_Bed_Type INNER JOIN       Fresh_Bed ON Fresh_Bed_Type.PK_Bed_Type = Fresh_Bed.FK_Bed_Type INNER JOIN    Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO where  Fresh_Bed_Class_Log.FK_class_NO=@classno ", new SqlParameter("classno", class_no));
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                new c_log().logAdd("dormitory.cs", "classgetbedtype", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+        return bedtype;
+    }
+
+    /// <summary>
+    /// 功能描述：30、床位[] 获取某班级某房间类型某床位位置的可用床位列表(班级编号,性别,房间类型编号,床位位置序号):
+    /// 根据“班级编号”，分类统计并返回该班级所在迎新学年、所在校区对应“性别”、“房间类型编号”和“床位位置序号”的
+    /// 预分配房间中当前可用床位列表的datatable数据，否则返回空datatable。
+    /// 编写人：张明
+    /// 创建时间：2017.2.20
+    /// 更新记录：无
+    /// 版本记录：v0.0.1
+    /// ？？？？与29类似，有待商讨
+    /// </summary>
+    /// <param name="class_no">班级编号</param>
+   
+    /// <returns>datatable【校区编号、校区名称、性别、床位位置主键、床位类型、房间类型主键、床位位置序号、床位位置编号】</returns>
+    public static DataTable classgetbed(string class_no)
+    {
+        DataTable bedtype = new DataTable();
+        try
+        {
+            //
+            bedtype = Sqlhelper.Serach("SELECT     Base_Campus.Campus_NO, Base_Campus.Campus_Name, Fresh_Room.Gender, Fresh_Bed_Type.PK_Bed_Type, Fresh_Bed_Type.Type_Name, Fresh_Bed_Type.FK_Room_Type, Fresh_Bed_Type.Bed_Index, Fresh_Bed_Type.Bed_NO FROM         Fresh_Class INNER JOIN     Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO INNER JOIN   Base_Campus ON Fresh_Class.FK_Campus_NO = Base_Campus.Campus_NO RIGHT OUTER JOIN   Fresh_Bed_Type INNER JOIN    Fresh_Bed ON Fresh_Bed_Type.PK_Bed_Type = Fresh_Bed.FK_Bed_Type INNER JOIN  Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO where  Fresh_Bed_Class_Log.FK_class_NO=@classno", new SqlParameter("classno", class_no));
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                new c_log().logAdd("dormitory.cs", "classgetbed", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+        return bedtype;
+    }
+
+
+    /// <summary>
+    /// 功能描述：31、宿舍[] 获取某班级某房间类型某床位位置的可用宿舍列表(班级编号,性别,房间类型编号,床位位置序号):
+    /// 根据“班级编号”，分类统计并返回该班级所在迎新学年、所在校区对应“性别”、“房间类型编号”和“床位位置序号”
+    /// 的预分配房间中当前可用床位所在宿舍列表的datatable数据，否则返回空datatable。
+    /// 编写人：张明
+    /// 创建时间：2017.2.20
+    /// 更新记录：无
+    /// 版本记录：v0.0.1
+    /// </summary>
+    /// <param name="class_no">班级编号</param>
+
+    /// <returns>datatable【校区编号、校区名称、宿舍主键、宿舍编号、学年、宿舍名、性别、房间类型编号、床位位置序号】</returns>
+    public static DataTable classgetdorm(string class_no)
+    {
+        DataTable dorm = new DataTable();
+        try
+        {
+            //
+            dorm = Sqlhelper.Serach("SELECT     Base_Campus.Campus_NO, Base_Campus.Campus_Name, Fresh_Dorm.PK_Dorm_NO, Fresh_Dorm.Dorm_NO, Fresh_Dorm.Year, Fresh_Dorm.Name,Fresh_Room.Gender, Fresh_Bed_Type.FK_Room_Type, Fresh_Bed_Type.Bed_Index FROM         Fresh_Class INNER JOIN    Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN    Base_Campus INNER JOIN    Fresh_Dorm INNER JOIN   Fresh_Bed_Type INNER JOIN   Fresh_Bed ON Fresh_Bed_Type.PK_Bed_Type = Fresh_Bed.FK_Bed_Type INNER JOIN Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO ON      Base_Campus.Campus_NO = Fresh_Dorm.Campus_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO where  Fresh_Bed_Class_Log.FK_class_NO=@classno ", new SqlParameter("classno", class_no));
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                new c_log().logAdd("dormitory.cs", "classgetdorm", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+        return dorm;
+    }
+
+
+    /// <summary>
+    /// 功能描述：32、string[] 获取某班级某房间类型某床位位置某宿舍可用楼层列表(班级编号,性别,房间类型编号,床位位置序号,宿舍号)：
+    /// 根据“班级编号”，分类统计并返回该班级所在迎新学年、所在校区对应“性别”、“房间类型编号”、“床位位置序号”和“宿舍号”的
+    /// 预分配房间中当前可用床位所在楼层列表的datatable数据，否则返回空datatable。
+    /// 编写人：张明
+    /// 创建时间：2017.2.20
+    /// 更新记录：无
+    /// 版本记录：v0.0.1
+    /// </summary>
+    /// <param name="class_no">班级编号</param>
+
+    /// <returns>datatable【校区编号、校区名称、宿舍主键、宿舍编号、学年、宿舍名、性别、房间类型编号、床位位置序号】</returns>
+    public static DataTable classgetdorm(string class_no)
+    {
+        DataTable dorm = new DataTable();
+        try
+        {
+            //
+            dorm = Sqlhelper.Serach("SELECT     Base_Campus.Campus_NO, Base_Campus.Campus_Name, Fresh_Dorm.PK_Dorm_NO, Fresh_Dorm.Dorm_NO, Fresh_Dorm.Year, Fresh_Dorm.Name,Fresh_Room.Gender, Fresh_Bed_Type.FK_Room_Type, Fresh_Bed_Type.Bed_Index FROM         Fresh_Class INNER JOIN    Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN    Base_Campus INNER JOIN    Fresh_Dorm INNER JOIN   Fresh_Bed_Type INNER JOIN   Fresh_Bed ON Fresh_Bed_Type.PK_Bed_Type = Fresh_Bed.FK_Bed_Type INNER JOIN Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO ON      Base_Campus.Campus_NO = Fresh_Dorm.Campus_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO where  Fresh_Bed_Class_Log.FK_class_NO=@classno ", new SqlParameter("classno", class_no));
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                new c_log().logAdd("dormitory.cs", "classgetdorm", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+        return dorm;
+    }
+
+    
 }
