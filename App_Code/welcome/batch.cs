@@ -12,6 +12,8 @@ using System.Reflection;
 using System.Data.SqlClient;
 
 
+
+/// 动态调用web服务 
 public class WSHelper
 {
     /// < summary>           
@@ -94,7 +96,6 @@ public class WSHelper
         return pps[0];
     }
 }
-
 
 
 /// <summary>
