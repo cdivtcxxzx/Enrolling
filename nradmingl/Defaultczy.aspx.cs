@@ -89,11 +89,12 @@ public partial class nradmingl_Defaultczy : System.Web.UI.Page
         //默认如权限１，若单独验证某个权限，如下方式
         //new c_login().powerYanzheng(Session["username"].ToString(), pagelm1, pageqx2, "2");//验证当前栏目关键字中的权限２,通常在按钮中需验证权限时使用
 
-        #endregion
+        #endregion       
         #region 显示用户和组
         if (Session["Name"] != null && Session["UserName"] != null)
         {
             this.username.InnerHtml = Session["Name"].ToString();
+
             //用户组获取
             //try
             //{
@@ -129,7 +130,13 @@ public partial class nradmingl_Defaultczy : System.Web.UI.Page
             //this.usernamex.InnerHtml = "<p>匿名用户</p><a><i class=\"fa fa-circle text-success\"></i>普通用户</a>";
 
         }
+        #endregion        
+
+        #region 管理员控制业务代码
+
+
         #endregion
+
     }
     protected void Button1_Click(object sender, EventArgs e)
     {

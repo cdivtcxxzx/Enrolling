@@ -3,8 +3,7 @@
 <!DOCTYPE html>
 
 <html>
-<head runat="server">
-    
+<head runat="server">   
     <meta charset="utf-8">
 		<title>后台管理</title>
 		<meta name="renderer" content="webkit">
@@ -69,7 +68,17 @@
 				</div>
 			</div>
 			<div class="layui-side layui-bg-black" id="admin-side">
-				<div class="layui-side-scroll" id="admin-navbar-side" lay-filter="side"></div>
+				<div class="layui-side-scroll" id="admin-navbar-side" lay-filter="side">
+                    <ul class="layui-nav layui-nav-tree">
+                        <li class="layui-nav-item"><a href="#">导航1</a></li>
+                        <li class="layui-nav-item"><a href="#">导航1</a></li>
+                        <li class="layui-nav-item"><a href="#">导航1</a></li>
+                        <li class="layui-nav-item"><a href="#">导航1</a></li>
+                        <li class="layui-nav-item"><a href="#">导航1</a></li>
+                        <li class="layui-nav-item"><a href="#">导航1</a></li>
+
+                    </ul>
+				</div>
 			</div>
 			<div class="layui-body" style="bottom: 0;" id="admin-body">
                 <div style="width:500px;height:100%;float:left; margin-left:10px;margin-right:10px;">
@@ -169,6 +178,7 @@
 			<div class="site-mobile-shade"></div>
             <!--前端框架ＪＳ及弹出层ＪＳ-->
 			<script type="text/javascript" src="plugins/layui/layui.js"></script>
+            <script type="text/javascript" src="../b_js/app/manager.js"></script>
              <!--前端框架ＪＳ及弹出层ＪＳＯＶＥＲ-->
              <!--页面自动生成二维码ＪＳ　
 			<script type="text/javascript" src="plugins/jquery.qrcode.min.js"></script>
@@ -199,10 +209,10 @@
 			            });
 			        }).resize();
 			        //设置navbar
-			        navbar.set({
-			            elem: '#admin-navbar-side',
-			            url: 'treemenu.aspx'
-			        });
+			        //navbar.set({
+			        //    elem: '#admin-navbar-side',
+			        //    url: 'treemenu.aspx'
+			        //});
 			        //渲染navbar
 			        navbar.render();
 			        var $body = $('.admin-nav-card');
@@ -347,6 +357,9 @@
 			    setCookie('xurl', window.location.href);
 			    //生成当前页二维码ＣＯＤＥ
 			    //$('#code').qrcode(window.location.href);
+
+                //运行管理员页面业务代码
+			    alert(hello());
 
 			</script>
 		</div>
