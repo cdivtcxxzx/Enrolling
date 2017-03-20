@@ -8,36 +8,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>宿舍分配-学生已分配</title>
     <link href="../bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        body {
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .glyphicon {
-            margin: 0 10px;
-        }
-
-        .col-xs-12 {
-            background-color: #5FB878;
-            padding: 12px;
-            overflow: hidden;
-            color: #ffffff;
-        }
-
-        .col-sm-4 {
-            text-align: center;
-        }
-
-        a {
-            color: #ffffff;
-        }
-
-            a:hover {
-                text-decoration: none;
-                color: #d4cfcf;
-            }
-    </style>
+    <link href="../b_css/app.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
@@ -114,7 +85,6 @@
                     <input type="button" class="btn btn-default" value="返回" />
                 </div>
             </div>
-
         </div>
     </form>
 </body>

@@ -1,0 +1,29 @@
+﻿body {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.glyphicon {
+    margin: 0 10px;
+}
+
+.col-xs-12 {
+    background-color: #dff0d8;
+    padding: 12px;
+    color:#468847;
+    overflow: hidden;
+}
+
+.col-sm-4 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a:hover{
+    text-decoration: none;
+    color: #d4cfcf;
+}
