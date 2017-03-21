@@ -146,6 +146,16 @@ public class fresh_oper
 }
 
 /// <summary>
+/// 名称：学生基本信息
+/// 作者：胡元
+/// </summary>
+public class base_stu
+{
+    public string PK_SNO;//学号
+
+}
+
+/// <summary>
 /// 名称：学生迎新事务
 /// 作者：胡元
 /// </summary>
@@ -1062,7 +1072,7 @@ public class batch
             if (dt != null && dt.Rows.Count == 1)
             {
                 string PK_Batch_NO=dt.Rows[0]["FK_Batch_NO"].ToString().Trim();
-                if (dt.Rows[0]["Precondition1"] != null && dt.Rows[0]["Precondition1"].ToString().Trim().Length > 0)
+                if (dt.Rows[0]["Precondition1"] != null && dt.Rows[0]["Precondition1"] != System.DBNull.Value && dt.Rows[0]["Precondition1"].ToString().Trim().Length > 0)
                 {
                     string status_condition = dt.Rows[0]["Precondition1"].ToString().Trim();//事务状态条件
                     result=analysis_status_condition(status_condition, PK_Batch_NO, PK_SNO);//前置条件解析
@@ -1070,6 +1080,7 @@ public class batch
                 {
                     result = true;//没有前置条件，返回真
                 }
+                //前置收费条件解析，还未完成
             }
             else
                 throw new Exception("invalid PK_Affair_NO");
