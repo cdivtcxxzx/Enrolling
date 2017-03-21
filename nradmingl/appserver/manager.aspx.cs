@@ -244,10 +244,26 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
 
                     if (pk_sno != null && pk_sno.Trim().Length != 0)
                     {
-                        model.Base_STU data = organizationService.getStu(pk_sno);    
-                        result.code = "success";
-                        result.message = "成功";
-                        result.data = data;
+                        model.Base_STU data = organizationService.getStu(pk_sno);
+                        if (data != null)
+                        {
+                            base_stu newdata = new base_stu();
+                            newdata.PK_SNO = data.PK_SNO;//学号
+                            newdata.FK_SPE_Code = data.FK_SPE_Code;//专业主键
+                            newdata.Year = data.Year;//学年
+                            newdata.Test_NO = data.Test_NO;//考生号
+                            newdata.ID_NO = data.ID_NO;//身份证号
+                            newdata.Name = data.Name;//姓名
+                            newdata.Gender_Code = data.Gender_Code;//性别码
+                            newdata.Photo = data.Photo;//照片地址
+                            newdata.Status_Code = data.Status_Code;//迎新状态码
+                            newdata.DT_Initial = DateTime.Parse(data.DT_Initial.ToString());//从招办导入时的时间
+                            newdata.FK_Class_NO = data.FK_Class_NO;//班级编码
+                            newdata.Password = data.Password;//口令
+                            result.code = "success";
+                            result.message = "成功";
+                            result.data = newdata;
+                        }
                     }
                 }
                 #endregion
@@ -255,15 +271,25 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 #region NO:15 获取某专业数据(学年,专业编号)
                 if (cs.Trim().Equals("getSpe"))
                 {
-                    string Year = Request.QueryString["Year"];
-                    string SPE_Code = Request.QueryString["SPE_Code"];
+                    string year = Request.QueryString["year"];
+                    string spe_code = Request.QueryString["spe_code"];
 
-                    if (Year != null && Year.Trim().Length != 0 && SPE_Code != null && SPE_Code.Trim().Length != 0)
+                    if (year != null && year.Trim().Length != 0 && spe_code != null && spe_code.Trim().Length != 0)
                     {
-                        model.Fresh_SPE data = organizationService.getSpe(Year, SPE_Code);
-                        result.code = "success";
-                        result.message = "成功";
-                        result.data = data;
+                        model.Fresh_SPE data = organizationService.getSpe(year, spe_code);
+                        if (data != null)
+                        {
+                            fresh_spe newdata = new fresh_spe();
+                            newdata.SPE_Code=data.SPE_Code;//专业编号
+                            newdata.Year=data.Year;//学年
+                            newdata.SPE_Name=data.SPE_Name;//专业名称
+                            newdata.EDU_Level_Code=data.EDU_Level_Code;//学历层次码
+                            newdata.FK_College_Code=data.FK_College_Code;//学院主键
+                            newdata.PK_SPE=data.PK_SPE;//专业主键
+                            result.code = "success";
+                            result.message = "成功";
+                            result.data = newdata;
+                        }
                     }
                 }
                 #endregion
@@ -271,14 +297,22 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 #region NO:16 获取某班级数据(班级编号)
                 if (cs.Trim().Equals("getClass"))
                 {
-                    string PK_Class_NO = Request.QueryString["PK_Class_NO"];
+                    string pk_class_no = Request.QueryString["pk_class_no"];
 
-                    if (PK_Class_NO != null && PK_Class_NO.Trim().Length != 0)
+                    if (pk_class_no != null && pk_class_no.Trim().Length != 0)
                     {
-                        model.Fresh_Class data = organizationService.getClass(PK_Class_NO);
-                        result.code = "success";
-                        result.message = "成功";
-                        result.data = data;
+                        model.Fresh_Class data = organizationService.getClass(pk_class_no);
+                        if (data != null)
+                        {
+                            fresh_class newdata = new fresh_class();
+                            newdata.PK_Class_NO = data.PK_Class_NO;//班级编号
+                            newdata.FK_Campus_NO = data.FK_Campus_NO;//校区主键
+                            newdata.FK_SPE_NO = data.FK_SPE_NO;//专业主键
+                            newdata.Name = data.Name;//班级名称
+                            result.code = "success";
+                            result.message = "成功";
+                            result.data = newdata;
+                        }
                     }
                 }
                 #endregion
