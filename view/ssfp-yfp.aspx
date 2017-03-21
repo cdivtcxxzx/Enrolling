@@ -15,10 +15,10 @@
         <div class="container">
             <h4 class="text-center">预分配宿舍</h4>
             <div class="col-xs-12 col-sm-4">
-                <p><span>校区：</span><span>天府新区</span></p>
-                <p><span>类型：</span><span>男宿舍</span></p>
+                <p><span>校区：</span><span id="xiaoqu" runat="server">天府新区</span></p>
+                <p><span>类型：</span><span id="shuse" runat="server">男宿舍</span></p>
                 <p>
-                    <img src="#" alt="宿舍照片" style="margin-top:18px;width:100px;height:140px" /></p>
+                    <img src="#" alt="宿舍照片" style="margin-top:18px;width:100px;height:140px" id="shuseImg" runat="server" /></p>
             </div>
             <div class="col-xs-12 col-sm-8">
                 <div class="form-group">
@@ -66,7 +66,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="room-numb">楼层</label>
+                    <label for="room-numb">房间号</label>
                     <select class="form-control" name="room-numb">
                         <option>101</option>
                         <option>102</option>
@@ -81,7 +81,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <input type="button" class="btn btn-default" value="保存" />
+                    <input type="button" class="btn btn-default" value="保存" id="btnSave" runat="server" />
                     <input type="button" class="btn btn-default" value="刷新" />
                     <input type="button" class="btn btn-default" value="返回" />
                 </div>
