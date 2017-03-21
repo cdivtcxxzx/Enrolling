@@ -29,7 +29,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="bed-numb">座位位置编号</label>
+                    <label for="bed-numb">床位位置编号</label>
                     <select class="form-control" name="bed-numb">
                         <option>1</option>
                         <option>2</option>
