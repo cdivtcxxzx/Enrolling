@@ -162,6 +162,88 @@ public class fresh_affair_log
 }
 
 /// <summary>
+/// 名称：学生基本信息
+/// 作者：胡元
+/// </summary>
+public class base_stu
+{
+    public string PK_SNO;//学号
+    public string FK_SPE_Code;//专业主键
+    public string Year;//学年
+    public string Test_NO;//考生号
+    public string ID_NO;//身份证号
+    public string Name;//姓名
+    public string Gender_Code;//性别码
+    public string Photo;//照片地址
+    public string Status_Code;//迎新状态码
+    public DateTime DT_Initial;//从招办导入时的时间
+    public string FK_Class_NO;//班级编码
+    public string Password;//口令
+}
+
+/// <summary>
+/// 名称：专业基本信息
+/// 作者：胡元
+/// </summary>
+public class fresh_spe
+{
+    public string SPE_Code;//专业编号
+    public string Year;//学年
+    public string SPE_Name;//专业名称
+    public string EDU_Level_Code;//学历层次码
+    public string FK_College_Code;//学院主键
+    public string PK_SPE;//专业主键
+}
+
+/// <summary>
+/// 名称：班级基本信息
+/// 作者：胡元
+/// </summary>
+public class fresh_class
+{
+    public string PK_Class_NO;//班级编号
+    public string FK_Campus_NO;//校区主键
+    public string FK_SPE_NO;//专业主键
+    public string Name;//班级名称
+}
+
+/// <summary>
+/// 名称：班主任基本信息
+/// 作者：胡元
+/// </summary>
+public class fresh_counseller
+{
+    public string PK_Counseller_NO;//班主任主键
+    public string FK_Class_NO;//班级编号
+    public string FK_Staff_NO;//员工编号
+    public string Year;//任职年
+}
+
+/// <summary>
+/// 名称：学院基本信息
+/// 作者：胡元
+/// </summary>
+public class base_college
+{
+    public string PK_College;//学院主键
+    public string Name;//学院名称
+    public string Enabled;//是否有效标志
+    public string College_NO;//学院编号
+}
+
+/// <summary>
+/// 名称：校区基本信息
+/// 作者：胡元
+/// </summary>
+public class base_campus
+{
+    public string PK_Campus;//校区主键
+    public string Campus_NO;//校区编码
+    public string Enabled;//是否有效标志
+    public string Campus_Name;//校区名称
+}
+
+/// <summary>
 ///迎新批次服务类说明
 /// </summary>
 public class batch
@@ -1062,7 +1144,7 @@ public class batch
             if (dt != null && dt.Rows.Count == 1)
             {
                 string PK_Batch_NO=dt.Rows[0]["FK_Batch_NO"].ToString().Trim();
-                if (dt.Rows[0]["Precondition1"] != null && dt.Rows[0]["Precondition1"].ToString().Trim().Length > 0)
+                if (dt.Rows[0]["Precondition1"] != null && dt.Rows[0]["Precondition1"] != System.DBNull.Value && dt.Rows[0]["Precondition1"].ToString().Trim().Length > 0)
                 {
                     string status_condition = dt.Rows[0]["Precondition1"].ToString().Trim();//事务状态条件
                     result=analysis_status_condition(status_condition, PK_Batch_NO, PK_SNO);//前置条件解析
@@ -1070,6 +1152,7 @@ public class batch
                 {
                     result = true;//没有前置条件，返回真
                 }
+                //前置收费条件解析，还未完成
             }
             else
                 throw new Exception("invalid PK_Affair_NO");

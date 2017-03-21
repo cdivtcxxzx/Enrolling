@@ -83,20 +83,22 @@
 			<div class="layui-body" style="bottom: 0;" id="admin-body">
                 <div style="width:500px;height:100%;float:left; margin-left:10px;margin-right:10px;">
                     <blockquote class="layui-elem-quote">
-                        学生学号： <div class="layui-input-inline"><asp:TextBox ID="TextBox1" placeholder="请输入学生学号" cssClass="layui-input" runat="server"></asp:TextBox></div>
-                        <input type="button" value="查询" class="layui-btn layui-btn-small" id="button2" />
+                        学生学号： <div class="layui-input-inline"><asp:TextBox ID="find_xh" placeholder="请输入学生学号" cssClass="layui-input" runat="server"></asp:TextBox></div>
+                        <input type="button" value="查询" class="layui-btn layui-btn-small"  onclick="find()" />
                     </blockquote>
                     <br />
                     <fieldset class="layui-elem-field">
   <legend>操作员状态</legend>
   <div class="layui-field-box">
-      <table><tr><td style="width:50%;">迎新学年：<asp:Label ID="Label1" runat="server" Text="2016-2017学年"></asp:Label></td><td>迎新批次：<asp:Label ID="Label2" runat="server" Text="秋季统招迎新"></asp:Label></td>
+      <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
+      <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
+      <table><tr><td style="width:50%;">迎新学年：<asp:Label ID="batch_year" runat="server" Text="2016-2017学年"></asp:Label></td><td>迎新批次：<asp:Label ID="batch_name" runat="server" Text="秋季统招迎新"></asp:Label></td>
                        </tr>
           <tr><td style="width:50%;"></td><td></td></tr>
-           <tr><td colspan="2" style="width:50%;">迎新服务时间：<asp:Label ID="Label3" runat="server" Text="2017年7月1日~2017年9月2日"></asp:Label></td></tr>
-           <tr><td style="width:50%;">操作员姓名：<asp:Label ID="Label4" runat="server" Text="张明"></asp:Label></td><td>登陆时间：<asp:Label ID="Label5" runat="server" Text="2017年3月15日"></asp:Label></td></tr>
-           <tr><td  colspan="2" style="width:50%;">当前事务操作：<asp:Label ID="Label6" runat="server" Text="迎新系统首页"></asp:Label></td></tr>
-          <tr><td style="width:50%;">预操作总人数：<asp:Label ID="Label7" runat="server" Text="100"></asp:Label></td><td>已操作总人数：<asp:Label ID="Label8" runat="server" Text="100"></asp:Label></td></tr>
+           <tr><td colspan="2" style="width:50%;">迎新服务时间：<asp:Label ID="batch_service_time" runat="server" Text="2017年7月1日~2017年9月2日"></asp:Label></td></tr>
+           <tr><td style="width:50%;">操作员姓名：<asp:Label ID="staff_name" runat="server" Text="张明"></asp:Label></td><td>登陆时间：<asp:Label ID="login_time" runat="server" Text="2017年3月15日"></asp:Label></td></tr>
+           <tr><td  colspan="2" style="width:50%;">当前事务操作：<asp:Label ID="affair_name" runat="server" Text="迎新系统首页"></asp:Label></td></tr>
+          <tr><td style="width:50%;">预操作总人数：<asp:Label ID="affair_willcount" runat="server" Text="100"></asp:Label></td><td>已操作总人数：<asp:Label ID="affair_havecount" runat="server" Text="100"></asp:Label></td></tr>
       </table>
     
       
@@ -132,7 +134,7 @@
         班主任：<asp:Label ID="xs_bzr" runat="server" Text=""></asp:Label><br />
 
                                   </td>
-        <td style="width:50%;padding-left:10px;padding-right:10px;">
+        <td style="width:50%;padding-left:10px;padding-right:10px;" id="affair_list">
             新生报到：<asp:Label ID="zt_xsbd" runat="server" Text=""></asp:Label>
             <br />
         缴纳学费：<asp:Label ID="zt_jnxf" runat="server" Text=""></asp:Label>
@@ -146,9 +148,7 @@
         领取一卡通：<asp:Label ID="zt_lqykt" runat="server" Text=""></asp:Label>
             <br />
         选择宿舍：<asp:Label ID="zt_xcss" runat="server" Text=""></asp:Label><br />
-        宿舍入住：<asp:Label ID="zt_ssrz" runat="server" Text=""></asp:Label><br />
-       
-
+        宿舍入住：<asp:Label ID="zt_ssrz" runat="server" Text=""></asp:Label><br />       
         </td></tr></table>
   </div>
 </fieldset>
@@ -177,8 +177,10 @@
 			</div>
 			<div class="site-mobile-shade"></div>
             <!--前端框架ＪＳ及弹出层ＪＳ-->
-			<script type="text/javascript" src="plugins/layui/layui.js"></script>
-            <script type="text/javascript" src="../b_js/app/manager.js"></script>
+			<script type="text/javascript" src="plugins/layui/layui.js"></script>           
+        <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js?v=20160917"></script>
+        			<script type="text/javascript" src="../b_js/app/manager.js"></script>
+
              <!--前端框架ＪＳ及弹出层ＪＳＯＶＥＲ-->
              <!--页面自动生成二维码ＪＳ　
 			<script type="text/javascript" src="plugins/jquery.qrcode.min.js"></script>
@@ -359,9 +361,10 @@
 			    //$('#code').qrcode(window.location.href);
 
                 //运行管理员页面业务代码
-			    alert(hello());
+			    load();
 
 			</script>
+
 		</div>
   
 </form>  

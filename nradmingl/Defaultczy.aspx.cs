@@ -94,7 +94,7 @@ public partial class nradmingl_Defaultczy : System.Web.UI.Page
         if (Session["Name"] != null && Session["UserName"] != null)
         {
             this.username.InnerHtml = Session["Name"].ToString();
-
+            
             //用户组获取
             //try
             //{
@@ -134,7 +134,10 @@ public partial class nradmingl_Defaultczy : System.Web.UI.Page
 
         #region 管理员控制业务代码
 
+        this.pk_batch_no.Value = "1";
+        this.pk_staff_no.Value = "001";
 
+        
         #endregion
 
     }
