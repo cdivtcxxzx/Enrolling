@@ -294,6 +294,31 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region NO:15 获取某专业数据(专业主键)
+                if (cs.Trim().Equals("getSpeForPK"))
+                {
+                    string pk_spe = Request.QueryString["pk_spe"];
+
+                    if (pk_spe != null && pk_spe.Trim().Length != 0 )
+                    {
+                        model.Fresh_SPE data = organizationService.getSpe(pk_spe);
+                        if (data != null)
+                        {
+                            fresh_spe newdata = new fresh_spe();
+                            newdata.SPE_Code = data.SPE_Code;//专业编号
+                            newdata.Year = data.Year;//学年
+                            newdata.SPE_Name = data.SPE_Name;//专业名称
+                            newdata.EDU_Level_Code = data.EDU_Level_Code;//学历层次码
+                            newdata.FK_College_Code = data.FK_College_Code;//学院主键
+                            newdata.PK_SPE = data.PK_SPE;//专业主键
+                            result.code = "success";
+                            result.message = "成功";
+                            result.data = newdata;
+                        }
+                    }
+                }
+                #endregion
+
                 #region NO:16 获取某班级数据(班级编号)
                 if (cs.Trim().Equals("getClass"))
                 {
