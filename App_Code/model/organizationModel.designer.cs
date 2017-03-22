@@ -336,7 +336,7 @@ namespace model
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_College_Base_Staff", Storage="_Base_College", ThisKey="FK_College_NO", OtherKey="PK_College", IsForeignKey=true)]
-		public Base_College Base_College
+		internal Base_College Base_College
 		{
 			get
 			{
@@ -603,7 +603,7 @@ namespace model
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_College_Fresh_SPE", Storage="_Base_College", ThisKey="FK_College_Code", OtherKey="PK_College", IsForeignKey=true)]
-		public Base_College Base_College
+		internal Base_College Base_College
 		{
 			get
 			{
@@ -825,7 +825,7 @@ namespace model
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_SPE_Fresh_Class", Storage="_Fresh_SPE", ThisKey="FK_SPE_NO", OtherKey="PK_SPE", IsForeignKey=true)]
-		public Fresh_SPE Fresh_SPE
+		internal Fresh_SPE Fresh_SPE
 		{
 			get
 			{
@@ -859,7 +859,7 @@ namespace model
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_Campus_Fresh_Class", Storage="_Base_Campus", ThisKey="FK_Campus_NO", OtherKey="PK_Campus", IsForeignKey=true)]
-		public Base_Campus Base_Campus
+		internal Base_Campus Base_Campus
 		{
 			get
 			{
@@ -1270,7 +1270,7 @@ namespace model
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_SPE_Base_STU", Storage="_Fresh_SPE", ThisKey="FK_SPE_Code", OtherKey="PK_SPE", IsForeignKey=true)]
-		public Fresh_SPE Fresh_SPE
+		internal Fresh_SPE Fresh_SPE
 		{
 			get
 			{
@@ -1421,7 +1421,7 @@ namespace model
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_STU_Fresh_STU", Storage="_Base_STU", ThisKey="PK_SNO", OtherKey="PK_SNO", IsForeignKey=true)]
-		public Base_STU Base_STU
+		internal Base_STU Base_STU
 		{
 			get
 			{
@@ -1841,6 +1841,10 @@ namespace model
 		
 		private string _Year;
 		
+		private string _Phone;
+		
+		private string _QQ;
+		
 		private EntityRef<Fresh_Class> _Fresh_Class;
 		
 		private EntityRef<Base_Staff> _Base_Staff;
@@ -1857,6 +1861,10 @@ namespace model
     partial void OnFK_Staff_NOChanged();
     partial void OnYearChanging(string value);
     partial void OnYearChanged();
+    partial void OnPhoneChanging(string value);
+    partial void OnPhoneChanged();
+    partial void OnQQChanging(string value);
+    partial void OnQQChanged();
     #endregion
 		
 		public Fresh_Counseller()
@@ -1954,8 +1962,48 @@ namespace model
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(50)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QQ", DbType="NVarChar(20)")]
+		public string QQ
+		{
+			get
+			{
+				return this._QQ;
+			}
+			set
+			{
+				if ((this._QQ != value))
+				{
+					this.OnQQChanging(value);
+					this.SendPropertyChanging();
+					this._QQ = value;
+					this.SendPropertyChanged("QQ");
+					this.OnQQChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_Class_Fresh_Counseller", Storage="_Fresh_Class", ThisKey="FK_Class_NO", OtherKey="PK_Class_NO", IsForeignKey=true)]
-		public Fresh_Class Fresh_Class
+		internal Fresh_Class Fresh_Class
 		{
 			get
 			{
@@ -1989,7 +2037,7 @@ namespace model
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_Staff_Fresh_Counseller", Storage="_Base_Staff", ThisKey="FK_Staff_NO", OtherKey="PK_Staff_NO", IsForeignKey=true)]
-		public Base_Staff Base_Staff
+		internal Base_Staff Base_Staff
 		{
 			get
 			{
