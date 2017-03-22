@@ -28,9 +28,14 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
         result.message = "无效参数";
         result.data = null;
         try {
+            //会话检测，检测用户是否登陆
+
+
             string cs = Request.QueryString["cs"];//获取get的参数
             if (cs != null && cs.Trim().Length!=0)
             {
+
+
                 #region NO:2 迎新批次 获取某迎新批次数据(批次编号)
                 if (cs.Trim().Equals("get_freshbatch"))
                 {
@@ -202,7 +207,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
-                #region NO:12 校校验操作员操作对象(事务编号,员工编号,学号)
+                #region NO:12 校验操作员操作对象(事务编号,员工编号,学号)
                 if (cs.Trim().Equals("check_operator_object"))
                 {
                     string pk_affair_no = Request.QueryString["pk_affair_no"];
@@ -374,6 +379,143 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region NO:14&15&16 获取学生数据(学号)
+                if (cs.Trim().Equals("get_student"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        batch logic = new batch();
+                        List<Object> newdata = null;
+                        model.Base_STU stu_data=organizationService.getStu(pk_sno);
+                        if (stu_data != null)
+                        {
+                            newdata = new List<Object>();
+
+                            base_stu stu_newdata = new base_stu();
+                            stu_newdata.PK_SNO = stu_data.PK_SNO;//学号
+                            stu_newdata.FK_SPE_Code = stu_data.FK_SPE_Code;//专业主键
+                            stu_newdata.Year = stu_data.Year;//学年
+                            stu_newdata.Test_NO = stu_data.Test_NO;//考生号
+                            stu_newdata.ID_NO = stu_data.ID_NO;//身份证号
+                            stu_newdata.Name = stu_data.Name;//姓名
+                            stu_newdata.Gender_Code = stu_data.Gender_Code;//性别码
+                            stu_newdata.Photo = stu_data.Photo;//照片地址
+                            stu_newdata.Status_Code = stu_data.Status_Code;//迎新状态码
+                            stu_newdata.DT_Initial = DateTime.Parse(stu_data.DT_Initial.ToString());//从招办导入时的时间
+                            stu_newdata.FK_Class_NO = stu_data.FK_Class_NO;//班级编码
+                            stu_newdata.Password = null;//口令
+
+                            List<base_code_item> itemlist = logic.get_base_code_item("002");
+                            if (itemlist != null)
+                            {
+                                for (int i = 0; i < itemlist.Count; i++)
+                                {
+                                    if (itemlist[i].Item_NO.Trim().Equals(stu_newdata.Gender_Code.Trim()))
+                                    {
+                                        stu_newdata.Gender_Code = itemlist[i].Item_Name.Trim();
+                                        break;
+                                    }
+                                }
+                            }
+
+                            newdata.Add(new {name="student",data=stu_newdata });
+
+                            if (stu_data.FK_SPE_Code != null)
+                            {
+                                model.Fresh_SPE spe_data = organizationService.getSpe(stu_data.FK_SPE_Code);
+                                if (spe_data != null)
+                                {
+                                    fresh_spe spe_newdata = new fresh_spe();
+                                    spe_newdata.SPE_Code = spe_data.SPE_Code;//专业编号
+                                    spe_newdata.Year = spe_data.Year;//学年
+                                    spe_newdata.SPE_Name = spe_data.SPE_Name;//专业名称
+                                    spe_newdata.EDU_Level_Code = spe_data.EDU_Level_Code;//学历层次码
+                                    spe_newdata.FK_College_Code = spe_data.Base_College.Name;//学院名称
+                                    spe_newdata.PK_SPE = spe_data.PK_SPE;//专业主键
+
+                                    itemlist = logic.get_base_code_item("001");
+                                    if (itemlist != null)
+                                    {
+                                        for (int i = 0; i < itemlist.Count; i++)
+                                        {
+                                            if (itemlist[i].Item_NO.Trim().Equals(spe_newdata.EDU_Level_Code.Trim()))
+                                            {
+                                                spe_newdata.EDU_Level_Code = itemlist[i].Item_Name.Trim();
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    newdata.Add(new { name = "spe", data = spe_newdata });
+                                }
+                            }
+
+                            if (stu_data.FK_Class_NO != null)
+                            {
+                                model.Fresh_Class class_data = organizationService.getClass(stu_data.FK_Class_NO);
+                                if (class_data != null)
+                                {
+                                    fresh_class class_newdata = new fresh_class();
+                                    class_newdata.PK_Class_NO = class_data.PK_Class_NO;//班级编号
+                                    class_newdata.FK_Campus_NO = class_data.FK_Campus_NO;//校区主键
+                                    class_newdata.FK_SPE_NO = class_data.FK_SPE_NO;//专业主键
+                                    class_newdata.Name = class_data.Name;//班级名称
+                                    newdata.Add(new { name = "class", data = class_newdata });
+
+                                    if (class_newdata.PK_Class_NO != null)
+                                    {
+                                        model.Fresh_Counseller counseller = organizationService.getCounsellerForClassPK(class_newdata.PK_Class_NO);
+                                        if (counseller != null)
+                                        {
+                                            string FK_Staff_NO = counseller.FK_Staff_NO;
+                                            if (FK_Staff_NO != null)
+                                            {
+                                                model.Base_Staff staff = organizationService.getOperator(FK_Staff_NO.Trim());
+                                                if (staff != null)
+                                                {
+                                                    newdata.Add(new { name = "counseller", data = new { name = staff.Name ,phone=staff.Phone}});
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = newdata;
+                    }
+                }
+                #endregion
+
+                #region NO:17-1 获取某学生现场迎新事务详细列表(学号)
+                if (cs.Trim().Equals("get_schoolaffairlog_detail_list"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+                    List<object> data = null;
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        List<fresh_affair_log> data_log = batch_logic.get_schoolaffairlog_list(pk_sno);
+                        if (data_log != null)
+                        {
+                            data = new List<object>();
+                            List<fresh_affair> data_affair = new List<fresh_affair>();
+                            for (int i = 0; i < data_log.Count; i++)
+                            {
+                                fresh_affair data2 = batch_logic.get_affair(data_log[i].FK_Affair_NO);
+                                data_affair.Add(data2);
+                            }
+                            data.Add(data_log);
+                            data.Add(data_affair);
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = data;
+                    }
+                }
+                #endregion
             }
         }
         catch (Exception ex)

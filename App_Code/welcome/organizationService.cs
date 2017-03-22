@@ -180,6 +180,21 @@ public static class organizationService
     {
         return oDC.Fresh_Counsellers.Where(c => c.PK_Counseller_NO == counsellerPk).SingleOrDefault();
     }
+
+    /// <summary>
+    /// 根据班级主键返回辅导员信息
+    /// 编写人：胡元
+    /// 创建：2017.3.20
+    /// 更新：无
+    /// 版本：v0.0.1
+    /// </summary>
+    /// <param name="counsellerPk">班级主键</param>
+    /// <returns>辅导员实体</returns>
+    public static Fresh_Counseller getCounsellerForClassPK(string classPK)
+    {
+        return oDC.Fresh_Counsellers.Where(c => c.FK_Class_NO == classPK).SingleOrDefault();
+    }
+
     /// <summary>
     /// 根据“专业主键”返回对应专业数据，否则返回null。
     /// 编写人：陈智秋
