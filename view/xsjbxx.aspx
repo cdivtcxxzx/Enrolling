@@ -77,63 +77,109 @@
  <!--顶部提示及导航OVER-->
 
   <!--标签框架-->
-		<div style="width:50%;float:left">
-            <asp:Image ID="Image1" runat="server" /></div>
-         
-         <div>
-             <form class="layui-form layui-form-pane" action="">
-        <div class="layui-form-item">
-          <label class="layui-form-label">输入框</label>
+         <style>
+             .xszp img{
+                 width:100%;
+                 max-width:220px;
+                 max-height:360px;
+             }
+             .xsxx1{float:left;margin-right:10px;width:32%;}
+             .xsxx2{float:left;margin-right:10px;width:32%;}
+             .xsxx3{float:left;width:32%;}
+             @media (max-width: 930px) {
+                 .xsxx1 {float: none;margin-right:10px;
+                         width:100%;
+                 }
+                 .xsxx2 {
+                 width:48%;}
+                 .xsxx3 {
+                 width:48%;}
+             }
+             @media (max-width: 550px) {
+                                  .xsxx2 {
+                 width:100%;float: none;}
+                 .xsxx3 {
+                 width:100%;float: none;}
+             }
+         </style>
+         <div style="margin-top:15px;">
+	        
+       
+             
+<form class="layui-form layui-form-pane" action="">
+    <div class="xsxx1"><div class="layui-form-item" pane="">
+          <label class="layui-form-label" style="height:94%;display:none">照片：</label>
+          <div class="layui-input-block" style="margin-left: 10px!important">
+           <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="Image1" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
+        </div></div>
+     <div class="xsxx2"  >   <div class="layui-form-item" pane="">
+          <label class="layui-form-label">学号：</label>
           <div class="layui-input-block">
-            <input type="text" name="title" required="" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
-          </div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
+               <asp:Label ID="xsxx_xh" runat="server" Text="20170001"></asp:Label></div></div>
         </div>
-        <div class="layui-form-item">
-          <label class="layui-form-label">密码框</label>
-          <div class="layui-input-inline">
-            <input type="password" name="password" required="" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
-          </div>
-          <div class="layui-form-mid layui-word-aux">辅助文字</div>
-        </div>
-        <div class="layui-form-item">
-          <label class="layui-form-label">选择框</label>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">姓名：</label>
           <div class="layui-input-block">
-            <select name="city" lay-verify="required">
-              <option value=""></option>
-              <option value="0">北京</option>
-              <option value="1">上海</option>
-              <option value="2">广州</option>
-              <option value="3">深圳</option>
-              <option value="4">杭州</option>
-            </select><div class="layui-unselect layui-form-select"><div class="layui-select-title"><input type="text" placeholder="请选择" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div><dl class="layui-anim layui-anim-upbit"><dd lay-value="0" class="">北京</dd><dd lay-value="1" class="">上海</dd><dd lay-value="2" class="">广州</dd><dd lay-value="3" class="">深圳</dd><dd lay-value="4" class="">杭州</dd></dl></div>
-          </div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xm" runat="server" Text="张明"></asp:Label></div></div>
         </div>
-        <div class="layui-form-item" pane="">
-          <label class="layui-form-label">开关</label>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">性别：</label>
           <div class="layui-input-block">
-            <input type="checkbox" name="switch" lay-skin="switch"><div class="layui-unselect layui-form-switch" lay-skin="_switch"><em></em><i></i></div>
-          </div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xb" runat="server" Text="男"></asp:Label></div></div>
         </div>
-        <div class="layui-form-item" pane="">
-          <label class="layui-form-label">单选框</label>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">身份证号：</label>
           <div class="layui-input-block">
-            <input type="radio" name="sex" value="男" title="男"><div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><span>男</span></div>
-            <input type="radio" name="sex" value="女" title="女" checked=""><div class="layui-unselect layui-form-radio layui-form-radioed"><i class="layui-anim layui-icon"></i><span>女</span></div>
-          </div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_sfzh" runat="server" Text="511322198301052377"></asp:Label></div></div>
         </div>
-        <div class="layui-form-item layui-form-text">
-          <label class="layui-form-label">文本域</label>
+        
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">学历层次：</label>
           <div class="layui-input-block">
-            <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
-          </div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xlcc" runat="server" Text="高中"></asp:Label></div></div>
         </div>
-        <div class="layui-form-item">
-          <button class="layui-btn" lay-submit="" lay-filter="formDemoPane">立即提交</button>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">学院：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xy" runat="server" Text="信息工程学院"></asp:Label></div></div>
+        </div></div>
+     <div  class="xsxx3"  >         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">专业：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zy" runat="server" Text="计算机应用"></asp:Label></div></div>
         </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">年级</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_nj" runat="server" Text="2017级"></asp:Label></div></div>
+        </div>
+     <div class="layui-form-item" pane="">
+          <label class="layui-form-label">班级名称：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bjmc" runat="server" Text="计算机1701班"></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">班主任：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text="胡元"></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">班主任电话</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text="13708187788"></asp:Label></div></div>
+        </div>
+        <div class="layui-form-item" style="text-align:center">
+          <button class="layui-btn" onclick="javascript:">返回操作首页</button>
+        </div></div>
+        
+     
+
       </form>
+</div>        
 
-         </div>
-
+    
+  <!--标签框架over-->
 
         </div>
 
