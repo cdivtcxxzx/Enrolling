@@ -59,6 +59,65 @@ function load() {
                                                                         var name = json_data.data[i].Affair_Name;
                                                                         $('#admin-navbar-side ul').append('<li class="layui-nav-item"><a href="javascript:void(0)" onclick="goto_affair(\'' + json_data.data[i].PK_Affair_NO + '\')">' + name + '</a></li>');
                                                                     }
+                                                                    ////
+                                                                    {
+//菜单的隐藏显示
+                                                                        $('.admin-side-toggle').on('click', function () {
+                                                                            console.log($('#admin-side').width());
+                                                                            console.log($('#admin-body').css('left'));
+                                                                            var sideWidth = $('#admin-side').width();
+                                                                            if (sideWidth === 180) {
+                                                                                $('#admin-side').width(0);
+                                                                                $('#admin-body').css('left', '0');
+                                                                                $(".admin-side-toggle").html("<i class='fa fa-chevron-right' aria-hidden='true'></i>");
+
+                                                                            } else {
+                                                                                $('#admin-side').width(180);
+                                                                                $('#admin-body').css('left', '180px');
+                                                                                $(".admin-side-toggle").html("<i class='fa fa-chevron-left' aria-hidden='true'></i>");
+                                                                            }
+
+                                                                        });
+
+                                                                        //全屏控制
+                                                                        $('.admin-side-full').on('click', function () {
+                                                                            if (!$(this).attr('fullscreen')) {
+                                                                                $(this).attr('fullscreen', 'true');
+                                                                                //全屏操作
+                                                                                var de = document.documentElement;
+                                                                                if (de.requestFullscreen) {
+                                                                                    de.requestFullscreen();
+                                                                                } else if (de.mozRequestFullScreen) {
+                                                                                    de.mozRequestFullScreen();
+                                                                                } else if (de.webkitRequestFullScreen) {
+                                                                                    de.webkitRequestFullScreen();
+                                                                                }
+                                                                            } else {
+                                                                                $(this).removeAttr('fullscreen')
+                                                                                //退出全屏
+                                                                                var de = document;
+                                                                                if (de.exitFullscreen) {
+                                                                                    de.exitFullscreen();
+                                                                                } else if (de.mozCancelFullScreen) {
+                                                                                    de.mozCancelFullScreen();
+                                                                                } else if (de.webkitCancelFullScreen) {
+                                                                                    de.webkitCancelFullScreen();
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                        //手机设备的简单适配
+                                                                        var treeMobile = $('.site-tree-mobile'),
+                                                                            shadeMobile = $('.site-mobile-shade');
+                                                                        treeMobile.on('click', function () {
+                                                                            $('body').addClass('site-mobile');
+                                                                        });
+                                                                        shadeMobile.on('click', function () {
+                                                                            $('body').removeClass('site-mobile');
+                                                                        });
+
+                                                                    }
+                                                                    ///
+
                                                                     goto_affair(json_data.data[0].PK_Affair_NO);
                                                                 } else {
                                                                     alert('未获取到有效的操作员事务操作列表');

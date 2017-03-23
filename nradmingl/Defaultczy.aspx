@@ -74,6 +74,7 @@
                         
 
                     </ul>
+
 				</div>
 			</div>
 			<div class="layui-body" style="bottom: 0;" id="admin-body">
@@ -206,12 +207,12 @@
 			            });
 			        }).resize();
 			        //设置navbar
-			        navbar.set({
-			            elem: '#admin-navbar-side',
-			            url: 'js/czymenu.txt'
-			        });
+			        //navbar.set({
+			        //    elem: '#admin-navbar-side',
+			        //    url: 'js/czymenu.txt'
+			        //});
 			        //渲染navbar
-			        navbar.render();
+			        //navbar.render();
 			        var $body = $('.admin-nav-card');
 			        var $tabs = $body.children('ul.layui-tab-title');
 			        var $contents = $body.children('div.layui-tab-content');

@@ -1,6 +1,6 @@
 ﻿
 
-function xxload(){
+function load(){
     var pk_sno = $("#pk_sno").val();//初始值由服务器回传网页时生成
 
     if (pk_sno == null || $.trim(pk_sno).length == 0 ) {
