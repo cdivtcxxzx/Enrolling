@@ -1,4 +1,6 @@
-﻿function load() {
+﻿var freshstatusflag=false;
+
+function load() {
     try {
         init();
         clear_student_status();
@@ -106,6 +108,7 @@
 
 //初始化页面
 function init(){
+    freshstatusflag=false;
     $('#iframeId').hide();
     $('#admin-navbar-side ul li').remove();
     $('#batch_year').html('');
@@ -119,6 +122,7 @@ function init(){
 
 //清除学生状态区域
 function clear_student_status(){
+    freshstatusflag=false;//停止刷新事务状态
     $('#xs_xh').html('');
     $('#xs_xm').html('');
     $('#xs_sb').html('');
@@ -136,6 +140,9 @@ function clear_student_status(){
 //装入某迎新事务操作界面
 function goto_affair(PK_Affair_NO) {
     try {
+        freshstatusflag=false;//停止刷新事务状态
+        $("#find_xh").val('');
+
         var pk_batch_no = $("#pk_batch_no").val();
         var pk_staff_no = $("#pk_staff_no").val();
 
@@ -186,9 +193,11 @@ function goto_affair(PK_Affair_NO) {
     }
 }
 
-//更加学号查询学生
+//根据学号查询学生，完成界面数据装入
 function find(){
     try{
+        freshstatusflag=false;//停止刷新事务状态
+
         var pk_sno = $("#find_xh").val();
         if (pk_sno == null || $.trim(pk_sno).length == 0) {
             alert("请输入学号");
@@ -294,6 +303,8 @@ function find(){
                                                                                                     var url=json_data.data.OPER_URL;
                                                                                                     $('#iframeId').attr('src',url);//添加操作地址
                                                                                                     $('#iframeId').show();
+                                                                                                    freshstatusflag=true;//定时查询事务操作是否完成标志
+                                                                                                    freshstatus(pk_affair_no,pk_sno);//查询事务操作是否完成
                                                                                                 } else {
                                                                                                     alert(json_data.message);
                                                                                                 }
@@ -359,5 +370,15 @@ function find(){
     }
     catch (e) {
         alert("错误：" + e.message);
+    }
+}
+
+//定时查询并所需事务是否完成操作
+function freshstatus(pk_affair_no,pk_sno)
+{
+    if(freshstatusflag){
+        console.log(pk_affair_no+'  '+pk_sno);
+        //要求继续刷新事务状态
+        setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 3000);
     }
 }
