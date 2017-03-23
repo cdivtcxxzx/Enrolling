@@ -64,7 +64,7 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            迎新管理>>学生基本信息
+            <i class="layui-icon">&#xe602;</i>迎新管理>>学生基本信息
             <span style="float:right">
             
 				
