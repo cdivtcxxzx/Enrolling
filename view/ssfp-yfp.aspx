@@ -8,44 +8,17 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>宿舍分配-预分配</title>
     <link href="../bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        body {
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .glyphicon {
-            margin: 0 10px;
-        }
-
-        .col-xs-12 {
-            background-color: #5FB878;
-            padding: 12px;
-            overflow: hidden;
-            color: #ffffff;
-        }
-        .col-sm-4{
-            text-align:center;
-        }
-        a {
-            color: #ffffff;
-        }
-
-        a:hover {
-            text-decoration: none;
-            color: #d4cfcf;
-        }
-    </style>
+    <link href="../b_css/app.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1"  runat="server">
         <div class="container">
             <h4 class="text-center">预分配宿舍</h4>
             <div class="col-xs-12 col-sm-4">
-                <p><span>校区：</span><span>天府新区</span></p>
-                <p><span>类型：</span><span>男宿舍</span></p>
+                <p><span>校区：</span><span id="xiaoqu" runat="server">天府新区</span></p>
+                <p><span>类型：</span><span id="shuse" runat="server">男宿舍</span></p>
                 <p>
-                    <img src="#" alt="宿舍照片" style="margin-top:18px;width:100px;height:140px" /></p>
+                    <img src="#" alt="宿舍照片" style="margin-top:18px;width:100px;height:140px" id="shuseImg" runat="server" /></p>
             </div>
             <div class="col-xs-12 col-sm-8">
                 <div class="form-group">
@@ -56,7 +29,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="bed-numb">座位位置编号</label>
+                    <label for="bed-numb">床位位置编号</label>
                     <select class="form-control" name="bed-numb">
                         <option>1</option>
                         <option>2</option>
@@ -93,7 +66,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="room-numb">楼层</label>
+                    <label for="room-numb">房间号</label>
                     <select class="form-control" name="room-numb">
                         <option>101</option>
                         <option>102</option>
@@ -108,7 +81,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <input type="button" class="btn btn-default" value="保存" />
+                    <input type="button" class="btn btn-default" value="保存" id="btnSave" runat="server" />
                     <input type="button" class="btn btn-default" value="刷新" />
                     <input type="button" class="btn btn-default" value="返回" />
                 </div>

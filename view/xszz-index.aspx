@@ -29,9 +29,10 @@
 
         a {
             color: #ffffff;
+            text-decoration: none;
         }
 
-        a:hover {
+        a:hover,a:active {
             text-decoration: none;
             color: #d4cfcf;
         }

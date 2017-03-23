@@ -132,9 +132,9 @@
         年级：<asp:Label ID="xs_nj" runat="server" Text=""></asp:Label><br />
         班级名称：<asp:Label ID="xs_bj" runat="server" Text=""></asp:Label><br />
         班主任：<asp:Label ID="xs_bzr" runat="server" Text=""></asp:Label><br />
-
+        班主任电话：<asp:Label ID="xs_bzrdhhm" runat="server" Text=""></asp:Label><br />
                                   </td>
-        <td style="width:50%;padding-left:10px;padding-right:10px;" id="affair_list">
+        <td style="width:50%;padding-left:10px;padding-right:10px; vertical-align:top;"  id="affair_list">
             新生报到：<asp:Label ID="zt_xsbd" runat="server" Text=""></asp:Label>
             <br />
         缴纳学费：<asp:Label ID="zt_jnxf" runat="server" Text=""></asp:Label>
