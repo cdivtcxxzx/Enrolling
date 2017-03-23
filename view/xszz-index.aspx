@@ -40,13 +40,12 @@
 </head>
 <body>
     <form id="form1" runat="server">
+      <asp:HiddenField ID="pk_sno" Value="" runat="server" />
         <div class="container">
             <h4 class="text-center">学生事务操作首页导航</h4>
             <div class="col-xs-12 col-sm-6">
-                <div class="=row">
                     <div class="col-xs-8"><i class="glyphicon glyphicon-tags"></i><a href="#">学生操作1</a></div>
                     <div class="col-xs-4"><span>已完成</span></div>
-                </div>
             </div>
             <div class="col-xs-12 col-sm-6">
                 <div class="col-xs-8"><span class="glyphicon glyphicon-tags"></span><a href="#">学生操作2</a></div>
@@ -71,6 +70,7 @@
         </div>
         <script src="../b_js/jquery.min2.js"></script>
         <script src="../bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="../b_js/app/xszz-index.js"></script>
     </form>
 </body>
 </html>

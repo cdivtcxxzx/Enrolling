@@ -134,8 +134,8 @@ public partial class nradmingl_Defaultczy : System.Web.UI.Page
 
         #region 管理员控制业务代码
 
-        this.pk_batch_no.Value = "1";
-        this.pk_staff_no.Value = "001";
+        this.pk_batch_no.Value = "1";//其值应由会话中来，在管理员登陆成功后被赋予初值
+        this.pk_staff_no.Value = "001";//其值应由会话中来，在管理员登陆成功后被赋予初值
 
         
         #endregion

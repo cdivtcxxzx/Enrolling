@@ -524,6 +524,38 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                     }
                 }
                 #endregion
+
+                #region NO:42 获取学生事务操作列表(学号)
+                if (cs.Trim().Equals("get_freshstudent_affair_list"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        List<fresh_affair> data = batch_logic.get_freshstudent_affair_list(pk_sno);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = data;
+                    }
+                }
+                #endregion
+
+                #region NO:43 获取某学生自助迎新事务列表(学号)
+                if (cs.Trim().Equals("get_studentaffairlog_list"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        List<fresh_affair_log> data = batch_logic.get_studentaffairlog_list(pk_sno);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = data;
+                    }
+                }
+                #endregion
             }
         }
         catch (Exception ex)

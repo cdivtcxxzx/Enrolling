@@ -1,4 +1,5 @@
 ﻿var freshstatusflag=false;
+var timeid=null;
 
 function load() {
     try {
@@ -63,41 +64,41 @@ function load() {
                                                                     alert('未获取到有效的操作员事务操作列表');
                                                                 }
                                                             } else {
-                                                                alert(json_data.message);
+                                                                alert('4'+json_data.message);
                                                             }
                                                         },
                                                         error: function (data) {
-                                                            alert("错误");
+                                                            alert("错误0");
                                                         }
                                                     });
                                                 } else {
-                                                    alert(json_data.message);
+                                                    alert('3'+json_data.message);
                                                 }
                                             },
                                             error: function (data) {
-                                                alert("错误");
+                                                alert("错误1");
                                             }
                                         });
                                     } else {
                                         alert("本批次迎新未给您授权操作");
                                     }
                                 } else {
-                                    alert(json_data.message);
+                                    alert('1'+json_data.message);
                                 }
                             },
                             error: function (data) {
-                                alert("错误");
+                                alert("错误2");
                             }
                         });
                     } else {
                         alert("本批次迎新没有开始服务");
                     }
                 } else {
-                    alert(json_data.message);
+                    alert('2'+json_data.message);
                 }
             },
             error: function (data) {
-                alert("错误");
+                alert("错误3");
             }
         });
     }
@@ -109,6 +110,10 @@ function load() {
 //初始化页面
 function init(){
     freshstatusflag=false;
+    if(timeid!=null){
+        clearTimeout(timeid);
+        timeid=null;
+    }
     $('#iframeId').hide();
     $('#admin-navbar-side ul li').remove();
     $('#batch_year').html('');
@@ -123,6 +128,10 @@ function init(){
 //清除学生状态区域
 function clear_student_status(){
     freshstatusflag=false;//停止刷新事务状态
+    if(timeid!=null){
+        clearTimeout(timeid);
+        timeid=null;
+    }
     $('#xs_xh').html('');
     $('#xs_xm').html('');
     $('#xs_sb').html('');
@@ -141,6 +150,10 @@ function clear_student_status(){
 function goto_affair(PK_Affair_NO) {
     try {
         freshstatusflag=false;//停止刷新事务状态
+        if(timeid!=null){
+            clearTimeout(timeid);
+            timeid=null;
+        }
         $("#find_xh").val('');
 
         var pk_batch_no = $("#pk_batch_no").val();
@@ -197,6 +210,10 @@ function goto_affair(PK_Affair_NO) {
 function find(){
     try{
         freshstatusflag=false;//停止刷新事务状态
+        if(timeid!=null){
+            clearTimeout(timeid);
+            timeid=null;
+        }
 
         var pk_sno = $("#find_xh").val();
         if (pk_sno == null || $.trim(pk_sno).length == 0) {
@@ -378,7 +395,45 @@ function freshstatus(pk_affair_no,pk_sno)
 {
     if(freshstatusflag){
         console.log(pk_affair_no+'  '+pk_sno);
-        //要求继续刷新事务状态
-        setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 3000);
+        //NO:17 获取某学生现场迎新事务列表
+        $.ajax({
+            url: "appserver/manager.aspx",
+            type: "get",
+            dataType: "text",
+            data: { "cs": "get_schoolaffairlog_detail_list","pk_sno": pk_sno },
+            success: function (data) {
+                var json_data = JSON.parse(data);
+                if (json_data.code == 'success') {
+                    var finishflag=false;
+                    if(json_data.data!=null && json_data.data.length>0){
+                        var log=json_data.data[0];
+                        var detail=json_data.data[1];
+                        var status='';
+
+                        for(var i=0;i<log.length;i++){
+                            if($.trim(log[i].FK_Affair_NO)== $.trim(pk_affair_no) && $.trim(log[i].Log_Status)=='已完成'){
+                                finishflag=true;
+                            }
+                            var Affair_Name=detail[i].Affair_Name;
+                            var Log_Status=log[i].Log_Status;
+                            status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
+                        }
+                        $('#affair_list').html(status);//学生事务状态列表
+                    }
+                }
+                if(finishflag==false){
+                    //要求继续刷新事务状态
+                    timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 800);
+                }else{
+                    alert('已完成操作');
+                    freshstatusflag=false;
+                    timeid=null;
+                }
+            },
+            error: function (data) {
+                //要求继续刷新事务状态
+                timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 800);
+            }
+        });
     }
 }
