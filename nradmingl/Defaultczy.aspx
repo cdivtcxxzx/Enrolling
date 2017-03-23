@@ -71,11 +71,7 @@
 				<div class="layui-side-scroll" id="admin-navbar-side" lay-filter="side">
                     <ul class="layui-nav layui-nav-tree">
                         <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
+                        
 
                     </ul>
 				</div>
@@ -178,17 +174,16 @@
 			<div class="site-mobile-shade"></div>
             <!--前端框架ＪＳ及弹出层ＪＳ-->
 			<script type="text/javascript" src="plugins/layui/layui.js"></script>           
-        <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js?v=20160917"></script>
-        			<script type="text/javascript" src="../b_js/app/manager.js"></script>
-
+       
              <!--前端框架ＪＳ及弹出层ＪＳＯＶＥＲ-->
-             <!--页面自动生成二维码ＪＳ　
-			<script type="text/javascript" src="plugins/jquery.qrcode.min.js"></script>
-             页面自动生成二维码ＪＳＯＶＥＲ-->
+             <!--页面自动生成二维码ＪＳ　-->
+			
+            <script type="text/javascript" src="plugins/jquery.qrcode.min.js"></script>
+             <!--页面自动生成二维码ＪＳＯＶＥＲ-->
 			<script>
 			    //忽略所有JS错误
-			    //function killerrors() { return true; }
-			    //window.onerror = killerrors;
+			    function killerrors() { return true; }
+			    window.onerror = killerrors;
 
 			    //忽略错误结束,加载页面JS执行
 
@@ -211,10 +206,10 @@
 			            });
 			        }).resize();
 			        //设置navbar
-			        //navbar.set({
-			        //    elem: '#admin-navbar-side',
-			        //    url: 'treemenu.aspx'
-			        //});
+			        navbar.set({
+			            elem: '#admin-navbar-side',
+			            url: 'js/czymenu.txt'
+			        });
 			        //渲染navbar
 			        navbar.render();
 			        var $body = $('.admin-nav-card');
@@ -223,7 +218,7 @@
 			        var tabFilter = 'admin-tab';
 			        //监听按钮事件
 			        var btnSearch = $('#button2').on('click', function () {
-			            console.log('s');
+			           // console.log('s');
 
 			            //查询学生信息，更新
 
@@ -361,10 +356,12 @@
 			    //$('#code').qrcode(window.location.href);
 
                 //运行管理员页面业务代码
-			    load();
+			   // load();
 
 			</script>
-
+       <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js?v=20160917"></script>
+        			<script type="text/javascript" src="../b_js/app/manager.js"></script>
+        <script> load();</script>
 		</div>
   
 </form>  
