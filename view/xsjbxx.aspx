@@ -64,7 +64,7 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            迎新管理>>学生基本信息
+            <i class="layui-icon">&#xe602;</i>迎新管理>>学生基本信息
             <span style="float:right">
             
 				
@@ -110,7 +110,7 @@
     <div class="xsxx1"><div class="layui-form-item" pane="">
           <label class="layui-form-label" style="height:94%;display:none">照片：</label>
           <div class="layui-input-block" style="margin-left: 10px!important">
-           <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="Image1" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
+           <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
         </div></div>
      <div class="xsxx2"  >   <div class="layui-form-item" pane="">
           <label class="layui-form-label">学号：</label>
