@@ -903,7 +903,7 @@ public class batch
 
     ///功能名称： 获取学生事务操作列表
     ///功能描述：
-    ///根据“学号”查询所在批次中被授权“迎新事务”的“事务性质”为“交互性”，
+    ///根据“学号”查询所在批次中被授权“迎新事务”的“事务性质”为“交互性”和"状态性"，
     ///“事务类型”为“学生”或“两者”的数据。否则返回null。
     ///编写人：胡元
     ///参数：
@@ -923,7 +923,7 @@ public class batch
             
             string sqlstr = "select c.* from vw_fresh_student_base a,Fresh_Batch b,Fresh_Affair c "+
                             " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO "+
-                            " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
+                            " and  a.PK_SNO=@cs1 and (upper(c.Affair_CHAR)='INTERACTIVE' or upper(c.Affair_CHAR)='STATUS') and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
             if (dt != null && dt.Rows.Count>0)
             {
