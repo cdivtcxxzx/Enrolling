@@ -163,7 +163,7 @@
                   
 					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
 						<div class="layui-tab-item layui-show"  id="czmain" runat="server" >
-							<iframe id="iframeId"  src="/view/xszz-index.aspx"></iframe>
+							<iframe id="iframeId"  src="#"></iframe>
 						</div>
 					</div>
 				</div>

@@ -556,6 +556,25 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                     }
                 }
                 #endregion
+
+                #region NO:42&43 获取某学生自助迎新事务级、状态、操作列表(学号)
+                if (cs.Trim().Equals("get_freshstudent_affair_status_oper_list"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        List<fresh_affair> affair_list = batch_logic.get_freshstudent_affair_list(pk_sno);//事务列表
+                        List<fresh_affair_log> affairlog_list = batch_logic.get_studentaffairlog_list(pk_sno);//事务日志列表
+                        
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = null;
+                    }
+                }
+                #endregion
+
             }
         }
         catch (Exception ex)

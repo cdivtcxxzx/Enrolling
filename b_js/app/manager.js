@@ -123,41 +123,41 @@ function load() {
                                                                     alert('未获取到有效的操作员事务操作列表');
                                                                 }
                                                             } else {
-                                                                alert('4'+json_data.message);
+                                                                alert(json_data.message);
                                                             }
                                                         },
                                                         error: function (data) {
-                                                            alert("错误0");
+                                                            alert("错误");
                                                         }
                                                     });
                                                 } else {
-                                                    alert('3'+json_data.message);
+                                                    alert(json_data.message);
                                                 }
                                             },
                                             error: function (data) {
-                                                alert("错误1");
+                                                alert("错误");
                                             }
                                         });
                                     } else {
                                         alert("本批次迎新未给您授权操作");
                                     }
                                 } else {
-                                    alert('1'+json_data.message);
+                                    alert(json_data.message);
                                 }
                             },
                             error: function (data) {
-                                alert("错误2");
+                                alert("错误");
                             }
                         });
                     } else {
                         alert("本批次迎新没有开始服务");
                     }
                 } else {
-                    alert('2'+json_data.message);
+                    alert(json_data.message);
                 }
             },
             error: function (data) {
-                alert("错误3");
+                alert("错误");
             }
         });
     }
