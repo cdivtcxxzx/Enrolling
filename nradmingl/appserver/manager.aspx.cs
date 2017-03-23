@@ -431,7 +431,15 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                     spe_newdata.Year = spe_data.Year;//学年
                                     spe_newdata.SPE_Name = spe_data.SPE_Name;//专业名称
                                     spe_newdata.EDU_Level_Code = spe_data.EDU_Level_Code;//学历层次码
-                                    spe_newdata.FK_College_Code = spe_data.Base_College.Name;//学院名称
+                                    spe_newdata.FK_College_Code = spe_data.FK_College_Code;//学院主键
+                                    if (spe_data.FK_College_Code != null)
+                                    {
+                                        model.Base_College college=organizationService.getColleage(spe_data.FK_College_Code.Trim());
+                                        if (college != null)
+                                        {
+                                            spe_newdata.FK_College_Code = college.Name;//学院名称
+                                        }
+                                    }
                                     spe_newdata.PK_SPE = spe_data.PK_SPE;//专业主键
 
                                     itemlist = logic.get_base_code_item("001");
