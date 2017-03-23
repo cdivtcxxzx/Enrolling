@@ -244,11 +244,142 @@ public class base_campus
 }
 
 /// <summary>
+/// 名称：编码目录
+/// 作者：胡元
+/// </summary>
+public class base_code
+{
+    public string PK_Code;//主键
+    public string Code_Name;//目录名称
+    public string Remark;//备注
+    public string Code_NO;//目录编码
+}
+
+/// <summary>
+/// 名称：编码项目信息
+/// 作者：胡元
+/// </summary>
+public class base_code_item
+{
+    public string PK_Item;//主键
+    public string FK_Code;//编码目录主键
+    public string Item_Name;//项目名称
+    public string Remark;//备注
+    public string Item_NO;//项目编码
+}
+
+
+
+
+
+
+/// <summary>
 ///迎新批次服务类说明
 /// </summary>
 public class batch
 {
-   
+
+    /// <summary>
+    ///功能名称：获取当前所有编码目录
+    ///功能描述：
+    ///编写人：胡元
+    ///创建时间：2017-3-22
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    /// </summary>
+    /// <returns></returns>
+    public List<base_code> get_base_code_list(string PK_Code)
+    {
+        List<base_code> result = null;
+        try
+        {
+            string sqlstr = null;
+            System.Data.DataTable dt = null;
+
+            if (PK_Code != null)
+            {
+                sqlstr = "select * from base_code where PK_Code=@pa";
+                dt = Sqlhelper.Serach(sqlstr, new SqlParameter("pa", PK_Code.Trim()));
+            }
+            else
+            {
+                sqlstr="select * from base_code";
+                dt = Sqlhelper.Serach(sqlstr);
+            }
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = new List<base_code>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    base_code row = new base_code();
+                    row.PK_Code = dt.Rows[i]["PK_Code"].ToString().Trim();
+                    row.Code_Name = dt.Rows[i]["Code_Name"].ToString().Trim();
+                    row.Remark = dt.Rows[i]["Remark"].ToString().Trim();
+                    row.Code_NO = dt.Rows[i]["Code_NO"].ToString().Trim();
+                    result.Add(row);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_base_code_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    /// <summary>
+    ///功能名称：获取指定编码目录的编码项目信息
+    ///功能描述：
+    ///编写人：胡元
+    ///创建时间：2017-3-22
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    /// </summary>
+    /// <returns></returns>
+    public List<base_code_item> get_base_code_item(string FK_Code)
+    {
+        List<base_code_item> result = null;
+        try
+        {
+            string sqlstr = "select * from base_code_item where FK_Code=@pa";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("pa", FK_Code.Trim()));
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = new List<base_code_item>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    base_code_item row = new base_code_item();
+                    row.PK_Item = dt.Rows[i]["PK_Item"].ToString().Trim();
+                    row.FK_Code = dt.Rows[i]["FK_Code"].ToString().Trim();
+                    row.Item_Name = dt.Rows[i]["Item_Name"].ToString().Trim();
+                    row.Remark = dt.Rows[i]["Remark"].ToString().Trim();
+                    row.Item_NO = dt.Rows[i]["Item_NO"].ToString().Trim();
+                    result.Add(row);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_base_code_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+
+
+
+
     /// <summary>
     ///功能名称：获取当前有效迎新批次目录
     ///功能描述：
@@ -898,7 +1029,7 @@ public class batch
                             "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status,"+
                             "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
                             " from vw_fresh_student_base a,Fresh_Batch b,"+
-                            "Fresh_Affair c LEFT JOIN Fresh_Affair_Log d on c.PK_Affair_NO=d.FK_Affair_NO "+
+                            "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
                             " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO"+ 
                             " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='SCHOOL' or upper(c.Affair_Type)='BOTH')";
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
