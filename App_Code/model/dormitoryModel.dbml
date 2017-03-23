@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="yxxt_data" Class="dormitoryModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=118.114.252.173,20933;Initial Catalog=yxxt_data;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="yxxt_dataConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Fresh_Room" Member="Fresh_Rooms">
+    <Type Name="Fresh_Room">
+      <Column Name="PK_Room_NO" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Room_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="FK_Dorm_NO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Floor" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Gender" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="FK_Room_Type" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fresh_Bed_Log" Member="Fresh_Bed_Logs">
+    <Type Name="Fresh_Bed_Log">
+      <Column Name="PK_Bed_Log" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FK_Bed_NO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FK_SNO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Updater" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Update_DT" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fresh_Dorm" Member="Fresh_Dorms">
+    <Type Name="Fresh_Dorm">
+      <Column Name="PK_Dorm_NO" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Dorm_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Year" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Campus_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fresh_Bed_Type" Member="Fresh_Bed_Types">
+    <Type Name="Fresh_Bed_Type">
+      <Column Name="PK_Bed_Type" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Type_Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FK_Room_Type" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Bed_Index" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Bed_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fresh_Bed" Member="Fresh_Beds">
+    <Type Name="Fresh_Bed">
+      <Column Name="PK_Bed_NO" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Bed_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="FK_Bed_Type" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FK_Room_NO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fresh_Room_Type" Member="Fresh_Room_Types">
+    <Type Name="Fresh_Room_Type">
+      <Column Name="PK_Room_Type" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Type_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Year" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Room_Layout" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Bed_Layout" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="FK_Fee_Item" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Type_Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

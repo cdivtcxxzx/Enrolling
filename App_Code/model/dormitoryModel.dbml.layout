@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="dormitoryModel">
+  <DataContextMoniker Name="/dormitoryModelDataContext" />
+  <nestedChildShapes>
+    <classShape Id="714bc2f8-c779-4e72-869b-4179ee4c1c32" absoluteBounds="7, 2.25, 2, 1.9068933105468751">
+      <DataClassMoniker Name="/dormitoryModelDataContext/Fresh_Room" />
+      <nestedChildShapes>
+        <elementListCompartment Id="54455ffb-6019-4991-8e49-cd274290f132" absoluteBounds="7.015, 2.71, 1.9700000000000002, 1.346893310546875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="05a747e0-9488-4c10-861f-86b085a76e1f" absoluteBounds="4, 0.625, 2, 1.7220992024739581">
+      <DataClassMoniker Name="/dormitoryModelDataContext/Fresh_Bed_Log" />
+      <nestedChildShapes>
+        <elementListCompartment Id="950cc94b-878d-4b94-a9a1-fdc84a578d89" absoluteBounds="4.015, 1.085, 1.9700000000000002, 1.1620992024739583" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8a44f296-7ca4-4456-a485-0b0df97c1a30" absoluteBounds="1, 2.5, 2, 1.7220992024739581">
+      <DataClassMoniker Name="/dormitoryModelDataContext/Fresh_Dorm" />
+      <nestedChildShapes>
+        <elementListCompartment Id="99491f21-1f87-4fc6-800e-8a31fef2bc6b" absoluteBounds="1.0150000000000001, 2.96, 1.9700000000000002, 1.1620992024739583" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1fb579dd-26ca-435e-80ba-375b678c15bf" absoluteBounds="1.125, 4.75, 2, 1.7220992024739581">
+      <DataClassMoniker Name="/dormitoryModelDataContext/Fresh_Bed_Type" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4a25740f-408a-47e7-a972-e6b5578b4135" absoluteBounds="1.1399999999999997, 5.21, 1.9700000000000002, 1.1620992024739583" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8c2be1bc-44ae-413f-accd-e10802665b76" absoluteBounds="4.375, 4.875, 2, 1.5373050944010416">
+      <DataClassMoniker Name="/dormitoryModelDataContext/Fresh_Bed" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3387cc77-be6a-4a4e-b766-33e39ec378fa" absoluteBounds="4.3900000000000006, 5.335, 1.9700000000000002, 0.97730509440104174" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="98ad07e2-3db8-4629-88e8-bdcfe9e73b24" absoluteBounds="7, 5.625, 2, 2.0916874186197916">
+      <DataClassMoniker Name="/dormitoryModelDataContext/Fresh_Room_Type" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c4f547eb-401e-4c24-8b03-bf8de27fc2cd" absoluteBounds="7.0150000000000006, 6.085, 1.9700000000000002, 1.5316874186197915" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
