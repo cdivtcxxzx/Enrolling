@@ -6,15 +6,20 @@
 <head runat="server">
     <title></title>
     <meta charset="UTF-8" content="编码" />
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
 
     <!--引用ＬＡＹＵＩ前端必须ＣＳＳ-->
-        <link rel="stylesheet" href="plugins/layui/css/layui.css" media="all" />
-		<link rel="stylesheet" href="plugins/global.css" media="all" />
+        <link rel="stylesheet" href="../nradmingl/plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../nradmingl/plugins/global.css" media="all" />
          <!--引用ＬＡＹＵＩ前端字体图标ＣＳＳ-->
-		<link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="../nradmingl/plugins/font-awesome/css/font-awesome.min.css" />
          <!--引用ＬＡＹＵＩ前端表格ＣＳＳ,使用表格时才引用-->
-		<link rel="stylesheet" href="plugins/table.css" />
+		<link rel="stylesheet" href="../nradmingl/plugins/table.css" />
     
      <!--引用ＬＡＹＵＩ前端必须ＣＳＳ OVER-->
    
@@ -59,29 +64,127 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            基本展示
+            迎新管理>>学生基本信息
             <span style="float:right">
             
-				<a href="kfgl.aspx" id="A1" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe62d;</i>表格演示
+				
+                 <a href="javascript:window.location.go(-1);" class="layui-btn layui-btn-small">
+					<i class="layui-icon">&#xe603;</i>
 				</a>
-                 <a href="" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#x1002;</i>
-				</a>
-                <a href="javascript:" onclick="layer.open({  id:1,type: 2,  title: '当前页二维码',  shadeClose: true,  shade: 0.8,  area: ['285px', '318px'],time: 60000,  content: '2weima.aspx?url='+window.location.href.replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|')});"><img src="images/2weima.png" titop="images/2weima.png" alt="images/2weima.png" style="height:28px;width:28px" /></a>
-				</span>
+               </span>
 				
 			</blockquote>
  <!--顶部提示及导航OVER-->
 
   <!--标签框架-->
-		
+         <style>
+             .xszp img{
+                 width:100%;
+                 max-width:220px;
+                 max-height:360px;
+             }
+             .xsxx1{float:left;margin-right:10px;width:32%;}
+             .xsxx2{float:left;margin-right:10px;width:32%;}
+             .xsxx3{float:left;width:32%;}
+             @media (max-width: 930px) {
+                 .xsxx1 {float: none;margin-right:10px;
+                         width:100%;
+                 }
+                 .xsxx2 {
+                 width:48%;}
+                 .xsxx3 {
+                 width:48%;}
+             }
+             @media (max-width: 550px) {
+                                  .xsxx2 {
+                 width:100%;float: none;}
+                 .xsxx3 {
+                 width:100%;float: none;}
+             }
+         </style>
+         <div style="margin-top:15px;">
+	        
+       
+             
+<form class="layui-form layui-form-pane" action="">
+    <div class="xsxx1"><div class="layui-form-item" pane="">
+          <label class="layui-form-label" style="height:94%;display:none">照片：</label>
+          <div class="layui-input-block" style="margin-left: 10px!important">
+           <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="Image1" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
+        </div></div>
+     <div class="xsxx2"  >   <div class="layui-form-item" pane="">
+          <label class="layui-form-label">学号：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
+               <asp:Label ID="xsxx_xh" runat="server" Text="20170001"></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">姓名：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xm" runat="server" Text="张明"></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">性别：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xb" runat="server" Text="男"></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">身份证号：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_sfzh" runat="server" Text="511322198301052377"></asp:Label></div></div>
+        </div>
+        
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">学历层次：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xlcc" runat="server" Text="高中"></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">学院：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xy" runat="server" Text="信息工程学院"></asp:Label></div></div>
+        </div></div>
+     <div  class="xsxx3"  >         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">专业：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zy" runat="server" Text="计算机应用"></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">年级</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_nj" runat="server" Text="2017级"></asp:Label></div></div>
+        </div>
+     <div class="layui-form-item" pane="">
+          <label class="layui-form-label">班级名称：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bjmc" runat="server" Text="计算机1701班"></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">班主任：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text="胡元"></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">班主任电话</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text="13708187788"></asp:Label></div></div>
+        </div>
+        <div class="layui-form-item" style="text-align:center">
+          <button class="layui-btn" onclick="javascript:">返回操作首页</button>
+        </div></div>
+        
+     
 
+      </form>
+</div>        
+
+    
+  <!--标签框架over-->
 
         </div>
 
 
-        		<script type="text/javascript" src="plugins/layui/layui.js"></script>
+        		<script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
 		<script>
 		    layui.use('element', function () {
 		        var $ = layui.jquery,
@@ -143,6 +246,15 @@
         	                title: '最终的提交信息'
         	            })
         	            return false;
+        	        });
+        	        //手机设备的简单适配
+        	        var treeMobile = $('.site-tree-mobile'),
+						shadeMobile = $('.site-mobile-shade');
+        	        treeMobile.on('click', function () {
+        	            $('body').addClass('site-mobile');
+        	        });
+        	        shadeMobile.on('click', function () {
+        	            $('body').removeClass('site-mobile');
         	        });
         	    });
 		</script>
