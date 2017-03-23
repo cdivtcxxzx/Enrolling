@@ -74,9 +74,15 @@
                         
 
                     </ul>
-
+                    <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div>
 				</div>
 			</div>
+        <style> .xszp img{
+                 width:100%;
+                 margin-left:-20px;
+                 max-width:110px;
+                 max-height:360px;
+             }</style>
 			<div class="layui-body" style="bottom: 0;" id="admin-body">
                 <div style="width:500px;height:100%;float:left; margin-left:10px;margin-right:10px;">
                     <blockquote class="layui-elem-quote">
@@ -362,7 +368,7 @@
 			</script>
        <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js?v=20160917"></script>
         			<script type="text/javascript" src="../b_js/app/manager.js"></script>
-        <script> load();</script>
+        <script> //load();</script>
 		</div>
   
 </form>  
