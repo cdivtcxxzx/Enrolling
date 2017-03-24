@@ -71,6 +71,7 @@
         <script src="../b_js/jquery.min2.js"></script>
         <script src="../bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script src="../b_js/app/xszz-index.js"></script>
+        <script>load();</script>
     </form>
 </body>
 </html>

@@ -800,15 +800,16 @@ public class dormitory
     /// <param name="class_no">班级编号</param>
     /// <param name="gender">性别</param>
     /// <param name="roomtypebh">房间类型编号</param>
+    /// <param name="roomtypebh">房间类型编号</param>
 
     /// <returns>datatable【校区编号、校区名称、性别、床位位置主键、床位类型、房间类型主键、床位位置序号、床位位置编号】</returns>
-    public static List<Fresh_Bed> listclassgetbed(string class_no, string gender, string roomtypebh)
+    public static List<Fresh_Bed> listclassgetbed(string class_no, string gender, string roomtypebh,string bed_index)
     {
         DataTable bedtype = new DataTable();
         try
         {
             //
-            bedtype = Sqlhelper.Serach("SELECT     Fresh_Bed.PK_Bed_NO, Fresh_Bed.Bed_NO, Fresh_Bed.FK_Bed_Type, Fresh_Bed.FK_Room_NO FROM         Fresh_Class INNER JOIN     Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN           Fresh_Bed_Type INNER JOIN       Fresh_Bed ON Fresh_Bed_Type.PK_Bed_Type = Fresh_Bed.FK_Bed_Type INNER JOIN       Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO where Fresh_Bed_Class_Log.FK_class_NO=@classno and Fresh_Room.Gender=@gender and Fresh_Room_Type.Type_NO=@roomtypebh ", new SqlParameter("classno", class_no), new SqlParameter("gender", gender), new SqlParameter("roomtypebh", roomtypebh));
+            bedtype = Sqlhelper.Serach("SELECT     Fresh_Bed.PK_Bed_NO, Fresh_Bed.Bed_NO, Fresh_Bed.FK_Bed_Type, Fresh_Bed.FK_Room_NO FROM         Fresh_Class INNER JOIN     Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN           Fresh_Bed_Type INNER JOIN       Fresh_Bed ON Fresh_Bed_Type.PK_Bed_Type = Fresh_Bed.FK_Bed_Type INNER JOIN       Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO where Fresh_Bed_Class_Log.FK_class_NO=@classno and Fresh_Room.Gender=@gender and Fresh_Room_Type.Type_NO=@roomtypebh and Fresh_Bed_Type.Bed_index = @Bed_index ", new SqlParameter("classno", class_no), new SqlParameter("gender", gender), new SqlParameter("roomtypebh", roomtypebh), new SqlParameter("Bed_index", bed_index));
         }
         catch (Exception err)
         {
