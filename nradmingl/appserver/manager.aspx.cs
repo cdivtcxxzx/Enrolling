@@ -431,7 +431,15 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                     spe_newdata.Year = spe_data.Year;//学年
                                     spe_newdata.SPE_Name = spe_data.SPE_Name;//专业名称
                                     spe_newdata.EDU_Level_Code = spe_data.EDU_Level_Code;//学历层次码
-                                    spe_newdata.FK_College_Code = spe_data.Base_College.Name;//学院名称
+                                    spe_newdata.FK_College_Code = spe_data.FK_College_Code;//学院主键
+                                    if (spe_data.FK_College_Code != null)
+                                    {
+                                        model.Base_College college=organizationService.getColleage(spe_data.FK_College_Code.Trim());
+                                        if (college != null)
+                                        {
+                                            spe_newdata.FK_College_Code = college.Name;//学院名称
+                                        }
+                                    }
                                     spe_newdata.PK_SPE = spe_data.PK_SPE;//专业主键
 
                                     itemlist = logic.get_base_code_item("001");
@@ -516,6 +524,57 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                     }
                 }
                 #endregion
+
+                #region NO:42 获取学生事务操作列表(学号)
+                if (cs.Trim().Equals("get_freshstudent_affair_list"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        List<fresh_affair> data = batch_logic.get_freshstudent_affair_list(pk_sno);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = data;
+                    }
+                }
+                #endregion
+
+                #region NO:43 获取某学生自助迎新事务列表(学号)
+                if (cs.Trim().Equals("get_studentaffairlog_list"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        List<fresh_affair_log> data = batch_logic.get_studentaffairlog_list(pk_sno);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = data;
+                    }
+                }
+                #endregion
+
+                #region NO:42&43 获取某学生自助迎新事务级、状态、操作列表(学号)
+                if (cs.Trim().Equals("get_freshstudent_affair_status_oper_list"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        List<fresh_affair> affair_list = batch_logic.get_freshstudent_affair_list(pk_sno);//事务列表
+                        List<fresh_affair_log> affairlog_list = batch_logic.get_studentaffairlog_list(pk_sno);//事务日志列表
+                        
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = null;
+                    }
+                }
+                #endregion
+
             }
         }
         catch (Exception ex)

@@ -1,4 +1,7 @@
-﻿function load() {
+﻿var freshstatusflag=false;
+var timeid=null;
+
+function load() {
     try {
         init();
         clear_student_status();
@@ -56,6 +59,65 @@
                                                                         var name = json_data.data[i].Affair_Name;
                                                                         $('#admin-navbar-side ul').append('<li class="layui-nav-item"><a href="javascript:void(0)" onclick="goto_affair(\'' + json_data.data[i].PK_Affair_NO + '\')">' + name + '</a></li>');
                                                                     }
+                                                                    ////
+                                                                    {
+//菜单的隐藏显示
+                                                                        $('.admin-side-toggle').on('click', function () {
+                                                                            console.log($('#admin-side').width());
+                                                                            console.log($('#admin-body').css('left'));
+                                                                            var sideWidth = $('#admin-side').width();
+                                                                            if (sideWidth === 180) {
+                                                                                $('#admin-side').width(0);
+                                                                                $('#admin-body').css('left', '0');
+                                                                                $(".admin-side-toggle").html("<i class='fa fa-chevron-right' aria-hidden='true'></i>");
+
+                                                                            } else {
+                                                                                $('#admin-side').width(180);
+                                                                                $('#admin-body').css('left', '180px');
+                                                                                $(".admin-side-toggle").html("<i class='fa fa-chevron-left' aria-hidden='true'></i>");
+                                                                            }
+
+                                                                        });
+
+                                                                        //全屏控制
+                                                                        $('.admin-side-full').on('click', function () {
+                                                                            if (!$(this).attr('fullscreen')) {
+                                                                                $(this).attr('fullscreen', 'true');
+                                                                                //全屏操作
+                                                                                var de = document.documentElement;
+                                                                                if (de.requestFullscreen) {
+                                                                                    de.requestFullscreen();
+                                                                                } else if (de.mozRequestFullScreen) {
+                                                                                    de.mozRequestFullScreen();
+                                                                                } else if (de.webkitRequestFullScreen) {
+                                                                                    de.webkitRequestFullScreen();
+                                                                                }
+                                                                            } else {
+                                                                                $(this).removeAttr('fullscreen')
+                                                                                //退出全屏
+                                                                                var de = document;
+                                                                                if (de.exitFullscreen) {
+                                                                                    de.exitFullscreen();
+                                                                                } else if (de.mozCancelFullScreen) {
+                                                                                    de.mozCancelFullScreen();
+                                                                                } else if (de.webkitCancelFullScreen) {
+                                                                                    de.webkitCancelFullScreen();
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                        //手机设备的简单适配
+                                                                        var treeMobile = $('.site-tree-mobile'),
+                                                                            shadeMobile = $('.site-mobile-shade');
+                                                                        treeMobile.on('click', function () {
+                                                                            $('body').addClass('site-mobile');
+                                                                        });
+                                                                        shadeMobile.on('click', function () {
+                                                                            $('body').removeClass('site-mobile');
+                                                                        });
+
+                                                                    }
+                                                                    ///
+
                                                                     goto_affair(json_data.data[0].PK_Affair_NO);
                                                                 } else {
                                                                     alert('未获取到有效的操作员事务操作列表');
@@ -106,6 +168,11 @@
 
 //初始化页面
 function init(){
+    freshstatusflag=false;
+    if(timeid!=null){
+        clearTimeout(timeid);
+        timeid=null;
+    }
     $('#iframeId').hide();
     $('#admin-navbar-side ul li').remove();
     $('#batch_year').html('');
@@ -119,6 +186,11 @@ function init(){
 
 //清除学生状态区域
 function clear_student_status(){
+    freshstatusflag=false;//停止刷新事务状态
+    if(timeid!=null){
+        clearTimeout(timeid);
+        timeid=null;
+    }
     $('#xs_xh').html('');
     $('#xs_xm').html('');
     $('#xs_sb').html('');
@@ -136,6 +208,13 @@ function clear_student_status(){
 //装入某迎新事务操作界面
 function goto_affair(PK_Affair_NO) {
     try {
+        freshstatusflag=false;//停止刷新事务状态
+        if(timeid!=null){
+            clearTimeout(timeid);
+            timeid=null;
+        }
+        $("#find_xh").val('');
+
         var pk_batch_no = $("#pk_batch_no").val();
         var pk_staff_no = $("#pk_staff_no").val();
 
@@ -186,9 +265,15 @@ function goto_affair(PK_Affair_NO) {
     }
 }
 
-//更加学号查询学生
+//根据学号查询学生，完成界面数据装入
 function find(){
     try{
+        freshstatusflag=false;//停止刷新事务状态
+        if(timeid!=null){
+            clearTimeout(timeid);
+            timeid=null;
+        }
+
         var pk_sno = $("#find_xh").val();
         if (pk_sno == null || $.trim(pk_sno).length == 0) {
             alert("请输入学号");
@@ -294,6 +379,8 @@ function find(){
                                                                                                     var url=json_data.data.OPER_URL;
                                                                                                     $('#iframeId').attr('src',url);//添加操作地址
                                                                                                     $('#iframeId').show();
+                                                                                                    freshstatusflag=true;//定时查询事务操作是否完成标志
+                                                                                                    freshstatus(pk_affair_no,pk_sno);//查询事务操作是否完成
                                                                                                 } else {
                                                                                                     alert(json_data.message);
                                                                                                 }
@@ -359,5 +446,53 @@ function find(){
     }
     catch (e) {
         alert("错误：" + e.message);
+    }
+}
+
+//定时查询并所需事务是否完成操作
+function freshstatus(pk_affair_no,pk_sno)
+{
+    if(freshstatusflag){
+        console.log(pk_affair_no+'  '+pk_sno);
+        //NO:17 获取某学生现场迎新事务列表
+        $.ajax({
+            url: "appserver/manager.aspx",
+            type: "get",
+            dataType: "text",
+            data: { "cs": "get_schoolaffairlog_detail_list","pk_sno": pk_sno },
+            success: function (data) {
+                var json_data = JSON.parse(data);
+                if (json_data.code == 'success') {
+                    var finishflag=false;
+                    if(json_data.data!=null && json_data.data.length>0){
+                        var log=json_data.data[0];
+                        var detail=json_data.data[1];
+                        var status='';
+
+                        for(var i=0;i<log.length;i++){
+                            if($.trim(log[i].FK_Affair_NO)== $.trim(pk_affair_no) && $.trim(log[i].Log_Status)=='已完成'){
+                                finishflag=true;
+                            }
+                            var Affair_Name=detail[i].Affair_Name;
+                            var Log_Status=log[i].Log_Status;
+                            status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
+                        }
+                        $('#affair_list').html(status);//学生事务状态列表
+                    }
+                }
+                if(finishflag==false){
+                    //要求继续刷新事务状态
+                    timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 800);
+                }else{
+                    alert('已完成操作');
+                    freshstatusflag=false;
+                    timeid=null;
+                }
+            },
+            error: function (data) {
+                //要求继续刷新事务状态
+                timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 800);
+            }
+        });
     }
 }

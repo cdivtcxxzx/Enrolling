@@ -903,7 +903,7 @@ public class batch
 
     ///功能名称： 获取学生事务操作列表
     ///功能描述：
-    ///根据“学号”查询所在批次中被授权“迎新事务”的“事务性质”为“交互性”，
+    ///根据“学号”查询所在批次中被授权“迎新事务”的“事务性质”为“交互性”和"状态性"，
     ///“事务类型”为“学生”或“两者”的数据。否则返回null。
     ///编写人：胡元
     ///参数：
@@ -923,7 +923,7 @@ public class batch
             
             string sqlstr = "select c.* from vw_fresh_student_base a,Fresh_Batch b,Fresh_Affair c "+
                             " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO "+
-                            " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
+                            " and  a.PK_SNO=@cs1 and (upper(c.Affair_CHAR)='INTERACTIVE' or upper(c.Affair_CHAR)='STATUS') and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
             if (dt != null && dt.Rows.Count>0)
             {
@@ -1051,33 +1051,40 @@ public class batch
                     if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length!=0)
                     {
                         /*Call_Function格式，web服务器url地址?方法名称，例如：http://localhost:3893/test/WebService.asmx?test_Log_Status*/
-                        string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                        string[] parts = url.Split('?');
-                        if (parts.Length != 2)
+                        try
                         {
-                            throw new Exception("Call_Function format error");
-                        }
-
-                        url = parts[0];
-                        string method = parts[1];
-                        string[] args = new string[1];
-                        args[0] = row.FK_SNO;
-                        object data = WSHelper.InvokeWebService(url, method, args);
-                        string jg = data.ToString().Trim();
-                        row.Log_Status = jg.Trim();
-
-                        if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length!=0 && jg.Trim() == "已完成")
-                        {
-                            sqlstr = "update Fresh_Affair_Log set Log_Status='已完成',Updater='system',Update_DT=getdate() where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
-                            Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()));
-                        }else
-                            if ((row.PK_Affair_Log == null || row.PK_Affair_Log.Trim().Length == 0) && jg.Trim() == "已完成")
+                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string[] parts = url.Split('?');
+                            if (parts.Length != 2)
                             {
-                                sqlstr = "insert into Fresh_Affair_Log (PK_Affair_Log,FK_SNO,FK_Affair_NO,Log_Status,Creater,Create_DT,Updater,Update_DT) values ("+
-                                        "  newid(),@cs1,@cs2,'已完成','system',getdate(),'system',getdate())";
+                                throw new Exception("函数格式错误");
+                            }
+
+                            url = parts[0];
+                            string method = parts[1];
+                            string[] args = new string[1];
+                            args[0] = row.FK_SNO;
+                            object data = WSHelper.InvokeWebService(url, method, args);
+                            string jg = data.ToString().Trim();
+                            row.Log_Status = jg.Trim();
+
+                            if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0 && jg.Trim() == "已完成")
+                            {
+                                sqlstr = "update Fresh_Affair_Log set Log_Status='已完成',Updater='system',Update_DT=getdate() where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
                                 Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()));
                             }
-                        
+                            else
+                                if ((row.PK_Affair_Log == null || row.PK_Affair_Log.Trim().Length == 0) && jg.Trim() == "已完成")
+                                {
+                                    sqlstr = "insert into Fresh_Affair_Log (PK_Affair_Log,FK_SNO,FK_Affair_NO,Log_Status,Creater,Create_DT,Updater,Update_DT) values (" +
+                                            "  newid(),@cs1,@cs2,'已完成','system',getdate(),'system',getdate())";
+                                    Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()));
+                                }
+                        }
+                        catch (Exception ex1)
+                        {
+                            row.Log_Status = "状态回调函数错误："+ex1.Message;
+                        }                                                
                     }
                     result.Add(row);
                 }
@@ -1121,7 +1128,7 @@ public class batch
                             "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
                             "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
                             " from vw_fresh_student_base a,Fresh_Batch b," +
-                            "Fresh_Affair c LEFT JOIN Fresh_Affair_Log d on c.PK_Affair_NO=d.FK_Affair_NO " +
+                            "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
                             " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
                             " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
@@ -1142,33 +1149,39 @@ public class batch
 
                     if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
                     {
-                        string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                        string[] parts = url.Split('?');
-                        if (parts.Length != 2)
+                        try
                         {
-                            throw new Exception("Call_Function format error");
-                        }
-                        url = parts[0];
-                        string method = parts[1];
-                        string[] args = new string[1];
-                        args[0] = row.FK_SNO;
-                        object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
-                        string jg = data.ToString().Trim();
-                        row.Log_Status = jg.Trim();
-
-                        if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0 && jg.Trim() == "已完成")
-                        {
-                            sqlstr = "update Fresh_Affair_Log set Log_Status='已完成',Updater='system',Update_DT=getdate() where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
-                            Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()));
-                        }
-                        else
-                            if ((row.PK_Affair_Log == null || row.PK_Affair_Log.Trim().Length == 0) && jg.Trim() == "已完成")
+                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string[] parts = url.Split('?');
+                            if (parts.Length != 2)
                             {
-                                sqlstr = "insert into Fresh_Affair_Log (PK_Affair_Log,FK_SNO,FK_Affair_NO,Log_Status,Creater,Create_DT,Updater,Update_DT) values (" +
-                                        "  newid(),@cs1,@cs2,'已完成','system',getdate(),'system',getdate())";
+                                throw new Exception("函数格式错误");
+                            }
+                            url = parts[0];
+                            string method = parts[1];
+                            string[] args = new string[1];
+                            args[0] = row.FK_SNO;
+                            object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
+                            string jg = data.ToString().Trim();
+                            row.Log_Status = jg.Trim();
+
+                            if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0 && jg.Trim() == "已完成")
+                            {
+                                sqlstr = "update Fresh_Affair_Log set Log_Status='已完成',Updater='system',Update_DT=getdate() where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
                                 Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()));
                             }
-
+                            else
+                                if ((row.PK_Affair_Log == null || row.PK_Affair_Log.Trim().Length == 0) && jg.Trim() == "已完成")
+                                {
+                                    sqlstr = "insert into Fresh_Affair_Log (PK_Affair_Log,FK_SNO,FK_Affair_NO,Log_Status,Creater,Create_DT,Updater,Update_DT) values (" +
+                                            "  newid(),@cs1,@cs2,'已完成','system',getdate(),'system',getdate())";
+                                    Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()));
+                                }
+                        }
+                        catch (Exception ex1)
+                        {
+                            row.Log_Status = "状态回调函数错误："+ex1.Message;
+                        } 
                     }
                     result.Add(row);
                 }

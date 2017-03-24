@@ -71,15 +71,18 @@
 				<div class="layui-side-scroll" id="admin-navbar-side" lay-filter="side">
                     <ul class="layui-nav layui-nav-tree">
                         <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
-                        <li class="layui-nav-item"><a href="#">导航1</a></li>
+                        
 
                     </ul>
+                    <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div>
 				</div>
 			</div>
+        <style> .xszp img{
+                 width:100%;
+                 margin-left:-20px;
+                 max-width:110px;
+                 max-height:360px;
+             }</style>
 			<div class="layui-body" style="bottom: 0;" id="admin-body">
                 <div style="width:500px;height:100%;float:left; margin-left:10px;margin-right:10px;">
                     <blockquote class="layui-elem-quote">
@@ -166,7 +169,7 @@
                   
 					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
 						<div class="layui-tab-item layui-show"  id="czmain" runat="server" >
-							<iframe id="iframeId"  src="/view/xszz-index.aspx"></iframe>
+							<iframe id="iframeId"  src="#"></iframe>
 						</div>
 					</div>
 				</div>
@@ -178,17 +181,16 @@
 			<div class="site-mobile-shade"></div>
             <!--前端框架ＪＳ及弹出层ＪＳ-->
 			<script type="text/javascript" src="plugins/layui/layui.js"></script>           
-        <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js?v=20160917"></script>
-        			<script type="text/javascript" src="../b_js/app/manager.js"></script>
-
+       
              <!--前端框架ＪＳ及弹出层ＪＳＯＶＥＲ-->
-             <!--页面自动生成二维码ＪＳ　
-			<script type="text/javascript" src="plugins/jquery.qrcode.min.js"></script>
-             页面自动生成二维码ＪＳＯＶＥＲ-->
+             <!--页面自动生成二维码ＪＳ　-->
+			
+            <script type="text/javascript" src="plugins/jquery.qrcode.min.js"></script>
+             <!--页面自动生成二维码ＪＳＯＶＥＲ-->
 			<script>
 			    //忽略所有JS错误
-			    //function killerrors() { return true; }
-			    //window.onerror = killerrors;
+			    function killerrors() { return true; }
+			    window.onerror = killerrors;
 
 			    //忽略错误结束,加载页面JS执行
 
@@ -213,17 +215,17 @@
 			        //设置navbar
 			        //navbar.set({
 			        //    elem: '#admin-navbar-side',
-			        //    url: 'treemenu.aspx'
+			        //    url: 'js/czymenu.txt'
 			        //});
 			        //渲染navbar
-			        navbar.render();
+			        //navbar.render();
 			        var $body = $('.admin-nav-card');
 			        var $tabs = $body.children('ul.layui-tab-title');
 			        var $contents = $body.children('div.layui-tab-content');
 			        var tabFilter = 'admin-tab';
 			        //监听按钮事件
 			        var btnSearch = $('#button2').on('click', function () {
-			            console.log('s');
+			           // console.log('s');
 
 			            //查询学生信息，更新
 
@@ -361,10 +363,12 @@
 			    //$('#code').qrcode(window.location.href);
 
                 //运行管理员页面业务代码
-			    load();
+			   // load();
 
 			</script>
-
+       <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js?v=20160917"></script>
+        			<script type="text/javascript" src="../b_js/app/manager.js"></script>
+        <script> //load();</script>
 		</div>
   
 </form>  
