@@ -50,16 +50,7 @@
       <Column Name="DT_Initial" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="FK_Class_NO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="Password" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="Base_STU_Fresh_STU" Member="Fresh_STU" ThisKey="PK_SNO" OtherKey="PK_SNO" Type="Fresh_STU" Cardinality="One" />
       <Association Name="Fresh_SPE_Base_STU" Member="Fresh_SPE" AccessModifier="Internal" ThisKey="FK_SPE_Code" OtherKey="PK_SPE" Type="Fresh_SPE" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Fresh_STU" Member="Fresh_STUs">
-    <Type Name="Fresh_STU">
-      <Column Name="PK_SNO" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FK_Fresh_Batch" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FK_Class_NO" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="Base_STU_Fresh_STU" Member="Base_STU" AccessModifier="Internal" ThisKey="PK_SNO" OtherKey="PK_SNO" Type="Base_STU" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Base_College" Member="Base_Colleges">

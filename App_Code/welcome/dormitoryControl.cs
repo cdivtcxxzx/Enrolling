@@ -8,7 +8,7 @@ using model;
 /// </summary>
 public class dormitoryControl
 {
-    protected static dormitoryModelDataContext DDC = new dormitoryModelDataContext();
+    public static dormitoryModelDataContext DDC = new dormitoryModelDataContext();
 	public dormitoryControl()
 	{
 		
@@ -20,17 +20,18 @@ public class dormitoryControl
     /// <param name="FK_SNO">学号</param>
     /// <param name="Updater">操作人员</param>
     /// <returns>添加成功返回"1",否则返回错误信息</returns>
-    public static string Add_Fresh_Bed_Log(string FK_Bed_NO,string FK_SNO,string Updater )
+    public static string Add_Fresh_Bed_Log(string bed_NO,string sno,string updater )
     {
-        Fresh_Bed_Log fresh_bed = new Fresh_Bed_Log
+        model.Fresh_Bed_Log fresh_bed = new model.Fresh_Bed_Log
         {
             PK_Bed_Log = System.Guid.NewGuid().ToString(),
-            FK_Bed_NO = FK_Bed_NO,
-            FK_SNO = FK_SNO,
-            Updater = Updater,
+            FK_Bed_NO = bed_NO,
+            FK_SNO = sno,
+            Updater = updater,
             Update_DT = DateTime.Now
         };
         DDC.Fresh_Bed_Logs.InsertOnSubmit(fresh_bed);
+        
         try
         {
             DDC.SubmitChanges();
@@ -41,6 +42,5 @@ public class dormitoryControl
 
             return e.Message.ToString();
         }
-        
     }
 }
