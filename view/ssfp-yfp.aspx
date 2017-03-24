@@ -25,6 +25,7 @@
             <div class="col-xs-12 col-sm-8">
                 <div class="form-group">
                     <label for="room_type">房间类型</label>
+
                     <asp:DropDownList ID="room_type" runat="server" CssClass="form-control" OnSelectedIndexChanged="DropDownlistChange" AutoPostBack="true">
                         <asp:ListItem Value="-1">请选择房间类型</asp:ListItem>
                         <asp:ListItem Value="1">2</asp:ListItem>

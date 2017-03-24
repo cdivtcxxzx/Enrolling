@@ -118,6 +118,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             flo_numb.DataTextField = "Floor";
             flo_numb.DataValueField = "Floor";
             flo_numb.DataBind();
+
         }
         
 
