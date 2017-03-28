@@ -172,4 +172,12 @@ public class WebService : System.Web.Services.WebService {
         return express;
     }
 
+
+    [WebMethod]
+    public string run_remote_webservice()
+    {
+        Financial.FinancialWSSoapClient s = new Financial.FinancialWSSoapClient();
+        Financial.Fee[] data=s.GetFee("yxxt");
+        return JsonConvert.SerializeObject(data);
+    }
 }
