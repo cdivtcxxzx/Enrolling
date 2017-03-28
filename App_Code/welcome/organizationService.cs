@@ -9,7 +9,6 @@ using model;
 /// bool 操作员身份是否有效
 /// 操作员 获取某操作员数据
 /// 学生 获取某学生数据
-/// 迎新学生 根据学号获取迎新学生数据
 /// 专业 获取某专业数据
 /// 班级 获取某班级数据
 /// bool 学生身份是否有效
@@ -123,20 +122,6 @@ public static class organizationService
             return true;
         else
             return false;
-    }
-
-    /// <summary>
-    /// 根据“学号”返回迎新学生数据，否则返回null。
-    /// 编写人：陈智秋
-    /// 创建：2017.3.20
-    /// 更新：无
-    /// 版本：v0.0.1
-    /// </summary>
-    /// <param name="sno"></param>
-    /// <returns></returns>
-    public static Fresh_STU getFreshStu(string sno)
-    {
-        return oDC.Fresh_STUs.Where(s => s.PK_SNO == sno).SingleOrDefault();
     }
 
     /// <summary>

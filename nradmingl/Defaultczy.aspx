@@ -79,6 +79,7 @@
 			</div>
         <style> .xszp img{
                  width:100%;
+                 border:2px solid #ffffff;
                  margin-left:-20px;
                  max-width:110px;
                  max-height:360px;

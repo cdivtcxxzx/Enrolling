@@ -42,9 +42,6 @@ namespace model
     partial void InsertBase_STU(Base_STU instance);
     partial void UpdateBase_STU(Base_STU instance);
     partial void DeleteBase_STU(Base_STU instance);
-    partial void InsertFresh_STU(Fresh_STU instance);
-    partial void UpdateFresh_STU(Fresh_STU instance);
-    partial void DeleteFresh_STU(Fresh_STU instance);
     partial void InsertBase_College(Base_College instance);
     partial void UpdateBase_College(Base_College instance);
     partial void DeleteBase_College(Base_College instance);
@@ -115,14 +112,6 @@ namespace model
 			get
 			{
 				return this.GetTable<Base_STU>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Fresh_STU> Fresh_STUs
-		{
-			get
-			{
-				return this.GetTable<Fresh_STU>();
 			}
 		}
 		
@@ -955,8 +944,6 @@ namespace model
 		
 		private string _Password;
 		
-		private EntityRef<Fresh_STU> _Fresh_STU;
-		
 		private EntityRef<Fresh_SPE> _Fresh_SPE;
 		
     #region 可扩展性方法定义
@@ -991,7 +978,6 @@ namespace model
 		
 		public Base_STU()
 		{
-			this._Fresh_STU = default(EntityRef<Fresh_STU>);
 			this._Fresh_SPE = default(EntityRef<Fresh_SPE>);
 			OnCreated();
 		}
@@ -1240,35 +1226,6 @@ namespace model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_STU_Fresh_STU", Storage="_Fresh_STU", ThisKey="PK_SNO", OtherKey="PK_SNO", IsUnique=true, IsForeignKey=false)]
-		public Fresh_STU Fresh_STU
-		{
-			get
-			{
-				return this._Fresh_STU.Entity;
-			}
-			set
-			{
-				Fresh_STU previousValue = this._Fresh_STU.Entity;
-				if (((previousValue != value) 
-							|| (this._Fresh_STU.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Fresh_STU.Entity = null;
-						previousValue.Base_STU = null;
-					}
-					this._Fresh_STU.Entity = value;
-					if ((value != null))
-					{
-						value.Base_STU = this;
-					}
-					this.SendPropertyChanged("Fresh_STU");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_SPE_Base_STU", Storage="_Fresh_SPE", ThisKey="FK_SPE_Code", OtherKey="PK_SPE", IsForeignKey=true)]
 		internal Fresh_SPE Fresh_SPE
 		{
@@ -1299,157 +1256,6 @@ namespace model
 						this._FK_SPE_Code = default(string);
 					}
 					this.SendPropertyChanged("Fresh_SPE");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fresh_STU")]
-	public partial class Fresh_STU : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _PK_SNO;
-		
-		private string _FK_Fresh_Batch;
-		
-		private string _FK_Class_NO;
-		
-		private EntityRef<Base_STU> _Base_STU;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPK_SNOChanging(string value);
-    partial void OnPK_SNOChanged();
-    partial void OnFK_Fresh_BatchChanging(string value);
-    partial void OnFK_Fresh_BatchChanged();
-    partial void OnFK_Class_NOChanging(string value);
-    partial void OnFK_Class_NOChanged();
-    #endregion
-		
-		public Fresh_STU()
-		{
-			this._Base_STU = default(EntityRef<Base_STU>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PK_SNO", DbType="NVarChar(20) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string PK_SNO
-		{
-			get
-			{
-				return this._PK_SNO;
-			}
-			set
-			{
-				if ((this._PK_SNO != value))
-				{
-					if (this._Base_STU.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPK_SNOChanging(value);
-					this.SendPropertyChanging();
-					this._PK_SNO = value;
-					this.SendPropertyChanged("PK_SNO");
-					this.OnPK_SNOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Fresh_Batch", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string FK_Fresh_Batch
-		{
-			get
-			{
-				return this._FK_Fresh_Batch;
-			}
-			set
-			{
-				if ((this._FK_Fresh_Batch != value))
-				{
-					this.OnFK_Fresh_BatchChanging(value);
-					this.SendPropertyChanging();
-					this._FK_Fresh_Batch = value;
-					this.SendPropertyChanged("FK_Fresh_Batch");
-					this.OnFK_Fresh_BatchChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Class_NO", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string FK_Class_NO
-		{
-			get
-			{
-				return this._FK_Class_NO;
-			}
-			set
-			{
-				if ((this._FK_Class_NO != value))
-				{
-					this.OnFK_Class_NOChanging(value);
-					this.SendPropertyChanging();
-					this._FK_Class_NO = value;
-					this.SendPropertyChanged("FK_Class_NO");
-					this.OnFK_Class_NOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_STU_Fresh_STU", Storage="_Base_STU", ThisKey="PK_SNO", OtherKey="PK_SNO", IsForeignKey=true)]
-		internal Base_STU Base_STU
-		{
-			get
-			{
-				return this._Base_STU.Entity;
-			}
-			set
-			{
-				Base_STU previousValue = this._Base_STU.Entity;
-				if (((previousValue != value) 
-							|| (this._Base_STU.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Base_STU.Entity = null;
-						previousValue.Fresh_STU = null;
-					}
-					this._Base_STU.Entity = value;
-					if ((value != null))
-					{
-						value.Fresh_STU = this;
-						this._PK_SNO = value.PK_SNO;
-					}
-					else
-					{
-						this._PK_SNO = default(string);
-					}
-					this.SendPropertyChanged("Base_STU");
 				}
 			}
 		}

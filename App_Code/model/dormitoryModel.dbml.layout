@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="dormitoryModel">
+  <DataContextMoniker Name="/dormitoryModelDataContext" />
+  <nestedChildShapes>
+    <classShape Id="ed5af5c9-7e57-42df-8c94-a5ea9c92e7dd" absoluteBounds="2, 1.125, 2, 1.7220992024739581">
+      <DataClassMoniker Name="/dormitoryModelDataContext/Fresh_Bed_Log" />
+      <nestedChildShapes>
+        <elementListCompartment Id="153bc4d3-465e-4532-87fa-3c0f4741bc8b" absoluteBounds="2.0149999999999997, 1.585, 1.9700000000000002, 1.1620992024739583" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
