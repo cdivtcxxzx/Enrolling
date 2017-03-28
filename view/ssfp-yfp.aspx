@@ -75,6 +75,7 @@
         </div>
         <asp:HiddenField ID="hidenClassNo" runat="server" />
         <asp:HiddenField ID="hidenGender" runat="server" />
+        <asp:HiddenField ID="hiddenSno" runat="server" />
     </form>
 </body>
 </html>

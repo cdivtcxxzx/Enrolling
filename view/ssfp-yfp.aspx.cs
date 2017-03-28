@@ -30,9 +30,10 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
                     Response.Write("error");
                     return;
                 }
-                //缓存于页面 班级编码、性别
+                //缓存于页面 班级编码、性别、学号
                 hidenClassNo.Value = baseStu.FK_Class_NO;
                 hidenGender.Value = baseStu.Gender_Code;
+                hiddenSno.Value = SNO;
                 //20学生是否已分配床位
                 if (!dormitory.isbillet(SNO))
                 {//未分配
@@ -44,12 +45,29 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
                     room_type.DataTextField = "Type_Name";
                     room_type.DataValueField = "Type_NO";
                     room_type.DataBind();
+                    room_type.Items.Insert(0, new ListItem("请选择房间类型","-1"));
 
+                    //房间类型照片
+                    shuseImg.Src = listEnableRoomByClass[0].Bed_Layout;
                 }
                 else
                 {
                     //已分配(不能修改)
-                    
+                    //21学生已分配床位
+                    List<Fresh_Bed_Log> listbilletdata = dormitory.listbilletdata(SNO);
+                    //22获取床位数据
+                    List<Fresh_Bed> freshBed = dormitory.listgetbed(listbilletdata[0].FK_Bed_No);
+                    //23获取某房间数据
+                    List<Fresh_Room> freshRoom = dormitory.listgetroom(freshBed[0].FK_Room_NO);
+                    //24获取某宿舍数据
+                    List<Fresh_Dorm> freshDorm = dormitory.listgetdorm(freshRoom[0].FK_Dorm_NO);
+                    //25获取某床位位置数据
+                    List<Fresh_Bed_Type> listgetbedtype = dormitory.listgetbedtype(freshBed[0].FK_Bed_Type);
+                    //26获取某房间类型数据
+                    List<Fresh_Room_Type> listgetroomtype = dormitory.listgetroomtype(freshRoom[0].FK_Room_Type);
+                    //27获取某收费款项条目数据
+
+
                 }
 
 
@@ -73,6 +91,8 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             bed_numb.DataTextField = "Bed_Index";
             bed_numb.DataValueField = "Bed_Index";
             bed_numb.DataBind();
+            bed_numb.Items.Insert(0, new ListItem("请选择床位位置","-1"));
+            
         }    
     }
 
@@ -95,9 +115,10 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             dorm_numb.DataTextField = "Name";
             dorm_numb.DataValueField = "Dorm_NO";
             dorm_numb.DataBind();
-
+            dorm_numb.Items.Insert(0, new ListItem("请选择宿舍号", "-1"));
             //todo 校区、类型、宿舍照片
-
+            xiaoqu.InnerText = listDorm[0].Campus_NO;
+            shuse.InnerText = listDorm[0].Name;
         }        
     }
 
@@ -118,7 +139,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             flo_numb.DataTextField = "Floor";
             flo_numb.DataValueField = "Floor";
             flo_numb.DataBind();
-
+            flo_numb.Items.Insert(0, new ListItem("请选择楼层", "-1"));
         }
         
 
@@ -140,11 +161,22 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
         room_numb.DataTextField = "Room_NO";
         room_numb.DataValueField = "Room_NO";
         room_numb.DataBind();
+        room_numb.Items.Insert(0, new ListItem("请选择房间号", "-1"));
     }
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
         //提交表单信息
-        
+        //获取房间类型编号、床位位置编号、宿舍号、班级号、性别、学号、房间编号
+        string roomTypeNo = room_type.SelectedValue.ToString();
+        string bed_index = bed_numb.SelectedValue.ToString();
+        string dorm_no = dorm_numb.SelectedValue.ToString();
+        string classNo = hidenClassNo.Value;
+        string gender = hidenGender.Value;
+        string xh = hiddenSno.Value;
+        string room_no = room_numb.SelectedValue.ToString();
+        //List<Fresh_Bed_Class_Log> updateFresh_Bed_Class_Log
+        dormitory.updateFresh_Bed_Class_Log(xh, dorm_no, room_no, bed_index, "none");
+        Response.Write("选择成功！");
     }
 }
