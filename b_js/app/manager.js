@@ -304,69 +304,70 @@ function find(){
                                 var json_data = JSON.parse(data);
                                 if (json_data.code == 'success') {
                                     if(json_data.data==true){
-                                        //NO:13 校验学生事务操作条件
+                                        clear_student_status();//清除历史信息
+                                        //NO:14&15&16 获取学生数据
                                         $.ajax({
                                             url: "appserver/manager.aspx",
                                             type: "get",
                                             dataType: "text",
-                                            data: { "cs": "check_student_affair_condition", "pk_affair_no": pk_affair_no,"pk_sno": pk_sno},
+                                            data: { "cs": "get_student","pk_sno": pk_sno},
                                             success: function (data) {
                                                 var json_data = JSON.parse(data);
                                                 if (json_data.code == 'success') {
-                                                    if(json_data.data==true){
-                                                        clear_student_status();//清除历史信息
-                                                        //NO:14&15&16 获取学生数据
+                                                    if(json_data.data!=null && json_data.data.length>0){
+                                                        for(var i=0;i<json_data.data.length;i++){
+                                                            if(json_data.data[i].name=='student'){
+                                                                $('#xs_xh').html(json_data.data[i].data.PK_SNO);
+                                                                $('#xs_xm').html(json_data.data[i].data.Name);
+                                                                $('#xs_sb').html(json_data.data[i].data.Gender_Code);
+                                                                $('#xs_sfz').html(json_data.data[i].data.ID_NO);
+                                                            }
+                                                            if(json_data.data[i].name=='spe'){
+                                                                $('#xs_xl').html(json_data.data[i].data.EDU_Level_Code);
+                                                                $('#xs_xy').html(json_data.data[i].data.FK_College_Code);
+                                                                $('#xs_zy').html(json_data.data[i].data.SPE_Name);
+                                                                $('#xs_nj').html(json_data.data[i].data.Year);
+                                                                $('#xs_bj').html('');
+                                                                $('#xs_bzr').html('');
+                                                            }
+                                                            if(json_data.data[i].name=='class'){
+                                                                $('#xs_bj').html(json_data.data[i].data.Name);
+                                                            }
+                                                            if(json_data.data[i].name=='counseller'){
+                                                                $('#xs_bzr').html(json_data.data[i].data.name);
+                                                                $('#xs_bzrdhhm').html(json_data.data[i].data.phone);
+                                                            }
+                                                        }
+                                                        //NO:17 获取某学生现场迎新事务列表
                                                         $.ajax({
                                                             url: "appserver/manager.aspx",
                                                             type: "get",
                                                             dataType: "text",
-                                                            data: { "cs": "get_student","pk_sno": pk_sno},
+                                                            data: { "cs": "get_schoolaffairlog_detail_list","pk_sno": pk_sno },
                                                             success: function (data) {
                                                                 var json_data = JSON.parse(data);
                                                                 if (json_data.code == 'success') {
                                                                     if(json_data.data!=null && json_data.data.length>0){
-                                                                        for(var i=0;i<json_data.data.length;i++){
-                                                                            if(json_data.data[i].name=='student'){
-                                                                                $('#xs_xh').html(json_data.data[i].data.PK_SNO);
-                                                                                $('#xs_xm').html(json_data.data[i].data.Name);
-                                                                                $('#xs_sb').html(json_data.data[i].data.Gender_Code);
-                                                                                $('#xs_sfz').html(json_data.data[i].data.ID_NO);
-                                                                            }
-                                                                            if(json_data.data[i].name=='spe'){
-                                                                                $('#xs_xl').html(json_data.data[i].data.EDU_Level_Code);
-                                                                                $('#xs_xy').html(json_data.data[i].data.FK_College_Code);
-                                                                                $('#xs_zy').html(json_data.data[i].data.SPE_Name);
-                                                                                $('#xs_nj').html(json_data.data[i].data.Year);
-                                                                                $('#xs_bj').html('');
-                                                                                $('#xs_bzr').html('');
-                                                                            }
-                                                                            if(json_data.data[i].name=='class'){
-                                                                                $('#xs_bj').html(json_data.data[i].data.Name);
-                                                                            }
-                                                                            if(json_data.data[i].name=='counseller'){
-                                                                                $('#xs_bzr').html(json_data.data[i].data.name);
-                                                                                $('#xs_bzrdhhm').html(json_data.data[i].data.phone);
-                                                                            }
+                                                                        var log=json_data.data[0];
+                                                                        var detail=json_data.data[1];
+                                                                        var status='';
+                                                                        for(var i=0;i<log.length;i++){
+                                                                            var Affair_Name=detail[i].Affair_Name;
+                                                                            var Log_Status=log[i].Log_Status;
+                                                                            status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
                                                                         }
-                                                                        //NO:17 获取某学生现场迎新事务列表
+                                                                        $('#affair_list').html(status);//学生事务状态列表
+
+                                                                        //NO:13 校验学生事务操作条件
                                                                         $.ajax({
                                                                             url: "appserver/manager.aspx",
                                                                             type: "get",
                                                                             dataType: "text",
-                                                                            data: { "cs": "get_schoolaffairlog_detail_list","pk_sno": pk_sno },
+                                                                            data: { "cs": "check_student_affair_condition", "pk_affair_no": pk_affair_no,"pk_sno": pk_sno},
                                                                             success: function (data) {
                                                                                 var json_data = JSON.parse(data);
                                                                                 if (json_data.code == 'success') {
-                                                                                    if(json_data.data!=null && json_data.data.length>0){
-                                                                                        var log=json_data.data[0];
-                                                                                        var detail=json_data.data[1];
-                                                                                        var status='';
-                                                                                        for(var i=0;i<log.length;i++){
-                                                                                            var Affair_Name=detail[i].Affair_Name;
-                                                                                            var Log_Status=log[i].Log_Status;
-                                                                                            status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
-                                                                                        }
-                                                                                        $('#affair_list').html(status);//学生事务状态列表
+                                                                                    if(json_data.data==true){
                                                                                         //NO:18 获取某迎新事务操作
                                                                                         $.ajax({
                                                                                             url: "appserver/manager.aspx",
@@ -389,6 +390,8 @@ function find(){
                                                                                                 alert("错误");
                                                                                             }
                                                                                         });
+                                                                                    }else{
+                                                                                        alert('学号为'+pk_sno+' 的同学目前不具备操作当前事务的条件，请检查当前事务的前置条件是否具备')
                                                                                     }
                                                                                 } else {
                                                                                     alert(json_data.message);
@@ -398,8 +401,6 @@ function find(){
                                                                                 alert("错误");
                                                                             }
                                                                         });
-                                                                    }else{
-                                                                        alert('无法获取学号为'+pk_sno+' 的同学详细信息')
                                                                     }
                                                                 } else {
                                                                     alert(json_data.message);
@@ -410,7 +411,7 @@ function find(){
                                                             }
                                                         });
                                                     }else{
-                                                        alert('学号为'+pk_sno+' 的同学目前不具备操作当前事务的条件，请检查当前事务的前置条件是否具备')
+                                                        alert('无法获取学号为'+pk_sno+' 的同学详细信息')
                                                     }
                                                 } else {
                                                     alert(json_data.message);
