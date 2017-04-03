@@ -48,7 +48,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
                     room_type.Items.Insert(0, new ListItem("请选择房间类型","-1"));
 
                     //房间类型照片
-                    shuseImg.Src = listEnableRoomByClass[0].Bed_Layout;
+                    //shuseImg.Src = listEnableRoomByClass[0].Bed_Layout;
                 }
                 else
                 {
