@@ -48,13 +48,15 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
                     room_type.Items.Insert(0, new ListItem("请选择房间类型","-1"));
 
                     //房间类型照片
-                    shuseImg.Src = listEnableRoomByClass[0].Bed_Layout;
+                    //shuseImg.Src = listEnableRoomByClass[0].Bed_Layout;
                 }
                 else
                 {
                     //已分配(不能修改)
+
                     //21学生已分配床位
                     List<Fresh_Bed_Log> listbilletdata = dormitory.listbilletdata(SNO);
+
                     //22获取床位数据
                     List<Fresh_Bed> freshBed = dormitory.listgetbed(listbilletdata[0].FK_Bed_No);
                     //23获取某房间数据
@@ -116,7 +118,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             dorm_numb.DataValueField = "Dorm_NO";
             dorm_numb.DataBind();
             dorm_numb.Items.Insert(0, new ListItem("请选择宿舍号", "-1"));
-            //todo 校区、类型、宿舍照片
+            //todo 校区、类型
             xiaoqu.InnerText = listDorm[0].Campus_NO;
             shuse.InnerText = listDorm[0].Name;
         }        
@@ -175,7 +177,6 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
         string gender = hidenGender.Value;
         string xh = hiddenSno.Value;
         string room_no = room_numb.SelectedValue.ToString();
-        //List<Fresh_Bed_Class_Log> updateFresh_Bed_Class_Log
         dormitory.updateFresh_Bed_Class_Log(xh, dorm_no, room_no, bed_index, "none");
         Response.Write("选择成功！");
     }
