@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="HelloWorld">
+        <s:complexType />
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFee">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="app" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFeeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFeeResult" type="tns:ArrayOfFee" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFee">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Fee" nillable="true" type="tns:Fee" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Fee">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PK_Fee" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fee_NO" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Year" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FK_App" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="xtdm" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPayStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xh" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pk_Fee" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPayStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetPayStatusResult" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="payAmount" type="s:float" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFeeItem">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pk_Fee" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pk_fee_type" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFeeItemResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFeeItemResult" type="tns:ArrayOfFee_Item" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFee_Item">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Fee_Item" nillable="true" type="tns:Fee_Item" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Fee_Item">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PK_Fee_Item" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FK_Fee" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fee_Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fee_Code_Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Fee_Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Fee_Amount" type="s:float" />
+          <s:element minOccurs="0" maxOccurs="1" name="FK_Fee_Type" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type_Name" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetFeeItemByOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="payedOrder" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFeeItemByOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFeeItemByOrderResult" type="tns:ArrayOfFee_Item" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPayOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xh" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pk_fee" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPayOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPayOrderResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUnpayedOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xh" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnpayedOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUnpayedOrderResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDebtStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xh" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xn" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDebtStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetDebtStatusResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnpayedAmount">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xh" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xn" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pk_Fee" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUnpayedAmountResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetUnpayedAmountResult" type="s:float" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InitPayOrderTest">
+        <s:complexType />
+      </s:element>
+      <s:element name="InitPayOrderTestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InitPayOrderTestResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InitPayOrder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="app" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="md5" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="xh" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pk_fee_items" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InitPayOrderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InitPayOrderResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="payUrl" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPayOrderStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="pk_pay_list" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPayOrderStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPayOrderStatusResult" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="amount" type="s:float" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOfflinePayStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xh" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOfflinePayStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetOfflinePayStatusResult" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="amount" type="s:float" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetOfflinePayStatusTest">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetOfflinePayStatusTestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetOfflinePayStatusTestResult" type="s:float" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFeeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFee" />
+  </wsdl:message>
+  <wsdl:message name="GetFeeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFeeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPayStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPayStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetPayStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPayStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFeeItemSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFeeItem" />
+  </wsdl:message>
+  <wsdl:message name="GetFeeItemSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFeeItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFeeItemByOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFeeItemByOrder" />
+  </wsdl:message>
+  <wsdl:message name="GetFeeItemByOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFeeItemByOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPayOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPayOrder" />
+  </wsdl:message>
+  <wsdl:message name="GetPayOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPayOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUnpayedOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUnpayedOrder" />
+  </wsdl:message>
+  <wsdl:message name="GetUnpayedOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUnpayedOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDebtStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDebtStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetDebtStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDebtStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUnpayedAmountSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUnpayedAmount" />
+  </wsdl:message>
+  <wsdl:message name="GetUnpayedAmountSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUnpayedAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="InitPayOrderTestSoapIn">
+    <wsdl:part name="parameters" element="tns:InitPayOrderTest" />
+  </wsdl:message>
+  <wsdl:message name="InitPayOrderTestSoapOut">
+    <wsdl:part name="parameters" element="tns:InitPayOrderTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="InitPayOrderSoapIn">
+    <wsdl:part name="parameters" element="tns:InitPayOrder" />
+  </wsdl:message>
+  <wsdl:message name="InitPayOrderSoapOut">
+    <wsdl:part name="parameters" element="tns:InitPayOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPayOrderStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPayOrderStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetPayOrderStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPayOrderStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetOfflinePayStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOfflinePayStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetOfflinePayStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOfflinePayStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetOfflinePayStatusTestSoapIn">
+    <wsdl:part name="parameters" element="tns:GetOfflinePayStatusTest" />
+  </wsdl:message>
+  <wsdl:message name="GetOfflinePayStatusTestSoapOut">
+    <wsdl:part name="parameters" element="tns:GetOfflinePayStatusTestResponse" />
+  </wsdl:message>
+  <wsdl:portType name="FinancialWSSoap">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFee">
+      <wsdl:input message="tns:GetFeeSoapIn" />
+      <wsdl:output message="tns:GetFeeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPayStatus">
+      <wsdl:input message="tns:GetPayStatusSoapIn" />
+      <wsdl:output message="tns:GetPayStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFeeItem">
+      <wsdl:input message="tns:GetFeeItemSoapIn" />
+      <wsdl:output message="tns:GetFeeItemSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFeeItemByOrder">
+      <wsdl:input message="tns:GetFeeItemByOrderSoapIn" />
+      <wsdl:output message="tns:GetFeeItemByOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPayOrder">
+      <wsdl:input message="tns:GetPayOrderSoapIn" />
+      <wsdl:output message="tns:GetPayOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpayedOrder">
+      <wsdl:input message="tns:GetUnpayedOrderSoapIn" />
+      <wsdl:output message="tns:GetUnpayedOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDebtStatus">
+      <wsdl:input message="tns:GetDebtStatusSoapIn" />
+      <wsdl:output message="tns:GetDebtStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpayedAmount">
+      <wsdl:input message="tns:GetUnpayedAmountSoapIn" />
+      <wsdl:output message="tns:GetUnpayedAmountSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InitPayOrderTest">
+      <wsdl:input message="tns:InitPayOrderTestSoapIn" />
+      <wsdl:output message="tns:InitPayOrderTestSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InitPayOrder">
+      <wsdl:input message="tns:InitPayOrderSoapIn" />
+      <wsdl:output message="tns:InitPayOrderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPayOrderStatus">
+      <wsdl:input message="tns:GetPayOrderStatusSoapIn" />
+      <wsdl:output message="tns:GetPayOrderStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOfflinePayStatus">
+      <wsdl:input message="tns:GetOfflinePayStatusSoapIn" />
+      <wsdl:output message="tns:GetOfflinePayStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOfflinePayStatusTest">
+      <wsdl:input message="tns:GetOfflinePayStatusTestSoapIn" />
+      <wsdl:output message="tns:GetOfflinePayStatusTestSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FinancialWSSoap" type="tns:FinancialWSSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="http://tempuri.org/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFee">
+      <soap:operation soapAction="http://tempuri.org/GetFee" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPayStatus">
+      <soap:operation soapAction="http://tempuri.org/GetPayStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFeeItem">
+      <soap:operation soapAction="http://tempuri.org/GetFeeItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFeeItemByOrder">
+      <soap:operation soapAction="http://tempuri.org/GetFeeItemByOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPayOrder">
+      <soap:operation soapAction="http://tempuri.org/GetPayOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpayedOrder">
+      <soap:operation soapAction="http://tempuri.org/GetUnpayedOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDebtStatus">
+      <soap:operation soapAction="http://tempuri.org/GetDebtStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpayedAmount">
+      <soap:operation soapAction="http://tempuri.org/GetUnpayedAmount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InitPayOrderTest">
+      <soap:operation soapAction="http://tempuri.org/InitPayOrderTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InitPayOrder">
+      <soap:operation soapAction="http://tempuri.org/InitPayOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPayOrderStatus">
+      <soap:operation soapAction="http://tempuri.org/GetPayOrderStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOfflinePayStatus">
+      <soap:operation soapAction="http://tempuri.org/GetOfflinePayStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOfflinePayStatusTest">
+      <soap:operation soapAction="http://tempuri.org/GetOfflinePayStatusTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="FinancialWSSoap12" type="tns:FinancialWSSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="http://tempuri.org/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFee">
+      <soap12:operation soapAction="http://tempuri.org/GetFee" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPayStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetPayStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFeeItem">
+      <soap12:operation soapAction="http://tempuri.org/GetFeeItem" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFeeItemByOrder">
+      <soap12:operation soapAction="http://tempuri.org/GetFeeItemByOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPayOrder">
+      <soap12:operation soapAction="http://tempuri.org/GetPayOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpayedOrder">
+      <soap12:operation soapAction="http://tempuri.org/GetUnpayedOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDebtStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetDebtStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnpayedAmount">
+      <soap12:operation soapAction="http://tempuri.org/GetUnpayedAmount" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InitPayOrderTest">
+      <soap12:operation soapAction="http://tempuri.org/InitPayOrderTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InitPayOrder">
+      <soap12:operation soapAction="http://tempuri.org/InitPayOrder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPayOrderStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetPayOrderStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOfflinePayStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetOfflinePayStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOfflinePayStatusTest">
+      <soap12:operation soapAction="http://tempuri.org/GetOfflinePayStatusTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FinancialWS">
+    <wsdl:port name="FinancialWSSoap" binding="tns:FinancialWSSoap">
+      <soap:address location="http://10.35.10.83:8020/FinancialWS.asmx" />
+    </wsdl:port>
+    <wsdl:port name="FinancialWSSoap12" binding="tns:FinancialWSSoap12">
+      <soap12:address location="http://10.35.10.83:8020/FinancialWS.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

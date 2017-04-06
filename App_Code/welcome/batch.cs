@@ -11,8 +11,6 @@ using System.CodeDom.Compiler;
 using System.Reflection;
 using System.Data.SqlClient;
 
-
-
 /// 动态调用web服务 
 public class WSHelper
 {

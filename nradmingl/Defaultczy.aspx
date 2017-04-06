@@ -369,7 +369,7 @@
 			</script>
        <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js?v=20160917"></script>
         			<script type="text/javascript" src="../b_js/app/manager.js"></script>
-        <script> //load();</script>
+        <script> load();</script>
 		</div>
   
 </form>  

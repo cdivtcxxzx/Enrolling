@@ -567,10 +567,54 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         batch batch_logic = new batch();
                         List<fresh_affair> affair_list = batch_logic.get_freshstudent_affair_list(pk_sno);//事务列表
                         List<fresh_affair_log> affairlog_list = batch_logic.get_studentaffairlog_list(pk_sno);//事务日志列表
-                        
+
+                        List<object> data = null;
+                        if (affair_list != null && affair_list.Count > 0)
+                        {
+                            data=new List<object>(); 
+                            for (int i = 0; i < affair_list.Count; i++)
+                            {
+                                fresh_oper oper = batch_logic.get_oper(affair_list[i].PK_Affair_NO);//获取操作
+                                string oper_url = null;
+                                if (oper != null && oper.OPER_URL!=null && oper.OPER_URL.Trim().Length>0)
+                                {
+                                    oper_url = oper.OPER_URL.Trim();
+                                }
+                                if (oper_url!=null && affair_list[i].Parameters != null && affair_list[i].Parameters.Trim().Length > 0)
+                                {
+                                    oper_url = oper_url+"?" + affair_list[i].Parameters.Trim();//添加操作参数
+                                }
+                                if (oper_url == null)
+                                {
+                                    oper_url = "#";
+                                }
+                                string affair_status = "未完成";
+                                for (int j = 0; affairlog_list != null && j < affairlog_list.Count; j++)
+                                {
+                                    if (affair_list[i].PK_Affair_NO.Trim().Equals(affairlog_list[j].FK_Affair_NO.Trim()))
+                                    {
+                                        affair_status = affairlog_list[j].Log_Status.Trim();
+                                    }
+                                }
+                                if (!affair_status.Trim().Equals("已完成") && !affair_status.Trim().Equals("未完成"))
+                                {
+                                    affair_status = "错误状态";
+                                }
+                                var row = new
+                                {
+                                    PK_Affair_NO = affair_list[i].PK_Affair_NO.Trim(),
+                                    Affair_Name = affair_list[i].Affair_Name.Trim(),
+                                    Affair_Type = affair_list[i].Affair_Type.Trim(),
+                                    Affair_Char = affair_list[i].Affair_CHAR,
+                                    Affair_Status = affair_status,
+                                    Oper_Url = oper_url
+                                };
+                                data.Add(row);
+                            }
+                        }
                         result.code = "success";
                         result.message = "成功";
-                        result.data = null;
+                        result.data = data;
                     }
                 }
                 #endregion
