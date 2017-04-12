@@ -957,7 +957,7 @@ public class dormitory
     /// <param name="Room_NO">房间类型编号</param>
     /// <param name="Bed_Index">床位位置序号</param>
     /// <param name="Dorm_NO">宿舍号</param>
-    /// /// <param name="floor">楼层</param>
+    /// <param name="floor">楼层</param>
     /// <returns>string[]【可用房间列表】</returns>
     public static List<String> listroom(string class_no, string gender, string Room_NO, string Bed_Index, string Dorm_NO,string floor)
     {
@@ -1010,8 +1010,276 @@ public class dormitory
         List<Fresh_Bed_Class_Log> result = ModelConvertHelper<Fresh_Bed_Class_Log>.FillModel(update);
         return result;
     }
+    /// <summary>
+    /// 传入房间类型编码，收费项目代码，学年，房间布局简图，床位布局简图地址，创建或更新房间类型表,房间类型名称
+    /// </summary>
+    /// <param name="PK_Room_Type">主键</param>
+    /// <param name="Type_NO">房间类型编码</param>
+    /// <param name="FK_Fee_Item">收费项目代码</param>
+    /// <param name="Year">学年</param>
+    /// <param name="Room_Layout">房间布局简图</param>
+    /// <param name="Bed_Layout">床位布局简图</param>
+    /// <param name="Type_Name">房间类型名称</param>
+    /// <returns>提示信息:1,成功；0失败，错误信息</returns>
+    
+    public static string update_Roomtype(string PK_Room_Type, string Type_NO, string FK_Fee_Item, string Year, string Room_Layout, string Bed_Layout,string Type_Name)
+    {
+        string sql = "";
+        string usql = "";
+        string csql = "";
+        string guid = Guid.NewGuid().ToString();
+        string cxnonull="";
+        //判断数据
+        string err = "";
+        try
+        {
+            if (Type_NO.Length < 1)
+            {
+                err = "房间类型编码不正确！";
+            }
+            else
+            {
+                //查询是否已经有该房间类型
+                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 *  FROM [Fresh_Room_Type] where [Type_NO]='" + Type_NO + "'");
+                if (cx.Rows.Count > 0)
+                {
+                    cxnonull="1";
+                    usql += "Type_NO='" + Type_NO + "'";
+                }
+                else
+                {
+                    usql += "Type_NO='" + Type_NO + "'";
+                    csql += ",'" + Type_NO + "'";
+                }
+            }
+            if (FK_Fee_Item.Length < 1)
+            {
+                err = "收费项目代码不正确！";
+            }
+            else
+            {
+                usql += ",FK_Fee_Item='" + FK_Fee_Item + "'";
+                csql += ",'" + FK_Fee_Item + "'";
+            }
+            if (Year.Length < 1)
+            {
+                err = "年度不能为空！";
+            }
+            else
+            {
+                usql += ",Year='" + Year + "'";
+                csql += ",'" + Year + "'";
+            }
+            if (Room_Layout.Length > 0)
+            {
+                usql += ",Room_Layout='" + Room_Layout + "'";
+                csql += ",'" + Room_Layout + "'";
+            }
+            else
+            {
+                csql += ",'" + Room_Layout + "'";
+            }
+            if (Bed_Layout.Length > 0)
+            {
+                usql += ",Bed_Layout='" + Bed_Layout + "'";
+                csql += ",'" + Bed_Layout + "'";
+            }
+            else
+            {
+                csql += ",'" + Bed_Layout + "'";
+            }
+
+            if (Type_Name.Length < 1)
+            {
+                err = "房间类型名称不能为空！";
+            }
+            else
+            {
+                usql += ",Type_Name='" + Type_Name + "'";
+                csql += ",'" + Type_Name + "'";
+            }
+
+            if (err.Length > 0) return "0," + err;
+
+            //操作
+            if (PK_Room_Type.Length > 0||cxnonull=="1")
+            {
+                //更新
+                if (cxnonull == "1")
+                {
+                    if (Sqlhelper.ExcuteNonQuery("UPDATE [Fresh_Room_Type] set " + usql + " WHERE Type_NO='" + Type_NO + "'") > 0)
+                    {
+                        return "1,更新数据成功！";
+                    }
+                    else
+                    {
+                        return "0,更新数据失败！";
+                    }
+                }
+                else
+                {
+                    if (Sqlhelper.ExcuteNonQuery("UPDATE [Fresh_Room_Type] set " + usql + " WHERE PK_Room_Type='" + PK_Room_Type + "'") > 0)
+                    {
+                        return "1,更新数据成功！";
+                    }
+                    else
+                    {
+                        return "0,更新数据失败！";
+                    }
+                }
+
+            }
+            else
+            {
+                //创建
+                if (Sqlhelper.ExcuteNonQuery("INSERT INTO [Fresh_Room_Type]([PK_Room_Type],[Type_NO],[FK_Fee_Item],[Year],[Room_Layout],[Bed_Layout],[Type_Name])VALUES('" + guid + "'" + csql + ")") > 0)
+                {
+                    return "1,插入数据成功！";
+                }
+                else
+                {
+                    return "0,插入数据失败！";
+                }
+            }
+        }
+        catch (Exception e1){
+            return "0,失败"+e1.Message;
+        }
+        
+        
+    }
 
 
+    /// <summary>
+    /// 传入主键，宿舍号，学年，宿舍名称，校区名称，创建或更新宿舍，根据校区名称获取校区编号
+    /// </summary>
+    /// <param name="PK_Dorm_NO">主键</param>
+    /// <param name="Dorm_NO">宿舍号</param>
+    /// <param name="Year">学年</param>
+    /// <param name="Name">宿舍名称</param>
+    /// <param name="Campus_Name">校区名称</param>
+    /// <returns>提示信息:1,成功；0失败，错误信息</returns>
 
+    public static string update_Fresh_Dorm(string PK_Dorm_NO, string Dorm_NO, string Year, string Name, string Campus_Name)
+    {
+        string sql = "";
+        string usql = "";
+        string csql = "";
+        string guid = Guid.NewGuid().ToString();
+        string cxnonull = "";
+        //判断数据
+        string err = "";
+        try
+        {
+            if (Dorm_NO.Length < 1)
+            {
+                err = "宿舍号不正确！";
+            }
+            else
+            {
+                //查询是否已经有该房间类型
+                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 *  FROM [Fresh_Dorm] where Dorm_NO='" + Dorm_NO + "'");
+                if (cx.Rows.Count > 0)
+                {
+                    cxnonull = "1";
+                    usql += "Dorm_NO='" + Dorm_NO + "'";
+                }
+                else
+                {
+                    usql += "Dorm_NO='" + Dorm_NO + "'";
+                    csql += ",'" + Dorm_NO + "'";
+                }
+            }
+            
+            if (Year.Length < 1)
+            {
+                err = "年度不能为空！";
+            }
+            else
+            {
+                usql += ",Year='" + Year + "'";
+                csql += ",'" + Year + "'";
+            }
+            if (Name.Length > 0)
+            {
+                usql += ",Name='" + Name + "'";
+                csql += ",'" + Name + "'";
+            }
+            else
+            {
+                err = "宿舍名称不能为空";
+               
+            }
+            if (Campus_Name.Length > 0)
+            {
+                //查询校区编号
+                string Campus_NO="";
+                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 *  FROM [Base_Campus] where Campus_Name='" + Dorm_NO + "'");
+                if (cx.Rows.Count > 0)
+                {
+                    Campus_NO = cx.Rows[0]["Campus_NO"].ToString();
+                }
+
+
+                usql += ",Campus_NO='" + Campus_NO + "'";
+                csql += ",'" + Campus_Name + "'";
+            }
+            else
+            {
+                csql += ",'" + Campus_Name + "'";
+            }
+
+            
+
+            if (err.Length > 0) return "0," + err;
+
+            //操作
+            if (PK_Dorm_NO.Length > 0 || cxnonull == "1")
+            {
+                //更新
+                if (cxnonull == "1")
+                {
+                    if (Sqlhelper.ExcuteNonQuery("UPDATE [Fresh_Room_Type] set " + usql + " WHERE Type_NO='" + Dorm_NO + "'") > 0)
+                    {
+                        return "1,更新数据成功！";
+                    }
+                    else
+                    {
+                        return "0,更新数据失败！";
+                    }
+                }
+                else
+                {
+                    if (Sqlhelper.ExcuteNonQuery("UPDATE [Fresh_Room_Type] set " + usql + " WHERE PK_Room_Type='" + Dorm_NO + "'") > 0)
+                    {
+                        return "1,更新数据成功！";
+                    }
+                    else
+                    {
+                        return "0,更新数据失败！";
+                    }
+                }
+
+            }
+            else
+            {
+                //创建
+                if (Sqlhelper.ExcuteNonQuery("INSERT INTO [Fresh_Room_Type]([PK_Room_Type],[Type_NO],[FK_Fee_Item],[Year],[Room_Layout],[Bed_Layout],[Type_Name])VALUES('" + guid + "'" + csql + ")") > 0)
+                {
+                    return "1,插入数据成功！";
+                }
+                else
+                {
+                    return "0,插入数据失败！";
+                }
+            }
+        }
+        catch (Exception e1)
+        {
+            return "0,失败" + e1.Message;
+        }
+
+
+    }
     
 }
