@@ -228,6 +228,9 @@ function goto_affair(PK_Affair_NO) {
                 var json_data = JSON.parse(data);
                 if (json_data.code == 'success') {
                     var name=json_data.data.Affair_Name;
+                    var precondition1message=json_data.data.precondition1Message;//使能条件1信息提示
+                    var precondition2message=json_data.data.precondition2Message;//使能条件2信息提示
+
                     //NO:8&9 获取预操作总人数和已操作总人数
                     $.ajax({
                         url: "appserver/manager.aspx",
@@ -241,6 +244,8 @@ function goto_affair(PK_Affair_NO) {
                                 $('#affair_willcount').html(json_data.data.will_count);
                                 $('#affair_havecount').html(json_data.data.finish_count);
                                 $('#admin-navbar-side').attr("pk_affair_no", PK_Affair_NO);//绑定当前操作事务编号
+                                $('#admin-navbar-side').attr("precondition1message", precondition1message);//使能条件1信息提示
+                                $('#admin-navbar-side').attr("precondition2message", precondition2message);//使能条件2信息提示
                                 $('#iframeId').hide();
                                 clear_student_status();//清除学生状态
                             } else {
@@ -377,7 +382,7 @@ function find(){
                                                                                             success: function (data) {
                                                                                                 var json_data = JSON.parse(data);
                                                                                                 if (json_data.code == 'success') {
-                                                                                                    var url=json_data.data.OPER_URL;
+                                                                                                    var url=json_data.data.OPER_URL+'?pk_affair_no='+pk_affair_no+'&pk_sno='+pk_sno+'&pk_staff_no='+pk_staff_no;
                                                                                                     $('#iframeId').attr('src',url);//添加操作地址
                                                                                                     $('#iframeId').show();
                                                                                                     freshstatusflag=true;//定时查询事务操作是否完成标志
@@ -391,7 +396,46 @@ function find(){
                                                                                             }
                                                                                         });
                                                                                     }else{
-                                                                                        alert('学号为'+pk_sno+' 的同学目前不具备操作当前事务的条件，请检查当前事务的前置条件是否具备')
+                                                                                        var precondition1message=$('#admin-navbar-side').attr("precondition1message");//使能条件1信息提示
+                                                                                        var precondition2message=$('#admin-navbar-side').attr("precondition2message");//使能条件2信息提示
+
+                                                                                        layer.confirm(precondition1message+'<br/>'+precondition2message, {
+                                                                                            btn: ['确定']
+                                                                                        }, function(index){
+                                                                                            layer.close(index);
+                                                                                            layer.confirm('强制继续吗？', {
+                                                                                                btn: ['继续', '终止']
+                                                                                            }, function(index){
+                                                                                                layer.close(index);
+                                                                                                //NO:18 获取某迎新事务操作
+                                                                                                $.ajax({
+                                                                                                    url: "appserver/manager.aspx",
+                                                                                                    type: "get",
+                                                                                                    dataType: "text",
+                                                                                                    data: { "cs": "get_oper","pk_affair_no": pk_affair_no },
+                                                                                                    success: function (data) {
+                                                                                                        var json_data = JSON.parse(data);
+                                                                                                        if (json_data.code == 'success') {
+                                                                                                            var url=json_data.data.OPER_URL+'?pk_affair_no='+pk_affair_no+'&pk_sno='+pk_sno+'&pk_staff_no='+pk_staff_no;
+                                                                                                            console.log(url);
+                                                                                                            alert(url);
+                                                                                                            $('#iframeId').attr('src',url);//添加操作地址
+                                                                                                            $('#iframeId').show();
+                                                                                                            freshstatusflag=true;//定时查询事务操作是否完成标志
+                                                                                                            freshstatus(pk_affair_no,pk_sno);//查询事务操作是否完成
+                                                                                                        } else {
+                                                                                                            alert(json_data.message);
+                                                                                                        }
+                                                                                                    },
+                                                                                                    error: function (data) {
+                                                                                                        alert("错误");
+                                                                                                    }
+                                                                                                });
+                                                                                            }, function(index){
+                                                                                                layer.close(index);
+                                                                                            });
+                                                                                        });
+                                                                                        //alert('学号为'+pk_sno+' 的同学目前不具备操作当前事务的条件，请检查当前事务的前置条件是否具备')
                                                                                     }
                                                                                 } else {
                                                                                     alert(json_data.message);
@@ -485,7 +529,7 @@ function freshstatus(pk_affair_no,pk_sno)
                     //要求继续刷新事务状态
                     timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 800);
                 }else{
-                    alert('已完成操作');
+                    alert('已进行过此操作');
                     freshstatusflag=false;
                     timeid=null;
                 }

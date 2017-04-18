@@ -139,6 +139,12 @@ public class WebService : System.Web.Services.WebService {
         return bt.check_student_affair_condition(PK_SNO, PK_Affair_NO);
     }
 
+    public bool analysis_fee_condition(string fee_condition, string PK_Batch_NO, string PK_SNO)
+    {
+        batch bt = new batch();
+        return bt.analysis_fee_condition(fee_condition, PK_Batch_NO, PK_SNO);
+    }
+
     //返回事务状态的样式用例，格式：webservice地址?方法名称
     //http://localhost:3893/test/WebService.asmx?test_Log_Status
     [WebMethod]
@@ -174,10 +180,18 @@ public class WebService : System.Web.Services.WebService {
 
 
     [WebMethod]
-    public string run_remote_webservice()
+    public string test_get_feeitem_byorder(string ORDERID)
     {
-        Financial.FinancialWSSoapClient s = new Financial.FinancialWSSoapClient();
-        Financial.Fee[] data=s.GetFee("yxxt");
+        financial svr = new financial();
+        List<Financial.Fee_Item> data = svr.get_feeitem_byorder(ORDERID);
         return JsonConvert.SerializeObject(data);
+    }
+
+    [WebMethod]
+    public string testmd5(string pwd)
+    {
+        financial svr = new financial();
+        string data = svr.MD5Encrypt32(pwd);
+        return data;
     }
 }
