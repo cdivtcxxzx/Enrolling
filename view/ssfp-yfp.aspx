@@ -41,7 +41,7 @@
  <!--顶部提示及导航OVER-->
         <div class="container">
             <div class="col-xs-12 col-sm-4" style="margin-top:15px;border:1px solid #eee;text-align:center;" >
-                <p style="margin-top:20px;"><span>校区：</span><span id="xiaoqu" runat="server">天府新区</span></p>
+               <style>.noshow{display:none}</style> <p style="margin-top:20px;"><span>校区：</span><span id="xiaoqu" runat="server"><asp:Label ID="xqbh" runat="server" CssClass="noshow" Text="01"></asp:Label><asp:Label ID="xqmc" runat="server" Text="天府新区"></asp:Label></span></p>
                <%-- <p><span>类型：</span><span id="shuse" runat="server">男宿舍</span></p>--%>
                 <p style="margin-top:10px;margin-bottom:10px;">
                     <img src="../images/xsgysmall.jpg" alt="宿舍照片" class="xsgytp" style="margin-top: 18px; width: 90%; height: 90%" id="shuseImg" runat="server" />
@@ -71,26 +71,25 @@
                  <div class="layui-form-item">
                     <label class="layui-form-label"  style="width:120px;">房间类型选择</label>
                 <div class="layui-input-block"  style="margin-left:120px;">
-                 <select name="interest" lay-filter="aihao">
-                         <option value=""></option>
-                         <option value="0">六人间</option>
-                        <option value="1" selected="">四人间</option>
-                         <option value="2">豪华间</option>
-                         
-                    </select>
+
+                    <asp:DropDownList ID="DropDownList1"  lay-filter="aihao" runat="server" DataSourceID="SqlDataSource1" DataTextField="Type_Name" DataValueField="Type_NO"></asp:DropDownList>
+
+
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [Type_Name], [Type_NO] FROM [Fresh_Room_Type] ORDER BY [Type_Name]"></asp:SqlDataSource>
+
+
                 </div>
                  </div>
                        <div class="layui-form-item">
                     <label class="layui-form-label"  style="width:120px;">宿舍楼栋选择</label>
                 <div class="layui-input-block"  style="margin-left:120px;">
-                 <select name="interest" lay-filter="aihao">
-                         <option value=""></option>
-                         <option value="0">一号学生公寓</option>
-                        <option value="1" selected="">二号学生公寓</option>
-                         <option value="2">三号学生公寓</option>
-                     <option value="3">四号学生公寓</option>
-                         
-                    </select>
+                 <asp:DropDownList ID="DropDownList2" runat="server" DataSourceID="SqlDataSource2" DataTextField="Name" DataValueField="Dorm_NO">
+        </asp:DropDownList>
+        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [Dorm_NO], [Name] FROM [Fresh_Dorm] WHERE ([Campus_NO] = @Campus_NO)">
+            <SelectParameters>
+                <asp:ControlParameter ControlID="xqbh" Name="Campus_NO" PropertyName="Text" Type="String" />
+            </SelectParameters>
+        </asp:SqlDataSource>
                 </div>
                  </div>
                  <div class="layui-form-item">
@@ -108,6 +107,7 @@
                     </select>
                 </div>
                  </div>
+               
                 <style>
                     .layui-elem-field legend {
                         margin-left: 20px;
@@ -164,6 +164,22 @@
     </div>
   </div>
 </fieldset>
+
+                  <div class="layui-form-item">
+                    <label class="layui-form-label"  style="width:120px;">床位选择</label>
+                <div class="layui-input-block"  style="margin-left:120px;">
+                 <select name="interest" lay-filter="aihao">
+                     <option value=""></option>
+                     <option value="0">01床</option>
+                     <option value="1" selected="">02床</option>
+                     <option value="2">03床</option>
+                     <option value="3">04床</option>
+                     <option value="3">05床</option>
+                     <option value="3">06床</option>
+                         
+                    </select>
+                </div>
+                 </div>
   <fieldset class="layui-elem-field">
   <legend>提示信息</legend>
   <div class="layui-field-box">
