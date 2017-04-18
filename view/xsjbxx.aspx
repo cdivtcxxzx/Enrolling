@@ -27,43 +27,13 @@
 </head>
 <body> 
 <!--展示响应式CSS块-->
- <style>
-         
-.responsive-utilities-test .col-xs-6 {
-    margin-bottom: 10px;
-}
-.responsive-utilities-test .col-xs-6 {
-    margin-bottom: 10px;
-}
-.col-xs-6 {
-    width: 50%;
-    float:left;
-}
-.visible-on .col-xs-6 .hidden-xs, .visible-on .col-xs-6 .hidden-sm, .visible-on .col-xs-6 .hidden-md, .visible-on .col-xs-6 .hidden-lg, .hidden-on .col-xs-6 .hidden-xs, .hidden-on .col-xs-6 .hidden-sm, .hidden-on .col-xs-6 .hidden-md, .hidden-on .col-xs-6 .hidden-lg {
-    color: #999;
-    border: 1px solid #ddd;
-}
-     .visible-on .col-xs-6 .visible-xs-block, .visible-on .col-xs-6 .visible-sm-block, .visible-on .col-xs-6 .visible-md-block, .visible-on .col-xs-6 .visible-lg-block, .hidden-on .col-xs-6 .visible-xs-block, .hidden-on .col-xs-6 .visible-sm-block, .hidden-on .col-xs-6 .visible-md-block, .hidden-on .col-xs-6 .visible-lg-block {
-    color: #468847;
-    background-color: #dff0d8;
-    border: 1px solid #d6e9c6;
-}
-.responsive-utilities-test span {
-    display: block;
-    padding: 15px 10px;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.1;
-    text-align: center;
-    border-radius: 4px;
-}
-     </style>
+ 
      <!--展示响应式CSS块over-->
      <!--页面开始全范围框架-->
      <div class="admin-main">
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
-          
+            
             <i class="layui-icon">&#xe602;</i>迎新管理>>学生基本信息
             <span style="float:right">
             
@@ -103,15 +73,16 @@
              }
          </style>
          <div style="margin-top:15px;">
-	        
-       
-             
-<form class="layui-form layui-form-pane" action="">
+<form class="layui-form layui-form-pane" action="" runat="server">
+    <asp:HiddenField ID="hidden_pk_sno" runat="server" />
+    
     <div class="xsxx1"><div class="layui-form-item" pane="">
           <label class="layui-form-label" style="height:94%;display:none">照片：</label>
           <div class="layui-input-block" style="margin-left: 10px!important">
            <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
-        </div></div>
+        </div>
+
+    </div>
      <div class="xsxx2"  >   <div class="layui-form-item" pane="">
           <label class="layui-form-label">学号：</label>
           <div class="layui-input-block">
@@ -171,8 +142,7 @@
         </div>
         <div class="layui-form-item" style="text-align:center">
           <button class="layui-btn" onclick="javascript:">返回操作首页</button>
-        </div></div>
-        
+        </div></div>        
      
 
       </form>
@@ -182,84 +152,8 @@
   <!--标签框架over-->
 
         </div>
-
-
-        		<script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
-		<script>
-		    layui.use('element', function () {
-		        var $ = layui.jquery,
-					element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
-
-		        //触发事件
-		        var active = {
-		            tabAdd: function () {
-		                //新增一个Tab项
-		                element.tabAdd('demo', {
-		                    title: '新选项' + (Math.random() * 1000 | 0) //用于演示
-								,
-		                    content: '内容' + (Math.random() * 1000 | 0)
-		                })
-		            },
-		            tabDelete: function () {
-		                //删除指定Tab项
-		                element.tabDelete('demo', 2); //删除第3项（注意序号是从0开始计算）
-		            },
-		            tabChange: function () {
-		                //切换到指定Tab项
-		                element.tabChange('demo', 1); //切换到第2项（注意序号是从0开始计算）
-		            }
-		        };
-
-		        $('.site-demo-active').on('click', function () {
-		            var type = $(this).data('type');
-		            active[type] ? active[type].call(this) : '';
-		        });
-		    });
-
-
-		</script>
-        	<script>
-        	    layui.use(['form', 'layedit', 'laydate'], function () {
-        	        var form = layui.form(),
-					layer = layui.layer,
-					layedit = layui.layedit,
-					laydate = layui.laydate;
-
-        	        //创建一个编辑器
-        	        var editIndex = layedit.build('LAY_demo_editor');
-        	        //自定义验证规则
-        	        form.verify({
-        	            title: function (value) {
-        	                if (value.length < 5) {
-        	                    return '标题至少得5个字符啊';
-        	                }
-        	            },
-        	            pass: [/(.+){6,12}$/, '密码必须6到12位'],
-        	            content: function (value) {
-        	                layedit.sync(editIndex);
-        	            }
-        	        });
-
-        	        //监听提交
-        	        form.on('submit(demo1)', function (data) {
-        	            layer.alert(JSON.stringify(data.field), {
-        	                title: '最终的提交信息'
-        	            })
-        	            return false;
-        	        });
-        	        //手机设备的简单适配
-        	        var treeMobile = $('.site-tree-mobile'),
-						shadeMobile = $('.site-mobile-shade');
-        	        treeMobile.on('click', function () {
-        	            $('body').addClass('site-mobile');
-        	        });
-        	        shadeMobile.on('click', function () {
-        	            $('body').removeClass('site-mobile');
-        	        });
-        	    });
-		</script>
-
-
+        <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
+        <script src="../b_js/app/xsjbxx.js"></script>
 
 </body>
 </html>
