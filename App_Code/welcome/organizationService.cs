@@ -6,8 +6,8 @@ using model;
 
 /// <summary>
 ///组织机构服务
-/// bool 操作员身份是否有效
-/// 操作员 获取某操作员数据
+/// bool 操作员身份是否有效   staffVerify
+/// 操作员 获取某操作员数据    getOperator
 /// 学生 获取某学生数据
 /// 专业 获取某专业数据
 /// 班级 获取某班级数据
@@ -54,7 +54,7 @@ public static class organizationService
     /// <returns>返回员工类</returns>
     public static Base_Staff getOperator(string staffNo)
     {
-        return oDC.Base_Staffs.Where(s => s.PK_Staff_NO == staffNo).SingleOrDefault();
+        return oDC.Base_Staffs.Where(s => s.PK_Staff_NO == staffNo).SingleOrDefault();        
     }
 
     /// <summary>
