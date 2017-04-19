@@ -54,40 +54,61 @@
 }
 
 function action(pk_affair_no,pk_sno){
-    //NO:13 校验学生事务操作条件
+    //10、迎新事务定义 获取某迎新事务
     $.ajax({
         url: "/nradmingl/appserver/manager.aspx",
         type: "get",
         dataType: "text",
-        data: { "cs": "check_student_affair_condition", "pk_affair_no": pk_affair_no,"pk_sno": pk_sno},
+        data: { "cs": "get_affair","pk_affair_no": pk_affair_no },
         success: function (data) {
             var json_data = JSON.parse(data);
             if (json_data.code == 'success') {
-                if(json_data.data==true){
-                    //NO:18 获取某迎新事务操作
-                    $.ajax({
-                        url: "/nradmingl/appserver/manager.aspx",
-                        type: "get",
-                        dataType: "text",
-                        data: { "cs": "get_oper","pk_affair_no": pk_affair_no },
-                        success: function (data) {
-                            var json_data = JSON.parse(data);
-                            if (json_data.code == 'success') {
-                                var url=json_data.data.OPER_URL;
-                                console.log(url);
-                                window.location.href=url;
-                            } else {
-                                alert(json_data.message);
-                            }
-                        },
-                        error: function (data) {
-                            alert("错误");
-                        }
-                    });
+                var name=json_data.data.Affair_Name;
+                var precondition1message=json_data.data.precondition1Message;//使能条件1信息提示
+                var precondition2message=json_data.data.precondition2Message;//使能条件2信息提示
 
-                }else{
-                    alert('目前不具备操作当前事务的条件，请检查当前事务的前置条件是否具备')
-                }
+                //NO:13 校验学生事务操作条件
+                $.ajax({
+                    url: "/nradmingl/appserver/manager.aspx",
+                    type: "get",
+                    dataType: "text",
+                    data: { "cs": "check_student_affair_condition", "pk_affair_no": pk_affair_no,"pk_sno": pk_sno},
+                    success: function (data) {
+                        var json_data = JSON.parse(data);
+                        if (json_data.code == 'success') {
+                            if(json_data.data==true){
+                                //NO:18 获取某迎新事务操作
+                                $.ajax({
+                                    url: "/nradmingl/appserver/manager.aspx",
+                                    type: "get",
+                                    dataType: "text",
+                                    data: { "cs": "get_oper","pk_affair_no": pk_affair_no },
+                                    success: function (data) {
+                                        var json_data = JSON.parse(data);
+                                        if (json_data.code == 'success') {
+                                            var url=json_data.data.OPER_URL+'?pk_affair_no='+pk_affair_no+'&pk_sno='+pk_sno;
+                                            window.location.href=url;
+                                        } else {
+                                            alert(json_data.message);
+                                        }
+                                    },
+                                    error: function (data) {
+                                        alert("错误");
+                                    }
+                                });
+
+                            }else{
+                                alert(precondition1message+','+precondition2message);
+                                //alert('目前不具备操作当前事务的条件，请检查当前事务的前置条件是否具备')
+                            }
+                        } else {
+                            alert(json_data.message);
+                        }
+                    },
+                    error: function (data) {
+                        alert("错误");
+                    }
+                });
             } else {
                 alert(json_data.message);
             }

@@ -110,6 +110,8 @@ public class fresh_batch{
     public DateTime Service_Begin;//迎新服务开始时间
     public DateTime Service_End;//迎新服务结束时间
     public string Enabled;//迎新服务启停标志
+    public string Financial_PK_Fee;//迎新批次对应财务收费主键
+    public string Financial_XH_Prefix;////迎新批次对应财务学号前缀字符串
 }
 
 /// <summary>
@@ -129,6 +131,8 @@ public class fresh_affair
     public string Affair_CHAR;//事务性质
     public string FK_OPER_NO;//与事务绑定的操作编号
     public string Parameters;//其他操作参数
+    public string precondition1Message;//使能条件1提示信息
+    public string precondition2Message;//使能条件2提示信息
 }
 
 /// <summary>
@@ -409,6 +413,8 @@ public class batch
                     row.Welcome_Begin = DateTime.Parse(dt.Rows[i]["Welcome_Begin"].ToString());
                     row.Welcome_End = DateTime.Parse(dt.Rows[i]["Welcome_End"].ToString());
                     row.Year = dt.Rows[i]["Year"].ToString().Trim();
+                    row.Financial_PK_Fee = dt.Rows[i]["Financial_PK_Fee"].ToString().Trim();
+                    row.Financial_XH_Prefix = dt.Rows[i]["Financial_XH_Prefix"].ToString().Trim();
                     result.Add(row);
                 }
             }
@@ -461,6 +467,8 @@ public class batch
                 result.Welcome_Begin = DateTime.Parse(dt.Rows[i]["Welcome_Begin"].ToString());
                 result.Welcome_End = DateTime.Parse(dt.Rows[i]["Welcome_End"].ToString());
                 result.Year = dt.Rows[i]["Year"].ToString().Trim();
+                result.Financial_PK_Fee = dt.Rows[i]["Financial_PK_Fee"].ToString().Trim();
+                result.Financial_XH_Prefix = dt.Rows[i]["Financial_XH_Prefix"].ToString().Trim();
             }
         }
         catch (Exception ex)
@@ -615,6 +623,8 @@ public class batch
                         row.Affair_CHAR = dt.Rows[i]["Affair_CHAR"].ToString().Trim();//事务性质
                         row.FK_OPER_NO = dt.Rows[i]["FK_OPER_NO"].ToString().Trim();//与事务绑定的操作编号
                         row.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
+                        row.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
+                        row.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
                         result.Add(row);
                     }                
                 }
@@ -761,6 +771,8 @@ public class batch
                 result.Affair_CHAR = dt.Rows[i]["Affair_CHAR"].ToString().Trim();//事务性质
                 result.FK_OPER_NO = dt.Rows[i]["FK_OPER_NO"].ToString().Trim();//与事务绑定的操作编号
                 result.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
+                result.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
+                result.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
             }
         }
         catch (Exception ex)
@@ -941,6 +953,8 @@ public class batch
                     row.Affair_CHAR = dt.Rows[i]["Affair_CHAR"].ToString().Trim();//事务性质
                     row.FK_OPER_NO = dt.Rows[i]["FK_OPER_NO"].ToString().Trim();//与事务绑定的操作编号
                     row.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
+                    row.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
+                    row.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
                     result.Add(row);
                 }
             }
@@ -1290,11 +1304,22 @@ public class batch
                 {
                     string status_condition = dt.Rows[0]["Precondition1"].ToString().Trim();//事务状态条件
                     result=analysis_status_condition(status_condition, PK_Batch_NO, PK_SNO);//前置条件解析
-                }else
+                }
+                else
                 {
                     result = true;//没有前置条件，返回真
                 }
-                //前置收费条件解析，还未完成
+
+                //前置收费条件解析
+                if (dt.Rows[0]["Precondition2"] != null && dt.Rows[0]["Precondition2"] != System.DBNull.Value && dt.Rows[0]["Precondition2"].ToString().Trim().Length > 0)
+                {
+                    string status_condition = dt.Rows[0]["Precondition2"].ToString().Trim();//收费状态条件
+                    result = result && analysis_fee_condition(status_condition, PK_Batch_NO, PK_SNO);//前置收费条件解析
+                }
+                else
+                {
+                    result = result && true;//没有前置收费条件，返回真
+                }
             }
             else
                 throw new Exception("invalid PK_Affair_NO");
@@ -1407,7 +1432,7 @@ public class batch
     }
 
     //前置收费条件解析
-    private bool analysis_fee_condition(string fee_condition, string PK_Batch_NO, string PK_SNO)
+    public bool analysis_fee_condition(string fee_condition, string PK_Batch_NO, string PK_SNO)
     {
         ///fee_condition的格式是：{@f1=@fs1 and @f2>0}:{@f1=001,@f2=003}
         ///f1中的f是必须的关键字符，f1中的1是任意整数，@f1=001，f1代表'收费款项编号'(Fee_No)为'001'的学生
@@ -1436,7 +1461,7 @@ public class batch
                 parameter_list.Add(arr2[0]);//参数变量
                 fee_no_list.Add(arr2[1]);//参数变量对应的财务收费编号
             }
-
+            financial fsrv = new financial();
             for (int i = 0; i < parameter_list.Count; i++)
             {
                 //获取学生收费条目实收金额 ssje= getssje(xh,fee_no_list[i])
@@ -1445,7 +1470,16 @@ public class batch
                 //替换收费标准金额
                 //string[] arr3 = parameter_list[i].Split(',')
                 //string fs=arr3[0]+"s"+arr3[1];
-                //express = express.Replace(fs, ssje);
+                //express = express.Replace(fs, bzje);
+                student_fee data=fsrv.get_student_fee(PK_Batch_NO, fee_no_list[i], PK_SNO);
+                if (data == null)
+                {
+                    return false;
+                }
+                express = express.Replace(parameter_list[i], data.Fee_Payed.ToString().Trim());
+                string[] arr3 = parameter_list[i].Split('f');
+                string fs=arr3[0]+"fs"+arr3[1];
+                express = express.Replace(fs, data.Fee_Amount.ToString().Trim());
             }
 
         }
@@ -1463,4 +1497,42 @@ public class batch
         return result;
     }
 
+
+    ///功能名称： 校验某事务对应操作的应用密码是否与提供的应用密码一致
+    ///功能描述：
+    ///根据“事务编号”获取“使能条件1”（前置迎新事务状态条件表达式）和“使能条件2”（前置迎新事务应收款的付款状态条件表达式），
+    ///并将“学号”对应学生的状态应用到“使能条件”中，都满足返回true，否则返回false。
+    ///编写人：胡元
+    ///参数：
+    ///PK_AFFAIR_NO：事务编号；APPKEY：提供的应用密码；
+    ///创建时间：2017-4-18
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    public bool is_affair_operate_appKey(string PK_AFFAIR_NO, string APPKEY)
+    {
+        bool result = false;
+        try
+        {
+            if (PK_AFFAIR_NO == null || PK_AFFAIR_NO.Trim().Length == 0 || APPKEY == null || APPKEY.Trim().Length == 0)
+            {
+                return result;
+            }
+            string sqlstr = "select * from Fresh_Affair a,Fresh_OPER b where  a.PK_Affair_NO=@cs1 and b.APP_Key=@cs2 and a.FK_OPER_NO=b.PK_OPER_NO";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_AFFAIR_NO.Trim()), new SqlParameter("cs2", APPKEY.Trim()));
+            if (dt != null && dt.Rows.Count == 1)
+            {
+                result = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_freshoperator_isauth", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 }
