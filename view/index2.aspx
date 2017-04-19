@@ -1,6 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xszz-index.aspx.cs" Inherits="view_xszz_index" %>
-
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="index2.aspx.cs" Inherits="view_index2" %>
+ 
+ 
  
 <!DOCTYPE html>
 <html lang="zh-cn">
@@ -103,44 +103,44 @@
 <form class="layui-form layui-form-pane" action="">
    
      <div class="xsxx2"  >   <div class="layui-form-item" pane="" style="min-height: 56px">
-          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='index2.aspx';">阅读报到须知</a></label>
+          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='xszz-index.aspx';">阅读报到须知</a></label>
           <div class="layui-input-block" style="margin-left:140px;">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:40px;padding: 18px 0;">
-               <span id="xsxx_xh"><font color=red><b>未阅读</b></font></span> </div></div>
+               <span id="xsxx_xh"><font color=green><b>已于2017年4月18日阅读报到须知</b></font></span> </div></div>
         </div>
 		
 		<div class="layui-form-item" pane="" style="min-height: 56px">
-          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='index2.aspx';">录取信息确认</a></label>
+          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='xszz-index.aspx';">录取信息确认</a></label>
           <div class="layui-input-block" style="margin-left:140px;">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:40px;padding: 18px 0;">
-               <span id="xsxx_xh"><font color=red><b>未确认</b></font></span> </div></div>
+               <span id="xsxx_xh"><font color=green><b>已确认录取信息</b></font></span> </div></div>
         </div>
 		
 				<div class="layui-form-item" pane="" style="min-height: 56px">
-          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='index2.aspx';">基础信息登记</a></label>
+          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='xszz-index.aspx';">基础信息登记</a></label>
           <div class="layui-input-block" style="margin-left:140px;">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:40px;padding: 18px 0;">
-               <span id="xsxx_xh"><font color=red><b>未登记</b></font></span> </div></div>
+               <span id="xsxx_xh"><font color=red><b>已登记基础信息，完成率80%</b></font></span> </div></div>
         </div>
 		
 		</div>
      <div  class="xsxx3"  >   
 	 
 				<div class="layui-form-item" pane="" style="min-height: 56px">
-          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="window.location.href='index2.aspx';">网上缴费</a></label>
+          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='xszz-index.aspx';">网上缴费</a></label>
           <div class="layui-input-block" style="margin-left:140px;">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:40px;padding: 18px 0;">
-               <span id="xsxx_xh"><font color=red><b>未缴费</b></font></span> </div></div>
+               <span id="xsxx_xh"><font color=green><b>完成操作</b></font></span> </div></div>
         </div>
 				<div class="layui-form-item" pane="" style="min-height: 56px">
-          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='index2.aspx';">寝室选择</a></label>
+          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='xszz-index.aspx';">寝室选择</a></label>
           <div class="layui-input-block" style="margin-left:140px;">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:40px;padding: 18px 0;">
-               <span id="xsxx_xh"><font color=red><b>未选寝室</b></font></span> </div></div>
+               <span id="xsxx_xh"><font color=green><b>已选择1号学生公寓306寝室</b></font></span> </div></div>
         </div>
 		
 		<div class="layui-form-item" pane="" style="min-height: 56px">
-          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='index2.aspx';">消息提醒</a></label>
+          <label class="layui-form-label" style="width:120px;"><a class="layui-btn"  onClick="javascript:location.href='xszz-index.aspx';">消息提醒</a></label>
           <div class="layui-input-block" style="margin-left:140px;">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:40px;padding: 18px 0;">
                <span id="xsxx_xh">有<font color=red><b>3</b></font>条消息未读</span> </div></div>
@@ -229,7 +229,15 @@
         	            })
         	            return false;
         	        });
-        	       
+        	        //手机设备的简单适配
+        	        var treeMobile = $('.site-tree-mobile'),
+						shadeMobile = $('.site-mobile-shade');
+        	        treeMobile.on('click', function () {
+        	            $('body').addClass('site-mobile');
+        	        });
+        	        shadeMobile.on('click', function () {
+        	            $('body').removeClass('site-mobile');
+        	        });
         	    });
 		</script>
  
