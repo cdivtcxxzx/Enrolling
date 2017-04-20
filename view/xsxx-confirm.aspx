@@ -107,6 +107,7 @@
         </blockquote>
         <form id="form1" class="layui-form layui-form-pane" runat="server">
             <asp:HiddenField ID="hidden_pk_sno" runat="server" />
+            <asp:HiddenField ID="hidden_alert_msg" runat="server" />
             <%--基本信息--%>
             <div class="jbxx">
                 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
@@ -114,7 +115,7 @@
                 </fieldset>
                 <div class="jbxx-wrapper">                    
                     <div class="img-content">
-                        <asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" />
+                        <asp:Image ID="xszpxx" ImageUrl="../" runat="server" />
                     </div>
                     <div class="xx-content">
                         <div class="layui-form-item">
@@ -182,21 +183,22 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <span style="color:#ffd800;margin-bottom:10px;display:inline-block;">请核对个人信息，确认信息无误；信息有误请及时联系班主任！</span>
+                        <span style="color:#ffd800;margin-bottom:10px;display:inline-block;">请仔细核对个人信息，确认信息有无错误；信息有误请及时联系班主任！</span>
                         <div class="layui-input-block">
-                            <input type="checkbox" name="xsxxcomfirm" title="信息无误" />        
+                            <input type="radio" name="xx_confirm" title="信息无误" value="1" checked="" />
+                            <input type="radio" name="xx_confirm" title="信息有误" value="0" />          
                         </div>
                     </div>
                 </div>
             </div>
             <%--确认按钮--%>
             <div class="btn-confirm">
-                <a href="#" class="layui-btn layui-btn-big">提  交</a>
+                <a href="#" class="layui-btn layui-btn-big" id="btn_submit">确    认</a>
             </div>
         </form>
     </div>
     <script src="../nradmingl/plugins/layui/layui.js"></script>
     <script src="../b_js/app/xsxx-confirm.js"></script>
-
+    
 </body>
 </html>

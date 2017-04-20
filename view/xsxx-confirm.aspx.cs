@@ -11,10 +11,14 @@ public partial class view_xsxx_confirm : System.Web.UI.Page
     {
         //get post获取学号
         //string pk_sno = Request["pk_sno"].ToString();
+        hidden_pk_sno.Value = "2";
 
-
-        hidden_pk_sno.Value = "1";
-
+        //检查是否确认
+        if (organizationService.isStuConfrim("2"))
+        {
+            hidden_alert_msg.Value = "您的信息已经确认！";
+            //todo..跳转
+        }
 
     }
 }
