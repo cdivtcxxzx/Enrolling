@@ -13,7 +13,7 @@ public partial class view_xszz_index : System.Web.UI.Page
 
 
         #region 控制业务代码
-        this.pk_sno.Value = "2";//其值应由会话中来，在学生登陆成功后被赋予初值
+       // this.pk_sno.Value = "2";//其值应由会话中来，在学生登陆成功后被赋予初值
 
 
         #endregion

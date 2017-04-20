@@ -41,7 +41,7 @@
  <!--顶部提示及导航OVER-->
         <div class="container">
             <div class="col-xs-12 col-sm-4" style="margin-top:15px;border:1px solid #eee;text-align:center;" >
-                <p style="margin-top:20px;"><span>校区：</span><span id="xiaoqu" runat="server">天府新区</span></p>
+               <style>.noshow{display:none}</style> <p style="margin-top:20px;"><span>校区：</span><span id="xiaoqu" runat="server"><asp:Label ID="xqbh" runat="server" CssClass="noshow" Text="01"></asp:Label><asp:Label ID="xqmc" runat="server" Text="天府新区"></asp:Label></span></p>
                <%-- <p><span>类型：</span><span id="shuse" runat="server">男宿舍</span></p>--%>
                 <p style="margin-top:10px;margin-bottom:10px;">
                     <img src="../images/xsgysmall.jpg" alt="宿舍照片" class="xsgytp" style="margin-top: 18px; width: 90%; height: 90%" id="shuseImg" runat="server" />
@@ -53,7 +53,11 @@
           <label class="layui-form-label" style="width:120px;">学号：</label>
           <div class="layui-input-block" style="margin-left:120px;">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
-               <asp:Label ID="xsxx_xh" runat="server" Text="20170001"></asp:Label></div></div>
+               <asp:Label ID="xsxx_xh" runat="server" Text="20170001"></asp:Label>
+
+           </div>
+
+          </div>
         </div>
                  <div class="layui-form-item" pane="">
           <label class="layui-form-label" style="width:120px;">姓名：</label>
@@ -71,26 +75,25 @@
                  <div class="layui-form-item">
                     <label class="layui-form-label"  style="width:120px;">房间类型选择</label>
                 <div class="layui-input-block"  style="margin-left:120px;">
-                 <select name="interest" lay-filter="aihao">
-                         <option value=""></option>
-                         <option value="0">六人间</option>
-                        <option value="1" selected="">四人间</option>
-                         <option value="2">豪华间</option>
-                         
-                    </select>
+
+                    <asp:DropDownList ID="DropDownList1"  lay-filter="aihao" runat="server" DataSourceID="SqlDataSource1" DataTextField="Type_Name" DataValueField="Type_NO"></asp:DropDownList>
+
+
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [Type_Name], [Type_NO] FROM [Fresh_Room_Type]"></asp:SqlDataSource>
+
+
                 </div>
                  </div>
                        <div class="layui-form-item">
                     <label class="layui-form-label"  style="width:120px;">宿舍楼栋选择</label>
                 <div class="layui-input-block"  style="margin-left:120px;">
-                 <select name="interest" lay-filter="aihao">
-                         <option value=""></option>
-                         <option value="0">一号学生公寓</option>
-                        <option value="1" selected="">二号学生公寓</option>
-                         <option value="2">三号学生公寓</option>
-                     <option value="3">四号学生公寓</option>
-                         
-                    </select>
+                 <asp:DropDownList ID="DropDownList2" runat="server" DataSourceID="SqlDataSource2" DataTextField="Name" DataValueField="Dorm_NO">
+        </asp:DropDownList>
+        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [Dorm_NO], [Name] FROM [Fresh_Dorm] WHERE ([Campus_NO] = @Campus_NO)">
+            <SelectParameters>
+                <asp:ControlParameter ControlID="xqbh" Name="Campus_NO" PropertyName="Text" Type="String" />
+            </SelectParameters>
+        </asp:SqlDataSource>
                 </div>
                  </div>
                  <div class="layui-form-item">
@@ -99,8 +102,8 @@
                  <select name="interest" lay-filter="aihao">
                      <option value=""></option>
                      <option value="0">一楼</option>
-                     <option value="1" selected="">二楼</option>
-                     <option value="2">三楼</option>
+                     <option value="1" >二楼</option>
+                     <option value="2" selected="">三楼</option>
                      <option value="3">四楼</option>
                      <option value="3">五楼</option>
                      <option value="3">六楼</option>
@@ -108,7 +111,9 @@
                     </select>
                 </div>
                  </div>
+               
                 <style>
+                    #cwts{margin:10px;}
                     .layui-elem-field legend {
                         margin-left: 20px;
                         padding: 0 10px;
@@ -132,34 +137,54 @@
   <legend>房间选择</legend>
   <div class="layui-field-box" style="    padding: 10px 5px;">
      <div class="layui-input-block" style="    margin-left:2px;">
-         <input type="radio" name="sex" value="301" title="301" disabled="">
-         <input type="radio" name="sex" value="302" title="302" disabled="">
-         <input type="radio" name="sex" value="303" title="303" disabled="">
-         <input type="radio" name="sex" value="304" title="304" disabled="">
-         <input type="radio" name="sex" value="305" title="305" disabled="">
+         <input type="radio" name="fh" value="301" title="301" disabled="">
+         <input type="radio" name="fh" value="302" title="302" disabled="">
+         <input type="radio" name="fh" value="303" title="303" disabled="">
+         <input type="radio" name="fh" value="304" title="304" disabled="">
+         <input type="radio" name="fh" value="305" title="305" disabled="">
         
-      <input type="radio" name="sex" value="306" title="306" checked="">
-      <input type="radio" name="sex" value="307" title="307">
-      <input type="radio" name="sex" value="308" title="308" disabled="">
-         <input type="radio" name="sex" value="309" title="309" disabled="">
-         <input type="radio" name="sex" value="310" title="310" disabled="">
-         <input type="radio" name="sex" value="311" title="311" disabled="">
-         <input type="radio" name="sex" value="312" title="312">
+      <input type="radio" name="fh" value="306" title="306" checked="">
+      <input type="radio" name="fh" value="307" title="307">
+      <input type="radio" name="fh" value="308" title="308" disabled="">
+         <input type="radio" name="fh" value="309" title="309" disabled="">
+         <input type="radio" name="fh" value="310" title="310" disabled="">
+         <input type="radio" name="fh" value="311" title="311" disabled="">
+         <input type="radio" name="fh" value="312" title="312">
         
-          <input type="radio" name="sex" value="313" title="313">
-          <input type="radio" name="sex" value="314" title="314">
-          <input type="radio" name="sex" value="315" title="315">
-          <input type="radio" name="sex" value="316" title="316">
-          <input type="radio" name="sex" value="317" title="317">
+          <input type="radio" name="fh" value="313" title="313">
+          <input type="radio" name="fh" value="314" title="314">
+          <input type="radio" name="fh" value="315" title="315">
+          <input type="radio" name="fh" value="316" title="316">
+          <input type="radio" name="fh" value="317" title="317">
         
-          <input type="radio" name="sex" value="318" title="318">
-           <input type="radio" name="sex" value="319" title="319"> 
-         <input type="radio" name="sex" value="320" title="320">
-          <input type="radio" name="sex" value="32" title="321" disabled="">
-         <input type="radio" name="sex" value="32" title="322" disabled="">
-         <input type="radio" name="sex" value="32" title="323" disabled="">
-         <input type="radio" name="sex" value="32" title="324" disabled="">
-         <input type="radio" name="sex" value="32" title="325" disabled="">
+          <input type="radio" name="fh" value="318" title="318">
+           <input type="radio" name="fh" value="319" title="319"> 
+         <input type="radio" name="fh" value="320" title="320">
+          <input type="radio" name="fh" value="32" title="321" disabled="">
+         <input type="radio" name="fh" value="32" title="322" disabled="">
+         <input type="radio" name="fh" value="32" title="323" disabled="">
+         <input type="radio" name="fh" value="32" title="324" disabled="">
+         <input type="radio" name="fh" value="32" title="325" disabled="">
+         
+    </div>
+  </div>
+</fieldset>
+
+                 <fieldset class="layui-elem-field">
+  <legend>床位选择</legend>
+  <div class="layui-field-box" style="    padding: 10px 5px;">
+     <div class="layui-input-block" style="    margin-left:2px;">
+         <input type="radio" name="cw" value="01床" title="01床" disabled="">
+         <input type="radio" name="cw" value="02床" title="02床" disabled="">
+         <input type="radio" name="cw" value="03床" title="03床" disabled="">
+         <input type="radio" name="cw" value="04床" title="04床" checked="">
+         <input type="radio" name="cw" value="05床" title="05床" >
+        
+      <input type="radio" name="cw" value="06床" title="06床" > 
+               <asp:Label ID="cwts"  runat="server" Text="下铺靠窗"></asp:Label>
+
+           
+      
          
     </div>
   </div>

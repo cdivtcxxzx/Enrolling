@@ -22,6 +22,9 @@
 		<link rel="stylesheet" href="../nradmingl/plugins/table.css" />
     
      <!--引用ＬＡＹＵＩ前端必须ＣＳＳ OVER-->
+
+
+
    
    
 </head>
@@ -29,6 +32,29 @@
 <body>
     <form id="form1" runat="server">
     <div style="width:90%;">
+        <asp:DropDownList ID="DropDownList1"  lay-filter="aihao" runat="server" DataSourceID="ObjectDataSource1" DataTextField="Type_Name" DataValueField="Type_NO"></asp:DropDownList>
+
+
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getroom" TypeName="dormitory">
+            <SelectParameters>
+                <asp:Parameter Name="mkey" Type="String" />
+            </SelectParameters>
+        </asp:ObjectDataSource>
+
+        <asp:Label ID="xqmc" runat="server" Text="01"></asp:Label>
+        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [Type_Name], [Type_NO] FROM [Fresh_Room_Type] ORDER BY [Type_Name]"></asp:SqlDataSource>
+
+
+        <asp:DropDownList ID="DropDownList2" runat="server" DataSourceID="SqlDataSource2" DataTextField="Name" DataValueField="Dorm_NO">
+        </asp:DropDownList>
+        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [Dorm_NO], [Name] FROM [Fresh_Dorm] WHERE ([Campus_NO] = @Campus_NO)">
+            <SelectParameters>
+                <asp:ControlParameter ControlID="xqmc" Name="Campus_NO" PropertyName="Text" Type="String" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+        <br />
+         <asp:Label ID="xsxx_xh" runat="server" Text="20170001"></asp:Label>
+
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
   <legend>卡片风格的Tab</legend>
 </fieldset>
