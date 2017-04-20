@@ -107,6 +107,8 @@
        
              
 <form class="layui-form layui-form-pane" action="">
+                <asp:HiddenField ID="hidden_pk_sno" runat="server" />
+
     <div class="xsxx1"><div class="layui-form-item" pane="">
           <label class="layui-form-label" style="height:94%;display:none">照片：</label>
           <div class="layui-input-block" style="margin-left: 10px!important">

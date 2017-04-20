@@ -15,7 +15,7 @@ public partial class view_xsjbxx : System.Web.UI.Page
         string PK_SNO = "2";
         string PK_Staff_NO = "chenzhiqiu";
 
-        hidden_pk_sno.Value = PK_SNO;
+        this.hidden_pk_sno.Value = PK_SNO;
 
 
     }

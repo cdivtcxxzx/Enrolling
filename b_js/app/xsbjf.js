@@ -258,8 +258,12 @@ function sure(){
 
     if(feelist.length>0){
         var pk_staff_no= $("#pk_staff_no").val();
-        var data={ "feelist": feelist.join(","),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no};
+        var returnurl=window.location.href;
+        var data=null;
         if ($.trim(pk_staff_no).length > 0 ) {
+            data={ "feelist": feelist.join(","),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no,'pk_staff_no':pk_staff_no,'returnurl':returnurl};
+        }else{
+            data={ "feelist": feelist.join(","),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no,'returnurl':returnurl};
         }
         //提交必交费信息
         $.ajax({
@@ -271,7 +275,12 @@ function sure(){
                 console.log(data);
                 var json_data = JSON.parse(data);
                 if (json_data.code == 'success') {
-                    window.location.href=json_data.data;
+                    if ($.trim(pk_staff_no).length > 0 ) {
+                        $('#sure').hide();
+                        alert('已帮助学生生成交费订单，请通知学生及时交费');
+                    }else{
+                        window.location.href=json_data.data;
+                    }
                 } else {
                     alert(json_data.message);
                 }

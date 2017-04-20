@@ -127,6 +127,16 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="InitStuInfoTest">
+        <s:complexType />
+      </s:element>
+      <s:element name="InitStuInfoTestResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="InitStuInfoTestResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="InitPayOrder">
         <s:complexType>
           <s:sequence>
@@ -134,6 +144,7 @@
             <s:element minOccurs="0" maxOccurs="1" name="md5" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="xh" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="pk_fee_items" type="tns:ArrayOfString" />
+            <s:element minOccurs="0" maxOccurs="1" name="returnUrl" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -213,20 +224,20 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="InitOffOrderByType">
+      <s:element name="InitOffOrderByItem">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="pk_app" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="md5" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="xh" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="fee_type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="pk_fee_item" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="InitOffOrderByTypeResponse">
+      <s:element name="InitOffOrderByItemResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="InitOffOrderByTypeResult" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="InitOffOrderByItemResult" type="s:boolean" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -236,7 +247,7 @@
       <s:element name="InitOffOrderTestResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="InitOffOrderTestResult" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="InitOffOrderTestResult" type="s:boolean" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -278,6 +289,12 @@
   <wsdl:message name="InitStuInfoSoapOut">
     <wsdl:part name="parameters" element="tns:InitStuInfoResponse" />
   </wsdl:message>
+  <wsdl:message name="InitStuInfoTestSoapIn">
+    <wsdl:part name="parameters" element="tns:InitStuInfoTest" />
+  </wsdl:message>
+  <wsdl:message name="InitStuInfoTestSoapOut">
+    <wsdl:part name="parameters" element="tns:InitStuInfoTestResponse" />
+  </wsdl:message>
   <wsdl:message name="InitPayOrderSoapIn">
     <wsdl:part name="parameters" element="tns:InitPayOrder" />
   </wsdl:message>
@@ -314,11 +331,11 @@
   <wsdl:message name="InitPayOrderTestSoapOut">
     <wsdl:part name="parameters" element="tns:InitPayOrderTestResponse" />
   </wsdl:message>
-  <wsdl:message name="InitOffOrderByTypeSoapIn">
-    <wsdl:part name="parameters" element="tns:InitOffOrderByType" />
+  <wsdl:message name="InitOffOrderByItemSoapIn">
+    <wsdl:part name="parameters" element="tns:InitOffOrderByItem" />
   </wsdl:message>
-  <wsdl:message name="InitOffOrderByTypeSoapOut">
-    <wsdl:part name="parameters" element="tns:InitOffOrderByTypeResponse" />
+  <wsdl:message name="InitOffOrderByItemSoapOut">
+    <wsdl:part name="parameters" element="tns:InitOffOrderByItemResponse" />
   </wsdl:message>
   <wsdl:message name="InitOffOrderTestSoapIn">
     <wsdl:part name="parameters" element="tns:InitOffOrderTest" />
@@ -351,6 +368,10 @@
       <wsdl:input message="tns:InitStuInfoSoapIn" />
       <wsdl:output message="tns:InitStuInfoSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="InitStuInfoTest">
+      <wsdl:input message="tns:InitStuInfoTestSoapIn" />
+      <wsdl:output message="tns:InitStuInfoTestSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="InitPayOrder">
       <wsdl:input message="tns:InitPayOrderSoapIn" />
       <wsdl:output message="tns:InitPayOrderSoapOut" />
@@ -375,9 +396,9 @@
       <wsdl:input message="tns:InitPayOrderTestSoapIn" />
       <wsdl:output message="tns:InitPayOrderTestSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="InitOffOrderByType">
-      <wsdl:input message="tns:InitOffOrderByTypeSoapIn" />
-      <wsdl:output message="tns:InitOffOrderByTypeSoapOut" />
+    <wsdl:operation name="InitOffOrderByItem">
+      <wsdl:input message="tns:InitOffOrderByItemSoapIn" />
+      <wsdl:output message="tns:InitOffOrderByItemSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="InitOffOrderTest">
       <wsdl:input message="tns:InitOffOrderTestSoapIn" />
@@ -440,6 +461,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="InitStuInfoTest">
+      <soap:operation soapAction="http://tempuri.org/InitStuInfoTest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="InitPayOrder">
       <soap:operation soapAction="http://tempuri.org/InitPayOrder" style="document" />
       <wsdl:input>
@@ -494,8 +524,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="InitOffOrderByType">
-      <soap:operation soapAction="http://tempuri.org/InitOffOrderByType" style="document" />
+    <wsdl:operation name="InitOffOrderByItem">
+      <soap:operation soapAction="http://tempuri.org/InitOffOrderByItem" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -569,6 +599,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="InitStuInfoTest">
+      <soap12:operation soapAction="http://tempuri.org/InitStuInfoTest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="InitPayOrder">
       <soap12:operation soapAction="http://tempuri.org/InitPayOrder" style="document" />
       <wsdl:input>
@@ -623,8 +662,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="InitOffOrderByType">
-      <soap12:operation soapAction="http://tempuri.org/InitOffOrderByType" style="document" />
+    <wsdl:operation name="InitOffOrderByItem">
+      <soap12:operation soapAction="http://tempuri.org/InitOffOrderByItem" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

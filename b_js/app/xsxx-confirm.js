@@ -1,10 +1,18 @@
 ﻿(function () {
     layui.use(['form', 'layer', 'jquery'], function () {
         var $ = layui.jquery;
+
+        var server_msg=$("#server_msg").val();
+        if ($.trim(server_msg).length > 0 ) {
+            alert(server_msg);
+            return;
+        }
+
         var form = layui.form();
         layer = layui.layer;
         var pk_sno = $("#hidden_pk_sno").val();//初始值由服务器回传网页时生成
-        
+
+
         //清空学生信息
         //$('#xszpxx').attr('src','');
         $('#xsxx_xm').text('');
