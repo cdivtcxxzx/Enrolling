@@ -53,25 +53,6 @@
       <Association Name="Base_Staff_Fresh_Counseller" Member="Base_Staff" AccessModifier="Internal" ThisKey="FK_Staff_NO" OtherKey="PK_Staff_NO" Type="Base_Staff" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Base_STU" Member="Base_STUs">
-    <Type Name="Base_STU">
-      <Column Name="PK_SNO" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FK_SPE_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Year" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="Test_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="ID_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="Gender_Code" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="Photo" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Status_Code" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="DT_Initial" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="FK_Class_NO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Password" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="QQ" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="Phone" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Association Name="Fresh_SPE_Base_STU" Member="Fresh_SPE" AccessModifier="Internal" ThisKey="FK_SPE_Code" OtherKey="PK_SPE" Type="Fresh_SPE" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Fresh_Confirm" Member="Fresh_Confirms">
     <Type Name="Fresh_Confirm">
       <Column Name="PK_Confirm_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -90,6 +71,31 @@
       <Column Name="PK_SPE" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="Fresh_SPE_Fresh_Class" Member="Fresh_Classes" ThisKey="PK_SPE" OtherKey="FK_SPE_NO" Type="Fresh_Class" />
       <Association Name="Fresh_SPE_Base_STU" Member="Base_STUs" ThisKey="PK_SPE" OtherKey="FK_SPE_Code" Type="Base_STU" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Base_STU" Member="Base_STUs">
+    <Type Name="Base_STU">
+      <Column Name="PK_SNO" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FK_SPE_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Year" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Test_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="ID_NO" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Gender_Code" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Photo" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Status_Code" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="DT_Initial" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FK_Class_NO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="QQ" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Height" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Weight" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Nation_Code" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Census" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Politics_Code" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Home_add" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="Fresh_SPE_Base_STU" Member="Fresh_SPE" AccessModifier="Internal" ThisKey="FK_SPE_Code" OtherKey="PK_SPE" Type="Fresh_SPE" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

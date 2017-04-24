@@ -20,7 +20,7 @@ public partial class test_testView : System.Web.UI.Page
         //testDd.Items.Insert(0, new ListItem(listgetroomtype[0].Type_NO, "-1"));
 
         //测试学生信息确认
-        Response.Write(organizationService.addStuConfirm("2",false));
+        //Response.Write(organizationService.addStuConfirm("2",false));
         //Response.Write(organizationService.isStuConfrim("2"));
     }
 }
