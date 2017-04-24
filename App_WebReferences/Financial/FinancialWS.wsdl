@@ -74,6 +74,7 @@
           <s:element minOccurs="0" maxOccurs="1" name="Type_Name" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="SPE_Code" type="s:string" />
           <s:element minOccurs="0" maxOccurs="1" name="Is_Must" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Is_Online_Order" type="s:string" />
         </s:sequence>
       </s:complexType>
       <s:element name="GetOrderedFeeItem">

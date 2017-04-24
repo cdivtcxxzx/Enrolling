@@ -33,13 +33,13 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
         try {
 
             #region 检测用户是否登陆
-            Object se_pk_sno = Session["pk_sno"];//获取学号
-            Object se_pk_staff_no = Session["pk_staff_no"];//获取员工编号
+            //Object se_pk_sno = Session["pk_sno"];//获取学号
+            //Object se_pk_staff_no = Session["pk_staff_no"];//获取员工编号
 
-            if ((se_pk_sno == null || se_pk_sno.ToString().Trim().Length == 0) && (se_pk_staff_no == null || se_pk_staff_no.ToString().Trim().Length == 0))
-            {
-                result.message = "非授权访问";
-            }
+            //if ((se_pk_sno == null || se_pk_sno.ToString().Trim().Length == 0) && (se_pk_staff_no == null || se_pk_staff_no.ToString().Trim().Length == 0))
+            //{
+            //    result.message = "非授权访问";
+            //}
             #endregion
 
             string cs = Request.QueryString["cs"];//获取get的参数
@@ -637,7 +637,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                     if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
                     {
                         financial logic_fee = new financial();
-                        fee_ismust data = logic_fee.get_fee_ismust(pk_batch_no, pk_sno);
+                        fee_list data = logic_fee.get_fee_ismust(pk_batch_no, pk_sno);
                         result.code = "success";
                         result.message = "成功";
                         result.data = new { single_selection = data.single, multiple_selection = data.multiple };
@@ -659,7 +659,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                     {
                         financial logic_fee = new financial();
                         //获取学生是否已生成订单，如果已生成，则返回订单的url地址；否则生成并保存订单，返回订单的url地址
-                        fee_ismust data = logic_fee.get_fee_ismust(pk_batch_no, pk_sno);
+                        fee_list data = logic_fee.get_fee_ismust(pk_batch_no, pk_sno);
                         if (data.orderid_url != null && data.orderid_url.Trim().Length > 0)
                         {
                             //已生成过订单，直接返回其订单url地址
@@ -803,6 +803,40 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                 }
                             }
                         }
+                    }
+                }
+                #endregion
+
+                #region  获取学生交费列表（迎新批次号，学号）
+                if (cs.Trim().Equals("get_fee"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+                    string pk_batch_no = Request.QueryString["pk_batch_no"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        financial logic_fee = new financial();
+                        List<fee_list> data = logic_fee.get_fee(pk_batch_no, pk_sno);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = new { single_must = data[0].single, multiple_must = data[0].multiple, single_nomust = data[1].single, multiple_nomust = data[1].multiple };
+                    }
+                }
+                #endregion
+
+                #region  获取学生未生成订单的交费列表（迎新批次号，学号）
+                if (cs.Trim().Equals("get_fee_no_order"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+                    string pk_batch_no = Request.QueryString["pk_batch_no"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        financial logic_fee = new financial();
+                        List<fee_list> data = logic_fee.get_fee_no_order(pk_batch_no, pk_sno);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = new { single_must = data[0].single, multiple_must = data[0].multiple, single_nomust = data[1].single, multiple_nomust = data[1].multiple };
                     }
                 }
                 #endregion

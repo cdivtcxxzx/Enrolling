@@ -219,7 +219,7 @@ public class WebService : System.Web.Services.WebService {
                 throw new Exception("获取学生迎新事务中的迎新批次数据错误");
             }
             financial logic_fee = new financial();
-            fee_ismust data1 = logic_fee.get_fee_ismust(pk_batch_no, PK_SNO);
+            fee_list data1 = logic_fee.get_fee_ismust(pk_batch_no, PK_SNO);
             if (data1 == null || data1.orderid==null || data1.orderid.Trim().Length==0) {
                 result = "未完成";
             }
