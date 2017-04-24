@@ -12,19 +12,6 @@
       <Association Name="Base_College_Base_Staff" Member="Base_College" AccessModifier="Internal" ThisKey="FK_College_NO" OtherKey="PK_College" Type="Base_College" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Fresh_SPE" Member="Fresh_SPEs">
-    <Type Name="Fresh_SPE">
-      <Column Name="SPE_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Year" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="SPE_Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="EDU_Level_Code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="FK_College_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="PK_SPE" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="Fresh_SPE_Fresh_Class" Member="Fresh_Classes" ThisKey="PK_SPE" OtherKey="FK_SPE_NO" Type="Fresh_Class" />
-      <Association Name="Fresh_SPE_Base_STU" Member="Base_STUs" ThisKey="PK_SPE" OtherKey="FK_SPE_Code" Type="Base_STU" />
-      <Association Name="Base_College_Fresh_SPE" Member="Base_College" AccessModifier="Internal" ThisKey="FK_College_Code" OtherKey="PK_College" Type="Base_College" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Fresh_Class" Member="Fresh_Classes">
     <Type Name="Fresh_Class">
       <Column Name="PK_Class_NO" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -32,8 +19,8 @@
       <Column Name="FK_SPE_NO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="Fresh_Class_Fresh_Counseller" Member="Fresh_Counsellers" ThisKey="PK_Class_NO" OtherKey="FK_Class_NO" Type="Fresh_Counseller" />
-      <Association Name="Fresh_SPE_Fresh_Class" Member="Fresh_SPE" AccessModifier="Internal" ThisKey="FK_SPE_NO" OtherKey="PK_SPE" Type="Fresh_SPE" IsForeignKey="true" />
       <Association Name="Base_Campus_Fresh_Class" Member="Base_Campus" AccessModifier="Internal" ThisKey="FK_Campus_NO" OtherKey="PK_Campus" Type="Base_Campus" IsForeignKey="true" />
+      <Association Name="Fresh_SPE_Fresh_Class" Member="Fresh_SPE" AccessModifier="Internal" ThisKey="FK_SPE_NO" OtherKey="PK_SPE" Type="Fresh_SPE" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Base_College" Member="Base_Colleges">
@@ -43,7 +30,6 @@
       <Column Name="Enabled" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="College_NO" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
       <Association Name="Base_College_Base_Staff" Member="Base_Staffs" ThisKey="PK_College" OtherKey="FK_College_NO" Type="Base_Staff" />
-      <Association Name="Base_College_Fresh_SPE" Member="Fresh_SPEs" ThisKey="PK_College" OtherKey="FK_College_Code" Type="Fresh_SPE" />
     </Type>
   </Table>
   <Table Name="dbo.Base_Campus" Member="Base_Campus">
@@ -67,6 +53,26 @@
       <Association Name="Base_Staff_Fresh_Counseller" Member="Base_Staff" AccessModifier="Internal" ThisKey="FK_Staff_NO" OtherKey="PK_Staff_NO" Type="Base_Staff" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.Fresh_Confirm" Member="Fresh_Confirms">
+    <Type Name="Fresh_Confirm">
+      <Column Name="PK_Confirm_ID" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FK_SNO" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Confirm_state" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Confirm_Date" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fresh_SPE" Member="Fresh_SPEs">
+    <Type Name="Fresh_SPE">
+      <Column Name="SPE_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Year" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SPE_Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EDU_Level_Code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="FK_College_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PK_SPE" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Fresh_SPE_Fresh_Class" Member="Fresh_Classes" ThisKey="PK_SPE" OtherKey="FK_SPE_NO" Type="Fresh_Class" />
+      <Association Name="Fresh_SPE_Base_STU" Member="Base_STUs" ThisKey="PK_SPE" OtherKey="FK_SPE_Code" Type="Base_STU" />
+    </Type>
+  </Table>
   <Table Name="dbo.Base_STU" Member="Base_STUs">
     <Type Name="Base_STU">
       <Column Name="PK_SNO" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -83,7 +89,13 @@
       <Column Name="Password" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="QQ" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="Phone" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Association Name="Fresh_SPE_Base_STU" Member="Fresh_SPE" ThisKey="FK_SPE_Code" OtherKey="PK_SPE" Type="Fresh_SPE" IsForeignKey="true" />
+      <Column Name="Height" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Weight" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Nation_Code" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Census" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Politics_Code" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Home_add" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="Fresh_SPE_Base_STU" Member="Fresh_SPE" AccessModifier="Internal" ThisKey="FK_SPE_Code" OtherKey="PK_SPE" Type="Fresh_SPE" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

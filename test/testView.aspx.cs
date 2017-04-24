@@ -10,12 +10,17 @@ public partial class test_testView : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        List<Fresh_Room_Type> listgetroomtype = dormitory.listgetroomtype("1");
-        Response.Write(listgetroomtype);
-        testDd.DataSource = listgetroomtype;
-        testDd.DataTextField = "Type_Name";
-        testDd.DataValueField = "Type_NO";
-        testDd.DataBind();
-        testDd.Items.Insert(0, new ListItem(listgetroomtype[0].Type_NO, "-1"));
+        //测试下拉列表填充
+        //List<Fresh_Room_Type> listgetroomtype = dormitory.listgetroomtype("1");
+        //Response.Write(listgetroomtype);
+        //testDd.DataSource = listgetroomtype;
+        //testDd.DataTextField = "Type_Name";
+        //testDd.DataValueField = "Type_NO";
+        //testDd.DataBind();
+        //testDd.Items.Insert(0, new ListItem(listgetroomtype[0].Type_NO, "-1"));
+
+        //测试学生信息确认
+        //Response.Write(organizationService.addStuConfirm("2",false));
+        //Response.Write(organizationService.isStuConfrim("2"));
     }
 }
