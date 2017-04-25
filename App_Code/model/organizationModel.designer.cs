@@ -54,6 +54,12 @@ namespace model
     partial void InsertBase_STU(Base_STU instance);
     partial void UpdateBase_STU(Base_STU instance);
     partial void DeleteBase_STU(Base_STU instance);
+    partial void InsertBase_Code(Base_Code instance);
+    partial void UpdateBase_Code(Base_Code instance);
+    partial void DeleteBase_Code(Base_Code instance);
+    partial void InsertBase_Code_Item(Base_Code_Item instance);
+    partial void UpdateBase_Code_Item(Base_Code_Item instance);
+    partial void DeleteBase_Code_Item(Base_Code_Item instance);
     #endregion
 		
 		public organizationModelDataContext() : 
@@ -149,6 +155,22 @@ namespace model
 				return this.GetTable<Base_STU>();
 			}
 		}
+		
+		public System.Data.Linq.Table<Base_Code> Base_Codes
+		{
+			get
+			{
+				return this.GetTable<Base_Code>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Base_Code_Item> Base_Code_Items
+		{
+			get
+			{
+				return this.GetTable<Base_Code_Item>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Base_Staff")]
@@ -168,10 +190,6 @@ namespace model
 		private string _Gender;
 		
 		private string _Password;
-		
-		private EntitySet<Fresh_Counseller> _Fresh_Counsellers;
-		
-		private EntityRef<Base_College> _Base_College;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
@@ -193,8 +211,6 @@ namespace model
 		
 		public Base_Staff()
 		{
-			this._Fresh_Counsellers = new EntitySet<Fresh_Counseller>(new Action<Fresh_Counseller>(this.attach_Fresh_Counsellers), new Action<Fresh_Counseller>(this.detach_Fresh_Counsellers));
-			this._Base_College = default(EntityRef<Base_College>);
 			OnCreated();
 		}
 		
@@ -249,10 +265,6 @@ namespace model
 			{
 				if ((this._FK_College_NO != value))
 				{
-					if (this._Base_College.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnFK_College_NOChanging(value);
 					this.SendPropertyChanging();
 					this._FK_College_NO = value;
@@ -322,53 +334,6 @@ namespace model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_Staff_Fresh_Counseller", Storage="_Fresh_Counsellers", ThisKey="PK_Staff_NO", OtherKey="FK_Staff_NO")]
-		public EntitySet<Fresh_Counseller> Fresh_Counsellers
-		{
-			get
-			{
-				return this._Fresh_Counsellers;
-			}
-			set
-			{
-				this._Fresh_Counsellers.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_College_Base_Staff", Storage="_Base_College", ThisKey="FK_College_NO", OtherKey="PK_College", IsForeignKey=true)]
-		internal Base_College Base_College
-		{
-			get
-			{
-				return this._Base_College.Entity;
-			}
-			set
-			{
-				Base_College previousValue = this._Base_College.Entity;
-				if (((previousValue != value) 
-							|| (this._Base_College.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Base_College.Entity = null;
-						previousValue.Base_Staffs.Remove(this);
-					}
-					this._Base_College.Entity = value;
-					if ((value != null))
-					{
-						value.Base_Staffs.Add(this);
-						this._FK_College_NO = value.PK_College;
-					}
-					else
-					{
-						this._FK_College_NO = default(string);
-					}
-					this.SendPropertyChanged("Base_College");
-				}
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -388,18 +353,6 @@ namespace model
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
-		
-		private void attach_Fresh_Counsellers(Fresh_Counseller entity)
-		{
-			this.SendPropertyChanging();
-			entity.Base_Staff = this;
-		}
-		
-		private void detach_Fresh_Counsellers(Fresh_Counseller entity)
-		{
-			this.SendPropertyChanging();
-			entity.Base_Staff = null;
-		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fresh_Class")]
@@ -415,12 +368,6 @@ namespace model
 		private string _FK_SPE_NO;
 		
 		private string _Name;
-		
-		private EntitySet<Fresh_Counseller> _Fresh_Counsellers;
-		
-		private EntityRef<Base_Campus> _Base_Campus;
-		
-		private EntityRef<Fresh_SPE> _Fresh_SPE;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
@@ -438,9 +385,6 @@ namespace model
 		
 		public Fresh_Class()
 		{
-			this._Fresh_Counsellers = new EntitySet<Fresh_Counseller>(new Action<Fresh_Counseller>(this.attach_Fresh_Counsellers), new Action<Fresh_Counseller>(this.detach_Fresh_Counsellers));
-			this._Base_Campus = default(EntityRef<Base_Campus>);
-			this._Fresh_SPE = default(EntityRef<Fresh_SPE>);
 			OnCreated();
 		}
 		
@@ -475,10 +419,6 @@ namespace model
 			{
 				if ((this._FK_Campus_NO != value))
 				{
-					if (this._Base_Campus.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnFK_Campus_NOChanging(value);
 					this.SendPropertyChanging();
 					this._FK_Campus_NO = value;
@@ -499,10 +439,6 @@ namespace model
 			{
 				if ((this._FK_SPE_NO != value))
 				{
-					if (this._Fresh_SPE.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnFK_SPE_NOChanging(value);
 					this.SendPropertyChanging();
 					this._FK_SPE_NO = value;
@@ -532,87 +468,6 @@ namespace model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_Class_Fresh_Counseller", Storage="_Fresh_Counsellers", ThisKey="PK_Class_NO", OtherKey="FK_Class_NO")]
-		public EntitySet<Fresh_Counseller> Fresh_Counsellers
-		{
-			get
-			{
-				return this._Fresh_Counsellers;
-			}
-			set
-			{
-				this._Fresh_Counsellers.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_Campus_Fresh_Class", Storage="_Base_Campus", ThisKey="FK_Campus_NO", OtherKey="PK_Campus", IsForeignKey=true)]
-		internal Base_Campus Base_Campus
-		{
-			get
-			{
-				return this._Base_Campus.Entity;
-			}
-			set
-			{
-				Base_Campus previousValue = this._Base_Campus.Entity;
-				if (((previousValue != value) 
-							|| (this._Base_Campus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Base_Campus.Entity = null;
-						previousValue.Fresh_Classes.Remove(this);
-					}
-					this._Base_Campus.Entity = value;
-					if ((value != null))
-					{
-						value.Fresh_Classes.Add(this);
-						this._FK_Campus_NO = value.PK_Campus;
-					}
-					else
-					{
-						this._FK_Campus_NO = default(string);
-					}
-					this.SendPropertyChanged("Base_Campus");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_SPE_Fresh_Class", Storage="_Fresh_SPE", ThisKey="FK_SPE_NO", OtherKey="PK_SPE", IsForeignKey=true)]
-		internal Fresh_SPE Fresh_SPE
-		{
-			get
-			{
-				return this._Fresh_SPE.Entity;
-			}
-			set
-			{
-				Fresh_SPE previousValue = this._Fresh_SPE.Entity;
-				if (((previousValue != value) 
-							|| (this._Fresh_SPE.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Fresh_SPE.Entity = null;
-						previousValue.Fresh_Classes.Remove(this);
-					}
-					this._Fresh_SPE.Entity = value;
-					if ((value != null))
-					{
-						value.Fresh_Classes.Add(this);
-						this._FK_SPE_NO = value.PK_SPE;
-					}
-					else
-					{
-						this._FK_SPE_NO = default(string);
-					}
-					this.SendPropertyChanged("Fresh_SPE");
-				}
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -632,18 +487,6 @@ namespace model
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
-		
-		private void attach_Fresh_Counsellers(Fresh_Counseller entity)
-		{
-			this.SendPropertyChanging();
-			entity.Fresh_Class = this;
-		}
-		
-		private void detach_Fresh_Counsellers(Fresh_Counseller entity)
-		{
-			this.SendPropertyChanging();
-			entity.Fresh_Class = null;
-		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Base_College")]
@@ -659,8 +502,6 @@ namespace model
 		private string _Enabled;
 		
 		private string _College_NO;
-		
-		private EntitySet<Base_Staff> _Base_Staffs;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
@@ -678,7 +519,6 @@ namespace model
 		
 		public Base_College()
 		{
-			this._Base_Staffs = new EntitySet<Base_Staff>(new Action<Base_Staff>(this.attach_Base_Staffs), new Action<Base_Staff>(this.detach_Base_Staffs));
 			OnCreated();
 		}
 		
@@ -762,19 +602,6 @@ namespace model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_College_Base_Staff", Storage="_Base_Staffs", ThisKey="PK_College", OtherKey="FK_College_NO")]
-		public EntitySet<Base_Staff> Base_Staffs
-		{
-			get
-			{
-				return this._Base_Staffs;
-			}
-			set
-			{
-				this._Base_Staffs.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -794,18 +621,6 @@ namespace model
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
-		
-		private void attach_Base_Staffs(Base_Staff entity)
-		{
-			this.SendPropertyChanging();
-			entity.Base_College = this;
-		}
-		
-		private void detach_Base_Staffs(Base_Staff entity)
-		{
-			this.SendPropertyChanging();
-			entity.Base_College = null;
-		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Base_Campus")]
@@ -821,8 +636,6 @@ namespace model
 		private string _Campus_Name;
 		
 		private string _Enabled;
-		
-		private EntitySet<Fresh_Class> _Fresh_Classes;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
@@ -840,7 +653,6 @@ namespace model
 		
 		public Base_Campus()
 		{
-			this._Fresh_Classes = new EntitySet<Fresh_Class>(new Action<Fresh_Class>(this.attach_Fresh_Classes), new Action<Fresh_Class>(this.detach_Fresh_Classes));
 			OnCreated();
 		}
 		
@@ -924,19 +736,6 @@ namespace model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_Campus_Fresh_Class", Storage="_Fresh_Classes", ThisKey="PK_Campus", OtherKey="FK_Campus_NO")]
-		public EntitySet<Fresh_Class> Fresh_Classes
-		{
-			get
-			{
-				return this._Fresh_Classes;
-			}
-			set
-			{
-				this._Fresh_Classes.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -955,18 +754,6 @@ namespace model
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_Fresh_Classes(Fresh_Class entity)
-		{
-			this.SendPropertyChanging();
-			entity.Base_Campus = this;
-		}
-		
-		private void detach_Fresh_Classes(Fresh_Class entity)
-		{
-			this.SendPropertyChanging();
-			entity.Base_Campus = null;
 		}
 	}
 	
@@ -988,10 +775,6 @@ namespace model
 		
 		private string _QQ;
 		
-		private EntityRef<Fresh_Class> _Fresh_Class;
-		
-		private EntityRef<Base_Staff> _Base_Staff;
-		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1012,8 +795,6 @@ namespace model
 		
 		public Fresh_Counseller()
 		{
-			this._Fresh_Class = default(EntityRef<Fresh_Class>);
-			this._Base_Staff = default(EntityRef<Base_Staff>);
 			OnCreated();
 		}
 		
@@ -1048,10 +829,6 @@ namespace model
 			{
 				if ((this._FK_Class_NO != value))
 				{
-					if (this._Fresh_Class.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnFK_Class_NOChanging(value);
 					this.SendPropertyChanging();
 					this._FK_Class_NO = value;
@@ -1072,10 +849,6 @@ namespace model
 			{
 				if ((this._FK_Staff_NO != value))
 				{
-					if (this._Base_Staff.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnFK_Staff_NOChanging(value);
 					this.SendPropertyChanging();
 					this._FK_Staff_NO = value;
@@ -1141,74 +914,6 @@ namespace model
 					this._QQ = value;
 					this.SendPropertyChanged("QQ");
 					this.OnQQChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_Class_Fresh_Counseller", Storage="_Fresh_Class", ThisKey="FK_Class_NO", OtherKey="PK_Class_NO", IsForeignKey=true)]
-		internal Fresh_Class Fresh_Class
-		{
-			get
-			{
-				return this._Fresh_Class.Entity;
-			}
-			set
-			{
-				Fresh_Class previousValue = this._Fresh_Class.Entity;
-				if (((previousValue != value) 
-							|| (this._Fresh_Class.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Fresh_Class.Entity = null;
-						previousValue.Fresh_Counsellers.Remove(this);
-					}
-					this._Fresh_Class.Entity = value;
-					if ((value != null))
-					{
-						value.Fresh_Counsellers.Add(this);
-						this._FK_Class_NO = value.PK_Class_NO;
-					}
-					else
-					{
-						this._FK_Class_NO = default(string);
-					}
-					this.SendPropertyChanged("Fresh_Class");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Base_Staff_Fresh_Counseller", Storage="_Base_Staff", ThisKey="FK_Staff_NO", OtherKey="PK_Staff_NO", IsForeignKey=true)]
-		internal Base_Staff Base_Staff
-		{
-			get
-			{
-				return this._Base_Staff.Entity;
-			}
-			set
-			{
-				Base_Staff previousValue = this._Base_Staff.Entity;
-				if (((previousValue != value) 
-							|| (this._Base_Staff.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Base_Staff.Entity = null;
-						previousValue.Fresh_Counsellers.Remove(this);
-					}
-					this._Base_Staff.Entity = value;
-					if ((value != null))
-					{
-						value.Fresh_Counsellers.Add(this);
-						this._FK_Staff_NO = value.PK_Staff_NO;
-					}
-					else
-					{
-						this._FK_Staff_NO = default(string);
-					}
-					this.SendPropertyChanged("Base_Staff");
 				}
 			}
 		}
@@ -1386,10 +1091,6 @@ namespace model
 		
 		private string _PK_SPE;
 		
-		private EntitySet<Fresh_Class> _Fresh_Classes;
-		
-		private EntitySet<Base_STU> _Base_STUs;
-		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1410,8 +1111,6 @@ namespace model
 		
 		public Fresh_SPE()
 		{
-			this._Fresh_Classes = new EntitySet<Fresh_Class>(new Action<Fresh_Class>(this.attach_Fresh_Classes), new Action<Fresh_Class>(this.detach_Fresh_Classes));
-			this._Base_STUs = new EntitySet<Base_STU>(new Action<Base_STU>(this.attach_Base_STUs), new Action<Base_STU>(this.detach_Base_STUs));
 			OnCreated();
 		}
 		
@@ -1535,32 +1234,6 @@ namespace model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_SPE_Fresh_Class", Storage="_Fresh_Classes", ThisKey="PK_SPE", OtherKey="FK_SPE_NO")]
-		public EntitySet<Fresh_Class> Fresh_Classes
-		{
-			get
-			{
-				return this._Fresh_Classes;
-			}
-			set
-			{
-				this._Fresh_Classes.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_SPE_Base_STU", Storage="_Base_STUs", ThisKey="PK_SPE", OtherKey="FK_SPE_Code")]
-		public EntitySet<Base_STU> Base_STUs
-		{
-			get
-			{
-				return this._Base_STUs;
-			}
-			set
-			{
-				this._Base_STUs.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1579,30 +1252,6 @@ namespace model
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_Fresh_Classes(Fresh_Class entity)
-		{
-			this.SendPropertyChanging();
-			entity.Fresh_SPE = this;
-		}
-		
-		private void detach_Fresh_Classes(Fresh_Class entity)
-		{
-			this.SendPropertyChanging();
-			entity.Fresh_SPE = null;
-		}
-		
-		private void attach_Base_STUs(Base_STU entity)
-		{
-			this.SendPropertyChanging();
-			entity.Fresh_SPE = this;
-		}
-		
-		private void detach_Base_STUs(Base_STU entity)
-		{
-			this.SendPropertyChanging();
-			entity.Fresh_SPE = null;
 		}
 	}
 	
@@ -1652,8 +1301,6 @@ namespace model
 		
 		private string _Home_add;
 		
-		private EntityRef<Fresh_SPE> _Fresh_SPE;
-		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1702,7 +1349,6 @@ namespace model
 		
 		public Base_STU()
 		{
-			this._Fresh_SPE = default(EntityRef<Fresh_SPE>);
 			OnCreated();
 		}
 		
@@ -1737,10 +1383,6 @@ namespace model
 			{
 				if ((this._FK_SPE_Code != value))
 				{
-					if (this._Fresh_SPE.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnFK_SPE_CodeChanging(value);
 					this.SendPropertyChanging();
 					this._FK_SPE_Code = value;
@@ -2110,36 +1752,294 @@ namespace model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Fresh_SPE_Base_STU", Storage="_Fresh_SPE", ThisKey="FK_SPE_Code", OtherKey="PK_SPE", IsForeignKey=true)]
-		internal Fresh_SPE Fresh_SPE
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Base_Code")]
+	public partial class Base_Code : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _PK_Code;
+		
+		private string _Code_Name;
+		
+		private string _Remark;
+		
+		private string _Code_NO;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPK_CodeChanging(string value);
+    partial void OnPK_CodeChanged();
+    partial void OnCode_NameChanging(string value);
+    partial void OnCode_NameChanged();
+    partial void OnRemarkChanging(string value);
+    partial void OnRemarkChanged();
+    partial void OnCode_NOChanging(string value);
+    partial void OnCode_NOChanged();
+    #endregion
+		
+		public Base_Code()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PK_Code", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string PK_Code
 		{
 			get
 			{
-				return this._Fresh_SPE.Entity;
+				return this._PK_Code;
 			}
 			set
 			{
-				Fresh_SPE previousValue = this._Fresh_SPE.Entity;
-				if (((previousValue != value) 
-							|| (this._Fresh_SPE.HasLoadedOrAssignedValue == false)))
+				if ((this._PK_Code != value))
 				{
+					this.OnPK_CodeChanging(value);
 					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Fresh_SPE.Entity = null;
-						previousValue.Base_STUs.Remove(this);
-					}
-					this._Fresh_SPE.Entity = value;
-					if ((value != null))
-					{
-						value.Base_STUs.Add(this);
-						this._FK_SPE_Code = value.PK_SPE;
-					}
-					else
-					{
-						this._FK_SPE_Code = default(string);
-					}
-					this.SendPropertyChanged("Fresh_SPE");
+					this._PK_Code = value;
+					this.SendPropertyChanged("PK_Code");
+					this.OnPK_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code_Name", DbType="NVarChar(50)")]
+		public string Code_Name
+		{
+			get
+			{
+				return this._Code_Name;
+			}
+			set
+			{
+				if ((this._Code_Name != value))
+				{
+					this.OnCode_NameChanging(value);
+					this.SendPropertyChanging();
+					this._Code_Name = value;
+					this.SendPropertyChanged("Code_Name");
+					this.OnCode_NameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remark", DbType="NVarChar(255)")]
+		public string Remark
+		{
+			get
+			{
+				return this._Remark;
+			}
+			set
+			{
+				if ((this._Remark != value))
+				{
+					this.OnRemarkChanging(value);
+					this.SendPropertyChanging();
+					this._Remark = value;
+					this.SendPropertyChanged("Remark");
+					this.OnRemarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code_NO", DbType="NVarChar(50)")]
+		public string Code_NO
+		{
+			get
+			{
+				return this._Code_NO;
+			}
+			set
+			{
+				if ((this._Code_NO != value))
+				{
+					this.OnCode_NOChanging(value);
+					this.SendPropertyChanging();
+					this._Code_NO = value;
+					this.SendPropertyChanged("Code_NO");
+					this.OnCode_NOChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Base_Code_Item")]
+	public partial class Base_Code_Item : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _PK_Item;
+		
+		private string _FK_Code;
+		
+		private string _Item_Name;
+		
+		private string _Remark;
+		
+		private string _Item_NO;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPK_ItemChanging(string value);
+    partial void OnPK_ItemChanged();
+    partial void OnFK_CodeChanging(string value);
+    partial void OnFK_CodeChanged();
+    partial void OnItem_NameChanging(string value);
+    partial void OnItem_NameChanged();
+    partial void OnRemarkChanging(string value);
+    partial void OnRemarkChanged();
+    partial void OnItem_NOChanging(string value);
+    partial void OnItem_NOChanged();
+    #endregion
+		
+		public Base_Code_Item()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PK_Item", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string PK_Item
+		{
+			get
+			{
+				return this._PK_Item;
+			}
+			set
+			{
+				if ((this._PK_Item != value))
+				{
+					this.OnPK_ItemChanging(value);
+					this.SendPropertyChanging();
+					this._PK_Item = value;
+					this.SendPropertyChanged("PK_Item");
+					this.OnPK_ItemChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Code", DbType="NVarChar(50)")]
+		public string FK_Code
+		{
+			get
+			{
+				return this._FK_Code;
+			}
+			set
+			{
+				if ((this._FK_Code != value))
+				{
+					this.OnFK_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._FK_Code = value;
+					this.SendPropertyChanged("FK_Code");
+					this.OnFK_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Item_Name", DbType="NVarChar(50)")]
+		public string Item_Name
+		{
+			get
+			{
+				return this._Item_Name;
+			}
+			set
+			{
+				if ((this._Item_Name != value))
+				{
+					this.OnItem_NameChanging(value);
+					this.SendPropertyChanging();
+					this._Item_Name = value;
+					this.SendPropertyChanged("Item_Name");
+					this.OnItem_NameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remark", DbType="NVarChar(255)")]
+		public string Remark
+		{
+			get
+			{
+				return this._Remark;
+			}
+			set
+			{
+				if ((this._Remark != value))
+				{
+					this.OnRemarkChanging(value);
+					this.SendPropertyChanging();
+					this._Remark = value;
+					this.SendPropertyChanged("Remark");
+					this.OnRemarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Item_NO", DbType="NVarChar(50)")]
+		public string Item_NO
+		{
+			get
+			{
+				return this._Item_NO;
+			}
+			set
+			{
+				if ((this._Item_NO != value))
+				{
+					this.OnItem_NOChanging(value);
+					this.SendPropertyChanging();
+					this._Item_NO = value;
+					this.SendPropertyChanged("Item_NO");
+					this.OnItem_NOChanged();
 				}
 			}
 		}

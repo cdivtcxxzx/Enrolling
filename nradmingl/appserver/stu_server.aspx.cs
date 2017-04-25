@@ -75,6 +75,16 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                                 }
                             }
 
+                            //替换学历代码
+                            if (spe_data.EDU_Level_Code != null)
+                            {
+                                Base_Code_Item item = organizationService.getCodeItem("001",spe_data.EDU_Level_Code);
+                                if (item != null)
+                                {
+                                    spe_data.EDU_Level_Code = item.Item_Name;
+                                }
+                            }
+
                             newdata.Add(new { name = "spe", data = spe_data });
                         }
                     }
@@ -134,6 +144,23 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
             }
         }
         #endregion
+        #region 学生信息修改 xsxx_update
+        if (type.Trim().Equals("xsxx_update"))
+        { 
+            string confirmState = Request.QueryString["confirmState"];//获取确认状态
+            if (pk_sno != null && pk_sno.Trim().Length != 0 && confirmState != null)
+            {
+
+            }
+        }
+        #endregion
+
+        #region 学生信息添加 add_student
+        #endregion
+
+        #region 学生信息删除 del_student
+        #endregion
+
         string result_str = JsonConvert.SerializeObject(result);
         Response.Write(result_str);
     }

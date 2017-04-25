@@ -22,5 +22,17 @@ public partial class test_testView : System.Web.UI.Page
         //测试学生信息确认
         //Response.Write(organizationService.addStuConfirm("2",false));
         //Response.Write(organizationService.isStuConfrim("2"));
+
+        //测试学生信息修改
+        //Base_STU b = organizationService.getStu("1");
+        //b.QQ = "";
+        //Response.Write(organizationService.stuUpdate("1", b));
+
+        //测试代码获取
+        Base_Code_Item item = organizationService.getCodeItem("001","01");
+        if (item != null)
+        {
+            Response.Write(item.Item_Name);
+        }
     }
 }

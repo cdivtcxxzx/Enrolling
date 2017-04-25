@@ -272,4 +272,42 @@ public static class organizationService
         }
     }
     #endregion
+    #region 修改学生信息 stuUpdate
+    /// <summary>
+    /// 修改学生相关信息
+    /// </summary>
+    /// <param name="FK_SNO">学号</param>
+    /// <param name="stu">学生实体</param>
+    /// <returns>修改是否成功</returns>
+    public static bool stuUpdate(string FK_SNO, Base_STU stu)
+    {
+        Base_STU stu_info = oDC.Base_STUs.Where(s => s.PK_SNO == FK_SNO).SingleOrDefault();
+        if (stu_info == null) return false;
+        string SNO = stu_info.PK_SNO;
+        stu_info = stu;
+        stu_info.PK_SNO = SNO;
+        try
+        {
+            oDC.SubmitChanges();
+            return true;
+        }
+        catch (Exception)
+        {
+
+            return false;
+        }
+    }
+    #endregion
+    #region 获取代码项数据 getCodeItem
+    /// <summary>
+    /// 获取代码项数据
+    /// </summary>
+    /// <param name="PK_item">大项主键</param>
+    /// <param name="item_no">大项类的小项编码</param>
+    /// <returns>代码项</returns>
+    public static Base_Code_Item getCodeItem(string PK_item,string item_no)
+    {
+        return oDC.Base_Code_Items.Where(i => i.PK_Item == PK_item && i.Item_NO == item_no).SingleOrDefault();
+    }
+    #endregion
 }
