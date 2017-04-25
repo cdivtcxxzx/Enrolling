@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,7 +21,7 @@ public class student_fee
 
 public class fresh_fee
 {
-    public string SYSNAME;//生成订单的应用名次，例如“必交费”，“床上用品”等
+    public string SYSNAME;//生成订单的应用名称，例如“必交费”，“床上用品交费”等
     public string PK_SNO;//学号
     public string FEE_ORDERID;//订单编号
     public string FEE_ORDERID_URL;//订单URL地址
@@ -60,6 +61,16 @@ public class user_fee
     public string phone;//	联系电话
     public string bz;//	更新方式
     public string gxms;//	更新描述
+}
+
+
+//费用列表
+public class fee_list
+{
+    public List<List<Financial.Fee_Item>> single;//单选项
+    public List<List<Financial.Fee_Item>> multiple;//多选项，如果已生成订单，该项应该为null
+    public string orderid;//已生成的订单号
+    public string orderid_url;//已生成的订单url地址
 }
 
 
@@ -364,6 +375,7 @@ public class financial
         {
             if (PK_Batch_NO != null && PK_Batch_NO.Trim().Length > 0 && Fee_Code != null && Fee_Code.Trim().Length > 0 && PK_SNO != null && PK_SNO.Trim().Length > 0)
             {
+                bool find = false;
                 batch logic = new batch();
                 fresh_batch data = logic.get_freshbatch(PK_Batch_NO);
                 if (data != null && data.Financial_PK_Fee!=null && data.Financial_PK_Fee.Trim().Length>0)
@@ -378,15 +390,19 @@ public class financial
                         {
                             if (data1[i].Fee_Code.Trim().Equals(Fee_Code.Trim()))
                             {
+                                find = true;
                                 sfbz = data1[i].Fee_Amount + sfbz;
                                 ysf = data1[i].Fee_Payed + ysf;
                             }
                         }
-                        result = new student_fee();
-                        result.Fee_Amount = sfbz;
-                        result.Fee_Payed = ysf;
-                        result.Fee_Code = Fee_Code;
-                        result.Fee_Code_Name = data1[0].Fee_Code_Name;
+                        if (find)
+                        {
+                            result = new student_fee();
+                            result.Fee_Amount = sfbz;
+                            result.Fee_Payed = ysf;
+                            result.Fee_Code = Fee_Code;
+                            result.Fee_Code_Name = data1[0].Fee_Code_Name;
+                        }
                     }
                 }
                 else
@@ -541,7 +557,7 @@ public class financial
     ///参数：
     ///PK_SNO:学号；FEE_XH:订单学号；pk_fee_items：订单内容；payUrl：订单url地址   
     ///创建时间：2017-4-15
-    public string InitPayOrder(string PK_AFFAIR_NO,string PK_SNO, Financial.ArrayOfString pk_fee_items, string UPDATER)
+    public string InitPayOrder(string PK_AFFAIR_NO,string PK_SNO, Financial.ArrayOfString pk_fee_items, string UPDATER,string returnUrl)
     {
         string FEE_XH = null;
         string orderid = null;
@@ -563,7 +579,7 @@ public class financial
                 //string md5 = MD5Encrypt32("yxxtgf$RET54s");
                 string md5 = "9017dc9c2d3f2532ed6834c207ea6c86";
 
-                orderid=ws.InitPayOrder(app, md5, FEE_XH, pk_fee_items, out orderid_url);//生成订单并返回其url地址
+                orderid=ws.InitPayOrder(app, md5, FEE_XH, pk_fee_items,null, out orderid_url);//生成订单并返回其url地址
                 if (orderid!=null)
                 {
                     string sqlstr = "insert into Fresh_Fee (PK_SNO,FEE_XH,FEE_ORDERID,FEE_ORDERID_URL,SYSNAME,UPDATER,UPDATETIME) values (" +
@@ -572,7 +588,7 @@ public class financial
                         new SqlParameter("cs3", orderid.Trim()), new SqlParameter("cs4", orderid_url.Trim()), new SqlParameter("cs5", "必交费"),
                         new SqlParameter("cs6", UPDATER.Trim()));
                     batch logic = new batch();
-                    logic.set_affairlog(PK_SNO, PK_AFFAIR_NO, "已完成", UPDATER);
+                    //logic.set_affairlog(PK_SNO, PK_AFFAIR_NO, "已完成", UPDATER);
                 }
             }
         }
@@ -588,5 +604,595 @@ public class financial
         return orderid_url;
     }
 
+
+    //获取学生必交费最新的订单
+    public fee_list get_fee_ismust_order(string pk_sno)
+    {
+        fee_list result = new fee_list();
+        try {
+            string fee_orderid = null; //已生成的必交费订单号
+            string fee_orderid_url = null; //已生成的必交费订单url地址
+            DateTime updatetime = DateTime.Now;//已生成的必交费订单号时间
+
+            //获取学生是否已生成订单
+            List<fresh_fee> freshfee = get_fresh_fee(pk_sno);
+            if (freshfee != null && freshfee.Count > 0)
+            {
+                for (int i = 0; i < freshfee.Count; i++)
+                {
+                    if (freshfee[i].SYSNAME.ToUpper().Trim().Equals("必交费"))
+                    {
+                        if (fee_orderid == null)
+                        {
+                            fee_orderid = freshfee[i].FEE_ORDERID;
+                            fee_orderid_url = freshfee[i].FEE_ORDERID_URL;
+                            updatetime = freshfee[i].UPDATETIME;
+                        }
+                        else
+                        {
+                            if (updatetime < freshfee[i].UPDATETIME)
+                            {
+                                fee_orderid = freshfee[i].FEE_ORDERID;
+                                fee_orderid_url = freshfee[i].FEE_ORDERID_URL;
+                                updatetime = freshfee[i].UPDATETIME;
+                            }
+                        }
+                    }
+                }
+            }
+            result.single = null;
+            result.multiple = null;
+            result.orderid = fee_orderid;
+            result.orderid_url = fee_orderid_url;
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("financial.cs", "get_fee_ismust_order", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //获取学生必交费用款项（迎新批次号，学号）
+    public fee_list get_fee_ismust(string pk_batch_no, string pk_sno)
+    {
+        fee_list result = new fee_list();
+        try
+        {
+            List<List<Financial.Fee_Item>> single = null;
+            List<List<Financial.Fee_Item>> multiple = null;
+            string fee_orderid = null; //已生成的必交费订单号
+            string fee_orderid_url = null; //已生成的必交费订单url地址
+
+            result.multiple = null;
+            result.single = null;
+            result.orderid = null;
+            result.orderid_url = null;
+
+            if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+            {
+                fee_list tmp1 = get_fee_ismust_order(pk_sno);//获取学生必交费
+                fee_orderid = tmp1.orderid;//获取学生是否已生成订单
+                fee_orderid_url = tmp1.orderid_url;
+
+                if (fee_orderid != null)
+                {
+                    //如果已生成，则返回订单中的款项
+                    List<Financial.Fee_Item> data = get_feeitem_byorder(fee_orderid);
+                    if (data != null && data.Count > 0)
+                    {
+                        single = new List<List<Financial.Fee_Item>>();
+                        for (int i = 0; i < data.Count; i++)
+                        {
+                            List<Financial.Fee_Item> tmp = new List<Financial.Fee_Item>();
+                            tmp.Add(data[i]);
+                            single.Add(tmp);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("获取订单的款项数据出错");
+                    }
+                }
+                else
+                {
+                    //学生还没有生成订单，则返回学生必交费用款项。
+                    List<Financial.Fee_Item> data = get_isMust_Fee(pk_batch_no, pk_sno);//获取学生必交费用款项
+
+                    if (data != null && data.Count > 0)
+                    {
+                        Hashtable hash = new Hashtable(); //  创建哈希表
+                        for (int i = 0; i < data.Count; i++)
+                        {
+                            if (hash[data[i].Fee_Code.Trim()] == null)
+                            {
+                                List<Financial.Fee_Item> data1 = new List<Financial.Fee_Item>();
+                                data1.Add(data[i]);
+                                hash.Add(data[i].Fee_Code.Trim(), data1);
+                            }
+                            else
+                            {
+                                List<Financial.Fee_Item> data1 = (List<Financial.Fee_Item>)hash[data[i].Fee_Code.Trim()];
+                                data1.Add(data[i]);
+                            }
+                        }
+
+                        IDictionaryEnumerator en = hash.GetEnumerator();  //  遍历哈希表所有的键,读出相应的值
+
+                        single = new List<List<Financial.Fee_Item>>();
+                        multiple = new List<List<Financial.Fee_Item>>();
+                        while (en.MoveNext())
+                        {
+                            string key = en.Key.ToString().Trim();
+                            List<Financial.Fee_Item> data1 = (List<Financial.Fee_Item>)en.Value;
+                            if (data1.Count == 1)
+                            {
+                                single.Add(data1);
+                            }
+                            else
+                            {
+                                multiple.Add(data1);
+                            }
+                        }
+                    }
+                }
+
+                //获取已交费用数据
+                if (single != null && single.Count > 0)
+                {
+                    for (int i = 0; i < single.Count; i++)
+                    {
+                        List<Financial.Fee_Item> data2 = single[i];
+                        student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);
+                        if (fee != null)
+                        {
+                            //已生成学生缴费订单，学生在该项费用如下
+                            data2[0].Fee_Amount = fee.Fee_Amount;
+                            data2[0].Fee_Payed = fee.Fee_Payed;
+                        }
+                    }
+                }
+                if (multiple != null && multiple.Count > 0)
+                {
+                    for (int i = multiple.Count - 1; i >= 0; i--)
+                    {
+                        List<Financial.Fee_Item> data2 = multiple[i];
+                        student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);
+                        if (fee != null)
+                        {
+                            //已生成学生缴费订单，学生在该项费用如下
+                            data2[0].Fee_Amount = fee.Fee_Amount;
+                            data2[0].Fee_Payed = fee.Fee_Payed;
+                            for (int j = data2.Count - 1; j > 0; j--)
+                            {
+                                data2.RemoveAt(j);
+                            }
+                            single.Add(data2);
+                            multiple.Remove(data2);
+                        }
+                    }
+                }
+            }
+            result.multiple = multiple;
+            result.single = single;
+            result.orderid = fee_orderid;
+            result.orderid_url = fee_orderid_url;
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("financial.cs", "fee_ismust", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+
+    /// <summary>
+    ///功能名称：获取学生费用款项,包括必交费、选交费。（迎新批次号，学号）
+    ///功能描述：
+    ///获取学生必交、选交费用列表，如果已生成订单，则返回项中包含订单信息。
+    ///编写人：胡元
+    ///参数：
+    ///pk_sno:学号；pk_batch_no:迎新批次号  
+    ///创建时间：2017-4-24
+    public List<fee_list> get_fee(string pk_batch_no, string pk_sno)
+    {
+        List<fee_list> result = new List<fee_list>();
+        fee_list fee_must = new fee_list();
+        fee_must.single = null;
+        fee_must.multiple = null;
+        fee_must.orderid = "must";
+
+        fee_list fee_nomust = new fee_list();
+        fee_nomust.single = null;
+        fee_must.multiple = null;
+        fee_nomust.orderid = "nomust";
+
+        result.Add(fee_must);
+        result.Add(fee_nomust);
+
+        try
+        {
+            if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+            {
+                #region 获取学生交费列表
+                List<Financial.Fee_Item> fee_item_list=null;//学生交费列表
+                batch logic = new batch();
+                fresh_batch data = logic.get_freshbatch(pk_batch_no);
+                if (data != null && data.Financial_PK_Fee != null && data.Financial_PK_Fee.Trim().Length > 0)
+                {
+                    model.Base_STU stu = organizationService.getStu(pk_sno);
+                    if (stu == null || stu.FK_SPE_Code == null || stu.FK_SPE_Code.Trim().Length == 0)
+                    {
+                        throw new Exception("无法获取考生或专业编码！");
+                    }
+                    model.Fresh_SPE spe = organizationService.getSpe(stu.FK_SPE_Code);
+                    if (spe == null || spe.SPE_Code == null || spe.SPE_Code.Trim().Length == 0)
+                    {
+                        throw new Exception("无法获取专业编码！");
+                    }
+                    fee_item_list = get_feeitem(data.Financial_PK_Fee, spe.SPE_Code);//获取专业应收费列表
+                }
+                else
+                {
+                    throw new Exception("无法获取迎新批次或迎新批次中的Financial_PK_Fee！");
+                }
+                #endregion
+                
+                #region 分离形成必交费和选交费2个组项，已生成订单的都是单选项
+                if (fee_item_list != null && fee_item_list.Count > 0)
+                {
+                    Hashtable hash = new Hashtable(); //  创建哈希表
+                    #region 将收费列表分离成单选和多选项
+                    for (int i = 0; i < fee_item_list.Count; i++)
+                    {
+                        if (hash[fee_item_list[i].Fee_Code.Trim()] == null)
+                        {
+                            List<Financial.Fee_Item> data1 = new List<Financial.Fee_Item>();
+                            data1.Add(fee_item_list[i]);
+                            hash.Add(fee_item_list[i].Fee_Code.Trim(), data1);
+                        }
+                        else
+                        {
+                            List<Financial.Fee_Item> data1 = (List<Financial.Fee_Item>)hash[fee_item_list[i].Fee_Code.Trim()];
+                            data1.Add(fee_item_list[i]);
+                        }
+                    }
+
+                    IDictionaryEnumerator en = hash.GetEnumerator();  //  遍历哈希表所有的键,读出相应的值
+
+                    List<List<Financial.Fee_Item>>  single_must = new List<List<Financial.Fee_Item>>();//单选必交费
+                    List<List<Financial.Fee_Item>> single_nomust = new List<List<Financial.Fee_Item>>();//单选可选交费
+                    List<List<Financial.Fee_Item>> multiple_must = new List<List<Financial.Fee_Item>>();//多选必交费
+                    List<List<Financial.Fee_Item>>  multiple_nomust = new List<List<Financial.Fee_Item>>();//多选可选交费
+
+                    while (en.MoveNext())
+                    {
+                        string key = en.Key.ToString().Trim();
+                        List<Financial.Fee_Item> data1 = (List<Financial.Fee_Item>)en.Value;
+                        if (data1.Count == 1)
+                        {
+                            if (data1[0].Is_Must.Trim().Equals("1"))//"1"表示必交费用
+                            {
+                                single_must.Add(data1); 
+                            }
+                            else
+                            {
+                                single_nomust.Add(data1); 
+                            }
+                        }
+                        else
+                        {
+                            if (data1[0].Is_Must.Trim().Equals("1"))//"1"表示必交费用
+                            {
+                                multiple_must.Add(data1);
+                            }
+                            else
+                            {
+                                multiple_nomust.Add(data1);
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region 必交费
+                    if (single_must != null && single_must.Count > 0)
+                    {
+                        for (int i = 0; i < single_must.Count; i++)
+                        {
+                            List<Financial.Fee_Item> data2 = single_must[i];
+                            student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);//获取学生某财务款项收费数据
+                            if (fee != null)
+                            {
+                                //已生成学生缴费订单，学生在该项费用如下
+                                data2[0].Fee_Amount = fee.Fee_Amount;
+                                data2[0].Fee_Payed = fee.Fee_Payed;
+                            }
+                        }
+                    }
+                    if (multiple_must != null && multiple_must.Count > 0)
+                    {
+                        for (int i = multiple_must.Count - 1; i >= 0; i--)
+                        {
+                            List<Financial.Fee_Item> data2 = multiple_must[i];
+                            student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);//获取学生某财务款项收费数据
+                            if (fee != null)
+                            {
+                                //已生成学生缴费订单，学生在该项费用如下
+                                data2[0].Fee_Amount = fee.Fee_Amount;
+                                data2[0].Fee_Payed = fee.Fee_Payed;
+                                for (int j = data2.Count - 1; j > 0; j--)
+                                {
+                                    data2.RemoveAt(j);
+                                }
+                                single_must.Add(data2);
+                                multiple_must.Remove(data2);
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region 可选交费
+                    if (single_nomust != null && single_nomust.Count > 0)
+                    {
+                        for (int i = 0; i < single_nomust.Count; i++)
+                        {
+                            List<Financial.Fee_Item> data2 = single_nomust[i];
+                            student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);//获取学生某财务款项收费数据
+                            if (fee != null)
+                            {
+                                //已生成学生缴费订单，学生在该项费用如下
+                                data2[0].Fee_Amount = fee.Fee_Amount;
+                                data2[0].Fee_Payed = fee.Fee_Payed;
+                            }
+                        }
+                    }
+                    if (multiple_nomust != null && multiple_nomust.Count > 0)
+                    {
+                        for (int i = multiple_nomust.Count - 1; i >= 0; i--)
+                        {
+                            List<Financial.Fee_Item> data2 = multiple_nomust[i];
+                            student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);//获取学生某财务款项收费数据
+                            if (fee != null)
+                            {
+                                //已生成学生缴费订单，学生在该项费用如下
+                                data2[0].Fee_Amount = fee.Fee_Amount;
+                                data2[0].Fee_Payed = fee.Fee_Payed;
+                                for (int j = data2.Count - 1; j > 0; j--)
+                                {
+                                    data2.RemoveAt(j);
+                                }
+                                single_nomust.Add(data2);
+                                multiple_nomust.Remove(data2);
+                            }
+                        }
+                    }
+                    #endregion
+
+                    fee_must = new fee_list();
+                    fee_must.single = single_must;
+                    fee_must.multiple = multiple_must;
+                    fee_must.orderid = "must";
+
+                    fee_nomust = new fee_list();
+                    fee_nomust.single = single_nomust;
+                    fee_nomust.multiple = multiple_nomust;
+                    fee_nomust.orderid = "nomust";
+
+                    result[0]=fee_must;
+                    result[1]=fee_nomust;
+                }
+                #endregion
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("financial.cs", "get_fee", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    /// <summary>
+    ///功能名称：获取未生成订单的学生费用款项,包括必交费、选交费。（迎新批次号，学号）
+    ///功能描述：
+    ///获取学生未生成订单的必交、选交费用列表。
+    ///编写人：胡元
+    ///参数：
+    ///pk_sno:学号；pk_batch_no:迎新批次号  
+    ///创建时间：2017-4-24
+    public List<fee_list> get_fee_no_order(string pk_batch_no, string pk_sno)
+    {
+        List<fee_list> result = new List<fee_list>();
+        fee_list fee_must = new fee_list();
+        fee_must.single = null;
+        fee_must.multiple = null;
+        fee_must.orderid = "must";
+
+        fee_list fee_nomust = new fee_list();
+        fee_nomust.single = null;
+        fee_must.multiple = null;
+        fee_nomust.orderid = "nomust";
+
+        result.Add(fee_must);
+        result.Add(fee_nomust);
+
+        try
+        {
+            if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+            {
+                #region 获取学生交费列表
+                List<Financial.Fee_Item> fee_item_list = null;//学生交费列表
+                batch logic = new batch();
+                fresh_batch data = logic.get_freshbatch(pk_batch_no);
+                if (data != null && data.Financial_PK_Fee != null && data.Financial_PK_Fee.Trim().Length > 0)
+                {
+                    model.Base_STU stu = organizationService.getStu(pk_sno);
+                    if (stu == null || stu.FK_SPE_Code == null || stu.FK_SPE_Code.Trim().Length == 0)
+                    {
+                        throw new Exception("无法获取考生或专业编码！");
+                    }
+                    model.Fresh_SPE spe = organizationService.getSpe(stu.FK_SPE_Code);
+                    if (spe == null || spe.SPE_Code == null || spe.SPE_Code.Trim().Length == 0)
+                    {
+                        throw new Exception("无法获取专业编码！");
+                    }
+                    fee_item_list = get_feeitem(data.Financial_PK_Fee, spe.SPE_Code);//获取专业应收费列表
+                }
+                else
+                {
+                    throw new Exception("无法获取迎新批次或迎新批次中的Financial_PK_Fee！");
+                }
+                #endregion
+
+                #region 分离形成必交费和选交费2个组项
+                if (fee_item_list != null && fee_item_list.Count > 0)
+                {
+                    Hashtable hash = new Hashtable(); //  创建哈希表
+                    #region 将收费列表分离成单选和多选项
+                    for (int i = 0; i < fee_item_list.Count; i++)
+                    {
+                        if (hash[fee_item_list[i].Fee_Code.Trim()] == null)
+                        {
+                            List<Financial.Fee_Item> data1 = new List<Financial.Fee_Item>();
+                            data1.Add(fee_item_list[i]);
+                            hash.Add(fee_item_list[i].Fee_Code.Trim(), data1);
+                        }
+                        else
+                        {
+                            List<Financial.Fee_Item> data1 = (List<Financial.Fee_Item>)hash[fee_item_list[i].Fee_Code.Trim()];
+                            data1.Add(fee_item_list[i]);
+                        }
+                    }
+
+                    IDictionaryEnumerator en = hash.GetEnumerator();  //  遍历哈希表所有的键,读出相应的值
+
+                    List<List<Financial.Fee_Item>> single_must = new List<List<Financial.Fee_Item>>();//单选必交费
+                    List<List<Financial.Fee_Item>> single_nomust = new List<List<Financial.Fee_Item>>();//单选可选交费
+                    List<List<Financial.Fee_Item>> multiple_must = new List<List<Financial.Fee_Item>>();//多选必交费
+                    List<List<Financial.Fee_Item>> multiple_nomust = new List<List<Financial.Fee_Item>>();//多选可选交费
+
+                    while (en.MoveNext())
+                    {
+                        string key = en.Key.ToString().Trim();
+                        List<Financial.Fee_Item> data1 = (List<Financial.Fee_Item>)en.Value;
+                        if (data1.Count == 1)
+                        {
+                            if (data1[0].Is_Must.Trim().Equals("1"))//"1"表示必交费用
+                            {
+                                single_must.Add(data1);
+                            }
+                            else
+                            {
+                                single_nomust.Add(data1);
+                            }
+                        }
+                        else
+                        {
+                            if (data1[0].Is_Must.Trim().Equals("1"))//"1"表示必交费用
+                            {
+                                multiple_must.Add(data1);
+                            }
+                            else
+                            {
+                                multiple_nomust.Add(data1);
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region 必交费
+                    if (single_must != null && single_must.Count > 0)
+                    {
+                        for (int i = single_must.Count-1; i>=0; i--)
+                        {
+                            List<Financial.Fee_Item> data2 = single_must[i];
+                            student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);//获取学生某财务款项收费数据
+                            if (fee != null)
+                            {
+                                single_must.RemoveAt(i);//已生成学生缴费订单，删除该项
+                            }
+                        }
+                    }
+                    if (multiple_must != null && multiple_must.Count > 0)
+                    {
+                        for (int i = multiple_must.Count - 1; i >= 0; i--)
+                        {
+                            List<Financial.Fee_Item> data2 = multiple_must[i];
+                            student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);//获取学生某财务款项收费数据
+                            if (fee != null)
+                            {
+                                multiple_must.Remove(data2);//已生成学生缴费订单，删除该项
+                            }
+                        }
+                    }
+                    #endregion
+
+                    #region 可选交费
+                    if (single_nomust != null && single_nomust.Count > 0)
+                    {
+                        for (int i = single_nomust.Count - 1; i >= 0; i--)
+                        {
+                            List<Financial.Fee_Item> data2 = single_nomust[i];
+                            student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);//获取学生某财务款项收费数据
+                            if (fee != null)
+                            {
+                                single_nomust.RemoveAt(i);//已生成学生缴费订单，删除该项
+                            }
+                        }
+                    }
+                    if (multiple_nomust != null && multiple_nomust.Count > 0)
+                    {
+                        for (int i = multiple_nomust.Count - 1; i >= 0; i--)
+                        {
+                            List<Financial.Fee_Item> data2 = multiple_nomust[i];
+                            student_fee fee = get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);//获取学生某财务款项收费数据
+                            if (fee != null)
+                            {
+                                multiple_nomust.Remove(data2);//已生成学生缴费订单，删除该项
+                            }
+                        }
+                    }
+                    #endregion
+
+                    fee_must = new fee_list();
+                    fee_must.single = single_must;
+                    fee_must.multiple = multiple_must;
+                    fee_must.orderid = "must";
+
+                    fee_nomust = new fee_list();
+                    fee_nomust.single = single_nomust;
+                    fee_nomust.multiple = multiple_nomust;
+                    fee_nomust.orderid = "nomust";
+
+                    result[0] = fee_must;
+                    result[1] = fee_nomust;
+                }
+                #endregion
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("financial.cs", "get_fee_no_order", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 
 }

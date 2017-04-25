@@ -16,12 +16,12 @@ public partial class view_stdentlogin : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        ValidatedCode valcode = new ValidatedCode();
-        string code = valcode.CreateVerifyCode();            //取随机码  
-        Session["ValidateCode"] = code;
-        byte[] bytes = valcode.CreateImage(code);       // 输出图片   
-        Session["ValidatedCode"] = code;
-        ReturnPhoto(bytes);
+        //ValidatedCode valcode = new ValidatedCode();
+        //string code = valcode.CreateVerifyCode();            //取随机码  
+        //Session["ValidateCode"] = code;
+        //byte[] bytes = valcode.CreateImage(code);       // 输出图片   
+        //Session["ValidatedCode"] = code;
+        //ReturnPhoto(bytes);
 
     }
 }

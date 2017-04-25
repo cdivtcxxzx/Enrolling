@@ -1,4 +1,15 @@
-﻿function load(){
+﻿function fillstr(str){
+    if ($.trim(str).length >=8 ) {
+        return str;
+    }
+    var jg=str;
+    for (var i=$.trim(str).length;i<=8;i++){
+        jg='&nbsp'+jg;
+    }
+    return jg;
+}
+
+function load(){
     var server_msg=$("#server_msg").val();
     if ($.trim(server_msg).length > 0 ) {
         alert(server_msg);
@@ -38,55 +49,48 @@
                             $('#xsxx_zymc').html(json_data.data[i].data.SPE_Name);
                         }
                     }
-                    //获取必交费信息
+                    //获取交费信息
                     $.ajax({
                         url: "/nradmingl/appserver/manager.aspx",
                         type: "get",
                         dataType: "text",
-                        data: { "cs": "get_ismust_fee_full","pk_batch_no":pk_batch_no,"pk_sno": pk_sno},
+                        data: { "cs": "get_fee_no_order","pk_batch_no":pk_batch_no,"pk_sno": pk_sno},
                         success: function (data) {
                             var json_data = JSON.parse(data);
                             if (json_data.code == 'success') {
-                                var finishpay=true;//交清费用标志
-                                var single=json_data.data.single_selection;//单项
-                                var multiple=json_data.data.multiple_selection;//多项
-
-                                var feelist=new Array();
+                                var fee_id_list=new Array();
                                 var count=0;
-                                for(i=0;single!=null && i<single.length;i++){
-                                    itemlist=single[i];
-                                    if(itemlist[0].Fee_Amount>itemlist[0].Fee_Payed){
-                                        finishpay=false;
-                                    }
-                                    var str='<div class="layui-form-item" pane="" style="margin-bottom:0px;">';
-                                    str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'：</label>';
+
+                                var single_must=json_data.data.single_must;//必交单项
+                                var multiple_must=json_data.data.multiple_must;//必交多项
+                                var single_nomust=json_data.data.single_nomust;//选交单项
+                                var multiple_nomust=json_data.data.multiple_nomust;//选交多项
+                                var showed=false;
+                                for(i=0;single_must!=null && i<single_must.length;i++){
+                                    itemlist=single_must[i];
+                                    var str='<div class="layui-form-item" pane="" style="margin-bottom:0px;" id=_sm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].Fee_Amount+'>';
+                                    str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
                                     str=str+'<div class="layui-input-block">';
-                                    str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><label>'+itemlist[0].Fee_Amount+'</label></div>';
+                                    str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><label>'+fillstr(itemlist[0].Fee_Amount)+'元</label></div>';
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
-                                    feelist[count]=itemlist[0].Fee_Code+':'+itemlist[0].Fee_Amount+':'+itemlist[0].Fee_Payed;
+                                    fee_id_list[count]='_sm'+itemlist[0].Fee_Code;
                                     count=count+1;
+                                    $('#sure').show();
                                 }
-                                $('#contents').attr('ref-data-single',feelist.join(","));
-                                feelist=new Array();
-                                count=0;
 
-                                for(i=0;multiple!=null && i<multiple.length;i++){
-                                    var itemlist=multiple[i];
-                                    var str='<div class="layui-form-item">';
-                                    str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
+                                for(i=0;multiple_must!=null && i<multiple_must.length;i++){
+                                    var itemlist=multiple_must[i];
+                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=_mm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].Fee_Amount+'">';
+                                    str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'*</label>';
                                     str=str+'<div class="layui-input-block">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
-                                    str=str+'<option value=""></option>';
                                     for(var j=0;j<itemlist.length;j++){
-                                        if(itemlist[j].Fee_Amount>itemlist[j].Fee_Payed){
-                                            finishpay=false;
-                                        }
                                         if(j==0){
-                                            str=str+'<option value="'+itemlist[j].Fee_Amount+'" selected="">'+itemlist[j].Fee_Amount+'</option>';
+                                            str=str+'<option value="'+itemlist[j].Fee_Amount+'" selected="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                         }else{
-                                            str=str+'<option value="'+itemlist[j].Fee_Amount+'">'+itemlist[j].Fee_Amount+'</option>';
+                                            str=str+'<option value="'+itemlist[j].Fee_Amount+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                         }
                                     }
                                     str=str+'</select>';
@@ -98,9 +102,9 @@
                                     str=str+'<dl class="layui-anim layui-anim-upbit">';
                                     for(var j=0;j<itemlist.length;j++){
                                         if(j==0){
-                                            str=str+'<dd lay-value="'+itemlist[j].Fee_Amount+'" class="layui-this">'+itemlist[j].Fee_Amount+'</dd>';
+                                            str=str+'<dd lay-value="'+itemlist[j].Fee_Amount+'" class="layui-this">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
                                         }else{
-                                            str=str+'<dd lay-value="'+itemlist[j].Fee_Amount+'" class="">'+itemlist[j].Fee_Amount+'</dd>';
+                                            str=str+'<dd lay-value="'+itemlist[j].Fee_Amount+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
                                         }
                                     }
                                     str=str+'</dl>';
@@ -108,15 +112,58 @@
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
-                                    feelist[count]=itemlist[0].Fee_Code+':'+itemlist[0].Fee_Amount+':'+itemlist[0].Fee_Payed;
+                                    fee_id_list[count]='_mm'+itemlist[0].Fee_Code;
                                     count=count+1;
-                                }
-
-                                $('#contents').attr('ref-data-multiple',feelist.join(","));
-
-                                if(!finishpay && ((multiple!=null && multiple.length>0) || (single!=null && single.length>0))){
                                     $('#sure').show();
                                 }
+
+                                for(i=0;single_nomust!=null && i<single_nomust.length;i++){
+                                    itemlist=single_nomust[i];
+                                    var str='<div class="layui-form-item" pane="" style="margin-bottom:0px;" id=snm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].Fee_Amount+'>';
+                                    str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
+                                    str=str+'<div class="layui-input-block">';
+                                    str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><label>'+fillstr(itemlist[0].Fee_Amount)+'元</label></div>';
+                                    str=str+'</div>';
+                                    str=str+'</div>';
+                                    $('#contents').append(str);
+                                    fee_id_list[count]='snm'+itemlist[0].Fee_Code;
+                                    count=count+1;
+                                    $('#sure').show();
+                                }
+
+                                for(i=0;multiple_nomust!=null && i<multiple_nomust.length;i++){
+                                    var itemlist=multiple_nomust[i];
+                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=mnm'+itemlist[0].Fee_Code+' ref-data="none">';
+                                    str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
+                                    str=str+'<div class="layui-input-block">';
+                                    str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
+                                    str=str+'<option value=""></option>';
+                                    str=str+'<option value="none" >暂不选择</option>';
+                                    for(var j=0;j<itemlist.length;j++){
+                                        str=str+'<option value="'+itemlist[j].Fee_Amount+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
+                                    }
+                                    str=str+'</select>';
+                                    str=str+'<div class="layui-unselect layui-form-select layui-form-selected">';
+                                    str=str+'<div class="layui-select-title">';
+                                    str=str+'<input type="text" placeholder="请选择" value="请选择" readonly="" class="layui-input layui-unselect">';
+                                    str=str+'<i class="layui-edge"></i>';
+                                    str=str+'</div>';
+                                    str=str+'<dl class="layui-anim layui-anim-upbit">';
+                                    str=str+'<dd lay-value="none" class="layui-this">暂不选择</dd>';
+                                    for(var j=0;j<itemlist.length;j++){
+                                        str=str+'<dd lay-value="'+itemlist[j].Fee_Amount+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
+                                    }
+                                    str=str+'</dl>';
+                                    str=str+'</div>';
+                                    str=str+'</div>';
+                                    str=str+'</div>';
+                                    $('#contents').append(str);
+                                    fee_id_list[count]='mnm'+itemlist[0].Fee_Code;
+                                    count=count+1;
+                                    $('#sure').show();
+                                }
+
+                                $('#contents').attr('fee_id_list',fee_id_list.join(","));
 
                                 layui.use(['form', 'layedit', 'laydate', 'element'], function () {
                                     var $ = layui.jquery;
@@ -184,8 +231,13 @@
                                     shadeMobile.on('click', function () {
                                         $('body').removeClass('site-mobile');
                                     });
-                                });
+                                    //selectd的onchange事件
+                                    form.on('select', function (obj) {
+                                        $(obj.elem).parent().parent().removeAttr('ref-data');
+                                        $(obj.elem).parent().parent().attr('ref-data',obj.value);
+                                    });
 
+                                });
                             } else {
                                 alert(json_data.message);
                             }
@@ -220,46 +272,32 @@ function sure(){
         return;
     }
 
-    var feelist=new Array();
-    var count=0;
+    var fee_id_list=new Array();
+    var i=0;
 
-    var data=$('#contents').attr('ref-data-single');
+    var data=$('#contents').attr('fee_id_list');
     if(data!=null && $.trim(data).length>0){
-        var single=data.split(',');
-        var i=0;
-        if(single!=null && single.length>0){
-            for(i=0;i<single.length;i++){
-                var con=single[i].split(':');
-                feelist[count]=con[0]+':'+con[1];//code:value
-                count=count+1;
-            }
-        }else{
-            alert('参数错误');
-            return;
+        fee_id_list=data.split(',');
+    }
+    if(fee_id_list!=null && fee_id_list.length>0){
+        for(i=0;i<fee_id_list.length;i++){
+            var code=fee_id_list[i];
+            var val=$('#'+fee_id_list[i]).attr('ref-data');
+            console.log('code='+code+' val='+val);
         }
     }
 
+    return;
 
-    data=$('#contents').attr('ref-data-multiple');
-    if(data!=null && $.trim(data).length>0){
-        var multiple=data.split(',');
-        var i=0;
-        if(multiple!=null && multiple.length>0){
-            for(i=0;i<multiple.length;i++){
-                var con=multiple[i].split(':');
-                feelist[count]=con[0]+':'+$('#'+con[0]).val();//code:value
-                count=count+1;
-            }
-        }else{
-            alert('参数错误');
-            return;
-        }
-    }
 
     if(feelist.length>0){
         var pk_staff_no= $("#pk_staff_no").val();
-        var data={ "feelist": feelist.join(","),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no};
+        var returnurl=window.location.href;
+        var data=null;
         if ($.trim(pk_staff_no).length > 0 ) {
+            data={ "feelist": feelist.join(","),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no,'pk_staff_no':pk_staff_no,'returnurl':returnurl};
+        }else{
+            data={ "feelist": feelist.join(","),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no,'returnurl':returnurl};
         }
         //提交必交费信息
         $.ajax({
@@ -271,7 +309,12 @@ function sure(){
                 console.log(data);
                 var json_data = JSON.parse(data);
                 if (json_data.code == 'success') {
-                    window.location.href=json_data.data;
+                    if ($.trim(pk_staff_no).length > 0 ) {
+                        $('#sure').hide();
+                        alert('已帮助学生生成交费订单，请通知学生及时交费');
+                    }else{
+                        window.location.href=json_data.data;
+                    }
                 } else {
                     alert(json_data.message);
                 }

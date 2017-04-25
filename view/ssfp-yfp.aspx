@@ -24,6 +24,8 @@
 </head>
 <body>
     <form id="form1" class="layui-form layui-form-pane" runat="server">
+                    <asp:HiddenField ID="server_msg" runat="server" />
+
          <div class="admin-main">
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
@@ -248,6 +250,14 @@
 		</script>
         	<script>
         	    layui.use(['form', 'layedit', 'laydate'], function () {
+        	        var $ = layui.jquery;
+
+        	        var server_msg = $("#server_msg").val();
+        	        if ($.trim(server_msg).length > 0) {
+        	            alert(server_msg);
+        	            return;
+        	        }
+
         	        var form = layui.form(),
 					layer = layui.layer,
 					layedit = layui.layedit,

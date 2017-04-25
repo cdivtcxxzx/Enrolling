@@ -24,185 +24,6 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
 
     }
 
-    //必交费用
-    private class fee_ismust
-    {
-        public List<List<Financial.Fee_Item>> single;//必交费单选项
-        public List<List<Financial.Fee_Item>> multiple;//必交费多选项，如果已生成订单，该项应该为null
-        public string orderid;//已生成的订单号
-        public string orderid_url;//已生成的订单url地址
-    }
-
-    //获取学生必交费最新的订单
-    private fee_ismust get_fee_ismust_order(string pk_sno)
-    {
-        fee_ismust result = new fee_ismust();
-        string fee_orderid = null; //已生成的必交费订单号
-        string fee_orderid_url = null; //已生成的必交费订单url地址
-        DateTime updatetime = DateTime.Now;//已生成的必交费订单号时间
-
-        financial financial_logic = new financial();
-        //获取学生是否已生成订单
-        List<fresh_fee> freshfee = financial_logic.get_fresh_fee(pk_sno);
-        if (freshfee != null && freshfee.Count > 0)
-        {
-
-            for (int i = 0; i < freshfee.Count; i++)
-            {
-                if (freshfee[i].SYSNAME.ToUpper().Trim().Equals("必交费"))
-                {
-                    if (fee_orderid == null)
-                    {
-                        fee_orderid = freshfee[i].FEE_ORDERID;
-                        fee_orderid_url = freshfee[i].FEE_ORDERID_URL;
-                        updatetime = freshfee[i].UPDATETIME;
-                    }
-                    else
-                    {
-                        if (updatetime < freshfee[i].UPDATETIME)
-                        {
-                            fee_orderid = freshfee[i].FEE_ORDERID;
-                            fee_orderid_url = freshfee[i].FEE_ORDERID_URL;
-                            updatetime = freshfee[i].UPDATETIME;
-                        }
-                    }
-                }
-            }
-        }
-        result.single = null;
-        result.multiple = null;
-        result.orderid = fee_orderid;
-        result.orderid_url = fee_orderid_url;
-        return result;
-    }
-
-    //获取学生必交费用款项（迎新批次号，学号）
-    private fee_ismust get_fee_ismust(string pk_batch_no, string pk_sno)
-    {
-        fee_ismust result = new fee_ismust();
-        List<List<Financial.Fee_Item>> single = null;
-        List<List<Financial.Fee_Item>> multiple = null;
-        string fee_orderid = null; //已生成的必交费订单号
-        string fee_orderid_url = null; //已生成的必交费订单url地址
-
-        result.multiple = null;
-        result.single = null;
-        result.orderid = null;
-        result.orderid_url = null;
-
-        if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
-        {
-            fee_ismust tmp1 = get_fee_ismust_order(pk_sno);
-            fee_orderid = tmp1.orderid;//获取学生是否已生成订单
-            fee_orderid_url = tmp1.orderid_url;
-
-            financial financial_logic = new financial();
-
-            if (fee_orderid != null)
-            {
-                //如果已生成，则返回订单中的款项
-                List<Financial.Fee_Item> data = financial_logic.get_feeitem_byorder(fee_orderid);
-                if (data != null && data.Count > 0)
-                {
-                    single = new List<List<Financial.Fee_Item>>();
-                    for (int i = 0; i < data.Count; i++)
-                    {
-                        List<Financial.Fee_Item> tmp = new List<Financial.Fee_Item>();
-                        tmp.Add(data[i]);
-                        single.Add(tmp);
-                    }
-                }
-                else
-                {
-                    throw new Exception("获取订单的款项数据出错");
-                }
-            }
-            else
-            {
-                //学生还没有生成订单，则返回学生必交费用款项。
-                List<Financial.Fee_Item> data = financial_logic.get_isMust_Fee(pk_batch_no, pk_sno);//获取学生必交费用款项
-
-                if (data != null && data.Count > 0)
-                {
-                    Hashtable hash = new Hashtable(); //  创建哈希表
-                    for (int i = 0; i < data.Count; i++)
-                    {
-                        if (hash[data[i].Fee_Code.Trim()] == null)
-                        {
-                            List<Financial.Fee_Item> data1 = new List<Financial.Fee_Item>();
-                            data1.Add(data[i]);
-                            hash.Add(data[i].Fee_Code.Trim(), data1);
-                        }
-                        else
-                        {
-                            List<Financial.Fee_Item> data1 = (List<Financial.Fee_Item>)hash[data[i].Fee_Code.Trim()];
-                            data1.Add(data[i]);
-                        }
-                    }
-
-                    IDictionaryEnumerator en = hash.GetEnumerator();  //  遍历哈希表所有的键,读出相应的值
-
-                    single = new List<List<Financial.Fee_Item>>();
-                    multiple = new List<List<Financial.Fee_Item>>();
-                    while (en.MoveNext())
-                    {
-                        string key = en.Key.ToString().Trim();
-                        List<Financial.Fee_Item> data1 = (List<Financial.Fee_Item>)en.Value;
-                        if (data1.Count == 1)
-                        {
-                            single.Add(data1);
-                        }
-                        else
-                        {
-                            multiple.Add(data1);
-                        }
-                    }
-                }
-            }
-
-            //获取已交费用数据
-            if (single != null && single.Count > 0)
-            {
-                for (int i = 0; i < single.Count; i++)
-                {
-                    List<Financial.Fee_Item> data2 = single[i];
-                    student_fee fee = financial_logic.get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);
-                    if (fee != null)
-                    {
-                        //已生成学生缴费订单，学生在该项费用如下
-                        data2[0].Fee_Amount = fee.Fee_Amount;
-                        data2[0].Fee_Payed = fee.Fee_Payed;
-                    }
-                }
-            }
-            if (multiple != null && multiple.Count > 0)
-            {
-                for (int i = multiple.Count - 1; i >= 0; i--)
-                {
-                    List<Financial.Fee_Item> data2 = multiple[i];
-                    student_fee fee = financial_logic.get_student_fee(pk_batch_no, data2[0].Fee_Code, pk_sno);
-                    if (fee != null)
-                    {
-                        //已生成学生缴费订单，学生在该项费用如下
-                        data2[0].Fee_Amount = fee.Fee_Amount;
-                        data2[0].Fee_Payed = fee.Fee_Payed;
-                        for (int j = data2.Count - 1; j > 0; j++)
-                        {
-                            data2.RemoveAt(j);
-                        }
-                        single.Add(data2);
-                        multiple.Remove(data2);
-                    }
-                }
-            }
-        }
-        result.multiple = multiple;
-        result.single = single;
-        result.orderid = fee_orderid;
-        result.orderid_url = fee_orderid_url;
-        return result;
-    }
-
     protected void Page_Load(object sender, EventArgs e)
     {
         ResultData result = new ResultData();
@@ -212,13 +33,13 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
         try {
 
             #region 检测用户是否登陆
-            Object se_pk_sno = Session["pk_sno"];//获取学号
-            Object se_pk_staff_no = Session["pk_staff_no"];//获取员工编号
+            //Object se_pk_sno = Session["pk_sno"];//获取学号
+            //Object se_pk_staff_no = Session["pk_staff_no"];//获取员工编号
 
-            if ((se_pk_sno == null || se_pk_sno.ToString().Trim().Length == 0) && (se_pk_staff_no == null || se_pk_staff_no.ToString().Trim().Length == 0))
-            {
-                result.message = "非授权访问";
-            }
+            //if ((se_pk_sno == null || se_pk_sno.ToString().Trim().Length == 0) && (se_pk_staff_no == null || se_pk_staff_no.ToString().Trim().Length == 0))
+            //{
+            //    result.message = "非授权访问";
+            //}
             #endregion
 
             string cs = Request.QueryString["cs"];//获取get的参数
@@ -815,7 +636,8 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
 
                     if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
                     {
-                        fee_ismust data = get_fee_ismust(pk_batch_no, pk_sno);
+                        financial logic_fee = new financial();
+                        fee_list data = logic_fee.get_fee_ismust(pk_batch_no, pk_sno);
                         result.code = "success";
                         result.message = "成功";
                         result.data = new { single_selection = data.single, multiple_selection = data.multiple };
@@ -829,13 +651,15 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                     string pk_sno = Request.Form.Get("pk_sno");
                     string pk_batch_no = Request.Form.Get("pk_batch_no");
                     string pk_affair_no = Request.Form.Get("pk_affair_no");
+                    string pk_staff_no = Request.Form.Get("pk_staff_no");
+                    string returnUrl = Request.Form.Get("returnurl");
 
                     if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0
                         && pk_affair_no != null && pk_affair_no.Trim().Length != 0)
                     {
-
+                        financial logic_fee = new financial();
                         //获取学生是否已生成订单，如果已生成，则返回订单的url地址；否则生成并保存订单，返回订单的url地址
-                        fee_ismust data = get_fee_ismust(pk_batch_no, pk_sno);
+                        fee_list data = logic_fee.get_fee_ismust(pk_batch_no, pk_sno);
                         if (data.orderid_url != null && data.orderid_url.Trim().Length > 0)
                         {
                             //已生成过订单，直接返回其订单url地址
@@ -931,6 +755,27 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                                 throw new Exception("参数错误");
                                             }
                                         }
+
+                                        #region 检查操作权限
+                                        string session_pk_sno = null;
+                                        string session_pk_staff_no = null;
+                                        if (Session["pk_sno"] != null)
+                                        {
+                                            session_pk_sno = Session["pk_sno"].ToString();
+                                        }
+                                        if (Session["pk_staff_no"] != null)
+                                        {
+                                            session_pk_staff_no = Session["pk_staff_no"].ToString();
+                                        }
+
+                                        batch batch_logic = new batch();
+                                        affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_jf_ab087");
+                                        if (!jg.isauth)
+                                        {
+                                            throw new Exception(jg.msg);
+                                        }
+                                        #endregion
+
                                         //生成订单用户，生成订单，存储订单号，返回订单url地址
                                         financial fee_logic = new financial();
                                         bool flag = fee_logic.InitStuInfo(pk_sno);//生成订单用户
@@ -945,7 +790,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                                 wdata.Add(feelist_pk[i]);
                                             }
 
-                                            orderid_url = fee_logic.InitPayOrder(pk_affair_no,pk_sno, wdata, "system");//生成订单并返回订单url地址
+                                            orderid_url = fee_logic.InitPayOrder(pk_affair_no, pk_sno, wdata, "system", returnUrl);//生成订单并返回订单url地址
                                             result.code = "success";
                                             result.message = "成功";
                                             result.data = orderid_url;
@@ -958,6 +803,40 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                 }
                             }
                         }
+                    }
+                }
+                #endregion
+
+                #region  获取学生交费列表（迎新批次号，学号）
+                if (cs.Trim().Equals("get_fee"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+                    string pk_batch_no = Request.QueryString["pk_batch_no"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        financial logic_fee = new financial();
+                        List<fee_list> data = logic_fee.get_fee(pk_batch_no, pk_sno);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = new { single_must = data[0].single, multiple_must = data[0].multiple, single_nomust = data[1].single, multiple_nomust = data[1].multiple };
+                    }
+                }
+                #endregion
+
+                #region  获取学生未生成订单的交费列表（迎新批次号，学号）
+                if (cs.Trim().Equals("get_fee_no_order"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+                    string pk_batch_no = Request.QueryString["pk_batch_no"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        financial logic_fee = new financial();
+                        List<fee_list> data = logic_fee.get_fee_no_order(pk_batch_no, pk_sno);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = new { single_must = data[0].single, multiple_must = data[0].multiple, single_nomust = data[1].single, multiple_nomust = data[1].multiple };
                     }
                 }
                 #endregion
