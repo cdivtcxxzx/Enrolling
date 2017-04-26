@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="testView.aspx.cs" Inherits="test_testView" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="jump.aspx.cs" Inherits="view_jump" %>
 
 <!DOCTYPE html>
 
@@ -10,10 +10,12 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        
-
+    
     </div>
     </form>
+<script type="text/javascript" src="../b_js/app/jump.js"></script>
+        <script>
+            load();
+		</script>
 </body>
-
 </html>

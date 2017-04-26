@@ -11,14 +11,50 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        #region 检查操作权限
+        string pk_sno = Request.QueryString["pk_sno"];//获取学号
+        if (pk_sno == null || pk_sno.Trim().Length == 0)
+        {
+            this.server_msg.Value = "参数错误";
+            return;
+        }
+
+        string pk_affair_no = Request.QueryString["pk_affair_no"];//获取事务主键
+        if (pk_affair_no == null || pk_affair_no.Trim().Length == 0)
+        {
+            this.server_msg.Value = "参数错误";
+            return;
+        }
+        string pk_staff_no = Request.QueryString["pk_staff_no"];//获取员工编号
+
+        string session_pk_sno = null;
+        string session_pk_staff_no = null;
+        if (Session["pk_sno"] != null)
+        {
+            session_pk_sno = Session["pk_sno"].ToString();
+        }
+        if (Session["pk_staff_no"] != null)
+        {
+            session_pk_staff_no = Session["pk_staff_no"].ToString();
+        }
+
+        batch batch_logic = new batch();
+        affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xzss_01a");
+        if (!jg.isauth)
+        {
+            this.server_msg.Value = jg.msg; ;
+            return;
+        }
+        #endregion
+
         //btnSave.Enabled = false;
         if (!IsPostBack)
         {
             //判断两个参数：oCode  oSNO 操作员还是学生自助  
-            if (Request["oCode"] != null && Request["oCode"].ToString() != "" && Request["oSNO"] != null && Request["oSNO"].ToString() != "")
+            //if (Request["oCode"] != null && Request["oCode"].ToString() != "" && Request["oSNO"] != null && Request["oSNO"].ToString() != "")
             {
-                string operateCode = Request["oCode"].ToString();
-                string SNO = Request["oSNO"].ToString();
+                string operateCode = pk_affair_no;
+                string SNO = pk_sno;
 
                 //14获取学生数据
                 Base_STU baseStu = organizationService.getStu(SNO);

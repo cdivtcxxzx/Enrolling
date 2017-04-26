@@ -107,6 +107,8 @@
         </blockquote>
         <form id="form1" class="layui-form layui-form-pane" runat="server">
             <asp:HiddenField ID="hidden_pk_sno" runat="server" />
+            <asp:HiddenField ID="server_msg" runat="server" />
+
             <%--基本信息--%>
             <div class="jbxx">
                 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">

@@ -5,26 +5,27 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class view_xsbjf : System.Web.UI.Page
+public partial class view_xsbjf_order : System.Web.UI.Page
 {
 
     protected void Page_Load(object sender, EventArgs e)
     {
         #region 检查操作权限
-        string pk_sno = Request.QueryString["pk_sno"];//获取学号
+
+        string pk_sno = null;
+        string pk_affair_no = null;
+        string pk_staff_no = null;
+
+        pk_sno = Request.QueryString["pk_sno"];//获取学号
         if (pk_sno == null || pk_sno.Trim().Length == 0)
         {
             this.server_msg.Value = "参数错误";
             return;
         }
+        pk_affair_no = Request.QueryString["pk_affair_no"];//获取事务主键
+        pk_staff_no = Request.QueryString["pk_staff_no"];//获取员工编号
 
-        string pk_affair_no = Request.QueryString["pk_affair_no"];//获取事务主键
-        if (pk_affair_no == null || pk_affair_no.Trim().Length == 0)
-        {
-            this.server_msg.Value = "参数错误";
-            return;
-        }
-        string pk_staff_no = Request.QueryString["pk_staff_no"];//获取员工编号
+
 
         string session_pk_sno = null;
         string session_pk_staff_no = null;
@@ -37,13 +38,7 @@ public partial class view_xsbjf : System.Web.UI.Page
             session_pk_staff_no = Session["pk_staff_no"].ToString();
         }
 
-        batch batch_logic = new batch();        
-        affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno,session_pk_sno, pk_staff_no,session_pk_staff_no, "cdivtc_jf_ab087");
-        if (!jg.isauth)
-        {
-            this.server_msg.Value = jg.msg; ;
-            return;
-        }
+        batch batch_logic = new batch();
         #endregion
 
         #region 
