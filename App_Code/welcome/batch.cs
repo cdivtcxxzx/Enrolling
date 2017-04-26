@@ -1964,4 +1964,49 @@ public class batch
         result.isauth = true;
         return result;
     }
+
+
+    ///功能名称： 插入学生助学贷款或绿色通道标志
+    ///功能描述：
+    ///插入学生助学贷款或绿色通道标志。
+    ///编写人：胡元
+    ///参数：
+    ///PK_SNO：学号；Tuition：绿色通道或助学贷款
+    ///创建时间：2017-4-26
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    public bool set_TuitionFee(string PK_SNO, string Tuition)
+    {
+        bool result = false;
+        try
+        {
+            if (PK_SNO == null || PK_SNO.Trim().Length == 0 || Tuition == null || Tuition.Trim().Length == 0)
+            {
+                return result;
+            }
+
+            if (Tuition.Trim() != "绿色通道" && Tuition.Trim() != "助学贷款")
+            {
+                return result;
+            }
+
+            string sqlstr = "insert into Fresh_TuitionFee (PK_SNO,Tuition) values (@cs1,@cs2)";
+            int jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", Tuition.Trim()));
+            if (jg == 1)
+            {
+                result = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "set_TuitionFee", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
 }

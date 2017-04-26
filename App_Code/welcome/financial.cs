@@ -585,7 +585,7 @@ public class financial
                     string sqlstr = "insert into Fresh_Fee (PK_SNO,FEE_XH,FEE_ORDERID,FEE_ORDERID_URL,SYSNAME,UPDATER,UPDATETIME) values (" +
                                     "@cs1,@cs2,@cs3,@cs4,@cs5,@cs6,getdate())";
                     int jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", FEE_XH.Trim()),
-                        new SqlParameter("cs3", orderid.Trim()), new SqlParameter("cs4", orderid_url.Trim()), new SqlParameter("cs5", "必交费"),
+                        new SqlParameter("cs3", orderid.Trim()), new SqlParameter("cs4", orderid_url.Trim()), new SqlParameter("cs5", ""),
                         new SqlParameter("cs6", UPDATER.Trim()));
                     batch logic = new batch();
                     //logic.set_affairlog(PK_SNO, PK_AFFAIR_NO, "已完成", UPDATER);

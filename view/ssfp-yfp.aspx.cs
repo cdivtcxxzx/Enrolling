@@ -11,50 +11,82 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        #region 检查操作权限
-        string pk_sno = Request.QueryString["pk_sno"];//获取学号
-        if (pk_sno == null || pk_sno.Trim().Length == 0)
-        {
-            this.server_msg.Value = "参数错误";
-            return;
-        }
-
-        string pk_affair_no = Request.QueryString["pk_affair_no"];//获取事务主键
-        if (pk_affair_no == null || pk_affair_no.Trim().Length == 0)
-        {
-            this.server_msg.Value = "参数错误";
-            return;
-        }
-        string pk_staff_no = Request.QueryString["pk_staff_no"];//获取员工编号
-
-        string session_pk_sno = null;
-        string session_pk_staff_no = null;
-        if (Session["pk_sno"] != null)
-        {
-            session_pk_sno = Session["pk_sno"].ToString();
-        }
-        if (Session["pk_staff_no"] != null)
-        {
-            session_pk_staff_no = Session["pk_staff_no"].ToString();
-        }
-
-        batch batch_logic = new batch();
-        affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xzss_01a");
-        if (!jg.isauth)
-        {
-            this.server_msg.Value = jg.msg; ;
-            return;
-        }
-        #endregion
-
         //btnSave.Enabled = false;
         if (!IsPostBack)
         {
-            //判断两个参数：oCode  oSNO 操作员还是学生自助  
-            //if (Request["oCode"] != null && Request["oCode"].ToString() != "" && Request["oSNO"] != null && Request["oSNO"].ToString() != "")
+
+
+            //获取传递参数
+            string pk_sno = "";
+            if (Request["pk_sno"] != null)
             {
-                string operateCode = pk_affair_no;
-                string SNO = pk_sno;
+                pk_sno = Request["pk_sno"].Trim();//获取学号
+                xsxx_xh.Text = pk_sno;
+            }
+            string pk_affair_no = Request.QueryString["pk_affair_no"];//获取事务主键
+            string pk_staff_no = Request.QueryString["pk_staff_no"];//获取员工编号
+
+            #region 检查操作权限
+            #endregion
+
+            //根据学号设置绑定各控件值
+           
+            if (xsxx_xh.Text.Length == 0)
+            {
+                //Response.Write("学号为空！");
+                return;
+            }
+            if (!dormitory.isbillet(xsxx_xh.Text))
+            {//未分配
+               // Response.Write("未分配寝室！");
+            }
+            else
+            {
+                //已分配，屏掉分配内容
+               // Response.Write("已分配寝室！");
+                sc_cwxc.Style.Add("display", "none");
+                sc_fjxc.Style.Add("display", "none");
+                sc_lc.Style.Add("display", "none");
+                sc_ld.Style.Add("display", "none");
+                sc_lx.Style.Add("display", "none");
+                sc_qsxz.Style.Add("display", "none");
+                R_room.Visible = false;
+                R_bed.Visible = false;
+                sc_qsxz.Visible = false;
+                //获取已选择寝室床位信息
+                DataTable yfp = dormitory.serch_yfpbed(xsxx_xh.Text);
+                if (yfp.Rows.Count > 0)
+                {
+                    this.xzts.InnerHtml = "您已选择:<font color=green><b>" + yfp.Rows[0][1].ToString() +","+ yfp.Rows[0][2].ToString() + "</b></font>寝室<font color=green><b>" + yfp.Rows[0][3].ToString() + "</b></font>床!";
+                }
+                else
+                {
+                    this.xzts.InnerHtml = "您已选择寝室，但未找到你的选寝信息，请联系您的班主任！"; 
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //判断两个参数：oCode  oSNO 操作员还是学生自助  
+            if (Request["oCode"] != null && Request["oCode"].ToString() != "" && Request["oSNO"] != null && Request["oSNO"].ToString() != "")
+            {
+                string operateCode = Request["oCode"].ToString();
+                string SNO = Request["oSNO"].ToString();
 
                 //14获取学生数据
                 Base_STU baseStu = organizationService.getStu(SNO);
@@ -214,5 +246,103 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
         ////List<Fresh_Bed_Class_Log> updateFresh_Bed_Class_Log
         //dormitory.updateFresh_Bed_Class_Log(xh, dorm_no, room_no, bed_index, "none");
         //Response.Write("选择成功！");
+    }
+
+
+    protected void xq_roomtype_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        zt();
+    }
+    protected void xq_dorm_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //已选择一号学生公寓3楼306寝室，该寝室已有3人选择，剩于3个床位';
+        R_room.Items.Clear();
+        R_bed.Items.Clear();
+        zt();
+        //+R_room.SelectedItem.Text + "寝室，该寝室剩于3个床位！";
+    }
+    protected void xq_floor_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        R_room.Items.Clear();
+        R_bed.Items.Clear();
+        zt();
+    }
+    protected void R_room_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      
+        R_bed.Items.Clear();
+        zt();
+    }
+    protected void R_bed_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        zt();
+        //获取床位
+        DataTable cw = dormitory.serch_bedbz(this.R_bed.SelectedValue);
+        if (cw.Rows.Count > 0)
+        {
+            this.xzts.InnerHtml += "，您选择了<font color=green><b>" + this.R_bed.SelectedItem.Text + "</b></font>床！";
+            this.cwts.Text = "" + cw.Rows[0][2].ToString();
+        }
+        else
+        {
+            this.cwts.Text= "请选择床位";
+        }
+    }
+    protected void zt()
+    {
+        this.xzts.InnerHtml = "已选择：" + xq_dorm.SelectedItem.Text;
+        if (R_room.SelectedIndex != -1)
+        {
+            this.xzts.InnerHtml += "<font color=green><b>"+R_room.SelectedItem.Text + "</b></font>寝室！";
+        }
+
+        //获取床位
+        DataTable cw = dormitory.serch_bed(this.R_room.SelectedValue);
+        if (cw.Rows.Count > 0)
+        {
+            this.xzts.InnerHtml += "该寝室还有" + cw.Rows.Count.ToString() + "个床位";
+        }
+        //else
+        //{
+        //    this.xzts.InnerHtml += "，该寝室已没有床位，请重新选择";
+        //}
+        //获取床位说明
+
+    }
+    protected void qsxz_Click(object sender, EventArgs e)
+    {
+        //获取床位ID和学号，存储到数据库 //获取员工编号
+        try
+        {
+            string czy = xsxx_xh.Text;
+            string bedid = "";
+            if (Request["pk_staff_no"] != null)
+            {
+                czy = Request["pk_staff_no"].ToString();
+            }
+            if (R_bed.SelectedIndex != -1)
+            {
+                bedid = R_bed.SelectedValue;
+
+            }
+            string tsxx = dormitory.update_yfpbed(xsxx_xh.Text, bedid, czy);
+            if (tsxx.Split(',')[0] == "1")
+            {
+                Response.Redirect("");
+            }
+            else
+            {
+                xzts.InnerHtml = "<font color=red>" + tsxx.Split(',')[1] + "</font>";
+            }
+        }
+        catch (Exception e1)
+        {
+            xzts.InnerHtml = "<font color=red>确认选择寝室时出错：" + e1.Message + "</font>";
+        }
+
+
+        //Response.Write(tsxx);
+           
+
     }
 }

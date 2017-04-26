@@ -68,7 +68,7 @@ function load(){
                                 var showed=false;
                                 for(i=0;single_must!=null && i<single_must.length;i++){
                                     itemlist=single_must[i];
-                                    var str='<div class="layui-form-item" pane="" style="margin-bottom:0px;" id=_sm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].Fee_Amount+'>';
+                                    var str='<div class="layui-form-item" pane="" style="margin-bottom:0px;" id=_sm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].PK_Fee_Item+'>';
                                     str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
                                     str=str+'<div class="layui-input-block">';
                                     str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><label>'+fillstr(itemlist[0].Fee_Amount)+'元</label></div>';
@@ -82,15 +82,15 @@ function load(){
 
                                 for(i=0;multiple_must!=null && i<multiple_must.length;i++){
                                     var itemlist=multiple_must[i];
-                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=_mm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].Fee_Amount+'">';
+                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=_mm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].PK_Fee_Item+'">';
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'*</label>';
                                     str=str+'<div class="layui-input-block">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
                                     for(var j=0;j<itemlist.length;j++){
                                         if(j==0){
-                                            str=str+'<option value="'+itemlist[j].Fee_Amount+'" selected="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
+                                            str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" selected="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                         }else{
-                                            str=str+'<option value="'+itemlist[j].Fee_Amount+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
+                                            str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                         }
                                     }
                                     str=str+'</select>';
@@ -102,9 +102,9 @@ function load(){
                                     str=str+'<dl class="layui-anim layui-anim-upbit">';
                                     for(var j=0;j<itemlist.length;j++){
                                         if(j==0){
-                                            str=str+'<dd lay-value="'+itemlist[j].Fee_Amount+'" class="layui-this">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
+                                            str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="layui-this">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
                                         }else{
-                                            str=str+'<dd lay-value="'+itemlist[j].Fee_Amount+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
+                                            str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
                                         }
                                     }
                                     str=str+'</dl>';
@@ -119,10 +119,27 @@ function load(){
 
                                 for(i=0;single_nomust!=null && i<single_nomust.length;i++){
                                     itemlist=single_nomust[i];
-                                    var str='<div class="layui-form-item" pane="" style="margin-bottom:0px;" id=snm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].Fee_Amount+'>';
-                                    str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
+                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=snm'+itemlist[0].Fee_Code+' ref-data="none">';
+                                    str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-block">';
-                                    str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><label>'+fillstr(itemlist[0].Fee_Amount)+'元</label></div>';
+                                    str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
+                                    str=str+'<option value="none" >暂不选择</option>';
+                                    for(var j=0;j<itemlist.length;j++){
+                                        str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
+                                    }
+                                    str=str+'</select>';
+                                    str=str+'<div class="layui-unselect layui-form-select layui-form-selected">';
+                                    str=str+'<div class="layui-select-title">';
+                                    str=str+'<input type="text" placeholder="请选择" value="请选择" readonly="" class="layui-input layui-unselect">';
+                                    str=str+'<i class="layui-edge"></i>';
+                                    str=str+'</div>';
+                                    str=str+'<dl class="layui-anim layui-anim-upbit">';
+                                    str=str+'<dd lay-value="none" class="layui-this">暂不选择</dd>';
+                                    for(var j=0;j<itemlist.length;j++){
+                                        str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
+                                    }
+                                    str=str+'</dl>';
+                                    str=str+'</div>';
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
@@ -137,10 +154,9 @@ function load(){
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-block">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
-                                    str=str+'<option value=""></option>';
                                     str=str+'<option value="none" >暂不选择</option>';
                                     for(var j=0;j<itemlist.length;j++){
-                                        str=str+'<option value="'+itemlist[j].Fee_Amount+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
+                                        str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                     }
                                     str=str+'</select>';
                                     str=str+'<div class="layui-unselect layui-form-select layui-form-selected">';
@@ -151,7 +167,7 @@ function load(){
                                     str=str+'<dl class="layui-anim layui-anim-upbit">';
                                     str=str+'<dd lay-value="none" class="layui-this">暂不选择</dd>';
                                     for(var j=0;j<itemlist.length;j++){
-                                        str=str+'<dd lay-value="'+itemlist[j].Fee_Amount+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
+                                        str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
                                     }
                                     str=str+'</dl>';
                                     str=str+'</div>';
@@ -272,59 +288,73 @@ function sure(){
         return;
     }
 
-    var fee_id_list=new Array();
+    var fee_id_list=null;
     var i=0;
+    var feelist=null;
 
     var data=$('#contents').attr('fee_id_list');
     if(data!=null && $.trim(data).length>0){
         fee_id_list=data.split(',');
+    }else{
+        alert("无效的参数");
     }
     if(fee_id_list!=null && fee_id_list.length>0){
+        feelist=new Array();
+        var count=0;
         for(i=0;i<fee_id_list.length;i++){
-            var code=fee_id_list[i];
+            var code=fee_id_list[i].substring(3);
             var val=$('#'+fee_id_list[i]).attr('ref-data');
-            console.log('code='+code+' val='+val);
-        }
-    }
-
-    return;
-
-
-    if(feelist.length>0){
-        var pk_staff_no= $("#pk_staff_no").val();
-        var returnurl=window.location.href;
-        var data=null;
-        if ($.trim(pk_staff_no).length > 0 ) {
-            data={ "feelist": feelist.join(","),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no,'pk_staff_no':pk_staff_no,'returnurl':returnurl};
-        }else{
-            data={ "feelist": feelist.join(","),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no,'returnurl':returnurl};
-        }
-        //提交必交费信息
-        $.ajax({
-            url: "/nradmingl/appserver/manager.aspx?cs=set_ismust_fee_full",
-            type: "post",
-            dataType: "text",
-            data: data,
-            success: function (data) {
-                console.log(data);
-                var json_data = JSON.parse(data);
-                if (json_data.code == 'success') {
-                    if ($.trim(pk_staff_no).length > 0 ) {
-                        $('#sure').hide();
-                        alert('已帮助学生生成交费订单，请通知学生及时交费');
-                    }else{
-                        window.location.href=json_data.data;
-                    }
-                } else {
-                    alert(json_data.message);
-                }
-            },
-            error: function (data) {
-                alert("错误");
+            if(val!='none'){
+                feelist[count]={"code":code,"value":val};
+                count=count+1;
             }
-        });
+        }
     }else{
-        alert('没有可提交的数据');
+        alert("无效的参数");
+    }
+    if(feelist!=null && feelist.length>0){
+        layer.confirm('将提交您的预交费订单，订单生成后其内容仅允许到校后修改。您确认继续吗？', {
+            btn: ['继续', '终止']
+        }, function(index){
+            layer.close(index);
+             console.log(JSON.stringify(feelist));
+            //生成订单
+            var pk_staff_no= $("#pk_staff_no").val();
+            var returnurl=window.location.href;
+
+            var data=null;
+            if ($.trim(pk_staff_no).length > 0 ) {
+                data={ "feelist": JSON.stringify(feelist),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no,'pk_staff_no':pk_staff_no,'returnurl':returnurl};
+            }else{
+                data={ "feelist": JSON.stringify(feelist),"pk_batch_no":pk_batch_no,"pk_sno": pk_sno,"pk_affair_no":pk_affair_no,'returnurl':returnurl};
+            }
+            //提交必交费信息
+            $.ajax({
+                url: "/nradmingl/appserver/manager.aspx?cs=make_fee_order",
+                type: "post",
+                dataType: "text",
+                data: data,
+                success: function (data) {
+                    console.log(data);
+                    var json_data = JSON.parse(data);
+                    if (json_data.code == 'success') {
+                        if ($.trim(pk_staff_no).length > 0 ) {
+                            $('#sure').hide();
+                            alert('已帮助学生生成交费订单，请通知学生及时交费');
+                        }else{
+                            window.location.href='xsbjf_order.aspx?pk_sno='+pk_sno;
+                        }
+                    } else {
+                        alert(json_data.message);
+                    }
+                },
+                error: function (data) {
+                    alert("错误");
+                }
+            });
+        }, function(index){
+            layer.close(index);
+        });
     }
 }
 
