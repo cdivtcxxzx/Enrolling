@@ -49,137 +49,109 @@ function load(){
                             $('#xsxx_zymc').html(json_data.data[i].data.SPE_Name);
                         }
                     }
-                    //获取交费信息
+                    //获取交费订单信息
                     $.ajax({
                         url: "/nradmingl/appserver/manager.aspx",
                         type: "get",
                         dataType: "text",
-                        data: { "cs": "get_fee_no_order","pk_batch_no":pk_batch_no,"pk_sno": pk_sno},
+                        data: { "cs": "get_fee_order","pk_sno": pk_sno},
                         success: function (data) {
                             var json_data = JSON.parse(data);
                             if (json_data.code == 'success') {
-                                var fee_id_list=new Array();
-                                var count=0;
+                                var returnurl=window.location.href;
+                                var payed=new Array();
+                                var count_payed=0;
+                                var nopayed=new Array();
+                                var count_nopayed=0;
 
-                                var single_must=json_data.data.single_must;//必交单项
-                                var multiple_must=json_data.data.multiple_must;//必交多项
-                                var single_nomust=json_data.data.single_nomust;//选交单项
-                                var multiple_nomust=json_data.data.multiple_nomust;//选交多项
-                                var showed=false;
-                                for(i=0;single_must!=null && i<single_must.length;i++){
-                                    itemlist=single_must[i];
-                                    var str='<div class="layui-form-item" pane="" style="margin-bottom:0px;" id=_sm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].PK_Fee_Item+'>';
-                                    str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
-                                    str=str+'<div class="layui-input-block">';
-                                    str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><label>'+fillstr(itemlist[0].Fee_Amount)+'元</label></div>';
-                                    str=str+'</div>';
-                                    str=str+'</div>';
-                                    $('#contents').append(str);
-                                    fee_id_list[count]='_sm'+itemlist[0].Fee_Code;
-                                    count=count+1;
-                                    $('#sure').show();
-                                }
-
-                                for(i=0;multiple_must!=null && i<multiple_must.length;i++){
-                                    var itemlist=multiple_must[i];
-                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=_mm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].PK_Fee_Item+'">';
-                                    str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'*</label>';
-                                    str=str+'<div class="layui-input-block">';
-                                    str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
-                                    for(var j=0;j<itemlist.length;j++){
-                                        if(j==0){
-                                            str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" selected="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
-                                        }else{
-                                            str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
+                                for(var i=0;i<json_data.data.length;i++)
+                                {
+                                    var items=json_data.data[i].items;
+                                    var equ=true;
+                                    for(var j=0;j<items.length;j++)
+                                    {
+                                        if(items[j].Fee_Amount>items[j].Fee_Payed && items[j].Is_Online_Order=='1'){
+                                            equ=false;
+                                            break;
                                         }
                                     }
-                                    str=str+'</select>';
-                                    str=str+'<div class="layui-unselect layui-form-select layui-form-selected">';
-                                    str=str+'<div class="layui-select-title">';
-                                    str=str+'<input type="text" placeholder="请选择" value="" readonly="" class="layui-input layui-unselect">';
-                                    str=str+'<i class="layui-edge"></i>';
-                                    str=str+'</div>';
-                                    str=str+'<dl class="layui-anim layui-anim-upbit">';
-                                    for(var j=0;j<itemlist.length;j++){
-                                        if(j==0){
-                                            str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="layui-this">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
+                                    if(equ){
+                                        payed[count_payed]=json_data.data[i];
+                                        count_payed=count_payed+1;
+                                    }else{
+                                        nopayed[count_nopayed]=json_data.data[i];
+                                        count_nopayed=count_nopayed+1
+                                    }
+                                }
+
+
+                                for(var i=0;i<nopayed.length;i++)
+                                {
+                                    var order_id=nopayed[i].order_id;
+                                    var order_url=nopayed[i].order_url;
+                                    var items=nopayed[i].items;
+
+                                    var index=0;
+                                    var new_returnurl=returnurl.replace('?','@');
+                                    new_returnurl=new_returnurl.replace('&','||');
+                                    index=returnurl.indexOf('/view/');
+                                    returnurl=returnurl.substring(0,index)+'/view/jump.aspx?para='+new_returnurl;
+                                    //console.log(returnurl);
+
+                                    index=order_url.indexOf('returnURL');
+                                    if(index>0)
+                                        order_url=order_url.substring(0,index)+'returnURL='+returnurl;
+                                    else
+                                        order_url=order_url.substring(0,index)+'&returnURL='+returnurl;
+
+                                    var str='';
+                                    for(var j=0;j<items.length;j++){
+                                        str=str+'<tr>';
+                                        str=str+'<td>'
+                                        if(items[j].Fee_Code_Name==items[j].Fee_Name){
+                                            str=str+items[j].Fee_Code_Name;
                                         }else{
-                                            str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
+                                            str=str+items[j].Fee_Code_Name+'('+items[j].Fee_Name+')';
                                         }
+                                        str=str+'</td>';
+                                        str=str+'<td>'
+                                        str=str+items[j].Fee_Amount;
+                                        str=str+'</td>';
+                                        if(j==0){
+                                            str=str+'<td rowspan="'+items.length+'">';
+                                            str=str+'<a class="layui-btn layui-btn-mini" href="'+order_url+'">去缴费</a>';
+                                            str=str+'</td>';
+                                        }
+                                        str=str+'</tr>';
                                     }
-                                    str=str+'</dl>';
-                                    str=str+'</div>';
-                                    str=str+'</div>';
-                                    str=str+'</div>';
-                                    $('#contents').append(str);
-                                    fee_id_list[count]='_mm'+itemlist[0].Fee_Code;
-                                    count=count+1;
-                                    $('#sure').show();
+                                    $('#feetable').append(str);
                                 }
 
-                                for(i=0;single_nomust!=null && i<single_nomust.length;i++){
-                                    itemlist=single_nomust[i];
-                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=snm'+itemlist[0].Fee_Code+' ref-data="none">';
-                                    str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
-                                    str=str+'<div class="layui-input-block">';
-                                    str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
-                                    str=str+'<option value="none" >暂不选择</option>';
-                                    for(var j=0;j<itemlist.length;j++){
-                                        str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
+                                for(var i=0;i<payed.length;i++)
+                                {
+                                    var items=payed[i].items;
+                                    var str='';
+                                    for(var j=0;j<items.length;j++){
+                                        str=str+'<tr>';
+                                        str=str+'<td>'
+                                        if(items[j].Fee_Code_Name==items[j].Fee_Name){
+                                            str=str+items[j].Fee_Code_Name;
+                                        }else{
+                                            str=str+items[j].Fee_Code_Name+'('+items[j].Fee_Name+')';
+                                        }
+                                        str=str+'</td>';
+                                        str=str+'<td>'
+                                        str=str+items[j].Fee_Amount;
+                                        str=str+'</td>';
+                                        if(items[j].Fee_Amount>items[j].Fee_Payed){
+                                            str=str+'<td >未交</td>';
+                                        }else{
+                                            str=str+'<td >已交</td>';
+                                        }
+                                        str=str+'</tr>';
                                     }
-                                    str=str+'</select>';
-                                    str=str+'<div class="layui-unselect layui-form-select layui-form-selected">';
-                                    str=str+'<div class="layui-select-title">';
-                                    str=str+'<input type="text" placeholder="请选择" value="请选择" readonly="" class="layui-input layui-unselect">';
-                                    str=str+'<i class="layui-edge"></i>';
-                                    str=str+'</div>';
-                                    str=str+'<dl class="layui-anim layui-anim-upbit">';
-                                    str=str+'<dd lay-value="none" class="layui-this">暂不选择</dd>';
-                                    for(var j=0;j<itemlist.length;j++){
-                                        str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
-                                    }
-                                    str=str+'</dl>';
-                                    str=str+'</div>';
-                                    str=str+'</div>';
-                                    str=str+'</div>';
-                                    $('#contents').append(str);
-                                    fee_id_list[count]='snm'+itemlist[0].Fee_Code;
-                                    count=count+1;
-                                    $('#sure').show();
+                                    $('#feetable').append(str);
                                 }
-
-                                for(i=0;multiple_nomust!=null && i<multiple_nomust.length;i++){
-                                    var itemlist=multiple_nomust[i];
-                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=mnm'+itemlist[0].Fee_Code+' ref-data="none">';
-                                    str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
-                                    str=str+'<div class="layui-input-block">';
-                                    str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
-                                    str=str+'<option value="none" >暂不选择</option>';
-                                    for(var j=0;j<itemlist.length;j++){
-                                        str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
-                                    }
-                                    str=str+'</select>';
-                                    str=str+'<div class="layui-unselect layui-form-select layui-form-selected">';
-                                    str=str+'<div class="layui-select-title">';
-                                    str=str+'<input type="text" placeholder="请选择" value="请选择" readonly="" class="layui-input layui-unselect">';
-                                    str=str+'<i class="layui-edge"></i>';
-                                    str=str+'</div>';
-                                    str=str+'<dl class="layui-anim layui-anim-upbit">';
-                                    str=str+'<dd lay-value="none" class="layui-this">暂不选择</dd>';
-                                    for(var j=0;j<itemlist.length;j++){
-                                        str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
-                                    }
-                                    str=str+'</dl>';
-                                    str=str+'</div>';
-                                    str=str+'</div>';
-                                    str=str+'</div>';
-                                    $('#contents').append(str);
-                                    fee_id_list[count]='mnm'+itemlist[0].Fee_Code;
-                                    count=count+1;
-                                    $('#sure').show();
-                                }
-
-                                $('#contents').attr('fee_id_list',fee_id_list.join(","));
 
                                 layui.use(['form', 'layedit', 'laydate', 'element'], function () {
                                     var $ = layui.jquery;
@@ -247,12 +219,6 @@ function load(){
                                     shadeMobile.on('click', function () {
                                         $('body').removeClass('site-mobile');
                                     });
-                                    //selectd的onchange事件
-                                    form.on('select', function (obj) {
-                                        $(obj.elem).parent().parent().removeAttr('ref-data');
-                                        $(obj.elem).parent().parent().attr('ref-data',obj.value);
-                                    });
-
                                 });
                             } else {
                                 alert(json_data.message);
@@ -342,7 +308,7 @@ function sure(){
                             $('#sure').hide();
                             alert('已帮助学生生成交费订单，请通知学生及时交费');
                         }else{
-                            window.location.href='xsbjf_order.aspx?pk_sno='+pk_sno;
+                            window.location.href=json_data.data;
                         }
                     } else {
                         alert(json_data.message);
