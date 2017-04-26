@@ -62,23 +62,26 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">身份证号：</label>
                     <div class="layui-input-block">
-                        <asp:Label ID="xsxx_sfzh" CssClass="layui-input" runat="server" Text=""></asp:Label>
+                        <asp:TextBox ID="sfzh" runat="server" />
                     </div>
                 </div>
                 <div class="layui-form-item">
 
                     <label class="layui-form-label">联系电话：</label>
                     <div class="layui-input-block">
-                        <asp:Label ID="xsxx_lxdh" CssClass="layui-input" runat="server" Text=""></asp:Label>
+                        <asp:TextBox ID="lxdh" runat="server" />
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">报名号：</label>
                     <div class="layui-input-block">
-                        <asp:Label ID="xsxx_test" CssClass="layui-input" runat="server" Text=""></asp:Label>
+                        <asp:TextBox ID="bmh" runat="server" />
                     </div>
                 </div>
             </div>
+            <div class="layui-form-item">
+                    <input type="submit" value="提交" id="btn_submit" />
+                </div>
         </form>
     </div>
     <script src="../nradmingl/plugins/layui/layui.js"></script>
