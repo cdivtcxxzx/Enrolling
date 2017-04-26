@@ -51,6 +51,12 @@ public partial class view_xsxx_confirm : System.Web.UI.Page
 
         this.hidden_pk_sno.Value = pk_sno.Trim();
 
+        //检查是否确认
+        if (organizationService.isStuConfrim("2"))
+        {
+            server_msg.Value = "您的信息已经确认！";
+            //todo..跳转
+        }
 
     }
 }

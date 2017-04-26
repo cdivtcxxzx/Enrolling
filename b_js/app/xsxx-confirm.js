@@ -92,7 +92,7 @@
 
         //后端信息弹出信息
         var msg = $("#hidden_alert_msg").val();
-        if (msg.length != 0) {
+        if (msg!=null&&msg.length != 0) {
             layer.alert(msg);
             $("#hidden_alert_msg").val('');
         }
