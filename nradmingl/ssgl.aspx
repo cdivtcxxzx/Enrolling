@@ -31,141 +31,241 @@
       <blockquote class="layui-elem-quote">
           <i class="layui-icon">&#xe602;</i>学生宿舍管理<i class="layui-icon">&#xe602;</i>宿舍信息
            <span style="float:right">
-				<a href=""  class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe60e;</i><i class="layui-icon">一卡通更新</i>
+
+            <!--调用C#原生按钮设置样式举例OVER-->
+                <a href="#" class="layui-btn layui-btn-small hidden-xs">
+					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-                 <a href="" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe61d;</i><i class="layui-icon">模板下载</i>
+              <a href="#" class="layui-btn layui-btn-small hidden-xs">
+					<i class="layui-icon">&#xe62a;</i> 模板下载
 				</a>
-                <a href="" class="layui-btn layui-btn-small">
-			        <i class="layui-icon">&#xe61e;</i><i class="layui-icon">导入寝室数据</i>
-				</a>
+                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="exportexcel1" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导入预分配数据</asp:LinkButton>
+
+
 		  </span>       
       </blockquote>
         <div>
             <div class="layui-form-item">
-                <div class="layui-input-inline">
-                    <select name="quiz1">
-                        <option value="">请选择校区</option>
-                        <option value="" selected="">天府校区</option>
-                    </select><div class="layui-unselect layui-form-select">
-                        <div class="layui-select-title">
-                            <input type="text" placeholder="" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div>
-                        <dl class="layui-anim layui-anim-upbit">
-                            <dd lay-value="" class="layui-this"></dd>
-                            <dd lay-value="" class=""></dd>
-                            <dd lay-value="" class=""></dd>
-                        </dl>
-                    </div>
-                </div>
-                <div class="layui-input-inline">
-                    <select name="quiz2">
-                        <option value="">请选择楼号</option>
-                        <option value="1栋">1栋</option>
-                        <option value="2栋">2栋</option>
-                        <option value="3栋">3栋</option>
-                        <option value="4栋">4栋</option>
-                    </select><div class="layui-unselect layui-form-select">
-                        <div class="layui-select-title">
-                            <input type="text" placeholder="请选择楼号" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div>
-                        <dl class="layui-anim layui-anim-upbit">
-                            <dd lay-value="1栋" class="">1栋</dd>
-                            <dd lay-value="2栋" class=" layui-disabled">2栋</dd>
-                            <dd lay-value="3栋" class="">3栋</dd>
-                            <dd lay-value="4栋" class="">4栋</dd>
-                        </dl>
-                    </div>
-                </div>
-                <div class="layui-input-inline">
-                    <select name="quiz3">
-                        <option value="">请选择楼层</option>
-                        <option value="1楼">1楼</option>
-                        <option value="2楼">2楼</option>
-                        <option value="3楼">3楼</option>
-                        <option value="4楼">4楼</option>
-                        <option value="5楼">5楼</option>
-                        <option value="6楼">6楼</option>
-                    </select><div class="layui-unselect layui-form-select">
-                        <div class="layui-select-title">
-                            <input type="text" placeholder="请选择楼层" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div>
-                        <dl class="layui-anim layui-anim-upbit">
-                            <dd lay-value="1楼" class="">1楼</dd>
-                            <dd lay-value="2楼" class="">2楼</dd>
-                            <dd lay-value="3楼" class="">3楼</dd>
-                            <dd lay-value="4楼" class="">4楼</dd>
-                            <dd lay-value="5楼" class="">5楼</dd>
-                            <dd lay-value="6楼" class="">6楼</dd>
-                        </dl>
-                    </div>
-                </div>
+                <asp:ScriptManager ID="ScriptManager1" runat="server">
+                </asp:ScriptManager>
+                  <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                  <ContentTemplate>
+                
+                    <asp:DropDownList ID="xq" runat="server" AutoPostBack="True" 
+                        DataSourceID="SqlDataSource2" DataTextField="Campus_Name" 
+                        DataValueField="Campus_NO" 
+                        onselectedindexchanged="xq_SelectedIndexChanged">
+                        <asp:ListItem Selected="True" Value=" ">全部校区</asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                        SelectCommand="select ' ' Campus_NO,'全部校区' Campus_Name union( SELECT [Campus_NO], [Campus_Name] FROM [Base_Campus] WHERE ([Enabled] = @Enabled))">
+                        <SelectParameters>
+                            <asp:Parameter DefaultValue="true" Name="Enabled" Type="String" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
+                    <asp:DropDownList ID="dorm" runat="server" AutoPostBack="True" 
+                        DataSourceID="SqlDataSource3" DataTextField="Name" 
+                        DataValueField="PK_Dorm_NO" onselectedindexchanged="dorm_SelectedIndexChanged">
+                        <asp:ListItem Value=" ">全部公寓</asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SqlDataSource3" runat="server" 
+                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                        SelectCommand="select ' ' PK_Dorm_NO , '' Dorm_NO,'全部公寓' Name union(SELECT DISTINCT PK_Dorm_NO,[Dorm_NO], [Name] FROM [Fresh_Dorm] WHERE ([Campus_NO] = @Campus_NO) ) ORDER BY [Dorm_NO]">
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="xq" Name="Campus_NO" 
+                                PropertyName="SelectedValue" Type="String" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
+                    <asp:DropDownList ID="floor" runat="server" DataSourceID="SqlDataSource4" 
+                        DataTextField="Floor" DataValueField="Floor" AutoPostBack="True" 
+                        onselectedindexchanged="floor_SelectedIndexChanged">
+                        <asp:ListItem Selected="True" Value=" ">全部楼层</asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SqlDataSource4" runat="server" 
+                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                        SelectCommand="select ' ' id,'全部楼层' Floor union( SELECT DISTINCT [Floor] id,[floor] FROM [Fresh_Room] WHERE ([FK_Dorm_NO] = @FK_Dorm_NO))  ORDER BY [Floor] DESC">
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="dorm" Name="FK_Dorm_NO" 
+                                PropertyName="SelectedValue" Type="String" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
+                    <asp:DropDownList ID="bj" runat="server" DataSourceID="SqlDataSource5" 
+                        DataTextField="Name" DataValueField="PK_Class_NO" AutoPostBack="True" 
+                        onselectedindexchanged="bj_SelectedIndexChanged">
+                        <asp:ListItem Selected="True" Value=" ">全部班级</asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SqlDataSource5" runat="server" 
+                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                        SelectCommand="select ' ' PK_Class_NO,'全部班级' Name union ( SELECT DISTINCT [PK_Class_NO], [Name] FROM [Fresh_Class])  ORDER BY [PK_Class_NO]">
+                    </asp:SqlDataSource>
+                    </ContentTemplate></asp:UpdatePanel>
+&nbsp;&nbsp;
             </div>
         </div>    
   <div>   
-	<table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="GridView1" style="border-collapse:collapse;">
-		<tbody><tr>
-			<th align="center" scope="col" style="width:2%;">
-                      <div class="icheckbox_square-blue" style="position: relative;"><input type="checkbox" id="selected-all" name="selected-all" onclick="onclicksel();" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>  
-                </th><th scope="col" ><a href="javascript:__doPostBack('GridView1','Sort$序号')">序号</a></th><th class="hidden-xs" scope="col"><a href="javascript:__doPostBack('GridView1','Sort$lmmc')">公寓楼名称</a></th>
-                <th scope="col"><a href="javascript:__doPostBack('GridView1','Sort$title')">楼层</a></th><th class="hidden-xs" scope="col"><a href="javascript:__doPostBack('GridView1','Sort$title')">房间名称</a></th>
-                <th scope="col"><a href="javascript:__doPostBack('GridView1','Sort$author')">房间类型</a></th><th class="hidden-xs" scope="col"><a href="javascript:__doPostBack('GridView1','Sort$fabutime')">性别</a></th><th scope="col">管理操作</th>                
-		</tr><tr>
-			<td align="center">
-            <div class="icheckbox_square-blue" style="position: relative;"><input id="BoxId" name="BoxId" class="icheck" value="497" type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> 
-            </td><td>1</td><td class="hidden-xs">1栋</td><td>1楼</td>
-            <td >1101</td><td class="hidden-xs">六人间</td><td class="hidden-xs">女</td>
-            <td>
-            <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '宿舍信息－寝室详情',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'qsxq.aspx?id=497'});" txttop="txttop" class="layui-btn layui-btn-mini" title="寝室详情">查看详情</a>
-            </td>
-		</tr><tr>
-			<td align="center">
-            <div class="icheckbox_square-blue" style="position: relative;"><input id="BoxId" name="BoxId" class="icheck" value="497" type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> 
-            </td><td>2</td><td class="hidden-xs">2栋</td><td>5楼</td>
-            <td >2507</td><td class="hidden-xs">六人间</td><td class="hidden-xs">男</td>
-            <td>
-            <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '宿舍信息－寝室详情',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'qsxq.aspx?id=497'});" txttop="txttop" class="layui-btn layui-btn-mini" title="寝室详情">查看详情</a>
-            </td>            
-		</tr><tr>
-			<td align="center">
-            <div class="icheckbox_square-blue" style="position: relative;"><input id="BoxId" name="BoxId" class="icheck" value="497" type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> 
-            </td><td>3</td><td class="hidden-xs">2栋</td><td>6楼</td>
-            <td >2614</td><td class="hidden-xs">六人间</td><td class="hidden-xs">男</td>
-            <td>
-            <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '宿舍信息－寝室详情',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'qsxq.aspx?id=497'});" txttop="txttop" class="layui-btn layui-btn-mini" title="寝室详情">查看详情</a>
-            </td>            
-		</tr><tr>
-			<td align="center">
-            <div class="icheckbox_square-blue" style="position: relative;"><input id="BoxId" name="BoxId" class="icheck" value="497" type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> 
-            </td><td>4</td><td class="hidden-xs">3栋</td><td>4楼</td>
-            <td >3409</td><td class="hidden-xs">六人间</td><td class="hidden-xs">女</td>
-            <td>
-            <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '宿舍信息－寝室详情',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'qsxq.aspx?id=497'});" txttop="txttop" class="layui-btn layui-btn-mini" title="寝室详情">查看详情</a>
-            </td>            
-		</tr><tr>
-            <td colspan="8">
-                <span style="float: left; padding-bottom: 8px; padding-top: 8px;" class="hidden-xs">每页<span id="GridView1_LabelPageSize">10</span>
-                    条 &nbsp;&nbsp;</span><span style="float: left; padding-bottom: 8px; padding-top: 8px;">当前<span id="GridView1_LabelCurrentPage">1</span>
-                        /<span id="GridView1_Label3">1</span>
-                        页&nbsp;&nbsp;&nbsp;&nbsp;<a id="GridView1_LinkButtonFirstPage" class="aspNetDisabled">首页</a>
-                        <a id="GridView1_LinkButtonPreviousPage" class="aspNetDisabled">上一页</a>
-                        <a id="GridView1_LinkButtonNextPage" class="aspNetDisabled">下一页</a>
-                        <a id="GridView1_LinkButtonLastPage" class="aspNetDisabled">尾页</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;<input name="GridView1$ctl06$txt_go" type="text" id="GridView1_txt_go" class=" borderSolid1CCC" style="height: 16px; width: 32px;">
-                        <a id="GridView1_LinkButtonGo" class="layui-btn layui-btn-mini" href="javascript:__doPostBack('GridView1$ctl06$LinkButtonGo','')">跳转</a></span><span class="hidden-xs" style="float: right; padding-bottom: 8px; padding-top: 8px;">&nbsp;&nbsp;&nbsp;每页显示<input name="GridView1$ctl06$PageSize_Set" type="text" id="GridView1_PageSize_Set" class=" borderSolid1CCC" style="height: 16px; width: 32px;">条<a id="GridView1_buttion2" class="layui-btn layui-btn-mini" href="javascript:__doPostBack('GridView1$ctl06$buttion2','')">设置</a></span><span style="float: right; padding-bottom: 8px; padding-top: 8px;"><b>总记录:4条</b>&nbsp;</span>
-            </td>
-		</tr>
-	</tbody></table>
 
-
-</div>
- 
-  </div> 
-    </form>
+  <asp:HiddenField ID="hdfWPBH" runat="server" />
+  <asp:GridView  OnRowCommand="GridView1_RowCommand"  ID="GridView1"  
+          OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="False" 
+            DataSourceID="ObjectDataSource1" CssClass="site-table table-hover"
+            EmptyDataText="未获取到数据!" 
+            AllowPaging="True" AllowSorting="True">
+    <Columns>
+    <asp:TemplateField>
+                <HeaderTemplate>
+                      <input type="checkbox"  id="selected-all" name="selected-all" onclick="onclicksel();" />  
+                </HeaderTemplate>
+                <ItemTemplate>
+                     <input id="BoxId" name="BoxId"  class="icheck" value='<%#(Convert.ToString(Eval("id")))%>' type="checkbox" /> 
+                </ItemTemplate>
+                <ItemStyle HorizontalAlign="Center" />
+                <HeaderStyle Width="2%"  HorizontalAlign="Center" />
+            </asp:TemplateField>
+    <asp:BoundField DataField="序号" HeaderText="序号" SortExpression="序号"/>
+    <asp:BoundField DataField="校区" HeaderText="校区"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="校区"/>
+    <asp:BoundField DataField="公寓楼名称" HeaderText="公寓名称"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="公寓楼名称"/>
+    <asp:BoundField DataField="楼层" HeaderText="楼层"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="楼层"/>
+    <asp:BoundField DataField="房间编号" HeaderText="房间编号"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="房间编号"/>
+    <asp:BoundField DataField="房间类型" HeaderText="房间类型"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="房间类型"/>
+    <asp:BoundField DataField="性别" HeaderText="性别"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="性别"/>
+    <asp:BoundField DataField="床位编号" HeaderText="床位编号"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="床位编号"/>
+     <asp:BoundField DataField="班级名称" HeaderText="班级名称"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="班级名称"/>
     
+    
+<%--    
+     <asp:TemplateField HeaderText="学生"  SortExpression="title">
+        
+            <ItemTemplate>
+           <%# imagestu(Eval("床位主键").ToString())%>
+            </ItemTemplate>
 
-    <!--引发ＬＡＹＵＩ前端必须ＪＳ-->
+            <ItemStyle  />
+            </asp:TemplateField>--%>
+   <asp:TemplateField HeaderText="状态"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="title">
+        
+            <ItemTemplate>
+            <a href="#" class="hidden-xs"><%# xwzt(Eval("床位主键").ToString())%></a>
+            </ItemTemplate>
+
+            <ItemStyle  />
+            </asp:TemplateField>
+  
+   
+        
+        <asp:TemplateField HeaderText="" >
+                 
+                <HeaderTemplate>管理操作
+
+                <%--<a onclick="return batchAudit(this.id);" id="btnDelete" href="javascript:__doPostBack('btnDelete','')"><span id="plcz" runat="server">点此批量发放毕业证</span></a>--%>
+                </HeaderTemplate>
+                <ItemTemplate>
+             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－<%# Eval("title").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?id=<%# Eval("id").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情</a> &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
+              </asp:LinkButton>
+            </ItemTemplate>
+                
+                </asp:TemplateField>
+
+
+    </Columns>
+    <PagerTemplate>
+<span style="float:left;padding-bottom: 8px;padding-top: 8px;" class="hidden-xs" >
+
+
+            每页<asp:Label ID="LabelPageSize" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageSize %>"></asp:Label>
+            条 &nbsp;&nbsp;</span><span style="float:left;padding-bottom: 8px;padding-top: 8px;"  >当前<asp:Label ID="LabelCurrentPage" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>
+            /<asp:Label ID="Label3" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageCount %>"></asp:Label>
+            页&nbsp;&nbsp;&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonFirstPage" runat="server" CommandArgument="First"
+                CommandName="Page" Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=0 %>">首页</asp:LinkButton>
+            <asp:LinkButton ID="LinkButtonPreviousPage" runat="server" CommandArgument="Prev"
+                CommandName="Page" Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=0 %>">上一页</asp:LinkButton>
+                <%if (GridView1.PageCount >= 8 && GridView1.PageCount - GridView1.PageIndex >= 8)
+                  {
+                     
+                       %>
+                <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument="<%# ((GridView)Container.NamingContainer).PageIndex+2 %>"
+                CommandName="Page"><%# ((GridView)Container.NamingContainer).PageIndex+2 %></asp:LinkButton>
+                <asp:LinkButton ID="LinkButton3" runat="server" CommandArgument="<%# ((GridView)Container.NamingContainer).PageIndex+3 %>"
+                CommandName="Page"><%# ((GridView)Container.NamingContainer).PageIndex+3 %></asp:LinkButton>
+                <asp:LinkButton ID="LinkButton4" runat="server" CommandArgument="<%# ((GridView)Container.NamingContainer).PageIndex+4 %>"
+                CommandName="Page"><%# ((GridView)Container.NamingContainer).PageIndex+4 %></asp:LinkButton>
+               <asp:LinkButton ID="LinkButton5" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+5 %>"
+                CommandName="Page"><%#  ((GridView)Container.NamingContainer).PageIndex+6 %></asp:LinkButton> 
+                <asp:LinkButton ID="LinkButton6" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+6 %>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+6 %></asp:LinkButton>
+                <asp:LinkButton ID="LinkButton7" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+7 %>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+7 %></asp:LinkButton>
+                  <asp:LinkButton ID="LinkButton9" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+8 %>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+8 %></asp:LinkButton>
+
+                <%}
+                  else if (GridView1.PageCount >= 8 && GridView1.PageCount - GridView1.PageIndex >= 5)
+                  { %>
+                    <asp:LinkButton ID="LinkButton8" runat="server" CommandArgument="<%#((GridView)Container.NamingContainer).PageIndex+2%>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+2 %></asp:LinkButton>
+                <asp:LinkButton ID="LinkButton10" runat="server" CommandArgument="<%#((GridView)Container.NamingContainer).PageIndex+3 %>" CommandName="Page"> <%#  ((GridView)Container.NamingContainer).PageIndex+3 %></asp:LinkButton>
+                  <asp:LinkButton ID="LinkButton11" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+4 %>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+4 %></asp:LinkButton>
+                    <%}%>
+
+            <asp:LinkButton ID="LinkButtonNextPage" runat="server" CommandArgument="Next" CommandName="Page"
+                Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">下一页</asp:LinkButton>
+            <asp:LinkButton ID="LinkButtonLastPage" runat="server" CommandArgument="Last" CommandName="Page"
+                Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">尾页</asp:LinkButton>
+            &nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox ID="txt_go" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>
+
+            <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;每页显示<asp:TextBox ID="PageSize_Set" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>条<asp:LinkButton ID="buttion2" runat="server"  class="layui-btn layui-btn-mini" Text="设置"   OnClick="PageSize_Go" /></span><span style="float:right;padding-bottom: 8px;padding-top: 8px;"><b>总记录:<%#ViewState["count"].ToString()%>条</b>&nbsp;</b></font></span>
+        </PagerTemplate>
+    </asp:GridView>
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
+          SelectMethod="serch_yfpgl" TypeName="dormitory">
+            <SelectParameters>
+                <asp:ControlParameter ControlID="xq" Name="xq" PropertyName="SelectedValue" 
+                    Type="String" />
+                <asp:ControlParameter ControlID="dorm" Name="dorm" PropertyName="SelectedValue" 
+                    Type="String" />
+                <asp:ControlParameter ControlID="floor" Name="floor" 
+                    PropertyName="SelectedValue" Type="String" />
+                <asp:ControlParameter ControlID="bj" Name="bjbh" PropertyName="SelectedValue" 
+                    Type="String" />
+            </SelectParameters>
+      </asp:ObjectDataSource>
+       
+   
+   
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <!--与后台配合的提示信息隐藏域-->
+            <input id="tsxx" type="text" runat="server" value="" style="display:none" />
+            <input id="tsbox" type="text" runat="server" value="" style="display:none" />
+			<!--与后台配合的提示信息隐藏域OVER-->
+            
+			<div class="admin-table-page" style="display:none">
+				<div id="page" class="page">
+				</div>
+			</div>
+		</div>
+		<!--引发ＬＡＹＵＩ前端必须ＪＳ-->
     <script type="text/javascript" src="plugins/layui/layui.js"></script>
   
     <!--引发ＬＡＹＵＩ前端必须ＪＳ　ＯＶＥＲ-->
+   
+
+
+
 	<script>
 	    // $('#code').qrcode(window.location.href);
 	    //鼠标滑过图片及文字提示时显示titop样式
@@ -293,8 +393,8 @@
                              return false;
                          }
                      }
-                 }
+                 }  
     </script>
-
+    </form>
 </body>
 </html>
