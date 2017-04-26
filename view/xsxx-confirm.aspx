@@ -186,14 +186,14 @@
                     <div class="layui-form-item">
                         <span style="color:#ffd800;margin-bottom:10px;display:inline-block;">请核对个人信息，确认信息无误；信息有误请及时联系班主任！</span>
                         <div class="layui-input-block">
-                            <input type="checkbox" name="xsxxcomfirm" title="信息无误" />        
+                            <input type="checkbox" name="xx_confirm" title="信息无误" />        
                         </div>
                     </div>
                 </div>
             </div>
             <%--确认按钮--%>
             <div class="btn-confirm">
-                <a href="#" class="layui-btn layui-btn-big">提  交</a>
+                <a href="#" id="btn_submit" class="layui-btn layui-btn-big">提  交</a>
             </div>
         </form>
     </div>

@@ -18,8 +18,7 @@ function load(){
     var pk_sno = $("#pk_sno").val();//初始值由服务器回传网页时生成
     var pk_batch_no= $("#pk_batch_no").val();
     var pk_affair_no= $("#pk_affair_no").val();
-    if (pk_sno == null || $.trim(pk_sno).length == 0 || pk_batch_no == null || $.trim(pk_batch_no).length == 0
-        || pk_affair_no == null || $.trim(pk_affair_no).length == 0) {
+    if (pk_sno == null || $.trim(pk_sno).length == 0 || pk_batch_no == null || $.trim(pk_batch_no).length == 0) {
         alert("无效的参数");
         return;
     }
