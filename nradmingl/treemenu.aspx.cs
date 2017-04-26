@@ -61,14 +61,14 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
         //new c_login().powerYanzheng(Session["username"].ToString(), pagelm1, pageqx2, "2");//验证当前栏目关键字中的权限２,通常在按钮中需验证权限时使用
         #endregion
         //左部菜单
-
-        string sqlSerachByDhcdh = "SELECT * FROM lanm WHERE (sfcdxs=1 or sfdhxs=1) and fid='-1' order by px asc";
+        string sc = "";
+        string sqlSerachByDhcdh = "SELECT * FROM lanm WHERE (sfcdxs=1 and sfdhxs=1) and fid='-1' order by px asc";
         DataTable dt = Sqlhelper.Serach(sqlSerachByDhcdh);
         string url = "";
         if (dt.Rows.Count > 0)
         {
             //{"title": "基本元素","icon": "fa-cubes","spread": true,"children": [{"title": "按钮","icon": "&#xe641;","href": "button.html"}
-            Response.Write("[");
+            sc = "[";
             string isone = "0";
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -96,7 +96,7 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
                     {
                         if (qxok == "1")
                         {
-                            Response.Write("{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"children\": [");
+                           sc+="{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"children\": [";
                             isone = "1";
                         }
                     }
@@ -104,7 +104,7 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
                     {
                         if (qxok == "1")
                         {
-                            Response.Write(",{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"children\": [");
+                            sc+=",{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"children\": [";
                         }
                     }
                     qxok = "0";
@@ -136,7 +136,7 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
                         {
                             if (qxok == "1")
                             {
-                                Response.Write("{\"title\": \"" + dt2.Rows[c]["lmmc"].ToString() + "\",\"icon\": \"" + dt2.Rows[c]["lmfont"].ToString() + "\",\"href\": \"" + url + "\" }");
+                               sc+="{\"title\": \"" + dt2.Rows[c]["lmmc"].ToString() + "\",\"icon\": \"" + dt2.Rows[c]["lmfont"].ToString() + "\",\"href\": \"" + url + "\" }";
                                 isone2 = "1";
                             }
                            // Response.Write("<br>" + isone2 + "$");
@@ -145,16 +145,18 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
                         {
                             if (qxok == "1")
                             {
-                                Response.Write(",{\"title\": \"" + dt2.Rows[c]["lmmc"].ToString() + "\",\"icon\": \"" + dt2.Rows[c]["lmfont"].ToString() + "\",\"href\": \"" + url + "\" }");
+                               sc+=",{\"title\": \"" + dt2.Rows[c]["lmmc"].ToString() + "\",\"icon\": \"" + dt2.Rows[c]["lmfont"].ToString() + "\",\"href\": \"" + url + "\" }";
                             }
                             //Response.Write("<br>" + isone2 + "@");
+                           
                         }
                         
                         qxok = "0";
-                    }
-                    Response.Write("]}");
-                #endregion
 
+                    }
+                    
+                #endregion
+                    sc += "]}";
                 }
                 else
                 {
@@ -162,11 +164,11 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
 
                     if (i == 0)
                     {
-                        Response.Write("{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"href\": \"" + url + "\" }");
+                        sc+="{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"href\": \"" + url + "\" }";
                     }
                     else
                     {
-                        Response.Write(",{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\":false,\"href\": \"" + url + "\" }");
+                        sc += ",{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\":false,\"href\": \"" + url + "\" }";
                     }
 
 
@@ -177,13 +179,26 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
             }
 
 
-            Response.Write("]");
+            sc+="]";
         }
         else
         {
-            Response.Write("[]");
+            sc="[]";
         }
+        //sc=sc.Replace("[,","[").Replace("]}]},","").Replace("]}]}]}",",").Replace(",]}]}","");
+        //if (sc.Contains("@"))
+        //{
 
+        //    sc = sc.Replace(" ", "").Replace("}{", "}@");
+        //    sc = sc.Split('@')[0] + "]}]";
+        //}
+        //if (sc.Contains("mymd5.aspx"))
+        //{
+        //    sc=sc.Replace("mymd5.aspx","@");
+            
+        //    sc = sc.Split('@')[0] + "\" }]}]";
+        //}
         
+        Response.Write(sc);
     }
 }
