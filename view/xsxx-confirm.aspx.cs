@@ -9,7 +9,7 @@ public partial class view_xsxx_confirm : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        #region 检查操作权限
+        #region 检查操作权限，请不要修改或删除 (胡元）
         string pk_sno = Request.QueryString["pk_sno"];//获取学号
         if (pk_sno == null || pk_sno.Trim().Length == 0)
         {
@@ -52,7 +52,7 @@ public partial class view_xsxx_confirm : System.Web.UI.Page
         this.hidden_pk_sno.Value = pk_sno.Trim();
 
         //检查是否确认
-        if (organizationService.isStuConfrim("2"))
+        if (organizationService.isStuConfrim(pk_sno))
         {
             server_msg.Value = "您的信息已经确认！";
             //todo..跳转
