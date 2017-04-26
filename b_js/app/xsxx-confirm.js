@@ -35,8 +35,7 @@
         //    data: { "cs": "check_student_in_freshbatch"}
         //});
         $('#btn_submit').on('click', function () {
-            console.log('hi');
-            var confirmState = $('input:checkbox[name="xx_confirm"]:checked').val();
+            var confirmState = $('input:radio[name="xx_confirm"]:checked').val();
             $.ajax({
                 url: "../../nradmingl/appserver/stu_server.aspx",
                 type: "get",
@@ -93,13 +92,13 @@
 
         //后端信息弹出信息
         var msg = $("#hidden_alert_msg").val();
-        if (msg!=null && msg.length != 0) {
+        if (msg!=null&&msg.length != 0) {
             layer.alert(msg);
             $("#hidden_alert_msg").val('');
         }
 
-        $(".xx-content .layui-form-item").css('margin-bottom','0px');
-        $(".lqxx-wrapper .layui-form-item").css('margin-bottom','0px');
+
+
 
     });//end layui.use
 })();
