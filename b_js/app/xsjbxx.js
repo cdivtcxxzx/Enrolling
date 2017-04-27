@@ -28,9 +28,9 @@
                                 $('#xsxx_nj').text(json_data.data[i].data.Year);
                             }
                             if (json_data.data[i].name == 'spe') {
-                                $('#xsxx_xlcc').text(json_data.data[i].data.SPE_Name);
-                                $('#xsxx_xy').text(json_data.data[i].data.EDU_Level_Code);
-                                $('#xsxx_zy').text(json_data.data[i].data.FK_College_Code);
+                                $('#xsxx_zy').text(json_data.data[i].data.SPE_Name);
+                                $('#xsxx_xlcc').text(json_data.data[i].data.EDU_Level_Code);
+                                $('#xsxx_xy').text(json_data.data[i].data.FK_College_Code);
                             }
                             if (json_data.data[i].name == 'class') {
                                 $('#xsxx_bjmc').text(json_data.data[i].data.Name);

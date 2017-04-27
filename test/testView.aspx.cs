@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using model;
+using Newtonsoft.Json;
 
 public partial class test_testView : System.Web.UI.Page
 {
@@ -29,10 +31,31 @@ public partial class test_testView : System.Web.UI.Page
         //Response.Write(organizationService.stuUpdate("1", b));
 
         //测试代码获取
-        Base_Code_Item item = organizationService.getCodeItem("001","01");
-        if (item != null)
-        {
-            Response.Write(item.Item_Name);
-        }
+        //Base_Code_Item item = organizationService.getCodeItem("001","01");
+        //if (item != null)
+        //{
+        //    Response.Write(item.Item_Name);
+        //}
+
+        //测试代码集合获取
+        //List<Base_Code_Item> code_items = organizationService.getCodesItem("003");
+        //if (code_items.Count > 0)
+        //{
+            //for (var i = 0; i < code_items.Count; i++)
+            //{
+            //    Response.Write(code_items[i].Item_Name+"<br/>");
+            //}
+            //Response.Write(JsonConvert.SerializeObject(code_items));
+        //}
+
+        //测试实体反射出属性
+        //organizationModelDataContext oDC = new organizationModelDataContext();
+        //Base_STU stu_info = oDC.Base_STUs.Where(s => s.PK_SNO == "2").SingleOrDefault();
+        //PropertyInfo[] propertys = stu_info.GetType().GetProperties();
+        //foreach (PropertyInfo property in propertys)
+        //{
+        //    Response.Write(property.Name +","+ property.GetValue(stu_info, null) + "<br/> ");
+        //}
+        
     }
 }
