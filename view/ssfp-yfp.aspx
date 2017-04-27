@@ -42,6 +42,11 @@
                 
                 <style>
                     .layui-form select{height:37px;width:100%;}
+                    .layui-form input[type=checkbox], .layui-form input[type=radio], .layui-form select {display:inherit
+                    }
+                    label{
+                        vertical-align: inherit;
+                    }
                     #cwts{margin:10px;}
                     .layui-elem-field legend {
                         margin-left: 20px;
@@ -218,7 +223,7 @@
 
 <div class="layui-form-item" style="text-align:center">
           <asp:Button ID="sc_qsxz" runat="server"  class="layui-btn"  onclick="qsxz_Click" Text="确认寝室选择" />
-&nbsp;&nbsp;&nbsp;&nbsp;<button class="layui-btn" onclick="javascript:">返回操作首页</button>
+&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="Button1" runat="server"  class="layui-btn"  onclick="qsxz_Click2" Text="返回操作首页" />
         </div>
 
 
