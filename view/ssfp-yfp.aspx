@@ -32,7 +32,7 @@
             <span style="float:right">
             
 				
-                 <a href="javascript:window.location.go(-1);" class="layui-btn layui-btn-small">
+                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
                </span>
@@ -42,6 +42,11 @@
                 
                 <style>
                     .layui-form select{height:37px;width:100%;}
+                    .layui-form input[type=checkbox], .layui-form input[type=radio], .layui-form select {display:inherit
+                    }
+                    label{
+                        vertical-align: inherit;
+                    }
                     #cwts{margin:10px;}
                     .layui-elem-field legend {
                         margin-left: 20px;
@@ -64,13 +69,20 @@
 
  <!--顶部提示及导航OVER-->
         <div class="container">
+                      <asp:ScriptManager ID="ScriptManager1" runat="server">
+         </asp:ScriptManager>
+  <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                  <ContentTemplate>
             <div class="col-xs-12 col-sm-4" style="margin-top:15px;border:1px solid #eee;text-align:center;" >
                <style>.noshow{display:none}</style> <p style="margin-top:20px;"><span>校区：</span><span id="xiaoqu" runat="server"><asp:Label ID="xqbh" runat="server" CssClass="noshow" Text="01"></asp:Label><asp:Label ID="xqmc" runat="server" Text="天府新区"></asp:Label></span></p>
                <%-- <p><span>类型：</span><span id="shuse" runat="server">男宿舍</span></p>--%>
+
                 <p style="margin-top:10px;margin-bottom:10px;">
                     <img src="../images/xsgysmall.jpg" alt="宿舍照片" class="xsgytp" style="margin-top: 18px; width: 90%; height: 90%" id="shuseImg" runat="server" />
                 </p>
+                
             </div>
+                      </ContentTemplate></asp:UpdatePanel>
             <div class="col-xs-12 col-sm-8" style="margin-top:15px;">
                 
                 <div class="layui-form-item" pane="">
@@ -87,16 +99,15 @@
           <label class="layui-form-label" style="width:120px;">姓名：</label>
           <div class="layui-input-block" style="margin-left:120px;">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
-               <asp:Label ID="Label1" runat="server" Text="张三"></asp:Label></div></div>
+               <asp:Label ID="xsxx_xm" runat="server" Text="张三"></asp:Label></div></div>
         </div>
                  <div class="layui-form-item" pane="">
           <label class="layui-form-label" style="width:120px;">班级：</label>
           <div class="layui-input-block" style="margin-left:120px;">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
-               <asp:Label ID="Label2" runat="server" Text="汽修1701班"></asp:Label></div></div>
+               <asp:Label ID="xsxx_bj" runat="server" Text="汽修1701班"></asp:Label></div></div>
         </div>
-          <asp:ScriptManager ID="ScriptManager1" runat="server">
-         </asp:ScriptManager>
+
         
          <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                   <ContentTemplate>
@@ -218,7 +229,7 @@
 
 <div class="layui-form-item" style="text-align:center">
           <asp:Button ID="sc_qsxz" runat="server"  class="layui-btn"  onclick="qsxz_Click" Text="确认寝室选择" />
-&nbsp;&nbsp;&nbsp;&nbsp;<button class="layui-btn" onclick="javascript:">返回操作首页</button>
+&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="Button1" runat="server"  class="layui-btn"  onclick="qsxz_Click2" Text="返回操作首页" />
         </div>
 
 

@@ -108,6 +108,7 @@
              
 <form class="layui-form layui-form-pane" runat="server" action="">
     <asp:HiddenField ID="hidden_pk_sno" runat="server" />
+    <asp:HiddenField ID="server_msg" runat="server" />
     <div class="xsxx1"><div class="layui-form-item" pane="">
           <label class="layui-form-label" style="height:94%;display:none">照片：</label>
           <div class="layui-input-block" style="margin-left: 10px!important">
@@ -117,58 +118,58 @@
           <label class="layui-form-label">学号：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
-               <asp:Label ID="xsxx_xh" runat="server" Text="20170001"></asp:Label></div></div>
+               <asp:Label ID="xsxx_xh" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">姓名：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xm" runat="server" Text="张明"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xm" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">性别：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xb" runat="server" Text="男"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xb" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">身份证号：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_sfzh" runat="server" Text="511322198301052377"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_sfzh" runat="server" Text=""></asp:Label></div></div>
         </div>
         
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">学历层次：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xlcc" runat="server" Text="高中"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xlcc" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">学院：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xy" runat="server" Text="信息工程学院"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xy" runat="server" Text=""></asp:Label></div></div>
         </div></div>
      <div  class="xsxx3"  >         <div class="layui-form-item" pane="">
           <label class="layui-form-label">专业：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zy" runat="server" Text="计算机应用"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zy" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">年级</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_nj" runat="server" Text="2017级"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_nj" runat="server" Text=""></asp:Label></div></div>
         </div>
      <div class="layui-form-item" pane="">
           <label class="layui-form-label">班级名称：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bjmc" runat="server" Text="计算机1701班"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bjmc" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">班主任：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text="胡元"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">班主任电话</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text="13708187788"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></div></div>
         </div>
         <div class="layui-form-item" style="text-align:center">
           <button class="layui-btn" onclick="javascript:">返回操作首页</button>
@@ -187,7 +188,7 @@
         </div>
 
 
-        		<script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
+    <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
     <script src="../b_js/app/xsjbxx.js"></script>
 
 

@@ -81,6 +81,9 @@
         }
 
         @media (max-width:650px) {
+            .admin-main {
+                margin: 2px;
+            }
             .jbxx .img-content {
                 float: none;
                 width: 100%;
@@ -104,6 +107,9 @@
                 padding-right: 5px;
             }
         }
+        .layui-form input[type=radio]{
+            display: inline;
+        }
     </style>
 
 </head>
@@ -119,8 +125,11 @@
 
         </blockquote>
         <form id="form1" class="layui-form layui-form-pane" runat="server">
-            <asp:HiddenField ID="hidden_pk_sno" runat="server" />
-            <asp:HiddenField ID="server_msg" runat="server" />
+            <asp:HiddenField ID="hidden_pk_sno" Value="" runat="server" />
+            <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
+            <asp:HiddenField ID="pk_affair_no" Value="" runat="server" />
+            <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
+            <asp:HiddenField ID="server_msg" Value="" runat="server" />
 
             <%--基本信息--%>
             <div class="jbxx">
@@ -207,7 +216,8 @@
             </div>
             <%--确认按钮--%>
             <div class="btn-confirm">
-                <a href="#" id="btn_submit" class="layui-btn layui-btn-big">提  交</a>
+                <asp:Button ID="btn_submit" CssClass="layui-btn layui-btn-big" runat="server" Text="提  交"/>
+                
             </div>
         </form>
     </div>

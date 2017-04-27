@@ -11,6 +11,14 @@
         var form = layui.form();
         layer = layui.layer;
         var pk_sno = $("#hidden_pk_sno").val();//初始值由服务器回传网页时生成
+        var pk_batch_no = $("#pk_batch_no").val();
+        var pk_affair_no = $("#pk_affair_no").val();
+
+        if (pk_sno == null || $.trim(pk_sno).length == 0 || pk_batch_no == null || $.trim(pk_batch_no).length == 0
+            || pk_affair_no == null || $.trim(pk_affair_no).length == 0) {
+            alert("无效的参数");
+            return;
+        }
 
 
         //清空学生信息
@@ -26,21 +34,14 @@
         $('#lqxx_bj').text('');
         $('#lqxx_bzr').text('');
         
-        if (pk_sno == null || pk_sno == '') { layer.alert('学号不正确！'); return;}
-        //检验学生批次NO:11 校验学生迎新批次(批次编号,学号)
-        //$.ajax({
-        //    url: "../../nradmingl/appserver/manager.aspx",
-        //    type: "get",
-        //    dataType: "text",
-        //    data: { "cs": "check_student_in_freshbatch"}
-        //});
+
         $('#btn_submit').on('click', function () {
             var confirmState = $('input:radio[name="xx_confirm"]:checked').val();
             $.ajax({
                 url: "../../nradmingl/appserver/stu_server.aspx",
                 type: "get",
                 dataType: "text",
-                data: { "type": "xsxx_confirm", "pk_sno": pk_sno, "confirmState": confirmState },
+                data: { "type": "xsxx_confirm", "pk_sno": pk_sno, "confirmState": confirmState,"pk_batch_no":pk_batch_no,"pk_affair_no":pk_affair_no },
                 success: function (data) {
                     var json_data = JSON.parse(data);
                     if (json_data.code == 'success') {
@@ -59,7 +60,7 @@
         $.ajax({
             url: "../../nradmingl/appserver/stu_server.aspx",
             type: "get",
-            datType: "text",
+            dataType: "text",
             data: { "type": "get_student", "pk_sno": pk_sno },
             success: function (data) {
                 var json_data = JSON.parse(data);
