@@ -383,10 +383,6 @@ public class batch
         return result;
     }
 
-
-
-
-
     /// <summary>
     ///功能名称：获取当前有效迎新批次目录
     ///功能描述：
@@ -2002,6 +1998,199 @@ public class batch
             try
             {
                 new c_log().logAdd("batch.cs", "set_TuitionFee", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+
+
+    /// <summary>
+    ///功能名称：获取迎新批次目录
+    ///功能描述：
+    ///返回当前时间介于“迎新工作开始时间”和“迎新工作结束时间”之间迎新批次数据集合。否则返回null。
+    ///编写人：胡元
+    ///创建时间：2017-4-27
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    /// </summary>
+    /// <returns></returns>
+    public List<fresh_batch> get_freshbatch_welcome_list()
+    {
+        List<fresh_batch> result = null;
+        try
+        {
+            string sqlstr = "select * from fresh_batch where Welcome_Begin<getdate() and Welcome_End>getdate() order by Welcome_Begin desc";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = new List<fresh_batch>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    fresh_batch row = new fresh_batch();
+                    row.Batch_Name = dt.Rows[i]["Batch_Name"].ToString().Trim();
+                    row.Enabled = dt.Rows[i]["Enabled"].ToString().Trim();
+                    row.PK_Batch_NO = dt.Rows[i]["PK_Batch_NO"].ToString().Trim();
+                    row.Service_Begin = DateTime.Parse(dt.Rows[i]["Service_Begin"].ToString());
+                    row.Service_End = DateTime.Parse(dt.Rows[i]["Service_End"].ToString());
+                    row.STU_Type = dt.Rows[i]["STU_Type"].ToString().Trim();
+                    row.Welcome_Begin = DateTime.Parse(dt.Rows[i]["Welcome_Begin"].ToString());
+                    row.Welcome_End = DateTime.Parse(dt.Rows[i]["Welcome_End"].ToString());
+                    row.Year = dt.Rows[i]["Year"].ToString().Trim();
+                    row.Financial_PK_Fee = dt.Rows[i]["Financial_PK_Fee"].ToString().Trim();
+                    row.Financial_XH_Prefix = dt.Rows[i]["Financial_XH_Prefix"].ToString().Trim();
+                    result.Add(row);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_freshbatch_welcome_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+
+    /// <summary>
+    ///功能名称：获取可分配给迎新操作员的事务操作列表
+    ///功能描述：
+    ///根据“批次编号”查询Affair_Type为both和school的事务目录，
+    ///编写人：胡元
+    ///参数：
+    ///PK_Batch_NO：迎新批次编号   
+    ///创建时间：2017-4-27
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    /// </summary>
+    /// <returns></returns>
+    public List<fresh_affair> get_affair_list(string PK_Batch_NO)
+    {
+        List<fresh_affair> result = null;
+        try
+        {
+            if (PK_Batch_NO == null || PK_Batch_NO.Trim().Length == 0)
+            {
+                return null;
+            }
+            string sqlstr = "select * from Fresh_Affair" +
+             " where FK_Batch_NO=@cs1 and (upper(Affair_Type)='SCHOOL' OR upper(Affair_Type)='BOTH')";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_Batch_NO.Trim()));
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = new List<fresh_affair>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+
+                    fresh_affair row = new fresh_affair();
+                    row.PK_Affair_NO = dt.Rows[i]["PK_Affair_NO"].ToString().Trim();//迎新事务编号
+                    row.FK_Batch_NO = dt.Rows[i]["FK_Batch_NO"].ToString().Trim();//迎新批次编号
+                    row.Affair_Index = int.Parse(dt.Rows[i]["Affair_Index"] is DBNull ? "0" : dt.Rows[i]["Affair_Index"].ToString());//自编序号 
+                    row.Affair_Name = dt.Rows[i]["Affair_Name"].ToString().Trim();//事务名称
+                    row.Affair_Type = dt.Rows[i]["Affair_Type"].ToString().Trim();//事务类型
+                    row.Precondition1 = dt.Rows[i]["Precondition1"].ToString().Trim();//使能条件1
+                    row.Precondition2 = dt.Rows[i]["Precondition2"].ToString().Trim();//使能条件2
+                    row.Call_Function = dt.Rows[i]["Call_Function"].ToString().Trim();//返回迎新事务状态调用函数
+                    row.Affair_CHAR = dt.Rows[i]["Affair_CHAR"].ToString().Trim();//事务性质
+                    row.FK_OPER_NO = dt.Rows[i]["FK_OPER_NO"].ToString().Trim();//与事务绑定的操作编号
+                    row.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
+                    row.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
+                    row.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
+                    result.Add(row);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_affair_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    /// <summary>
+    ///功能名称：获取某事务下所有授权员工及操作范围数据
+    ///功能描述：
+    ///获取某事务下所有授权员工及操作范围数据
+    ///编写人：胡元
+    ///参数：
+    ///PK_Affair_NO：事务编号   
+    ///创建时间：2017-4-27
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    /// </summary>
+    /// <returns></returns>
+    public System.Data.DataTable staff_affair_auth_scope(string PK_Affair_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            if (PK_Affair_NO == null || PK_Affair_NO.Trim().Length == 0)
+            {
+                return null;
+            }
+            string sqlstr = "select * from vw_staff_affair_auth_scope" +
+             " where PK_Affair_NO=@cs1 order by name";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_Affair_NO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_affair_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    /// <summary>
+    ///功能名称：获取用户列表
+    ///功能描述：
+    ///获取用户列表
+    ///编写人：胡元
+    ///参数：
+    ///PK_Affair_NO：事务编号   
+    ///创建时间：2017-4-27
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    /// </summary>
+    /// <returns></returns>
+    public System.Data.DataTable get_yonghqx(string username)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr=null;
+            if (username == null || username.Trim().Length == 0)
+            {
+                sqlstr = "select * from yonghqx";
+            }
+            else
+            {
+                username = username.Trim() + "%";
+                sqlstr = "select * from yonghqx" +
+                " where xm like @cs1 order by xm";
+            }
+
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", username.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_affair_list", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;
