@@ -56,6 +56,7 @@ public partial class test_testView : System.Web.UI.Page
         //{
         //    Response.Write(property.Name +","+ property.GetValue(stu_info, null) + "<br/> ");
         //}
-        
+
+        Response.Write(DateTime.Now.ToShortDateString());
     }
 }

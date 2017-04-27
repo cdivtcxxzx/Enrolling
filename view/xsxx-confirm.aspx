@@ -107,6 +107,9 @@
                 padding-right: 5px;
             }
         }
+        .layui-form input[type=radio]{
+            display: inline;
+        }
     </style>
 
 </head>

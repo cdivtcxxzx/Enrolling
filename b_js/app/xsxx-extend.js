@@ -1,5 +1,5 @@
 ﻿(function () {
-    layui.use(['form', 'layer', 'jquery'], function () {
+    layui.use(['jquery', 'layer', 'form'], function () {
         var $ = layui.jquery;
         layer = layui.layer;
         var pk_sno = $("#hidden_pk_sno").val();//初始值由服务器回传网页时生成

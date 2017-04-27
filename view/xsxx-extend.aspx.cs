@@ -45,7 +45,7 @@ public partial class view_xsxx_extend : System.Web.UI.Page
         }
         #endregion
         //get post获取学号
-        //string pk_sno = Request["pk_sno"].ToString();
+        //string pk_sno = "2";
         hidden_pk_sno.Value = pk_sno.Trim();
 
 

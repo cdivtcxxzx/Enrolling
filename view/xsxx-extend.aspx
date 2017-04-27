@@ -9,8 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <!--引用ＬＡＹＵＩ前端必须ＣＳＳ-->
-        <link rel="stylesheet" href="../nradmingl/plugins/layui/css/layui.css" media="all" />
-		<link rel="stylesheet" href="../nradmingl/plugins/global.css" media="all" />
+        <link rel="stylesheet" href="../nradmingl/plugins/layui/css/layui-qiu.css" media="all" />
+		<%--<link rel="stylesheet" href="../nradmingl/plugins/global.css" media="all" />--%>
          <!--引用ＬＡＹＵＩ前端字体图标ＣＳＳ-->
 		<link rel="stylesheet" href="../nradmingl/plugins/font-awesome/css/font-awesome.min.css" />
          <!--引用ＬＡＹＵＩ前端表格ＣＳＳ,使用表格时才引用-->
