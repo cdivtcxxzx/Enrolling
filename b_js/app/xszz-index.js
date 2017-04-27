@@ -27,17 +27,23 @@
                         Affair_Char=Affair_Char.toUpperCase();
                         var content = "";
                         if (Affair_Char== 'STATUS') {
-                            content = "<div class=\"col-xs-12 col-sm-6\">"
-                                + "<div class=\"col-xs-8\"><i class=\"glyphicon glyphicon-tags\"></i><a href=\"javascript:void(0)\" onclick='action(\""+PK_Affair_NO+"\",\""+pk_sno+"\")'>" + Affair_Name + "</a></div>"
-                                + "<div class=\"col-xs-4\"><span></span></div>"
-                                + "</div>";
+                            content = "<div class=\"layui-form-item\" pane=\"\" style=\"min-height: 56px\">"
+                            +" <label class=\"layui-form-label\" style=\"width: 150px;\">"
+                            +"<a class=\"layui-btn\" style=\"width:100%;\" href=\"javascript:void(0)\" onclick='action(\""+PK_Affair_NO+"\",\""+pk_sno+"\")'>"+Affair_Name + "</a></label>"
+                            +"<div class=\"layui-input-block\" style=\"margin-left: 150px;\">"
+                            +"<div class=\"layui-form-mid layui-word-aux-ts\" style=\"margin-left: 40px; padding: 18px 0;\">"
+                            +"<span id=\"xsxx_xh\"><font color=\"red\"><b></b></font></span>"
+                            + "</div></div></div>";
                         } else {
-                            content = "<div class=\"col-xs-12 col-sm-6\">"
-                                + "<div class=\"col-xs-8\"><i class=\"glyphicon glyphicon-tags\"></i><a href=\"javascript:void(0)\" onclick='action(\""+PK_Affair_NO+"\",\""+pk_sno+"\")'>"+Affair_Name + "</a></div>"
-                                + "<div class=\"col-xs-4\"><span>" + Affair_Status + "</span></div>"
-                                + "</div>";
+                            content = "<div class=\"layui-form-item\" pane=\"\" style=\"min-height: 56px\">"
+                                +" <label class=\"layui-form-label\" style=\"width: 150px;\">"
+                                +"<a class=\"layui-btn\" style=\"width:100%;\" href=\"javascript:void(0)\" onclick='action(\""+PK_Affair_NO+"\",\""+pk_sno+"\")'>"+Affair_Name + "</a></label>"
+                                +"<div class=\"layui-input-block\" style=\"margin-left: 150px;\">"
+                                +"<div class=\"layui-form-mid layui-word-aux-ts\" style=\"margin-left: 40px; padding: 18px 0;\">"
+                                +"<span id=\"xsxx_xh\"><font color=\"red\"><b>" + Affair_Status + "</b></font></span>"
+                                + "</div></div></div>";
                         }
-                        $('.container').append(content);
+                        $('.xsxx2').append(content);
                     }
                 } else {
                     alert('未获取到有效的事务操作列表');

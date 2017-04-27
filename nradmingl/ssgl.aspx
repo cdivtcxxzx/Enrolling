@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ssgl.aspx.cs" Inherits="nradmingl_Default2" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false"  CodeFile="ssgl.aspx.cs" Inherits="nradmingl_Default2" %>
 
 <!DOCTYPE html>
 
@@ -24,19 +24,25 @@
             background-color: #196BAB;
             color: #fff;
         }
+        select
+        {
+            height: 37px;
+        }
 
     </style>
-    <form id="form1" class="layui-form" runat="server">
+    <form id="form1"  runat="server">
     <div class="admin-main">
       <blockquote class="layui-elem-quote">
           <i class="layui-icon">&#xe602;</i>学生宿舍管理<i class="layui-icon">&#xe602;</i>宿舍信息
            <span style="float:right">
 
             <!--调用C#原生按钮设置样式举例OVER-->
-                <a href="#" class="layui-btn layui-btn-small hidden-xs">
+ <%--               <a href="#" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-              <a href="#" class="layui-btn layui-btn-small hidden-xs">
+             --%>
+                 <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="清空预分配数据" ID="LinkButton12" runat="server"    Text='' ><i class="layui-icon">&#xe630;</i>清空预分配数据</asp:LinkButton>
+                  <a href="#" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe62a;</i> 模板下载
 				</a>
                 <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="exportexcel1" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导入预分配数据</asp:LinkButton>
@@ -44,17 +50,19 @@
 
 		  </span>       
       </blockquote>
+
+                    <asp:ScriptManager ID="ScriptManager1" runat="server">
+                </asp:ScriptManager>
+        
         <div>
             <div class="layui-form-item">
-                <asp:ScriptManager ID="ScriptManager1" runat="server">
-                </asp:ScriptManager>
-                  <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                       <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                   <ContentTemplate>
                 
                     <asp:DropDownList ID="xq" runat="server" AutoPostBack="True" 
                         DataSourceID="SqlDataSource2" DataTextField="Campus_Name" 
                         DataValueField="Campus_NO" 
-                        onselectedindexchanged="xq_SelectedIndexChanged">
+                        onselectedindexchanged="xq_SelectedIndexChanged" Font-Size="Medium">
                         <asp:ListItem Selected="True" Value=" ">全部校区</asp:ListItem>
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
@@ -66,7 +74,8 @@
                     </asp:SqlDataSource>
                     <asp:DropDownList ID="dorm" runat="server" AutoPostBack="True" 
                         DataSourceID="SqlDataSource3" DataTextField="Name" 
-                        DataValueField="PK_Dorm_NO" onselectedindexchanged="dorm_SelectedIndexChanged">
+                        DataValueField="PK_Dorm_NO" 
+                          onselectedindexchanged="dorm_SelectedIndexChanged" Font-Size="Medium">
                         <asp:ListItem Value=" ">全部公寓</asp:ListItem>
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSource3" runat="server" 
@@ -79,7 +88,7 @@
                     </asp:SqlDataSource>
                     <asp:DropDownList ID="floor" runat="server" DataSourceID="SqlDataSource4" 
                         DataTextField="Floor" DataValueField="Floor" AutoPostBack="True" 
-                        onselectedindexchanged="floor_SelectedIndexChanged">
+                        onselectedindexchanged="floor_SelectedIndexChanged" Font-Size="Medium">
                         <asp:ListItem Selected="True" Value=" ">全部楼层</asp:ListItem>
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSource4" runat="server" 
@@ -92,32 +101,34 @@
                     </asp:SqlDataSource>
                     <asp:DropDownList ID="bj" runat="server" DataSourceID="SqlDataSource5" 
                         DataTextField="Name" DataValueField="PK_Class_NO" AutoPostBack="True" 
-                        onselectedindexchanged="bj_SelectedIndexChanged">
+                        onselectedindexchanged="bj_SelectedIndexChanged" Font-Size="Medium">
                         <asp:ListItem Selected="True" Value=" ">全部班级</asp:ListItem>
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSource5" runat="server" 
                         ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
                         SelectCommand="select ' ' PK_Class_NO,'全部班级' Name union ( SELECT DISTINCT [PK_Class_NO], [Name] FROM [Fresh_Class])  ORDER BY [PK_Class_NO]">
                     </asp:SqlDataSource>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
                     </ContentTemplate></asp:UpdatePanel>
-&nbsp;&nbsp;
+
             </div>
         </div>    
   <div>   
-
+                       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                  <ContentTemplate>
   <asp:HiddenField ID="hdfWPBH" runat="server" />
   <asp:GridView  OnRowCommand="GridView1_RowCommand"  ID="GridView1"  
-          OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="False" 
-            DataSourceID="ObjectDataSource1" CssClass="site-table table-hover"
+          OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="false" 
+            DataSourceID="ObjectDataSource1" CssClass="site-table table-hover" OnRowDataBound="GridView1_RowDataBound"
             EmptyDataText="未获取到数据!" 
             AllowPaging="True" AllowSorting="True">
     <Columns>
     <asp:TemplateField>
                 <HeaderTemplate>
-                      <input type="checkbox"  id="selected-all" name="selected-all" onclick="onclicksel();" />  
+                      <input type="checkbox"  id="selected-all" class="noshow" name="selected-all" onclick="onclicksel();" />  
                 </HeaderTemplate>
                 <ItemTemplate>
-                     <input id="BoxId" name="BoxId"  class="icheck" value='<%#(Convert.ToString(Eval("id")))%>' type="checkbox" /> 
+                     <input id="BoxId" name="BoxId"  class="icheck noshow" value='<%#(Convert.ToString(Eval("id")))%>' type="checkbox" /> 
                 </ItemTemplate>
                 <ItemStyle HorizontalAlign="Center" />
                 <HeaderStyle Width="2%"  HorizontalAlign="Center" />
@@ -126,12 +137,10 @@
     <asp:BoundField DataField="校区" HeaderText="校区"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="校区"/>
     <asp:BoundField DataField="公寓楼名称" HeaderText="公寓名称"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="公寓楼名称"/>
     <asp:BoundField DataField="楼层" HeaderText="楼层"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="楼层"/>
-    <asp:BoundField DataField="房间编号" HeaderText="房间编号"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="房间编号"/>
-    <asp:BoundField DataField="房间类型" HeaderText="房间类型"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="房间类型"/>
-    <asp:BoundField DataField="性别" HeaderText="性别"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="性别"/>
-    <asp:BoundField DataField="床位编号" HeaderText="床位编号"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="床位编号"/>
-     <asp:BoundField DataField="班级名称" HeaderText="班级名称"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="班级名称"/>
-    
+    <asp:BoundField DataField="房间编号" HeaderText="房间编号" SortExpression="房间编号"/>
+    <asp:BoundField DataField="房间类型" HeaderText="房间类型"   SortExpression="房间类型"/>
+    <asp:BoundField DataField="性别" HeaderText="性别"   SortExpression="性别"/>
+   
     
 <%--    
      <asp:TemplateField HeaderText="学生"  SortExpression="title">
@@ -142,10 +151,18 @@
 
             <ItemStyle  />
             </asp:TemplateField>--%>
-   <asp:TemplateField HeaderText="状态"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="title">
+             <asp:TemplateField HeaderText="班级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="title">
         
             <ItemTemplate>
-            <a href="#" class="hidden-xs"><%# xwzt(Eval("床位主键").ToString())%></a>
+            <a href="#" class="hidden-xs"><%# fpcw(Eval("房间编号").ToString())%></a>
+            </ItemTemplate>
+
+            <ItemStyle  />
+            </asp:TemplateField>
+   <asp:TemplateField HeaderText="剩余床位"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="title">
+        
+            <ItemTemplate>
+            <a href="#" class="hidden-xs"><%# sycw(Eval("房间编号").ToString())%></a>
             </ItemTemplate>
 
             <ItemStyle  />
@@ -160,7 +177,7 @@
                 <%--<a onclick="return batchAudit(this.id);" id="btnDelete" href="javascript:__doPostBack('btnDelete','')"><span id="plcz" runat="server">点此批量发放毕业证</span></a>--%>
                 </HeaderTemplate>
                 <ItemTemplate>
-             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－<%# Eval("title").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?id=<%# Eval("id").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情</a> &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
+             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－<%# Eval("公寓楼名称").ToString() %><%# Eval("房间编号").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?id=<%# Eval("id").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情</a> &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
               </asp:LinkButton>
             </ItemTemplate>
                 
@@ -231,15 +248,11 @@
             </SelectParameters>
       </asp:ObjectDataSource>
        
-   
+   </ContentTemplate></asp:UpdatePanel>
    
 
       
-
-
-
-
-
+             
 
 
 
@@ -258,6 +271,7 @@
 				</div>
 			</div>
 		</div>
+     
 		<!--引发ＬＡＹＵＩ前端必须ＪＳ-->
     <script type="text/javascript" src="plugins/layui/layui.js"></script>
   

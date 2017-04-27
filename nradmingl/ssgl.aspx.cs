@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
 
 public partial class nradmingl_Default2 : System.Web.UI.Page
 {
@@ -106,6 +108,17 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
             #endregion
             #region 数据筛选及ＳＱＬ数据源设置
 
+            DataTable count = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
+            if (count.Rows.Count > 0)
+            {
+                ViewState["count"] = count.Rows.Count.ToString();
+            }
+            else
+            {
+                ViewState["count"] = "0";
+            }
+            GridView1.DataBind();
+
             try
             {
 
@@ -119,6 +132,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
                     //ViewState["gridsql"] = SqlDataSource1.SelectCommand;//绑定数据源的查询语句
                     //根据屏幕高度设置ＧＲＩＤＶＩＥＷ的ＰＡＧＥ显示条数
                     if (Convert.ToInt32(xheight) <= 728) this.GridView1.PageSize = 10;
+
                 }
                 else
                 {
@@ -176,6 +190,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     protected void SqlDataSource1_Selected(object sender, SqlDataSourceStatusEventArgs e)
     {
         ViewState["count"] = e.AffectedRows;
+
         //ViewState["countbd"] = getbds();
         //int s=GridView1.Rows
     }
@@ -227,7 +242,18 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         }
     }
     #endregion
-
+    //行选择事件回调
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        //string id = e.Row.ID.ToString();
+        //try
+        //{
+        //    this.g_ts.Text = "你选择了第" + (Convert.ToInt32(id) + 1).ToString() + "行1，要操作的事，和提示写在这qt！";
+        //}
+        //catch { 
+        //}
+        //e.Row.Attributes.Add("onclick", "javascript:__doPostBack('GridView1','Select$" + e.Row.RowIndex + "')");
+    }
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         //gridview行操作举例
@@ -235,7 +261,8 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         string id, sql;
 
         id = e.CommandArgument.ToString();
-
+        
+            
 
         try
         {
@@ -258,7 +285,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         catch(Exception err1) { this.tsxx.Value = "出错了:"+err1.Message; }
         //ViewState["gridsql"] = SqlDataSource1.SelectCommand;
         //SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
-        _gridView.DataBind();
+        //_gridView.DataBind();
     }
     protected void Button3_Click(object sender, EventArgs e)
     {
@@ -356,9 +383,9 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         return "";
     }
 
-    protected string xwzt(string isyn)
+    protected string sycw(string isyn)
     {
-        //自定义页面状态举例
+        //剩余床位获取
         if (isyn=="0")
         {
             return "<font color=red>未审核</font>";
@@ -373,7 +400,23 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         }
         return "未审核";
     }
-  
+    protected string fpcw(string isyn)
+    {
+        //分配床位统计
+        if (isyn == "0")
+        {
+            return "<font color=red>未审核</font>";
+        }
+        if (isyn == "1")
+        {
+            return "<font color=green>已审核</font>";
+        }
+        if (isyn == "2")
+        {
+            return "<font color=red>被打回</font>";
+        }
+        return "未审核";
+    }
 
     protected void DropDownList2_DataBound(object sender, EventArgs e)
     {
@@ -395,11 +438,11 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     {
         //准备导出的DATATABLE,为了输出时列名为中文,请在写SQL语句时重定义一下列名
         //例:SELECT [int] 序号  FROM [taskmanager] order by [int] desc 
-        System.Data.DataTable dt = Sqlhelper.Serach("SELECT *  FROM [taskmanager] order by [int] desc ");
+        System.Data.DataTable dt = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
         #region 导出
         //引用EXCEL导出类
         toexcel xzfile = new toexcel();
-        string filen = xzfile.DatatableToExcel(dt, "项目任务详情");
+        string filen = xzfile.DatatableToExcel(dt, "寝室预分配数据");
         //Response.Write("文件名" + filen);
         if (filen.Length > 4)
         {
@@ -416,19 +459,23 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     }
     protected void xq_SelectedIndexChanged(object sender, EventArgs e)
     {
-
+        gzt();
     }
     protected void dorm_SelectedIndexChanged(object sender, EventArgs e)
     {
-
+        gzt();
     }
     protected void floor_SelectedIndexChanged(object sender, EventArgs e)
     {
-
+        gzt();
     }
     protected void bj_SelectedIndexChanged(object sender, EventArgs e)
     {
-
+        gzt();
+    }
+    protected void gzt()
+    {
+        GridView1.DataBind();
     }
 }
 

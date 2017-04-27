@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class view_ssfp_xsyfp : System.Web.UI.Page
+public partial class view_Defaultczzt : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {

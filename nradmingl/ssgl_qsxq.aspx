@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ssgl.aspx.cs" Inherits="nradmingl_Default2" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ssgl_qsxq.aspx.cs" Inherits="nradmingl_qsxq" %>
 
 <!DOCTYPE html>
 
