@@ -18,59 +18,70 @@
 
 </head>
 <body style="background:#fff">
-    <form id="form1" runat="server">
+    <form id="form1" class="layui-form" runat="server">
     
     <!--页面开始-->
      	<div class="admin-main">
 
+   <div class="layui-form-item">
+    <label class="layui-form-label">迎新批次</label>
+    <div class="layui-input-block">
+      <select name="city" lay-verify="required">
+        <option value=""></option>
+        <option value="0">北京</option>
+        <option value="1">上海</option>
+        <option value="2">广州</option>
+        <option value="3">深圳</option>
+        <option value="4">杭州</option>
+      </select>
+    </div>
+  </div>
+
+
+   <div>
+                 <table class="layui-table">
+                    <tr><th>名称</th><th>类型</th></tr>
+                     <tr><td>a</td><td>b</td></tr>
+                     <tr><td>a</td><td>b</td></tr>
+                     <tr><td>a</td><td>b</td></tr>
+                 </table>
+             </div>
+
+             <div>
+<table class="layui-table">
+		<tbody><tr>
+			<th scope="col">所属学院</th><th scope="col">性别</th><th scope="col">迎新学生类型</th><th scope="col">员工编号</th><th scope="col">员工姓名</th><th scope="col">迎新批次</th><th scope="col">迎新年</th><th scope="col">迎新批次授权标志</th><th scope="col">事务名称</th><th scope="col">事务类型</th><th scope="col">可操作学院编码集合</th><th scope="col">可操作学院名称集合</th>
+		</tr><tr>
+			<td>轨道交通学院</td><td>男</td><td>高职</td><td>001</td><td>张三</td><td>2017-2018学年秋季迎新</td><td>2017</td><td>enabled</td><td>报到指南</td><td>student</td><td>, 03 , 02</td><td>, 信息工程学院 , 轨道交通学院</td>
+		</tr><tr>
+			<td>轨道交通学院</td><td>男</td><td>高职</td><td>001</td><td>张三</td><td>2017-2018学年秋季迎新</td><td>2017</td><td>enabled</td><td>缴费列表</td><td>both</td><td>, 02</td><td>, 轨道交通学院</td>
+		</tr><tr>
+			<td>轨道交通学院</td><td>男</td><td>高职</td><td>001</td><td>张三</td><td>2017-2018学年秋季迎新</td><td>2017</td><td>enabled</td><td>缴费选项</td><td>both</td><td>, 02 , 03</td><td>, 轨道交通学院 , 信息工程学院</td>
+		</tr><tr>
+			<td>轨道交通学院</td><td>男</td><td>高职</td><td>001</td><td>张三</td><td>2017-2018学年秋季迎新</td><td>2017</td><td>enabled</td><td>现场报到确认</td><td>school</td><td>, 02 , 03 , 01</td><td>, 轨道交通学院 , 信息工程学院 , 装备制造学院</td>
+		</tr><tr>
+			<td>轨道交通学院</td><td>男</td><td>高职</td><td>001</td><td>张三</td><td>2017-2018学年秋季迎新</td><td>2017</td><td>enabled</td><td>选择宿舍</td><td>both</td><td>, 02 , 03</td><td>, 轨道交通学院 , 信息工程学院</td>
+		</tr><tr>
+			<td>轨道交通学院</td><td>男</td><td>高职</td><td>001</td><td>张三</td><td>2017-2018学年秋季迎新</td><td>2017</td><td>enabled</td><td>学生基本信息</td><td>both</td><td>, 03</td><td>, 信息工程学院</td>
+		</tr><tr>
+			<td>轨道交通学院</td><td>男</td><td>高职</td><td>001</td><td>张三</td><td>2017-2018学年秋季迎新</td><td>2017</td><td>enabled</td><td>学生信息确认</td><td>both</td><td>, 02 , 03</td><td>, 轨道交通学院 , 信息工程学院</td>
+		</tr><tr>
+			<td>装备制造学院</td><td>男</td><td>高职</td><td>002</td><td>李四</td><td>2017-2018学年秋季迎新</td><td>2017</td><td>disable</td><td>现场报到确认</td><td>school</td><td>, 02</td><td>, 轨道交通学院</td>
+		</tr>
+	</tbody></table>
+             </div>
+             <div>
+                 <input type="button" onclick="test()" value="click" />
+             </div>
 			<blockquote class="layui-elem-quote">
-            <div class="layui-input-inline hidden-xs">
-                <label>迎新批次：</label>
-            <asp:DropDownList ID="batch_list" runat="server" AutoPostBack="True" 
-                    DataSourceID="SqlDataSource2" DataTextField="Batch_Name" DataValueField="PK_Batch_NO"                      
-                            onselectedindexchanged="DropDownList1_SelectedIndexChanged">
-                </asp:DropDownList>
-            </div>				
 			</blockquote>
 			
 				
 
 
 
-<asp:HiddenField ID="hdfWPBH" runat="server" />
-      
-    <asp:GridView   ID="GridView1"   runat="server" AutoGenerateColumns="False" 
-            DataSourceID="SqlDataSource1" CssClass="site-table table-hover"
-            EmptyDataText="未获取到数据!" OnRowDataBound="GridView1_RowDataBound">
-        <Columns>
-            <asp:CommandField ShowSelectButton="True" />
-            <asp:BoundField DataField="主键" HeaderText="主键" ReadOnly="True" SortExpression="主键" />
-            <asp:BoundField DataField="编号" HeaderText="编号" SortExpression="编号" />
-            <asp:BoundField DataField="名称" HeaderText="名称" SortExpression="名称" />
-            <asp:BoundField DataField="类型" HeaderText="类型" SortExpression="类型" />
-        </Columns>
- 
-    </asp:GridView>
-   
-               <input id="msg" type="text" runat="server" value=""  />
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <!--与后台配合的提示信息隐藏域-->
-            <input id="tsxx" type="text" runat="server" value="" style="display:none" />
+               <br />
+&nbsp;<!--与后台配合的提示信息隐藏域--><input id="tsxx" type="text" runat="server" value="" style="display:none" />
             <input id="tsbox" type="text" runat="server" value="" style="display:none" />
 			<!--与后台配合的提示信息隐藏域OVER-->
             
@@ -216,16 +227,17 @@
                      }
                  }  
     </script>
-        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:yxxt_dataConnectionString1 %>" SelectCommand="SELECT * FROM [Fresh_Batch]
-where enabled='run'
-order by year,pk_batch_no"></asp:SqlDataSource>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
-            ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-            SelectCommand="">
-        </asp:SqlDataSource>
    
    
-
+        <script type="text/javascript">
+            function test() {
+                console.log('hi');
+                layer.open({
+                    type: 1,
+                    content: $('#display') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                });
+            }
+        </script>
       
 
 
@@ -242,4 +254,7 @@ order by year,pk_batch_no"></asp:SqlDataSource>
 
     </form>
 </body>
+    <div id="display">
+        hi
+    </div>
 </html>

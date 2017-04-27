@@ -45,11 +45,9 @@ public partial class nradmingl_yxxcglsq : System.Web.UI.Page
                 xheight = cookiesh.Value.ToString();
                 if (Convert.ToInt32(xheight) < 860)
                 {
-                    GridView1.PageSize = 10;
                 }
                 else
                 {
-                    GridView1.PageSize = 15;
                 }
 
 
@@ -133,18 +131,5 @@ public partial class nradmingl_yxxcglsq : System.Web.UI.Page
 
     }
 
-  
  
-    protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        string pk_batch = this.batch_list.SelectedItem.Value;
-        this.SqlDataSource1.SelectCommand = "SELECT PK_Affair_NO AS 主键, Affair_Index AS 编号, Affair_Name AS 名称, Affair_Type AS 类型 FROM Fresh_Affair WHERE FK_batch_no='" + pk_batch + "' and (Affair_Type='both' or Affair_Type='school') ORDER BY 名称";
-    
-    }
-
-    
-    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
-{
-    e.Row.Attributes.Add("onclick", "javascript:__doPostBack('GridView1','Select$" + e.Row.RowIndex+ "')");
-}
 }
