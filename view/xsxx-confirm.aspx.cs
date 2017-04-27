@@ -48,14 +48,26 @@ public partial class view_xsxx_confirm : System.Web.UI.Page
 
         //get post获取学号
         //string pk_sno = Request["pk_sno"].ToString();
-
+        
         this.hidden_pk_sno.Value = pk_sno.Trim();
+        this.pk_affair_no.Value = pk_affair_no;//其值应由xszz-index.aspx或defaultczy.aspx传参过来
+        this.pk_staff_no.Value = pk_staff_no;
+
+        List<fresh_affair> data = batch_logic.get_freshstudent_affair_list(this.hidden_pk_sno.Value);
+        if (data == null || data.Count == 0)
+        {
+            throw new Exception("获取学生迎新事务数据错误");
+        }
+        this.pk_batch_no.Value = data[0].FK_Batch_NO;
+
 
         //检查是否确认
         if (organizationService.isStuConfrim(pk_sno))
         {
-            server_msg.Value = "您的信息已经确认！";
+            server_msg.Value = "您的信息已经确认！点击确定后回到首页！";
             //todo..跳转
+            btn_submit.Visible = false;
+            Response.Write("<script>setTimeout('history.go(-1);',300);</script>"); 
         }
 
     }
