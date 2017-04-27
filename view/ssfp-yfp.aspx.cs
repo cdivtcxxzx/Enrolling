@@ -75,12 +75,20 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 
             if (xsxx_xh.Text.Length == 0)
             {
-                //Response.Write("学号为空！");
+                //设置学生信息
+                
                 return;
             }
+            else
+            {
+                //设置学生信息
+                xsxx();
+            }
+            
             if (!dormitory.isbillet(xsxx_xh.Text))
             {//未分配
-                // Response.Write("未分配寝室！");
+                // 设置默认照片信息
+                zp();
             }
             else
             {
@@ -95,8 +103,10 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
                 R_room.Visible = false;
                 R_bed.Visible = false;
                 sc_qsxz.Visible = false;
+
                 //获取已选择寝室床位信息
                 DataTable yfp = dormitory.serch_yfpbed(xsxx_xh.Text);
+
                 if (yfp.Rows.Count > 0)
                 {
                     this.xzts.InnerHtml = "您已选择:<font color=green><b>" + yfp.Rows[0][1].ToString() + "," + yfp.Rows[0][2].ToString() + "</b></font>寝室<font color=green><b>" + yfp.Rows[0][3].ToString() + "</b></font>床!";
@@ -105,8 +115,18 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
                 {
                     this.xzts.InnerHtml = "您已选择寝室，但未找到你的选寝信息，请联系您的班主任！";
                 }
-            
 
+                //设置已选寝室照片信息
+                DataTable qszp = dormitory.serch_dormyfp(xsxx_xh.Text);
+                if (qszp.Rows.Count > 0)
+                {
+                    this.shuseImg.Src = qszp.Rows[0]["小图"].ToString();
+                    this.shuseImg.Attributes.Add("onclick", "location.href='ssfp_zp.aspx?img=" + qszp.Rows[0]["大图"].ToString() + "'");
+                }
+                else
+                {
+                    zp();
+                }
 
 
 
@@ -138,6 +158,8 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
     }
     protected void xq_dorm_SelectedIndexChanged(object sender, EventArgs e)
     {
+        //照片设置
+        zp();
         //已选择一号学生公寓3楼306寝室，该寝室已有3人选择，剩于3个床位';
         R_room.Items.Clear();
         R_bed.Items.Clear();
@@ -190,6 +212,32 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
         //    this.xzts.InnerHtml += "，该寝室已没有床位，请重新选择";
         //}
         //获取床位说明
+
+    }
+    protected void zp()
+    {
+        //获取寝室照片信息
+        string zp = "../images/xsgysmall.jpg";
+        string zpbig = "../images/xsgysmall.jpg";
+        DataTable zpok = dormitory.serch_dorm(xsxx_xh.Text, xq_dorm.SelectedValue);
+        if (zpok.Rows.Count > 0)
+        {
+            zp = zpok.Rows[0][4].ToString();
+            zpbig = zpok.Rows[0][3].ToString();
+
+        }
+        this.shuseImg.Src = zp;
+        this.shuseImg.Attributes.Add("onclick", "location.href='ssfp_zp.aspx?img=" + zpbig + "'");
+    }
+    protected void xsxx()
+    {
+        //根据学号设置学生个人基本信息
+        DataTable xsxxok = dormitory.serch_xsxx(xsxx_xh.Text);
+        if (xsxxok.Rows.Count > 0)
+        {
+            this.xsxx_xm.Text = xsxxok.Rows[0][0].ToString();
+            this.xsxx_bj.Text = xsxxok.Rows[0][1].ToString();
+        }
 
     }
     protected void qsxz_Click(object sender, EventArgs e)
