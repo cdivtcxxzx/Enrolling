@@ -126,6 +126,7 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                 }
             }
             #endregion
+
             #region 学生信息确认 xsxx_confirm
             if (type.Trim().Equals("xsxx_confirm"))
             {
@@ -135,24 +136,24 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                 string pk_staff_no = Request.Form.Get("pk_staff_no");
 
                 #region 检查操作权限
-                //string session_pk_sno = null;
-                //string session_pk_staff_no = null;
-                //if (Session["pk_sno"] != null)
-                //{
-                //    session_pk_sno = Session["pk_sno"].ToString();
-                //}
-                //if (Session["pk_staff_no"] != null)
-                //{
-                //    session_pk_staff_no = Session["pk_staff_no"].ToString();
-                //}
-                ////权限验证
+                string session_pk_sno = null;
+                string session_pk_staff_no = null;
+                if (Session["pk_sno"] != null)
+                {
+                    session_pk_sno = Session["pk_sno"].ToString();
+                }
+                if (Session["pk_staff_no"] != null)
+                {
+                    session_pk_staff_no = Session["pk_staff_no"].ToString();
+                }
+                //权限验证
 
-                //batch batch_logic = new batch();
-                //affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsxxqr_xabh");
-                //if (!jg.isauth)
-                //{
-                //    throw new Exception(jg.msg);
-                //}
+                batch batch_logic = new batch();
+                affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsxxqr_xabh");
+                if (!jg.isauth)
+                {
+                    throw new Exception(jg.msg);
+                }
                 #endregion
 
                 if (pk_sno != null && pk_sno.Trim().Length != 0 && confirmState != null)
@@ -160,6 +161,11 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                     //1代表无误 非1代表信息有错误
                     bool boolState = confirmState == "1" ? true : false;
                     //todo:操作事务修改
+                    bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system:" + DateTime.Now.ToShortDateString());
+                    if (!isWrite)
+                    {
+                        throw new Exception("事务修改失败");
+                    }
                     if (organizationService.addStuConfirm(pk_sno, boolState))
                     {
                         result.code = "success";
@@ -172,6 +178,7 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                 }
             }
             #endregion
+
             #region 学生信息修改 xsxx_update
             if (type.Trim().Equals("xsxx_update"))
             {
@@ -197,6 +204,28 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                 //简单论证，todo权限认证
                 if (pk_sno != null && pk_sno.Trim().Length != 0)
                 {
+
+                    #region 检查操作权限
+                    string session_pk_sno = null;
+                    string session_pk_staff_no = null;
+                    if (Session["pk_sno"] != null)
+                    {
+                        session_pk_sno = Session["pk_sno"].ToString();
+                    }
+                    if (Session["pk_staff_no"] != null)
+                    {
+                        session_pk_staff_no = Session["pk_staff_no"].ToString();
+                    }
+                    //权限验证
+
+                    batch batch_logic = new batch();
+                    affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsextend_113");
+                    if (!jg.isauth)
+                    {
+                        throw new Exception(jg.msg);
+                    }
+                    #endregion
+
                     Base_STU stu = organizationService.getStu(pk_sno);
                     if (stu != null)
                     {
@@ -208,6 +237,12 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                         stu.Census = input_province + "#" + input_city + "#" + input_area;
                         stu.Politics_Code = xsxx_zzmm;
                         stu.Home_add = xsxx_addr.Trim();
+                    }
+                    //todo:操作事务修改
+                    bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system:" + DateTime.Now.ToShortDateString());
+                    if (!isWrite)
+                    {
+                        throw new Exception("事务修改失败");
                     }
                     if (organizationService.stuUpdate(pk_sno, stu))
                     {
