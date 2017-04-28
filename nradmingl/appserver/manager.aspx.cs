@@ -1061,6 +1061,64 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region 获取迎新批次目录
+                if (cs.Trim().Equals("get_freshbatch_welcome_list"))
+                {
+                    batch batch_logic = new batch();
+                    List<fresh_batch> jg = batch_logic.get_freshbatch_welcome_list();
+                    result.code = "success";
+                    result.message = "成功";
+                    result.data = jg;
+                }
+                #endregion
+
+                #region 获取可分配给迎新操作员的事务操作列表
+                if (cs.Trim().Equals("get_affair_list"))
+                {
+                    string pk_batch_no = Request.QueryString["pk_batch_no"];
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        List<fresh_affair> jg = batch_logic.get_affair_list(pk_batch_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+
+                #region 获取某事务下所有授权员工及操作范围数据
+                if (cs.Trim().Equals("staff_affair_auth_scope"))
+                {
+                    string pk_affair_no = Request.QueryString["pk_affair_no"];
+                    if (pk_affair_no != null && pk_affair_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.staff_affair_auth_scope(pk_affair_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 获取用户列表
+                if (cs.Trim().Equals("get_yonghqx"))
+                {
+                    string username = Request.QueryString["username"];
+                    //if (username != null && username.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_yonghqx(username);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+
             }
         }
         catch (Exception ex)
