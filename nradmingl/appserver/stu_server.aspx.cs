@@ -131,9 +131,9 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
             if (type.Trim().Equals("xsxx_confirm"))
             {
                 string confirmState = Request.QueryString["confirmState"];//获取确认状态
-                string pk_batch_no = Request.Form.Get("pk_batch_no");
-                string pk_affair_no = Request.Form.Get("pk_affair_no");
-                string pk_staff_no = Request.Form.Get("pk_staff_no");
+                string pk_batch_no = Request["pk_batch_no"];
+                string pk_affair_no = Request["pk_affair_no"];
+                string pk_staff_no = Request["pk_staff_no"];
 
                 #region 检查操作权限
                 string session_pk_sno = null;
