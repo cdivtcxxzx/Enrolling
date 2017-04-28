@@ -232,8 +232,8 @@ public class uum : System.Web.UI.Page
             dr[1] = temp.Element("Name").Value;
             dr[2] = temp.Element("UserName").Value;
             dr[3] = temp.Element("IdNumber").Value;
-            //dr[4] = temp.Element("DepartmentName").Value;
-            dr[4] = temp.Element("RootDep").Value;
+            dr[4] = temp.Element("DepartmentName").Value;
+            //dr[4] = temp.Element("RootDep").Value;
             dr[5] = temp.Element("WorkCode").Value;
             dr[6] = temp.Element("Title").Value;
             dr[7] = temp.Element("UserType").Value;

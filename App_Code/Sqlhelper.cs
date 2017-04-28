@@ -9,6 +9,8 @@ public class Sqlhelper
 {
     //读取webconfig中SQL连接字符串                
     public static string conStr =ConfigurationManager.ConnectionStrings["SqlConnString"].ConnectionString;
+    //高职教务sql
+    public static string conStr_gzjw = ConfigurationManager.ConnectionStrings["gzjwConnectionString"].ConnectionString;
    //读取管理目录
     public static string gldir = ConfigurationManager.ConnectionStrings["gldir"].ConnectionString;
     //读取服务端口信息
@@ -141,6 +143,107 @@ public class Sqlhelper
             {
                 return new DataTable();
             }
+        }
+    }
+    /// <summary>
+    /// 执行查询
+    ///编写人：黄磊
+    ///创建日期：2017年04月25日
+    ///更新日期：
+    ///版本记录：v1.0
+    /// </summary>
+    /// <param name="con">sql链接</param>
+    /// <param name="sql">查询语句</param>
+    /// <param name="parameters">查询参数</param>
+    /// <returns></returns>
+    public static DataTable ConSerach(string con,string sql, params SqlParameter[] parameters)
+    {
+        //建立连接
+        using (SqlConnection conn = new SqlConnection(con))
+        {
+            //打开连接
+            try
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = sql;
+                    foreach (SqlParameter parameter in parameters)
+                    {
+                        cmd.Parameters.Add(parameter);
+                    }
+                    DataSet st = new DataSet();
+                    try
+                    {
+                        //记录SQL查询
+                        if (sql.Contains("script") || sql.Contains("href") || sql.Contains("<div") || sql.Contains("exec") || sql.Contains("sysadmin") || sql.Contains("master") || sql.Contains("create") || sql.Length > 200)
+                        {
+                            //获得当前IP
+                            string ipok = HttpContext.Current.Request.UserHostAddress;
+                            //获得当前页面
+                            string urlok = HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.Url;
+                            //获得当前用户
+                            string username = "匿名";
+                            try
+                            {
+                                username = HttpContext.Current.Session["username"].ToString();
+
+                            }
+                            catch { }
+                            //写入日志
+                            Sqlhelper.ExcuteNonQuery("INSERT INTO [sqllog]    ([sql],[time],[ip],[url],[username],[bz],[laiyuan]) VALUES('" + sql + "','" + DateTime.Now.ToString() + "','" + ipok + "','" + urlok + "','" + username + "','SQL查询监控','迎新系统')");
+                        }
+                    }
+                    catch
+                    {
+                    }
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    adapter.Fill(st);
+                    return st.Tables[0];
+                }
+            }
+            catch (Exception e)
+            {
+                return new DataTable();
+            }
+        }
+    }
+    /// <summary>
+    /// 执行ExcuteNonQuery操作
+    ///编写人：黄磊
+    ///创建日期：2017年04月25日
+    ///更新日期：
+    ///版本记录：v1.0 
+    /// </summary>
+    /// <param name="con">sql链接</param>
+    /// <param name="sql">执行sql语句</param>
+    /// <param name="parameters">相关参数</param>
+    /// <returns>影响行数</returns>
+    public static int ConExcuteNonQuery(string con,String sql, params SqlParameter[] parameters)
+    {
+        try
+        {
+            using (System.Data.SqlClient.SqlConnection conn = new SqlConnection(con))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    foreach (SqlParameter parameter in parameters)
+                    {
+                        object o = parameter.Value;
+                        cmd.Parameters.Add(parameter);
+                    }
+
+
+                    return cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            throw e;
+            return 0;
         }
     }
     /// <summary>

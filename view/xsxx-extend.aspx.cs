@@ -37,7 +37,7 @@ public partial class view_xsxx_extend : System.Web.UI.Page
         }
 
         batch batch_logic = new batch();
-        affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsxxqr_xabh");
+        affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsextend_113");
         if (!jg.isauth)
         {
             this.server_msg.Value = jg.msg; ;
