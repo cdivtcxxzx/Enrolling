@@ -120,7 +120,7 @@ body{background:#f5f5f5;color:#757575}a{color:#757575}input{color:#333}::-webkit
             <div class="lgnheader">
               <div class="header_tit t_c">
                 
-                <h4 class="header_tit_txt" id="login-title" style="font-family: arial,Hiragino Sans GB,Microsoft YaHei,微軟正黑體,儷黑 Pro!important">用户登录</h4>
+                <h4 class="header_tit_txt" id="login_title"  runat="server" style="font-family: arial,Hiragino Sans GB,Microsoft YaHei,微軟正黑體,儷黑 Pro!important">用户登录</h4>
               <div class=" site_info"></div></div>
             </div>
             <!-- header e -->

@@ -130,6 +130,22 @@ public partial class admin_Default : System.Web.UI.Page
         }
 
         #endregion
+#region 学生登陆
+        string sf = "";
+        if (Request["sf"] != null)
+        {
+            sf = Request["sf"].ToString();
+        }
+        if (sf == "xs")
+        {
+            this.login_title.InnerHtml = "学生网上自助报到登陆";
+            this.txt_name.Attributes.Add("placeholder", "请输入高考报名号");
+            this.txt_pwd.Attributes.Add("placeholder", "默认密码为身份证后六位");
+
+        }
+
+#endregion
+
 
         if (Request["token"] != null)
         {
@@ -289,35 +305,112 @@ public partial class admin_Default : System.Web.UI.Page
     protected void Button1_Click1(object sender, EventArgs e)
     { //登陆按钮事件
         string b = "1";
+
+      
+
+
+
+
         if (this.txt_name.Value != "" && this.txt_pwd.Value != "")
         {
             string x2 = "2";
-            c_login myLogin = new c_login();
-            if (myLogin.login(this.txt_name.Value, this.txt_pwd.Value, true, false))
-            {
-                //获取模块权限
-                string x1 = "1";
-                if (!new c_login().powerYanzheng(Session["UserName"].ToString(), "用户管理", "登陆", "2"))
-                {
-                    Response.Write("<script>alert('对不起,你无权使用本系统！');top.location.href=/';</script>");
-                }
 
-                Response.Write("<script>alert('登陆成功！');</script>");
-                //Server.Transfer("~/"+Sqlhelper.gldir+"/default.aspx");
-                if (Request.QueryString["url"] != null)
+            if (login_title.InnerText == "学生网上自助报到登陆")
+            {
+                DataTable userxs = Sqlhelper.Serach("SELECT TOP 1 [Name],[Password],right(ID_NO,6) depassword ,PK_SNO FROM [Base_STU] where Test_NO=@name or PK_SNO=@name", new SqlParameter("name", this.txt_name.Value));
+                if (userxs.Rows.Count > 0)
                 {
-                    //=号|,&号@
-                    string x = Request["url"].ToString().Replace("|","=").Replace("@","&");
-                    Response.Redirect(Request["url"].ToString());
+                    if (txt_pwd.Value == userxs.Rows[0]["Password"].ToString())
+                    {
+                        //登陆成功
+                        Session["username"] = userxs.Rows[0]["PK_SNO"].ToString();
+                        Session["name"] = userxs.Rows[0]["Name"].ToString();
+                        try
+                        {
+                            Session["Lsz"] = "20";
+                            string[] strLszs = Session["Lsz"].ToString().TrimEnd(',').Split(',');
+
+                            foreach (string strLsz in strLszs)
+                            {
+                                c_login x = new c_login();
+                                XDocument zQx = x.getPowerFromZhuqx(strLsz);
+                                if (zQx == null) continue; //有可能getPowerFromZhuqx得到空
+                                foreach (var temp in zQx.Elements("Root").Elements())
+                                {
+                                    string lanmStr = temp.Name.ToString();
+                                    XDocument sessionXML = XDocument.Parse(Session["Yhqx"].ToString());
+                                    //如果直接没有该栏目的权限，直接添加该栏目结点
+                                    if (sessionXML.Element("Root").Element(lanmStr) == null)
+                                    {
+                                        sessionXML.Element("Root").Add(temp);
+                                        Session["Yhqx"] = sessionXML.ToString();
+                                    }
+                                    else
+                                    {
+                                        foreach (var oper in temp.Elements())
+                                        {
+                                            string operStr = oper.Name.ToString();
+                                            if (sessionXML.Element("Root").Element(lanmStr).Element(operStr) == null)
+                                            {
+                                                sessionXML.Element("Root").Element(lanmStr).Add(oper);
+                                                Session["Yhqx"] = sessionXML.ToString();
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch { }
+                        Response.Redirect("/" + Sqlhelper.gldir + "/defaultxs.aspx");
+                    }
+                    else
+                    {
+                        if (userxs.Rows[0]["Password"].ToString() == userxs.Rows[0]["depassword"].ToString())
+                        {
+                            Label1.Text = "<font color=red>登陆失败,密码输入错误,初始密码为身份证最后六位!</font>";
+                        }
+                        else
+                        {
+                            Label1.Text = "<font color=red>登陆失败,密码输入错误,你已经更改过密码!密码第一位是" + userxs.Rows[0]["Password"].ToString().Substring(0,1)+ "</font>";
+                        }
+                    }
                 }
                 else
                 {
-                    Response.Redirect("/"+Sqlhelper.gldir+"/default.aspx");
+
+                    Label1.Text = "<font color=red>登陆失败,请确认高考报名号是否正确!</font>";
                 }
             }
             else
             {
-                Label1.Text = "<font color=red>登陆失败,请确认自己的用户名或密码是否正确!</font>";
+                c_login myLogin = new c_login();
+                if (myLogin.login(this.txt_name.Value, this.txt_pwd.Value, true, false))
+                {
+                    //获取模块权限
+                    string x1 = "1";
+                    if (!new c_login().powerYanzheng(Session["UserName"].ToString(), "用户管理", "登陆", "2"))
+                    {
+                        Response.Write("<script>alert('对不起,你无权使用本系统！');top.location.href=/';</script>");
+                    }
+
+                    Response.Write("<script>alert('登陆成功！');</script>");
+                    //Server.Transfer("~/"+Sqlhelper.gldir+"/default.aspx");
+                    if (Request.QueryString["url"] != null)
+                    {
+                        //=号|,&号@
+                        string x = Request["url"].ToString().Replace("|", "=").Replace("@", "&");
+                        Response.Redirect(Request["url"].ToString());
+                    }
+                    else
+                    {
+                        Response.Redirect("/" + Sqlhelper.gldir + "/default.aspx");
+                    }
+                }
+                else
+                {
+                    Label1.Text = "<font color=red>登陆失败,请确认自己的用户名或密码是否正确!</font>";
+                }
             }
         }
         else
