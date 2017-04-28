@@ -95,6 +95,11 @@ public class WSHelper
     }
 }
 
+public class affair_operate_auth_msg
+{
+    public bool isauth;
+    public string msg;
+}
 
 /// <summary>
 ///名称：迎新批次
@@ -1037,12 +1042,19 @@ public class batch
                 return null;
             }
 
-            string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO,"+
-                            "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status,"+
+            //string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+            //                "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
+            //                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+            //                " from vw_fresh_student_base a,Fresh_Batch b," +
+            //                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+            //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
+            //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='SCHOOL' or upper(c.Affair_Type)='BOTH')";
+            string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+                            "(case when d.Log_Status is null then '未完成' else d.Log_Status end) as Log_Status," +
                             "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
-                            " from vw_fresh_student_base a,Fresh_Batch b,"+
+                            " from vw_fresh_student_base a,Fresh_Batch b," +
                             "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
-                            " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO"+ 
+                            " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
                             " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='SCHOOL' or upper(c.Affair_Type)='BOTH')";
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
             if (dt != null && dt.Rows.Count > 0)
@@ -1053,14 +1065,108 @@ public class batch
                     fresh_affair_log row = new fresh_affair_log();
                     row.PK_Affair_Log = dt.Rows[i]["PK_Affair_Log"].ToString().Trim();//学生迎新事务主键
                     row.FK_SNO = dt.Rows[i]["FK_SNO"].ToString().Trim();//学号
-                    row.FK_Affair_NO =dt.Rows[i]["FK_Affair_NO"].ToString().Trim();//迎新事务编号 
+                    row.FK_Affair_NO = dt.Rows[i]["FK_Affair_NO"].ToString().Trim();//迎新事务编号 
                     row.Log_Status = dt.Rows[i]["Log_Status"].ToString().Trim();//事务状态
                     row.Creater = dt.Rows[i]["Creater"].ToString().Trim();//创建者
-                    row.Create_DT = dt.Rows[i]["Create_DT"] is DBNull?DateTime.Now:DateTime.Parse(dt.Rows[i]["Create_DT"].ToString());//创建时间
+                    row.Create_DT = dt.Rows[i]["Create_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Create_DT"].ToString());//创建时间
                     row.Updater = dt.Rows[i]["Updater"].ToString().Trim();//更新者
                     row.Update_DT = dt.Rows[i]["Update_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Update_DT"].ToString());//更新时间
 
-                    if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length!=0)
+                    if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    {
+                        /*Call_Function格式，web服务器url地址?方法名称，例如：http://localhost:3893/test/WebService.asmx?test_Log_Status*/
+                        try
+                        {
+                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string[] parts = url.Split('?');
+                            if (parts.Length != 2)
+                            {
+                                throw new Exception("函数格式错误");
+                            }
+
+                            url = parts[0];
+                            string method = parts[1];
+                            string[] args = new string[1];
+                            args[0] = row.FK_SNO;
+                            object data = WSHelper.InvokeWebService(url, method, args);
+                            string jg = data.ToString().Trim();
+                            row.Log_Status = jg.Trim();
+
+                            if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0)
+                            {
+                                sqlstr = "update Fresh_Affair_Log set Log_Status=@cs3,Updater='system',Update_DT=getdate() where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
+                                Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()), new SqlParameter("cs3", row.Log_Status.Trim()));
+                            }
+                            else
+                                if ((row.PK_Affair_Log == null || row.PK_Affair_Log.Trim().Length == 0))
+                                {
+                                    sqlstr = "insert into Fresh_Affair_Log (PK_Affair_Log,FK_SNO,FK_Affair_NO,Log_Status,Creater,Create_DT,Updater,Update_DT) values (" +
+                                            "  newid(),@cs1,@cs2,@cs3,'system',getdate(),'system',getdate())";
+                                    Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()), new SqlParameter("cs3", row.Log_Status.Trim()));
+                                }
+                        }
+                        catch (Exception ex1)
+                        {
+                            row.Log_Status = "状态回调函数错误：" + ex1.Message;
+                        }
+                    }
+                    result.Add(row);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_schoolaffairlog_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    public List<fresh_affair_log> get_schoolaffairlog_list_old(string PK_SNO)
+    {
+        List<fresh_affair_log> result = null;
+        try
+        {
+            if (PK_SNO == null || PK_SNO.Trim().Length == 0)
+            {
+                return null;
+            }
+
+            //string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+            //                "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
+            //                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+            //                " from vw_fresh_student_base a,Fresh_Batch b," +
+            //                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+            //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
+            //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='SCHOOL' or upper(c.Affair_Type)='BOTH')";
+            string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+                            "(case when d.Log_Status='已完成' then '已完成' else '未完成' end) as Log_Status," +
+                            "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+                            " from vw_fresh_student_base a,Fresh_Batch b," +
+                            "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+                            " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
+                            " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='SCHOOL' or upper(c.Affair_Type)='BOTH')";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = new List<fresh_affair_log>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    fresh_affair_log row = new fresh_affair_log();
+                    row.PK_Affair_Log = dt.Rows[i]["PK_Affair_Log"].ToString().Trim();//学生迎新事务主键
+                    row.FK_SNO = dt.Rows[i]["FK_SNO"].ToString().Trim();//学号
+                    row.FK_Affair_NO = dt.Rows[i]["FK_Affair_NO"].ToString().Trim();//迎新事务编号 
+                    row.Log_Status = dt.Rows[i]["Log_Status"].ToString().Trim();//事务状态
+                    row.Creater = dt.Rows[i]["Creater"].ToString().Trim();//创建者
+                    row.Create_DT = dt.Rows[i]["Create_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Create_DT"].ToString());//创建时间
+                    row.Updater = dt.Rows[i]["Updater"].ToString().Trim();//更新者
+                    row.Update_DT = dt.Rows[i]["Update_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Update_DT"].ToString());//更新时间
+
+                    if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
                     {
                         /*Call_Function格式，web服务器url地址?方法名称，例如：http://localhost:3893/test/WebService.asmx?test_Log_Status*/
                         try
@@ -1095,8 +1201,8 @@ public class batch
                         }
                         catch (Exception ex1)
                         {
-                            row.Log_Status = "状态回调函数错误："+ex1.Message;
-                        }                                                
+                            row.Log_Status = "状态回调函数错误：" + ex1.Message;
+                        }
                     }
                     result.Add(row);
                 }
@@ -1136,13 +1242,112 @@ public class batch
                 return null;
             }
 
+            //string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+            //                "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
+            //                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+            //                " from vw_fresh_student_base a,Fresh_Batch b," +
+            //                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+            //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
+            //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
             string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
-                            "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
-                            "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
-                            " from vw_fresh_student_base a,Fresh_Batch b," +
-                            "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
-                            " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
-                            " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
+                "(case when d.Log_Status is null then '未完成' else d.Log_Status end) as Log_Status," +
+                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+                " from vw_fresh_student_base a,Fresh_Batch b," +
+                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
+                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = new List<fresh_affair_log>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    fresh_affair_log row = new fresh_affair_log();
+                    row.PK_Affair_Log = dt.Rows[i]["PK_Affair_Log"].ToString().Trim();//学生迎新事务主键
+                    row.FK_SNO = dt.Rows[i]["FK_SNO"].ToString().Trim();//学号
+                    row.FK_Affair_NO = dt.Rows[i]["FK_Affair_NO"].ToString().Trim();//迎新事务编号 
+                    row.Log_Status = dt.Rows[i]["Log_Status"].ToString().Trim();//事务状态
+                    row.Creater = dt.Rows[i]["Creater"].ToString().Trim();//创建者
+                    row.Create_DT = dt.Rows[i]["Create_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Create_DT"].ToString());//创建时间
+                    row.Updater = dt.Rows[i]["Updater"].ToString().Trim();//更新者
+                    row.Update_DT = dt.Rows[i]["Update_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Update_DT"].ToString());//更新时间
+
+                    if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    {
+                        try
+                        {
+                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string[] parts = url.Split('?');
+                            if (parts.Length != 2)
+                            {
+                                throw new Exception("函数格式错误");
+                            }
+                            url = parts[0];
+                            string method = parts[1];
+                            string[] args = new string[1];
+                            args[0] = row.FK_SNO;
+                            object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
+                            string jg = data.ToString().Trim();
+                            row.Log_Status = jg.Trim();
+
+                            if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0)
+                            {
+                                sqlstr = "update Fresh_Affair_Log set Log_Status=@cs3,Updater='system',Update_DT=getdate() where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
+                                Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()), new SqlParameter("cs3", row.Log_Status.Trim()));
+                            }
+                            else
+                                if ((row.PK_Affair_Log == null || row.PK_Affair_Log.Trim().Length == 0))
+                                {
+                                    sqlstr = "insert into Fresh_Affair_Log (PK_Affair_Log,FK_SNO,FK_Affair_NO,Log_Status,Creater,Create_DT,Updater,Update_DT) values (" +
+                                            "  newid(),@cs1,@cs2,@cs3,'system',getdate(),'system',getdate())";
+                                    Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()), new SqlParameter("cs3", row.Log_Status.Trim()));
+                                }
+                        }
+                        catch (Exception ex1)
+                        {
+                            row.Log_Status = "状态回调函数错误："+ex1.Message;
+                        } 
+                    }
+                    result.Add(row);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_studentaffairlog_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    public List<fresh_affair_log> get_studentaffairlog_list_old(string PK_SNO)
+    {
+        List<fresh_affair_log> result = null;
+        try
+        {
+            if (PK_SNO == null || PK_SNO.Trim().Length == 0)
+            {
+                return null;
+            }
+
+            //string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+            //                "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
+            //                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+            //                " from vw_fresh_student_base a,Fresh_Batch b," +
+            //                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+            //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
+            //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
+            string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+                "(case when d.Log_Status='已完成' then '已完成' else '未完成' end) as Log_Status," +
+                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+                " from vw_fresh_student_base a,Fresh_Batch b," +
+                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
+                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -1192,8 +1397,8 @@ public class batch
                         }
                         catch (Exception ex1)
                         {
-                            row.Log_Status = "状态回调函数错误："+ex1.Message;
-                        } 
+                            row.Log_Status = "状态回调函数错误：" + ex1.Message;
+                        }
                     }
                     result.Add(row);
                 }
@@ -1210,7 +1415,6 @@ public class batch
         }
         return result;
     }
-
 
     ///功能名称： 更新学生迎新事务状态
     ///功能描述：
@@ -1233,10 +1437,10 @@ public class batch
                 return result;
             }
 
-            if (Log_Status.Trim() != "未完成" && Log_Status.Trim() != "已完成")
-            {
-                return result;
-            }
+            //if (Log_Status.Trim() != "未完成" && Log_Status.Trim() != "已完成")
+            //{
+            //    return result;
+            //}
 
             string sqlstr = "select * from Fresh_Affair_Log where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", PK_Affair_NO.Trim()));
@@ -1274,6 +1478,58 @@ public class batch
         return result;
     }
 
+    public bool set_affairlog_old(string PK_SNO, string PK_Affair_NO, string Log_Status, string Creater)
+    {
+        bool result = false;
+        try
+        {
+            if (PK_SNO == null || PK_SNO.Trim().Length == 0 || PK_Affair_NO == null || PK_Affair_NO.Trim().Length == 0
+                || Log_Status == null || Log_Status.Trim().Length == 0 || Creater == null || Creater.Trim().Length == 0)
+            {
+                return result;
+            }
+
+            if (Log_Status.Trim() != "未完成" && Log_Status.Trim() != "已完成")
+            {
+                return result;
+            }
+
+            string sqlstr = "select * from Fresh_Affair_Log where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", PK_Affair_NO.Trim()));
+            if (dt != null && dt.Rows.Count == 1)
+            {
+                sqlstr = "update Fresh_Affair_Log set Log_Status=@cs3,Updater=@cs4,Update_DT=getdate() where FK_SNO=@cs1 and FK_Affair_NO=@cs2 ";
+                int jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", PK_Affair_NO.Trim()),
+                    new SqlParameter("cs3", Log_Status.Trim()), new SqlParameter("cs4", Creater.Trim()));
+                if (jg == 1)
+                {
+                    result = true;
+                }
+            }
+            else
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    sqlstr = "insert into Fresh_Affair_Log (PK_Affair_Log,FK_SNO,FK_Affair_NO,Log_Status,Creater,Create_DT,Updater,Update_DT) values (" +
+                            "  newid(),@cs1,@cs2,@cs3,@cs4,getdate(),@cs4,getdate())";
+                    int jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", PK_Affair_NO.Trim()),
+                        new SqlParameter("cs3", Log_Status.Trim()), new SqlParameter("cs4", Creater.Trim()));
+                    if (jg == 1)
+                    {
+                        result = true;
+                    }
+                }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "set_affairlog", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 
     ///功能名称： 校验学生事务操作条件
     ///功能描述：
@@ -1408,13 +1664,106 @@ public class batch
                     {
                         if (affairlog[j].FK_Affair_NO.Trim() == PK_Affair_NO.Trim())
                         {
+                            express = express.Replace(parameters[i], "\'" + affairlog[j].Log_Status.Trim() + "\'");
+                            break;
+                        }
+                    }
+                }
+            }
+            express = express.Replace("\"","\'");
+        }
+
+        sqlstr = "select isnull((select 1  where " + express.Trim() + " ),0) as flag";
+        System.Data.DataTable jg = Sqlhelper.Serach(sqlstr);
+        if (jg.Rows[0]["flag"].ToString().Trim() == "1")
+        {
+            result = true;
+        }
+        else
+        {
+            result = false;
+        }
+        return result;
+    }
+
+    private bool analysis_status_condition_old(string status_condition, string PK_Batch_NO, string PK_SNO)
+    {
+        //status_condition的格式是：{@a1=已完成 and @a2=未完成}:{@a1,@a2}
+        //a1中的a是必须的关键字符，a1中的1是迎新事务的索引号(一个迎新批次中的事务索引号唯一)。常量只能是"已完成"和"未完成"两种。
+        string sqlstr = "";
+        bool result = false;
+        string[] arr = status_condition.Split(':');
+
+        if (arr.Length != 2)
+            throw new Exception("status_condition format error");
+
+        arr[0] = arr[0].Substring(1, arr[0].Length - 2);
+        string express = arr[0];
+
+        arr[1] = arr[1].Substring(1, arr[1].Length - 2);
+        if (arr[1].Trim().Length > 0)
+        {
+            List<fresh_affair_log> data1 = get_studentaffairlog_list(PK_SNO);
+            List<fresh_affair_log> data2 = get_schoolaffairlog_list(PK_SNO);
+            List<fresh_affair_log> affairlog = new List<fresh_affair_log>();//学生事务日志
+            if (data1 != null && data1.Count > 0)
+            {
+                for (int i = 0; i < data1.Count; i++)
+                {
+                    affairlog.Add(data1[i]);
+                }
+            }
+            if (data2 != null && data2.Count > 0)
+            {
+                if (affairlog.Count == 0)
+                {
+                    for (int i = 0; i < data2.Count; i++)
+                    {
+                        affairlog.Add(data2[i]);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < data2.Count; i++)
+                    {
+                        bool havesame = false;
+                        for (int j = 0; j < affairlog.Count; j++)
+                        {
+                            if (affairlog[j].FK_Affair_NO.Trim() == data2[i].FK_Affair_NO.Trim())
+                            {
+                                havesame = true;
+                                break;
+                            }
+                        }
+                        if (!havesame)
+                        {
+                            affairlog.Add(data2[i]);
+                        }
+                    }
+                }
+            }
+
+            string[] parameters = arr[1].Split(',');
+
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                string index = parameters[i].Substring(2);
+                sqlstr = "select PK_Affair_NO from Fresh_Affair where FK_Batch_NO=@cs1 and Affair_Index=@cs2";
+                System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_Batch_NO.Trim()), new SqlParameter("cs2", index.Trim()));
+                if (dt != null && dt.Rows.Count == 1)
+                {
+                    string PK_Affair_NO = dt.Rows[0]["PK_Affair_NO"].ToString().Trim();
+                    for (int j = 0; j < affairlog.Count; j++)
+                    {
+                        if (affairlog[j].FK_Affair_NO.Trim() == PK_Affair_NO.Trim())
+                        {
                             express = express.Replace(parameters[i], affairlog[j].Log_Status.Trim());
                             break;
                         }
                     }
                 }
             }
-            express = express.Replace("已完成","\'已完成\'");
+            express = express.Replace("已完成", "\'已完成\'");
             express = express.Replace("未完成", "\'未完成\'");
         }
 
@@ -1528,11 +1877,136 @@ public class batch
         {
             try
             {
-                new c_log().logAdd("batch.cs", "get_freshoperator_isauth", ex.Message, "2", "huyuan");//记录错误日志
+                new c_log().logAdd("batch.cs", "is_affair_operate_appKey", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;
         }
         return result;
     }
+
+
+    //判断学生或管理员对指定事务和事务中的操作是否满足其授权条件，满足返回字符串true,否则返回提示信息
+
+    public affair_operate_auth_msg affair_operate_auth(string PK_AFFAIR_NO, string PK_SNO,string SESSION_PK_SNO, string PK_STAFF_NO,string SESSION_PK_STAFF_NO, string APPKEY)
+    {
+        affair_operate_auth_msg result = new affair_operate_auth_msg();
+        result.isauth = false;
+        result.msg = "";
+        try
+        {
+            if (PK_AFFAIR_NO == null || PK_AFFAIR_NO.Trim().Length == 0 || APPKEY == null || APPKEY.Trim().Length == 0 || PK_SNO == null || PK_SNO.Trim().Length == 0)
+            {
+                result.msg = "参数错误";
+                return result;
+            }
+            batch batch_logic = new batch();
+            bool flag = batch_logic.is_affair_operate_appKey(PK_AFFAIR_NO, APPKEY);//本应用验证码是否正确
+            if (!flag)
+            {
+                result.msg = "非授权访问";
+                return result;
+            }
+
+            if (PK_STAFF_NO == null || PK_STAFF_NO.Trim().Length == 0)
+            {
+                PK_STAFF_NO = "";
+                //是学生自主登陆，验证pk_sno是是否与当前学生登陆帐户一致
+                if (SESSION_PK_SNO == null || !SESSION_PK_SNO.Trim().Equals(PK_SNO.Trim()))
+                {
+                    result.msg = "非授权访问";
+                    return result;
+                }
+            }
+            else
+            {
+                //验证现场迎新操作员是否登陆
+                if (SESSION_PK_STAFF_NO == null || !SESSION_PK_STAFF_NO.Trim().Equals(PK_STAFF_NO.Trim()))
+                {
+                    result.msg = "非授权访问";
+                    return result;
+                }
+                //验证迎新管理元是否具备操作权限
+                flag = batch_logic.check_operator_object(PK_STAFF_NO, PK_AFFAIR_NO, PK_SNO);
+                if (!flag)
+                {
+                    result.msg = "非授权访问";
+                    return result;
+                }
+            }
+
+            //验证学生是否具备该事务操作权限
+            flag = batch_logic.check_student_affair_condition(PK_SNO, PK_AFFAIR_NO);//验证该生本事务操作前置条件是否满足
+            if (!flag)
+            {
+                fresh_affair data1 = batch_logic.get_affair(PK_AFFAIR_NO);
+                if (data1 != null)
+                {
+                    result.msg = data1.precondition1Message + "," + data1.precondition2Message;
+                    return result;
+                }
+                else
+                {
+                    result.msg = "获取事务前置条件时错误";
+                    return result;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("xsbjf.aspx.cs", "affair_operate_auth", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        result.isauth = true;
+        return result;
+    }
+
+
+    ///功能名称： 插入学生助学贷款或绿色通道标志
+    ///功能描述：
+    ///插入学生助学贷款或绿色通道标志。
+    ///编写人：胡元
+    ///参数：
+    ///PK_SNO：学号；Tuition：绿色通道或助学贷款
+    ///创建时间：2017-4-26
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    public bool set_TuitionFee(string PK_SNO, string Tuition)
+    {
+        bool result = false;
+        try
+        {
+            if (PK_SNO == null || PK_SNO.Trim().Length == 0 || Tuition == null || Tuition.Trim().Length == 0)
+            {
+                return result;
+            }
+
+            if (Tuition.Trim() != "绿色通道" && Tuition.Trim() != "助学贷款")
+            {
+                return result;
+            }
+
+            string sqlstr = "insert into Fresh_TuitionFee (PK_SNO,Tuition) values (@cs1,@cs2)";
+            int jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", Tuition.Trim()));
+            if (jg == 1)
+            {
+                result = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "set_TuitionFee", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
 }

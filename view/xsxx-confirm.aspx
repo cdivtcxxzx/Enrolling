@@ -30,66 +30,85 @@
             margin: 5px auto;
             position: relative;
         }
-        .jbxx:after,.lqxx:after{
-            content:".";
-            width:0;
-            height:0;
-            display:block;
-            clear:both;
-        }
-        .jbxx .img-content{
-            float:left;
-            width:30%;
-            text-align:center;
-            margin-bottom:10px;
-        }
-        .jbxx img {
-            max-width: 180px;
-        }
-        .jbxx .xx-content,.lqxx .lqxx-wrapper{
-            float:right;
-            width:57%;
-            margin-right:3%;
-        }
-        .btn-confirm{
-            width:100%;
-            text-align:center;
-        }
-        @media (min-width:930px){
-            .jbxx .img-content{
-                padding-left:25px;   
+
+            .jbxx:after, .lqxx:after {
+                content: ".";
+                width: 0;
+                height: 0;
+                display: block;
+                clear: both;
             }
+
+            .jbxx .img-content {
+                float: left;
+                width: 30%;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            .jbxx img {
+                max-width: 180px;
+            }
+
+            .jbxx .xx-content, .lqxx .lqxx-wrapper {
+                float: right;
+                width: 57%;
+                margin-right: 3%;
+            }
+
+        .btn-confirm {
+            width: 100%;
+            text-align: center;
+        }
+
+        @media (min-width:930px) {
+            .jbxx .img-content {
+                padding-left: 25px;
+            }
+
             .jbxx img {
                 max-width: 210px;
             }
-            .jbxx .xx-content{
-                padding-top:2px;
-                padding-right:20px;
+
+            .jbxx .xx-content {
+                padding-top: 2px;
+                padding-right: 20px;
             }
-            .lqxx .lqxx-wrapper{
-                padding-right:20px;
+
+            .lqxx .lqxx-wrapper {
+                padding-right: 20px;
             }
         }
-        @media (max-width:650px){
-            .jbxx .img-content{
-                float:none;
-                width:100%;      
+
+        @media (max-width:650px) {
+            .admin-main {
+                margin: 2px;
             }
+            .jbxx .img-content {
+                float: none;
+                width: 100%;
+            }
+
             .jbxx img {
                 max-width: 150px;
             }
-            .jbxx .xx-content{
-                float:none;
-                width:100%;
-                padding-top:0px;
-                padding-right:5px;
+
+            .jbxx .xx-content {
+                float: none;
+                width: 100%;
+                padding-top: 0px;
+                padding-right: 5px;
             }
-            .lqxx .lqxx-wrapper{
-                float:none;
-                width:100%;
-                padding-left:5px;
-                padding-right:5px;
+
+            .lqxx .lqxx-wrapper {
+                float: none;
+                width: 100%;
+                padding-left: 5px;
+                padding-right: 5px;
             }
+        }
+        .layui-form input[type=radio]{
+            display: inline;
         }
     </style>
 
@@ -106,13 +125,18 @@
 
         </blockquote>
         <form id="form1" class="layui-form layui-form-pane" runat="server">
-            <asp:HiddenField ID="hidden_pk_sno" runat="server" />
+            <asp:HiddenField ID="hidden_pk_sno" Value="" runat="server" />
+            <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
+            <asp:HiddenField ID="pk_affair_no" Value="" runat="server" />
+            <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
+            <asp:HiddenField ID="server_msg" Value="" runat="server" />
+
             <%--基本信息--%>
             <div class="jbxx">
                 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
                     <legend>基本信息</legend>
                 </fieldset>
-                <div class="jbxx-wrapper">                    
+                <div class="jbxx-wrapper">
                     <div class="img-content">
                         <asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" />
                     </div>
@@ -143,7 +167,7 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                             <label class="layui-form-label">报名号：</label>
+                            <label class="layui-form-label">报名号：</label>
                             <div class="layui-input-block">
                                 <asp:Label ID="xsxx_test" CssClass="layui-input" runat="server" Text=""></asp:Label>
                             </div>
@@ -156,7 +180,7 @@
                 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
                     <legend>录取信息</legend>
                 </fieldset>
-                <div class="lqxx-wrapper">                    
+                <div class="lqxx-wrapper">
                     <div class="layui-form-item">
                         <label class="layui-form-label">学号：</label>
                         <div class="layui-input-block">
@@ -182,16 +206,18 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <span style="color:#ffd800;margin-bottom:10px;display:inline-block;">请核对个人信息，确认信息无误；信息有误请及时联系班主任！</span>
+                        <span style="color: #ffd800; margin-bottom: 10px; display: inline-block;">请仔细核对个人信息，确认信息有无错误；信息有误请及时联系班主任！</span>
                         <div class="layui-input-block">
-                            <input type="checkbox" name="xsxxcomfirm" title="信息无误" />        
+                            <input type="radio" name="xx_confirm" title="信息无误" value="1" checked="" />
+                            <input type="radio" name="xx_confirm" title="信息有误" value="0" />
                         </div>
                     </div>
                 </div>
             </div>
             <%--确认按钮--%>
             <div class="btn-confirm">
-                <a href="#" class="layui-btn layui-btn-big">提  交</a>
+                <asp:Button ID="btn_submit" CssClass="layui-btn layui-btn-big" runat="server" Text="提  交"/>
+                
             </div>
         </form>
     </div>

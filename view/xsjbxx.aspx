@@ -106,7 +106,9 @@
 	        
        
              
-<form class="layui-form layui-form-pane" action="">
+<form class="layui-form layui-form-pane" runat="server" action="">
+    <asp:HiddenField ID="hidden_pk_sno" runat="server" />
+    <asp:HiddenField ID="server_msg" runat="server" />
     <div class="xsxx1"><div class="layui-form-item" pane="">
           <label class="layui-form-label" style="height:94%;display:none">照片：</label>
           <div class="layui-input-block" style="margin-left: 10px!important">
@@ -116,58 +118,58 @@
           <label class="layui-form-label">学号：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
-               <asp:Label ID="xsxx_xh" runat="server" Text="20170001"></asp:Label></div></div>
+               <asp:Label ID="xsxx_xh" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">姓名：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xm" runat="server" Text="张明"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xm" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">性别：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xb" runat="server" Text="男"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xb" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">身份证号：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_sfzh" runat="server" Text="511322198301052377"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_sfzh" runat="server" Text=""></asp:Label></div></div>
         </div>
         
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">学历层次：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xlcc" runat="server" Text="高中"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xlcc" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">学院：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xy" runat="server" Text="信息工程学院"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xy" runat="server" Text=""></asp:Label></div></div>
         </div></div>
      <div  class="xsxx3"  >         <div class="layui-form-item" pane="">
           <label class="layui-form-label">专业：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zy" runat="server" Text="计算机应用"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zy" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">年级</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_nj" runat="server" Text="2017级"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_nj" runat="server" Text=""></asp:Label></div></div>
         </div>
      <div class="layui-form-item" pane="">
           <label class="layui-form-label">班级名称：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bjmc" runat="server" Text="计算机1701班"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bjmc" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">班主任：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text="胡元"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">班主任电话</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text="13708187788"></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></div></div>
         </div>
         <div class="layui-form-item" style="text-align:center">
           <button class="layui-btn" onclick="javascript:">返回操作首页</button>
@@ -186,80 +188,8 @@
         </div>
 
 
-        		<script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
-		<script>
-		    layui.use('element', function () {
-		        var $ = layui.jquery,
-					element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
-
-		        //触发事件
-		        var active = {
-		            tabAdd: function () {
-		                //新增一个Tab项
-		                element.tabAdd('demo', {
-		                    title: '新选项' + (Math.random() * 1000 | 0) //用于演示
-								,
-		                    content: '内容' + (Math.random() * 1000 | 0)
-		                })
-		            },
-		            tabDelete: function () {
-		                //删除指定Tab项
-		                element.tabDelete('demo', 2); //删除第3项（注意序号是从0开始计算）
-		            },
-		            tabChange: function () {
-		                //切换到指定Tab项
-		                element.tabChange('demo', 1); //切换到第2项（注意序号是从0开始计算）
-		            }
-		        };
-
-		        $('.site-demo-active').on('click', function () {
-		            var type = $(this).data('type');
-		            active[type] ? active[type].call(this) : '';
-		        });
-		    });
-
-
-		</script>
-        	<script>
-        	    layui.use(['form', 'layedit', 'laydate'], function () {
-        	        var form = layui.form(),
-					layer = layui.layer,
-					layedit = layui.layedit,
-					laydate = layui.laydate;
-
-        	        //创建一个编辑器
-        	        var editIndex = layedit.build('LAY_demo_editor');
-        	        //自定义验证规则
-        	        form.verify({
-        	            title: function (value) {
-        	                if (value.length < 5) {
-        	                    return '标题至少得5个字符啊';
-        	                }
-        	            },
-        	            pass: [/(.+){6,12}$/, '密码必须6到12位'],
-        	            content: function (value) {
-        	                layedit.sync(editIndex);
-        	            }
-        	        });
-
-        	        //监听提交
-        	        form.on('submit(demo1)', function (data) {
-        	            layer.alert(JSON.stringify(data.field), {
-        	                title: '最终的提交信息'
-        	            })
-        	            return false;
-        	        });
-        	        //手机设备的简单适配
-        	        var treeMobile = $('.site-tree-mobile'),
-						shadeMobile = $('.site-mobile-shade');
-        	        treeMobile.on('click', function () {
-        	            $('body').addClass('site-mobile');
-        	        });
-        	        shadeMobile.on('click', function () {
-        	            $('body').removeClass('site-mobile');
-        	        });
-        	    });
-		</script>
+    <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
+    <script src="../b_js/app/xsjbxx.js"></script>
 
 
 

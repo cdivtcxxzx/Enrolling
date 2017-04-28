@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Data.SqlClient;
 using System.Data;
 
+#region 类定义
 /// <summary>
 ///名称：班级预分配床位
 ///作者：张明
@@ -102,7 +103,8 @@ public class Fresh_Bed_Type{
     
 }
 
-//将datatable转换为实体list的类
+#endregion
+#region 将datatable转换为实体list的类
 //用法： List<类名> result = ModelConvertHelper<类名>.ConvertToModel(datatable);
 public class ModelConvertHelper<T> where T : new()
 {
@@ -173,18 +175,29 @@ public class ModelConvertHelper<T> where T : new()
             return modelList;
         }
 }
+#endregion
+
+
+
 /// <summary>
 ///dormitory 宿舍服务类
 /// </summary>
 public class dormitory
 {
-	public dormitory()
+    #region dormitory 宿舍服务类参数设置
+    public dormitory()
 	{
 		//
 		//TODO: 在此处添加构造函数逻辑
 		//
 	}
     public static bool logzt = true;//设置本类中方法是否记录日志,真为要记
+
+
+    #endregion
+
+
+    #region 2017.3.27日前写的宿舍获取类
     /// <summary>
     /// 功能描述：20学生是否已分配宿舍(学号):根据“学号”判断学生是否已经分配了宿舍，已分配返回true，否则返回false。
     /// 编写人：张明
@@ -1010,6 +1023,12 @@ public class dormitory
         List<Fresh_Bed_Class_Log> result = ModelConvertHelper<Fresh_Bed_Class_Log>.FillModel(update);
         return result;
     }
+
+
+    #endregion
+
+
+    #region 宿舍导入修改相关类
     /// <summary>
     /// 传入房间类型编码，收费项目代码，学年，房间布局简图，床位布局简图地址，创建或更新房间类型表,房间类型名称
     /// </summary>
@@ -1281,5 +1300,423 @@ public class dormitory
 
 
     }
-    
+
+
+
+    #endregion
+
+
+
+    #region 学生选择寝室页面及选寝室相关类
+
+
+    /// <summary>
+    /// 传入学生学号，获取学生基本信息
+    /// </summary>
+    /// <param name="PK_SNO">学号</param>
+    /// <returns>姓名，班级名称name</returns>
+    public static DataTable serch_xsxx(string PK_SNO)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+            bjbh = Sqlhelper.Serach("SELECT     TOP (1)  Base_STU.Name AS 学生姓名, Fresh_Class.Name AS 班级名称 FROM         Base_STU LEFT OUTER JOIN               Fresh_Class ON Base_STU.FK_Class_NO = Fresh_Class.PK_Class_NO where PK_SNO='" + PK_SNO + "'");
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_xsxx", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+
+
+    /// <summary>
+    /// 传入学生学号，获取班级编号
+    /// </summary>
+    /// <param name="PK_SNO">学号</param>
+   
+    /// <returns>班级编号id，班级名称name</returns>
+
+    public static DataTable serch_bjbh(string PK_SNO)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+           bjbh = Sqlhelper.Serach("SELECT     TOP (10) Fresh_Class.PK_Class_NO AS id, Fresh_Class.Name AS name FROM  Base_STU LEFT OUTER JOIN Fresh_Class ON Base_STU.FK_Class_NO = Fresh_Class.PK_Class_NO where PK_SNO='" + PK_SNO + "'");
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_bjbh", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+    /// <summary>
+    /// 传入学生学号，获取可分配的房间类型数据
+    /// </summary>
+    /// <param name="PK_SNO">学号</param>
+
+    /// <returns>datatable 类型编号，类型名称</returns>
+
+    public static DataTable serch_room_type(string PK_SNO)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+            bjbh = Sqlhelper.Serach("SELECT   distinct    TOP (50) Fresh_Room_Type.Type_NO AS id, Fresh_Room_Type.Type_Name AS name FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN     Fresh_Room LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_STU ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE     Base_STU.PK_SNO ='" + PK_SNO + "'  order by name desc");
+
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_room_type", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+    //楼栋SELECT  distinct   TOP (10)  Fresh_Dorm.Dorm_NO AS id, Fresh_Dorm.Name AS name FROM         Fresh_Bed LEFT OUTER JOIN                      Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type ON                       Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_STU ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE     (Base_STU.PK_SNO = '2') order by name desc
+
+    /// <summary>
+    /// 传入学生学号，获取可分配的宿舍数据
+    /// </summary>
+    /// <param name="PK_SNO">学号</param>
+
+    /// <returns>datatable 宿舍ID，宿舍名称</returns>
+
+    public static DataTable serch_dorm(string PK_SNO)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+            bjbh = Sqlhelper.Serach("SELECT  distinct   TOP (50)  Fresh_Dorm.Dorm_NO AS id, Fresh_Dorm.Name AS name FROM         Fresh_Bed LEFT OUTER JOIN                      Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type ON                       Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_STU ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE     (Base_STU.PK_SNO = '" + PK_SNO + "') order by name desc");
+
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_dorm", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+
+    //SELECT  distinct   TOP (10)  Fresh_Dorm.Dorm_NO AS id, Fresh_Dorm.Name AS name FROM         Fresh_Bed LEFT OUTER JOIN                      Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type ON                       Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_STU ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE     (Base_STU.PK_SNO = '2') and Fresh_Room_Type.Type_NO='001' order by name desc
+    /// <summary>
+    /// 传入学生学号，获取可分配的宿舍数据
+    /// </summary>
+    /// <param name="PK_SNO">学号</param>
+    /// <param name="dormid">楼栋ID</param>
+    /// <returns>datatable 楼栋ID，楼栋名称name，楼层列表floor,大照片地址，小照片地址</returns>
+
+    public static DataTable serch_dorm(string PK_SNO,string dormid)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+            bjbh = Sqlhelper.Serach("SELECT  distinct   TOP (50)  Fresh_Dorm.Dorm_NO AS id, Fresh_Dorm.Name AS name, Fresh_Room.Floor floor, Fresh_Dorm.img_big AS big, Fresh_Dorm.img_small AS small FROM         Fresh_Bed LEFT OUTER JOIN                      Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type ON                       Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_STU ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE     (Base_STU.PK_SNO = '" + PK_SNO + "') and Fresh_Dorm.Dorm_NO='" + dormid + "' order by name desc");
+
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_dorm", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+    /// <summary>
+    /// 传入学生学号，获取已分配的宿舍数据
+    /// </summary>
+    /// <param name="PK_SNO">学号</param>
+
+    /// <returns>datatable 楼栋ID，宿舍编号,楼栋名称name,大照片地址，小照片地址</returns>
+
+    public static DataTable serch_dormyfp(string PK_SNO)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+            bjbh = Sqlhelper.Serach("SELECT     TOP (1000)  Fresh_Dorm.PK_Dorm_NO AS 宿舍主键,Fresh_Dorm.Dorm_NO AS 宿舍编号, Fresh_Dorm.Name AS 宿舍名称, Fresh_Dorm.img_big AS 大图, Fresh_Dorm.img_small AS 小图 FROM         Fresh_Bed_Log LEFT OUTER JOIN         Fresh_Bed ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                   Fresh_Room LEFT OUTER JOIN             Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO where Fresh_Bed_Log.FK_SNO='" + PK_SNO + "'");
+
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_yfp", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+    /// <summary>
+    /// 传入学生学号，获取可分配的房间列表
+    /// </summary>
+    /// <param name="PK_SNO">学号</param>
+    /// <param name="dormid">楼栋ID</param>
+    /// <param name="floor">楼层</param>
+    /// <returns>datatable 房间ID，房间编号name</returns>
+
+    public static DataTable serch_room(string PK_SNO, string dormid,string floor)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+            bjbh = Sqlhelper.Serach("SELECT DISTINCT TOP (100) Fresh_Room.PK_Room_NO id, Fresh_Room.Room_NO name FROM         Fresh_Bed LEFT OUTER JOIN                  Fresh_Room LEFT OUTER JOIN                     Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type ON                       Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_STU ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE     (Base_STU.PK_SNO = '" + PK_SNO + "') AND (Fresh_Dorm.Dorm_NO = '"+dormid+"') AND (Fresh_Room.Floor = '"+floor+"') ORDER BY name DESC ");
+
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_floor", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+
+
+    /// <summary>
+    /// 传入房间主键，获取可分配的床位数据
+    /// </summary>
+    /// <param name="PK_SNO">房间主键</param>
+    /// <returns>datatable 床位ID，床位编号name，床位说明bz</returns>
+
+    public static DataTable serch_bed(string roomid)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+            bjbh = Sqlhelper.Serach("SELECT     TOP (50) PK_Bed_NO id, Bed_NO name, Bed_Name bz  FROM         Fresh_Bed WHERE     (FK_Room_NO = '"+roomid+"') order by Bed_NO");
+
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_bed", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+
+    /// <summary>
+    /// 传入床位主键，获取可分配的床位数据
+    /// </summary>
+    /// <param name="PK_Bed_NO">床位主键</param>
+    /// <returns>datatable 床位ID，床位编号name，床位说明bz</returns>
+
+    public static DataTable serch_bedbz(string bedid)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+            bjbh = Sqlhelper.Serach("SELECT     TOP (50) PK_Bed_NO id, Bed_NO name, Bed_Name bz  FROM         Fresh_Bed WHERE     (PK_Bed_NO = '" + bedid + "') order by Bed_NO");
+
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_bedbz", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+
+    //SELECT     TOP (10) Fresh_Bed.Bed_Name AS 床位, Fresh_Dorm.Name AS 楼栋名称, Fresh_Room.Room_NO AS 房间名称, Fresh_Bed_Log.FK_SNO FROM         Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO RIGHT OUTER JOIN                     Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO RIGHT OUTER JOIN                       Fresh_Bed_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Log.FK_Bed_NO where Fresh_Bed_Log.FK_SNO='2'
+    /// <summary>
+    /// 传入学号，获取已分配的床位，房间楼栋数据
+    /// </summary>
+    /// <param name="xh">学号</param>
+    /// <returns>datatable 床位，楼栋名称，房间名称</returns>
+
+    public static DataTable serch_yfpbed(string xh)
+    {
+        DataTable bjbh = new DataTable();
+        try
+        {
+            bjbh = Sqlhelper.Serach("SELECT     TOP (10) Fresh_Bed.Bed_Name AS 床位, Fresh_Dorm.Name AS 楼栋名称, Fresh_Room.Room_NO AS 房间名称,Fresh_Bed.Bed_NO AS 床位, Fresh_Bed_Log.FK_SNO FROM         Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO RIGHT OUTER JOIN                     Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO RIGHT OUTER JOIN                       Fresh_Bed_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Log.FK_Bed_NO where Fresh_Bed_Log.FK_SNO='" + xh + "'");
+
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_bedbz", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjbh;
+
+    }
+
+    /// <summary>
+    /// 传入学号，床位ID，操作员，写入寝室选择，并记录标记
+    /// </summary>
+    ///
+    ///  <param name="xh">学号，床位ID，操作员</param>
+    ///   <param name="bedid">床位ID</param>
+    ///    <param name="czy">操作员</param>
+    /// <returns>datatable 床位，楼栋名称，房间名称</returns>
+
+    public static string update_yfpbed(string xh,string bedid,string czy)
+    {
+        try
+        {
+        //guid 生成
+        string guid = Guid.NewGuid().ToString();
+        //检查是否已经选择寝室
+        DataTable bjbh = new DataTable();
+        
+        bjbh = Sqlhelper.Serach("SELECT     TOP (10) Fresh_Bed.Bed_Name AS 床位, Fresh_Dorm.Name AS 楼栋名称, Fresh_Room.Room_NO AS 房间名称,Fresh_Bed.Bed_NO AS 床位, Fresh_Bed_Log.FK_SNO FROM         Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO RIGHT OUTER JOIN                     Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO RIGHT OUTER JOIN                       Fresh_Bed_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Log.FK_Bed_NO where Fresh_Bed_Log.FK_SNO='" + xh + "'");
+
+        if (bjbh.Rows.Count > 0) return "0,选寝失败，该生已经选择过寝室了，【"+bjbh.Rows[0][1].ToString()+bjbh.Rows[0][2].ToString()+"，"+bjbh.Rows[0][3].ToString()+"床位】";
+        //更新寝室数据
+
+        if (Sqlhelper.ExcuteNonQuery("INSERT INTO [Fresh_Bed_Log]([PK_Bed_Log],[FK_Bed_NO],[FK_SNO],[Updater],[Update_DT])VALUES('" + guid + "','" + bedid + "','" + xh + "','" + czy + "','" + DateTime.Now.ToString() + "')") > 0)
+        {
+            return "1,寝室已选择";
+        }
+        else
+        {
+            return "0,选择寝室失败，请重试！";
+        }
+
+
+       }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_bedbz", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return "0,选择寝室失败，请重试！";
+
+    }
+    #endregion
+
+
+
+
+    #region 宿舍管理显示相关类
+    //获取房间详细信息
+    //SELECT     TOP (500) Fresh_Room.PK_Room_NO AS id, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room.Room_NO AS 房间编号, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别 FROM         Base_Campus RIGHT OUTER JOIN      Fresh_Dorm ON Base_Campus.Campus_NO = Fresh_Dorm.Campus_NO RIGHT OUTER JOIN      Fresh_Room ON Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO LEFT OUTER JOIN    Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type
+    /// <summary>
+    /// 传入学号，获取已分配的床位，房间楼栋数据
+    /// </summary>
+    /// <param name="xq">校区编号</param>
+/// <param name="dorm">公寓ID</param>
+   /// <param name="floor">楼层</param>
+   /// <param name="bjbh">班级编号</param>
+    /// <returns>datatable 房间ID，校区，楼栋名称，楼层，房间编号，房间类型，性别，班级名称，班主任</returns>
+
+
+
+    public static DataTable serch_yfpgl(string xq,string dorm,string floor ,string bjbh)
+    {
+        DataTable bjcx = new DataTable();
+        try
+        {
+            string sql = "SELECT     TOP (500) row_number() over (order by  Fresh_Room.PK_Room_NO desc)  AS 序号, Fresh_Room.PK_Room_NO AS id, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层,                 Fresh_Room.Room_NO AS 房间编号, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别, Fresh_Bed.PK_Bed_NO as 床位主键 ,Fresh_Bed.Bed_NO AS 床位编号,                 Fresh_Class.Name AS 班级名称 FROM         Fresh_Dorm FULL OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO FULL OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                  Fresh_Class INNER JOIN                   Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON     Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO where 1=1";
+            if (xq.Trim().Length > 0)
+            {
+                sql += " and  Base_Campus.Campus_NO='" + xq + "'";
+
+            }
+            if (dorm.Trim().Length > 0)
+            {
+                sql += " and  Fresh_Dorm.PK_Dorm_NO='" + dorm + "' ";
+
+            }
+            if (floor.Trim().Length > 0)
+            {
+                sql += " and Fresh_Room.Floor='" + floor + "' ";
+
+            }
+            if (bjbh.Trim().Length > 0)
+            {
+                sql += " and Fresh_Class.PK_Class_NO='" + bjbh + "' ";
+
+            }
+            bjcx = Sqlhelper.Serach(sql + " order by id");
+
+            new c_log().logAdd("dormitory.cs", "serch_yfpgl", sql, "2", "zhangming1");//测试
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_yfpgl", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+        }
+
+        return bjcx;
+
+    }
+    #endregion
+
 }

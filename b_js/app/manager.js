@@ -286,63 +286,62 @@ function find(){
         }
         var pk_batch_no = $("#pk_batch_no").val();
         var pk_staff_no = $("#pk_staff_no").val();
-
         var pk_affair_no=$('#admin-navbar-side').attr("pk_affair_no");//当前操作事务编号
 
-        //NO:11 校验学生迎新批次
+        clear_student_status();//清除历史信息
+        //NO:14&15&16 获取学生数据
         $.ajax({
             url: "appserver/manager.aspx",
             type: "get",
             dataType: "text",
-            data: { "cs": "check_student_in_freshbatch", "pk_batch_no": pk_batch_no, "pk_sno": pk_sno},
+            data: { "cs": "get_student","pk_sno": pk_sno},
             success: function (data) {
                 var json_data = JSON.parse(data);
                 if (json_data.code == 'success') {
-                    if(json_data.data==true){
-                        //NO:12 校校验操作员操作对象
+                    if(json_data.data!=null && json_data.data.length>0){
+                        for(var i=0;i<json_data.data.length;i++){
+                            if(json_data.data[i].name=='student'){
+                                $('#xs_xh').html(json_data.data[i].data.PK_SNO);
+                                $('#xs_xm').html(json_data.data[i].data.Name);
+                                $('#xs_sb').html(json_data.data[i].data.Gender_Code);
+                                $('#xs_sfz').html(json_data.data[i].data.ID_NO);
+                            }
+                            if(json_data.data[i].name=='spe'){
+                                $('#xs_xl').html(json_data.data[i].data.EDU_Level_Code);
+                                $('#xs_xy').html(json_data.data[i].data.FK_College_Code);
+                                $('#xs_zy').html(json_data.data[i].data.SPE_Name);
+                                $('#xs_nj').html(json_data.data[i].data.Year);
+                                $('#xs_bj').html('');
+                                $('#xs_bzr').html('');
+                            }
+                            if(json_data.data[i].name=='class'){
+                                $('#xs_bj').html(json_data.data[i].data.Name);
+                            }
+                            if(json_data.data[i].name=='counseller'){
+                                $('#xs_bzr').html(json_data.data[i].data.name);
+                                $('#xs_bzrdhhm').html(json_data.data[i].data.phone);
+                            }
+                        }
+                        //NO:11 校验学生迎新批次
                         $.ajax({
                             url: "appserver/manager.aspx",
                             type: "get",
                             dataType: "text",
-                            data: { "cs": "check_operator_object", "pk_affair_no": pk_affair_no,"pk_staff_no":pk_staff_no, "pk_sno": pk_sno},
+                            data: { "cs": "check_student_in_freshbatch", "pk_batch_no": pk_batch_no, "pk_sno": pk_sno},
                             success: function (data) {
                                 var json_data = JSON.parse(data);
                                 if (json_data.code == 'success') {
                                     if(json_data.data==true){
-                                        clear_student_status();//清除历史信息
-                                        //NO:14&15&16 获取学生数据
+                                        //NO:12 校校验操作员操作对象
                                         $.ajax({
                                             url: "appserver/manager.aspx",
                                             type: "get",
                                             dataType: "text",
-                                            data: { "cs": "get_student","pk_sno": pk_sno},
+                                            data: { "cs": "check_operator_object", "pk_affair_no": pk_affair_no,"pk_staff_no":pk_staff_no, "pk_sno": pk_sno},
                                             success: function (data) {
                                                 var json_data = JSON.parse(data);
                                                 if (json_data.code == 'success') {
-                                                    if(json_data.data!=null && json_data.data.length>0){
-                                                        for(var i=0;i<json_data.data.length;i++){
-                                                            if(json_data.data[i].name=='student'){
-                                                                $('#xs_xh').html(json_data.data[i].data.PK_SNO);
-                                                                $('#xs_xm').html(json_data.data[i].data.Name);
-                                                                $('#xs_sb').html(json_data.data[i].data.Gender_Code);
-                                                                $('#xs_sfz').html(json_data.data[i].data.ID_NO);
-                                                            }
-                                                            if(json_data.data[i].name=='spe'){
-                                                                $('#xs_xl').html(json_data.data[i].data.EDU_Level_Code);
-                                                                $('#xs_xy').html(json_data.data[i].data.FK_College_Code);
-                                                                $('#xs_zy').html(json_data.data[i].data.SPE_Name);
-                                                                $('#xs_nj').html(json_data.data[i].data.Year);
-                                                                $('#xs_bj').html('');
-                                                                $('#xs_bzr').html('');
-                                                            }
-                                                            if(json_data.data[i].name=='class'){
-                                                                $('#xs_bj').html(json_data.data[i].data.Name);
-                                                            }
-                                                            if(json_data.data[i].name=='counseller'){
-                                                                $('#xs_bzr').html(json_data.data[i].data.name);
-                                                                $('#xs_bzrdhhm').html(json_data.data[i].data.phone);
-                                                            }
-                                                        }
+                                                    if(json_data.data==true){
                                                         //NO:17 获取某学生现场迎新事务列表
                                                         $.ajax({
                                                             url: "appserver/manager.aspx",
@@ -455,7 +454,7 @@ function find(){
                                                             }
                                                         });
                                                     }else{
-                                                        alert('无法获取学号为'+pk_sno+' 的同学详细信息')
+                                                        alert('当前操作员在当前事务中不具备操作学号为'+pk_sno+' 同学的权限')
                                                     }
                                                 } else {
                                                     alert(json_data.message);
@@ -466,7 +465,7 @@ function find(){
                                             }
                                         });
                                     }else{
-                                        alert('当前操作员在当前事务中不具备操作学号为'+pk_sno+' 同学的权限')
+                                        alert('学号：'+pk_sno+' 同学不是本迎新批次的学生')
                                     }
                                 } else {
                                     alert(json_data.message);
@@ -477,7 +476,7 @@ function find(){
                             }
                         });
                     }else{
-                        alert('学号：'+pk_sno+' 同学不是本迎新批次的学生')
+                        alert('无法获取学号为'+pk_sno+' 的同学详细信息')
                     }
                 } else {
                     alert(json_data.message);
