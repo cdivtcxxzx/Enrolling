@@ -311,6 +311,54 @@ public class Power : System.Web.UI.Page
         return ex;
     }
     /// <summary>
+    /// 直接读取Session里的yhid和传入的列字段名参数返回筛选条件,为迎新系统使用编写
+    /// </summary>
+    /// <param name="colName">院系代码在相应表里的字段名</param>
+    /// <returns>返回能操作系部的筛选条件</returns>
+    public string GetFilterExpressionYX(string colName)
+    {
+        string yhid = "";
+        try
+        {
+            yhid = Session["UserName"].ToString();
+        }
+
+        catch
+        {
+            return null;
+        }
+        string ex = "1=2 or " + colName + "='' ";
+        //DataTable dt = Sqlhelper.Serach("select yhqx from yonghqx where yhid='" + yhid + "'");
+        string str = Session["yhqx"].ToString();
+        //return str;
+        if (str == "0" || str == "") { return ex; }
+        XDocument xml = null;
+        try
+        {
+            xml = XDocument.Parse(str);
+        }
+        catch (Exception exception)
+        {
+            xml = XDocument.Parse("<Root><能操作数据的系部></能操作数据的系部></Root>");
+            new c_log().logAdd("Power.cs", "GetFilterExpressionYX", exception.Message);
+        }
+        ArrayList al = new ArrayList();
+        DataTable yxdm = Sqlhelper.Serach("select College_NO,Name from Base_College");
+        string x = string.Empty;
+        if (xml.Element("Root").Element("能操作数据的系部") == null) { return ex; }
+        foreach (var temp in xml.Element("Root").Element("能操作数据的系部").Elements())
+        {
+            try
+            {
+                x = yxdm.Select("Name='" + temp.Name.ToString() + "'")[0][1].ToString();
+                //ex += " or "+colName+" like '%" + x.ToString() + "%' ";
+                ex += " or " + colName + " like '%" + x.ToString() + "%' ";
+            }
+            catch { }
+        }
+        return ex;
+    }
+    /// <summary>
     /// 通过yhid返回该用户能管理的系部代码集合
     /// </summary>
     /// <returns></returns>
