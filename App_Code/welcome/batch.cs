@@ -2175,7 +2175,7 @@ public class batch
             string sqlstr=null;
             if (username == null || username.Trim().Length == 0)
             {
-                sqlstr = "select * from yonghqx";
+                sqlstr = "select * from yonghqx order by xm";
             }
             else
             {

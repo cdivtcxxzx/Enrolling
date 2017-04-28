@@ -57,7 +57,7 @@ function batchchange(value){
                 for(i=0;json_data.data!=null && i<json_data.data.length;i++){
                     var item=json_data.data[i];
                     var str='';
-                    str=str+'<tr onclick="detail('+item.PK_Affair_NO+')"><td>'+item.Affair_Name+'</td><td>'+item.Affair_Type+'</td><td><a href="javascript:void(0);" onclick="add('+item.PK_Affair_NO+');" class="layui-btn layui-btn-small">添加操作员</a></td></tr>';
+                    str=str+'<tr onclick="detail('+item.PK_Affair_NO+')"><td>'+item.Affair_Name+'</td><td>'+item.Affair_Type+'</td><td><a href="javascript:void(0);" onclick="add('+item.PK_Affair_NO+',\''+item.Affair_Name+'\');" class="layui-btn layui-btn-small">添加操作员</a></td></tr>';
                     $('#affairlist').append(str);
                     if(i==0){
                         detail(item.PK_Affair_NO);
@@ -103,30 +103,25 @@ function detail(value){
         }
     });}
 
-function add(value){
-    console.log(value);
-
-
+function add(value,valuename){
+    $('#addstaff').attr('pk_affair_no',value);
+    $('#addstaff').attr('affairname',valuename);
 
     layui.use(['form'], function () {
         var $ = layui.jquery;
         layer.open({
-            title: '添加、修改',
+            title: '选择人员',
             type: 1,
             //area: ['800px', '600px'],
             content: $('#addstaff') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
-            , btn: ['按钮一', '按钮二', '按钮三']
-            , yes: function (index, layero) {
+            , btn: ['确定', '放弃']
+            , btn1: function (index, layero) {
                 //按钮【按钮一】的回调
+                var yhid=$('#namelist').val();
                 layer.close(index);
             }
             , btn2: function (index, layero) {
                 //按钮【按钮二】的回调
-
-                //return false 开启该代码可禁止点击该按钮关闭
-            }
-            , btn3: function (index, layero) {
-                //按钮【按钮三】的回调
 
                 //return false 开启该代码可禁止点击该按钮关闭
             }
@@ -149,9 +144,15 @@ function finduser(){
         dataType: "text",
         data: { "cs": "get_yonghqx","username":username},
         success: function (data) {
+            $('#namelist option').remove();
             var json_data = JSON.parse(data);
             if (json_data.code == 'success') {
-
+                for(i=0;json_data.data!=null && i<json_data.data.length;i++){
+                    var item=json_data.data[i];
+                    var str='';
+                    str=str+'<option value="'+item.yhid+'">'+item.xm+'</option>';
+                    $('#namelist').append(str);
+                }
             } else {
                 alert(json_data.message);
             }

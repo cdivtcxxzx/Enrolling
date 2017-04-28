@@ -240,13 +240,7 @@
             <input type="button"  id="find" value="查询" onclick="finduser()" />
         </div>
         <div>
-            <select name="city" multiple="multiple" size="20" style="width:95%;">
-                <option value=""></option>
-                <option value="0">北京</option>
-                <option value="1">上海</option>
-                <option value="2">广州</option>
-                <option value="3">深圳</option>
-                <option value="4">杭州</option>
+            <select name="namelist" id="namelist"  size="20" style="width:95%;">
             </select>
         </div>
     </div>
