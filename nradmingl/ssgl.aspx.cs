@@ -386,19 +386,8 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     protected string sycw(string isyn)
     {
         //剩余床位获取
-        if (isyn=="0")
-        {
-            return "<font color=red>未审核</font>";
-        }
-        if (isyn == "1")
-        {
-            return "<font color=green>已审核</font>";
-        }
-        if (isyn == "2")
-        {
-            return "<font color=red>被打回</font>";
-        }
-        return "未审核";
+
+        return dormitory.serch_sycw(isyn.Trim()).ToString();
     }
     protected string fpcw(string isyn)
     {
