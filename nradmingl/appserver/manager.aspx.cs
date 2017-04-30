@@ -632,10 +632,10 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                         affair_status = affairlog_list[j].Log_Status.Trim();
                                     }
                                 }
-                                if (!affair_status.Trim().Equals("已完成") && !affair_status.Trim().Equals("未完成"))
-                                {
-                                    affair_status = "错误状态";
-                                }
+                                //if (!affair_status.Trim().Equals("已完成") && !affair_status.Trim().Equals("未完成"))
+                                //{
+                                //    affair_status = "错误状态";
+                                //}
                                 var row = new
                                 {
                                     PK_Affair_NO = affair_list[i].PK_Affair_NO.Trim(),
@@ -643,6 +643,8 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                     Affair_Type = affair_list[i].Affair_Type.Trim(),
                                     Affair_Char = affair_list[i].Affair_CHAR,
                                     Affair_Status = affair_status,
+                                    StatusDisplay=affair_list[i].StatusDisplay.Trim(),
+                                    Affair_Order=affair_list[i].Affair_Order.ToString().Trim(),
                                     Oper_Url = oper_url
                                 };
                                 data.Add(row);

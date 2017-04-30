@@ -117,7 +117,7 @@
     <div class="admin-main">
         <blockquote class="layui-elem-quote">
             <i class="layui-icon">&#xe602;</i>迎新管理<i class="layui-icon">&#xe602;</i>信息确认
-            <span style="float: right">
+            <span style="float: right" id="btnback">
                 <a href="javascript:window.location.go(-1);" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe603;</i>
                 </a>
@@ -205,7 +205,7 @@
                             <asp:Label ID="lqxx_bzr" CssClass="layui-input" runat="server" Text=""></asp:Label>
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div class="layui-form-item" id="xx_confirm_div"   style="display:none;">
                         <span style="color: #ffd800; margin-bottom: 10px; display: inline-block;">请仔细核对个人信息，确认信息有无错误；信息有误请及时联系班主任！</span>
                         <div class="layui-input-block">
                             <input type="radio" name="xx_confirm" title="信息无误" value="1" checked="" />
@@ -216,7 +216,7 @@
             </div>
             <%--确认按钮--%>
             <div class="btn-confirm">
-                <asp:Button ID="btn_submit" CssClass="layui-btn layui-btn-big" runat="server" Text="提  交"/>
+                <asp:Button ID="btn_submit" CssClass="layui-btn layui-btn-big" style="display:none;"  runat="server" Text="提  交"/>
                 
             </div>
         </form>

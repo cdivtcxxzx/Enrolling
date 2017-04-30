@@ -355,10 +355,15 @@ function find(){
                                                                         var log=json_data.data[0];
                                                                         var detail=json_data.data[1];
                                                                         var status='';
+                                                                        var affair_oldstatus='';
                                                                         for(var i=0;i<log.length;i++){
                                                                             var Affair_Name=detail[i].Affair_Name;
                                                                             var Log_Status=log[i].Log_Status;
                                                                             status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
+                                                                            console.log(detail[i].PK_Affair_NO);
+                                                                            if(detail[i].PK_Affair_NO==pk_affair_no){
+                                                                                affair_oldstatus=Log_Status;
+                                                                            }
                                                                         }
                                                                         $('#affair_list').html(status);//学生事务状态列表
 
@@ -385,7 +390,7 @@ function find(){
                                                                                                     $('#iframeId').attr('src',url);//添加操作地址
                                                                                                     $('#iframeId').show();
                                                                                                     freshstatusflag=true;//定时查询事务操作是否完成标志
-                                                                                                    freshstatus(pk_affair_no,pk_sno);//查询事务操作是否完成
+                                                                                                    freshstatus(pk_affair_no,pk_sno,affair_oldstatus);//查询事务操作是否完成
                                                                                                 } else {
                                                                                                     alert(json_data.message);
                                                                                                 }
@@ -421,7 +426,7 @@ function find(){
                                                                                                             $('#iframeId').attr('src',url);//添加操作地址
                                                                                                             $('#iframeId').show();
                                                                                                             freshstatusflag=true;//定时查询事务操作是否完成标志
-                                                                                                            freshstatus(pk_affair_no,pk_sno);//查询事务操作是否完成
+                                                                                                            freshstatus(pk_affair_no,pk_sno,affair_oldstatus);//查询事务操作是否完成
                                                                                                         } else {
                                                                                                             alert(json_data.message);
                                                                                                         }
@@ -494,7 +499,7 @@ function find(){
 }
 
 //定时查询并所需事务是否完成操作
-function freshstatus(pk_affair_no,pk_sno)
+function freshstatus(pk_affair_no,pk_sno,affair_oldstatus)
 {
     if(freshstatusflag){
         console.log(pk_affair_no+'  '+pk_sno);
@@ -514,7 +519,7 @@ function freshstatus(pk_affair_no,pk_sno)
                         var status='';
 
                         for(var i=0;i<log.length;i++){
-                            if($.trim(log[i].FK_Affair_NO)== $.trim(pk_affair_no) && $.trim(log[i].Log_Status)=='已完成'){
+                            if($.trim(log[i].FK_Affair_NO)== $.trim(pk_affair_no) && $.trim(log[i].Log_Status)!=$.trim(affair_oldstatus)){
                                 finishflag=true;
                             }
                             var Affair_Name=detail[i].Affair_Name;
@@ -526,9 +531,9 @@ function freshstatus(pk_affair_no,pk_sno)
                 }
                 if(finishflag==false){
                     //要求继续刷新事务状态
-                    timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 800);
+                    timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"','"+affair_oldstatus+"')", 800);
                 }else{
-                    alert('已进行过此操作');
+                    //alert('已进行过此操作');
                     freshstatusflag=false;
                     timeid=null;
                 }

@@ -138,6 +138,8 @@ public class fresh_affair
     public string Parameters;//其他操作参数
     public string precondition1Message;//使能条件1提示信息
     public string precondition2Message;//使能条件2提示信息
+    public int Affair_Order;//显示序列
+    public string StatusDisplay;//是否显示状态
 }
 
 /// <summary>
@@ -626,6 +628,8 @@ public class batch
                         row.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
                         row.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
                         row.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
+                        row.Affair_Order = int.Parse(dt.Rows[i]["Affair_Order"] is DBNull ? "0" : dt.Rows[i]["Affair_Order"].ToString());//显示序列
+                        row.StatusDisplay = dt.Rows[i]["StatusDisplay"].ToString().Trim();//是否显示状态
                         result.Add(row);
                     }                
                 }
@@ -774,6 +778,8 @@ public class batch
                 result.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
                 result.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
                 result.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
+                result.Affair_Order = int.Parse(dt.Rows[i]["Affair_Order"] is DBNull ? "0" : dt.Rows[i]["Affair_Order"].ToString());//显示序列
+                result.StatusDisplay = dt.Rows[i]["StatusDisplay"].ToString().Trim();//是否显示状态
             }
         }
         catch (Exception ex)
@@ -931,10 +937,11 @@ public class batch
             {
                 return null;
             }
-            
-            string sqlstr = "select c.* from vw_fresh_student_base a,Fresh_Batch b,Fresh_Affair c "+
-                            " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO "+
-                            " and  a.PK_SNO=@cs1 and (upper(c.Affair_CHAR)='INTERACTIVE' or upper(c.Affair_CHAR)='STATUS') and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
+
+            string sqlstr = "select c.* from vw_fresh_student_base a,Fresh_Batch b,Fresh_Affair c " +
+                            " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO " +
+                            " and  a.PK_SNO=@cs1 and (upper(c.Affair_CHAR)='INTERACTIVE' or upper(c.Affair_CHAR)='STATUS') and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')" +
+                            " order by c.Affair_Order";
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
             if (dt != null && dt.Rows.Count>0)
             {
@@ -956,6 +963,8 @@ public class batch
                     row.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
                     row.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
                     row.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
+                    row.Affair_Order = int.Parse(dt.Rows[i]["Affair_Order"] is DBNull ? "0" : dt.Rows[i]["Affair_Order"].ToString());//显示序列
+                    row.StatusDisplay = dt.Rows[i]["StatusDisplay"].ToString().Trim();//是否显示状态
                     result.Add(row);
                 }
             }
@@ -2102,6 +2111,8 @@ public class batch
                     row.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
                     row.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
                     row.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
+                    row.Affair_Order = int.Parse(dt.Rows[i]["Affair_Order"] is DBNull ? "0" : dt.Rows[i]["Affair_Order"].ToString());//显示序列
+                    row.StatusDisplay = dt.Rows[i]["StatusDisplay"].ToString().Trim();//是否显示状态
                     result.Add(row);
                 }
             }

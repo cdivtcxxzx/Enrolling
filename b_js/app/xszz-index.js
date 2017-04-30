@@ -23,10 +23,12 @@
                         var Affair_Type = json_data.data[i].Affair_Type;
                         var Affair_Char = json_data.data[i].Affair_Char;
                         var Affair_Status = json_data.data[i].Affair_Status;
+                        var StatusDisplay = json_data.data[i].StatusDisplay;
                         var Oper_Url = json_data.data[i].Oper_Url;
                         Affair_Char=Affair_Char.toUpperCase();
+                        StatusDisplay=StatusDisplay.toUpperCase();
                         var content = "";
-                        if (Affair_Char== 'STATUS') {
+                        if (Affair_Char== 'STATUS' || StatusDisplay=='NO') {
                             content = "<div class=\"layui-form-item\" pane=\"\" style=\"min-height: 56px\">"
                             +" <label class=\"layui-form-label\" style=\"width: 150px;\">"
                             +"<a class=\"layui-btn\" style=\"width:100%;\" href=\"javascript:void(0)\" onclick='action(\""+PK_Affair_NO+"\",\""+pk_sno+"\")'>"+Affair_Name + "</a></label>"

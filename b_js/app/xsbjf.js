@@ -23,11 +23,19 @@ function load(){
         alert("无效的参数");
         return;
     }
-    var pk_staff_no= $("#pk_staff_no").val();
-    if ($.trim(pk_staff_no).length > 0 ) {
-        $('#btnback').hide();
-        $('#cancel').hide();
+
+    var pk_staff_no= $("#pk_staff_no");
+    if (!pk_staff_no)
+    {
+        //alert("null or undefined or NaN");
+    }else{
+        pk_staff_no= $("#pk_staff_no").val();
+        if ($.trim(pk_staff_no).length > 0 ) {
+            $('#btnback').hide();
+            $('#cancel').hide();
+        }
     }
+
 
     //NO:14&15&16 获取学生数据
     $.ajax({
@@ -66,11 +74,14 @@ function load(){
                                 var single_nomust=json_data.data.single_nomust;//选交单项
                                 var multiple_nomust=json_data.data.multiple_nomust;//选交多项
                                 var showed=false;
+
+                                $('#contents').append('<div class="layui-form-item">');
+
                                 for(i=0;single_must!=null && i<single_must.length;i++){
                                     itemlist=single_must[i];
-                                    var str='<div class="layui-form-item" pane="" style="margin-bottom:0px;" id=_sm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].PK_Fee_Item+'>';
+                                    var str='<div class="layui-inline" style="" id=_sm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].PK_Fee_Item+'>';
                                     str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
-                                    str=str+'<div class="layui-input-block">';
+                                    str=str+'<div class="layui-input-inline">';
                                     str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><label>'+fillstr(itemlist[0].Fee_Amount)+'元</label></div>';
                                     str=str+'</div>';
                                     str=str+'</div>';
@@ -82,9 +93,9 @@ function load(){
 
                                 for(i=0;multiple_must!=null && i<multiple_must.length;i++){
                                     var itemlist=multiple_must[i];
-                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=_mm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].PK_Fee_Item+'">';
+                                    var str='<div class="layui-inline" style="" id=_mm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].PK_Fee_Item+'">';
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'*</label>';
-                                    str=str+'<div class="layui-input-block">';
+                                    str=str+'<div class="layui-input-inline">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
                                     for(var j=0;j<itemlist.length;j++){
                                         if(j==0){
@@ -93,22 +104,7 @@ function load(){
                                             str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                         }
                                     }
-                                    str=str+'</select>';
-                                    str=str+'<div class="layui-unselect layui-form-select layui-form-selected">';
-                                    str=str+'<div class="layui-select-title">';
-                                    str=str+'<input type="text" placeholder="请选择" value="" readonly="" class="layui-input layui-unselect">';
-                                    str=str+'<i class="layui-edge"></i>';
-                                    str=str+'</div>';
-                                    str=str+'<dl class="layui-anim layui-anim-upbit">';
-                                    for(var j=0;j<itemlist.length;j++){
-                                        if(j==0){
-                                            str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="layui-this">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
-                                        }else{
-                                            str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
-                                        }
-                                    }
-                                    str=str+'</dl>';
-                                    str=str+'</div>';
+                                    str=str+'</select>';;
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
@@ -119,27 +115,15 @@ function load(){
 
                                 for(i=0;single_nomust!=null && i<single_nomust.length;i++){
                                     itemlist=single_nomust[i];
-                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=snm'+itemlist[0].Fee_Code+' ref-data="none">';
+                                    var str='<div class="layui-inline" style="" id=snm'+itemlist[0].Fee_Code+' ref-data="none">';
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
-                                    str=str+'<div class="layui-input-block">';
+                                    str=str+'<div class="layui-input-inline">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
                                     str=str+'<option value="none" >暂不选择</option>';
                                     for(var j=0;j<itemlist.length;j++){
                                         str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                     }
                                     str=str+'</select>';
-                                    str=str+'<div class="layui-unselect layui-form-select layui-form-selected">';
-                                    str=str+'<div class="layui-select-title">';
-                                    str=str+'<input type="text" placeholder="请选择" value="请选择" readonly="" class="layui-input layui-unselect">';
-                                    str=str+'<i class="layui-edge"></i>';
-                                    str=str+'</div>';
-                                    str=str+'<dl class="layui-anim layui-anim-upbit">';
-                                    str=str+'<dd lay-value="none" class="layui-this">暂不选择</dd>';
-                                    for(var j=0;j<itemlist.length;j++){
-                                        str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
-                                    }
-                                    str=str+'</dl>';
-                                    str=str+'</div>';
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
@@ -148,29 +132,29 @@ function load(){
                                     $('#sure').show();
                                 }
 
+                            //<div class="layui-form-item">
+                            //    <div class="layui-inline" style="">
+                            //        <label class="layui-form-label">政治面貌：</label>
+                            //        <div class="layui-input-inline">
+                            //            <select name="xsxx_zzmm" id="xsxx_zzmm" runat="server"  lay-search="">
+                            //                <option value="">请选择</option>
+                            //                <option value="1">中共党员</option>
+                            //            </select>
+                            //        </div>
+                            //    </div>
+                            // </div>
+
                                 for(i=0;multiple_nomust!=null && i<multiple_nomust.length;i++){
                                     var itemlist=multiple_nomust[i];
-                                    var str='<div class="layui-form-item" style="margin-top:0px;margin-bottom:0px;" id=mnm'+itemlist[0].Fee_Code+' ref-data="none">';
+                                    var str='<div class="layui-inline" style="" id=mnm'+itemlist[0].Fee_Code+' ref-data="none">';
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
-                                    str=str+'<div class="layui-input-block">';
+                                    str=str+'<div class="layui-input-inline">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
                                     str=str+'<option value="none" >暂不选择</option>';
                                     for(var j=0;j<itemlist.length;j++){
                                         str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                     }
                                     str=str+'</select>';
-                                    str=str+'<div class="layui-unselect layui-form-select layui-form-selected">';
-                                    str=str+'<div class="layui-select-title">';
-                                    str=str+'<input type="text" placeholder="请选择" value="请选择" readonly="" class="layui-input layui-unselect">';
-                                    str=str+'<i class="layui-edge"></i>';
-                                    str=str+'</div>';
-                                    str=str+'<dl class="layui-anim layui-anim-upbit">';
-                                    str=str+'<dd lay-value="none" class="layui-this">暂不选择</dd>';
-                                    for(var j=0;j<itemlist.length;j++){
-                                        str=str+'<dd lay-value="'+itemlist[j].PK_Fee_Item+'" class="">'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</dd>';
-                                    }
-                                    str=str+'</dl>';
-                                    str=str+'</div>';
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
@@ -178,6 +162,8 @@ function load(){
                                     count=count+1;
                                     $('#sure').show();
                                 }
+
+                                $('#contents').append('</div>');
 
                                 $('#contents').attr('fee_id_list',fee_id_list.join(","));
 

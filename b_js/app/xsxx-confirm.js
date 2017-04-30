@@ -2,11 +2,36 @@
     layui.use(['form', 'layer', 'jquery'], function () {
         var $ = layui.jquery;
 
+        var pk_staff_no= $("#pk_staff_no");
+        if (!pk_staff_no)
+        {
+            //alert("null or undefined or NaN");
+        }else{
+            pk_staff_no= $("#pk_staff_no").val();
+            if ($.trim(pk_staff_no).length > 0 ) {
+                $('#btnback').hide();
+            }
+        }
+
         var server_msg=$("#server_msg").val();
         if ($.trim(server_msg).length > 0 ) {
             alert(server_msg);
-            return;
+            if(server_msg=='您的信息已经确认,无需再次确认'){
+                if(pk_staff_no && $.trim(pk_staff_no).length > 0){
+
+                }else{
+                    //history.go(-1);
+                    $('#xx_confirm_div').hide();
+                    $('#btn_submit').hide();
+
+                }
+            }
+            //return;
+        }else{
+            $('#xx_confirm_div').show();
+            $('#btn_submit').show();
         }
+
 
         var form = layui.form();
         layer = layui.layer;
@@ -46,6 +71,8 @@
                     var json_data = JSON.parse(data);
                     if (json_data.code == 'success') {
                         layer.msg('确认成功！');
+                        $('#btn_submit').hide();
+                        $('#xx_confirm_div').hide();
                     } else if(json_data.code='failure'){
                         layer.msg(json_data.message);
                     }   
@@ -89,17 +116,7 @@
                     }//end if length > 0
                 }//end code=success
             }//end success
-        });//end ajax     
-
-        //后端信息弹出信息
-        var msg = $("#hidden_alert_msg").val();
-        if (msg!=null&&msg.length != 0) {
-            layer.alert(msg);
-            $("#hidden_alert_msg").val('');
-        }
-
-
-
+        });//end ajax
 
     });//end layui.use
 })();

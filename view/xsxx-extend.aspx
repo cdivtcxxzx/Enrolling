@@ -24,7 +24,7 @@
     <div class="admin-main">
         <blockquote class="layui-elem-quote">
             <i class="layui-icon">&#xe602;</i>迎新管理<i class="layui-icon">&#xe602;</i>完善个人信息
-            <span style="float: right">
+            <span style="float: right" id="btnback">
                 <a href="" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe603;</i>
                 </a>
@@ -71,7 +71,6 @@
                         <option value="1">中共党员</option>
                     </select>
                 </div>
-
             </div>
 
             <div class="layui-inline" style="">

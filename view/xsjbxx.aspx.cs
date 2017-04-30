@@ -50,6 +50,7 @@ public partial class view_xsjbxx : System.Web.UI.Page
         #endregion
 
         hidden_pk_sno.Value = pk_sno;
+        this.pk_staff_no.Value = pk_staff_no;
         if (!IsPostBack)
         {
             #region 信息清空    

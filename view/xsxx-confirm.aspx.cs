@@ -64,10 +64,10 @@ public partial class view_xsxx_confirm : System.Web.UI.Page
         //检查是否确认
         if (organizationService.isStuConfrim(pk_sno))
         {
-            server_msg.Value = "您的信息已经确认！点击确定后回到首页！";
+            server_msg.Value = "您的信息已经确认,无需再次确认";
             //todo..跳转
-            btn_submit.Visible = false;
-            Response.Write("<script>setTimeout('history.go(-1);',300);</script>"); 
+            //btn_submit.Visible = false;
+            //Response.Write("<script>setTimeout('history.go(-1);',300);</script>"); 
         }
 
     }

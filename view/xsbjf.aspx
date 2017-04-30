@@ -113,7 +113,7 @@
      <asp:HiddenField ID="server_msg" Value="" runat="server" />
 
 
-     <div class="xsxx2" id="contents" >   
+     <div  id="contents" >   
          <div class="layui-form-item" pane="" style="margin-bottom:0px;">
          </div>
 
