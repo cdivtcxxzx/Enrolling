@@ -75,10 +75,10 @@ function load(){
                                 var multiple_nomust=json_data.data.multiple_nomust;//选交多项
                                 var showed=false;
 
-                                $('#contents').append('<div class="layui-form-item">');
-
+                                $('#contents').append('<table>');
                                 for(i=0;single_must!=null && i<single_must.length;i++){
                                     itemlist=single_must[i];
+                                    $('#contents').append('<tr><td>');
                                     var str='<div class="layui-inline" style="" id=_sm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].PK_Fee_Item+'>';
                                     str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
                                     str=str+'<div class="layui-input-inline">';
@@ -86,6 +86,7 @@ function load(){
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
+                                    $('#contents').append('</tr></td>');
                                     fee_id_list[count]='_sm'+itemlist[0].Fee_Code;
                                     count=count+1;
                                     $('#sure').show();
@@ -93,6 +94,7 @@ function load(){
 
                                 for(i=0;multiple_must!=null && i<multiple_must.length;i++){
                                     var itemlist=multiple_must[i];
+                                    $('#contents').append('<tr><td>');
                                     var str='<div class="layui-inline" style="" id=_mm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].PK_Fee_Item+'">';
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'*</label>';
                                     str=str+'<div class="layui-input-inline">';
@@ -108,6 +110,7 @@ function load(){
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
+                                    $('#contents').append('</tr></td>');
                                     fee_id_list[count]='_mm'+itemlist[0].Fee_Code;
                                     count=count+1;
                                     $('#sure').show();
@@ -115,6 +118,7 @@ function load(){
 
                                 for(i=0;single_nomust!=null && i<single_nomust.length;i++){
                                     itemlist=single_nomust[i];
+                                    $('#contents').append('<tr><td>');
                                     var str='<div class="layui-inline" style="" id=snm'+itemlist[0].Fee_Code+' ref-data="none">';
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-inline">';
@@ -127,25 +131,15 @@ function load(){
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
+                                    $('#contents').append('</tr></td>');
                                     fee_id_list[count]='snm'+itemlist[0].Fee_Code;
                                     count=count+1;
                                     $('#sure').show();
                                 }
 
-                            //<div class="layui-form-item">
-                            //    <div class="layui-inline" style="">
-                            //        <label class="layui-form-label">政治面貌：</label>
-                            //        <div class="layui-input-inline">
-                            //            <select name="xsxx_zzmm" id="xsxx_zzmm" runat="server"  lay-search="">
-                            //                <option value="">请选择</option>
-                            //                <option value="1">中共党员</option>
-                            //            </select>
-                            //        </div>
-                            //    </div>
-                            // </div>
-
                                 for(i=0;multiple_nomust!=null && i<multiple_nomust.length;i++){
                                     var itemlist=multiple_nomust[i];
+                                    $('#contents').append('<tr><td>');
                                     var str='<div class="layui-inline" style="" id=mnm'+itemlist[0].Fee_Code+' ref-data="none">';
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-inline">';
@@ -158,12 +152,12 @@ function load(){
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
+                                    $('#contents').append('</tr></td>');
                                     fee_id_list[count]='mnm'+itemlist[0].Fee_Code;
                                     count=count+1;
                                     $('#sure').show();
                                 }
-
-                                $('#contents').append('</div>');
+                                $('#contents').append('</table>');
 
                                 $('#contents').attr('fee_id_list',fee_id_list.join(","));
 

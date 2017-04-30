@@ -1059,6 +1059,12 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                             result.message = "成功";
                             result.data = jg;
                         }
+                        else
+                        {
+                            result.code = "success";
+                            result.message = "成功";
+                            result.data = null;
+                        }
                     }
                 }
                 #endregion
