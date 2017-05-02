@@ -1126,6 +1126,43 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region  学生现场报到（学号）
+                if (cs.Trim().Equals("set_freshstudent_register"))
+                {
+                    string pk_sno = Request.Form.Get("pk_sno");
+                    string pk_affair_no = Request.Form.Get("pk_affair_no");
+                    string pk_staff_no = Request.Form.Get("pk_staff_no");
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0  && pk_affair_no != null && pk_affair_no.Trim().Length != 0 )
+                    {
+                        #region 检查操作权限
+                        string session_pk_sno = null;
+                        string session_pk_staff_no = null;
+                        if (Session["pk_sno"] != null)
+                        {
+                            session_pk_sno = Session["pk_sno"].ToString();
+                        }
+                        if (Session["pk_staff_no"] != null)
+                        {
+                            session_pk_staff_no = Session["pk_staff_no"].ToString();
+                        }
+
+                        batch batch_logic = new batch();
+                        affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsjbxx_9086");
+                        if (!jg.isauth)
+                        {
+                            throw new Exception(jg.msg);
+                        }
+                        #endregion
+
+                        batch_logic.set_freshstudent_register(pk_sno);
+                        batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system");
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = null;
+                    }
+                }
+                #endregion
 
             }
         }
