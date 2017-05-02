@@ -175,7 +175,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
         //导入逻辑
 
 #region 文件上传,初始数据准备
-        //初始变量，总记录数
+        //初始变量，总记录数(成功记录数)
         int zs = 0;
         //用于后期删除行的记录信息变量
         string delrow = "";
@@ -186,7 +186,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
         
 
         var Upload = new UploadFile();
-        Upload.Save("FileUpload1", "寝室预分配数据上传", Session["Name"].ToString());
+        Upload.Save("FileUpload1", this.upfile, Session["Name"].ToString());
         //上传的控件名，存储名，谁上传的
 #endregion
         if (Upload.Error)
@@ -254,6 +254,12 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                                 {
                                     x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + ex.Message + "";
                                 }
+
+
+
+
+
+                                #region 删除号逻辑，不用更改
                                 if (cgjj > 0)
                                 {
                                     //记录要删除的行号
@@ -272,6 +278,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                                 {
                                     x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + "写入数据库失败!";
                                 }
+                                #endregion
 
                         }
                         #endregion

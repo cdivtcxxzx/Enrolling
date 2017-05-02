@@ -238,8 +238,8 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
         DataTable xsxxok = dormitory.serch_xsxx(xsxx_xh.Text);
         if (xsxxok.Rows.Count > 0)
         {
-            this.xsxx_xm.Text = xsxxok.Rows[0][0].ToString();
-            this.xsxx_bj.Text = xsxxok.Rows[0][1].ToString();
+            this.xsxx_xm.Text = xsxxok.Rows[0]["姓名"].ToString();
+            this.xsxx_bj.Text = xsxxok.Rows[0]["班级名称"].ToString();
         }
 
     }
