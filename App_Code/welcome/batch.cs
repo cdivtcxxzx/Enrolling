@@ -1943,9 +1943,14 @@ public class batch
             }
 
             //验证学生是否具备该事务操作权限
-            flag = batch_logic.check_student_affair_condition(PK_SNO, PK_AFFAIR_NO);//验证该生本事务操作前置条件是否满足
+            flag = true;
+            if (PK_STAFF_NO == null || PK_STAFF_NO.Trim().Length == 0)
+            {
+                flag = batch_logic.check_student_affair_condition(PK_SNO, PK_AFFAIR_NO);//验证该生本事务操作前置条件是否满足
+            }
             if (!flag)
             {
+                //前置条件不满足
                 fresh_affair data1 = batch_logic.get_affair(PK_AFFAIR_NO);
                 if (data1 != null)
                 {

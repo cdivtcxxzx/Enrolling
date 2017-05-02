@@ -421,8 +421,6 @@ function find(){
                                                                                                         var json_data = JSON.parse(data);
                                                                                                         if (json_data.code == 'success') {
                                                                                                             var url=json_data.data.OPER_URL+'?pk_affair_no='+pk_affair_no+'&pk_sno='+pk_sno+'&pk_staff_no='+pk_staff_no;
-                                                                                                            console.log(url);
-                                                                                                            alert(url);
                                                                                                             $('#iframeId').attr('src',url);//添加操作地址
                                                                                                             $('#iframeId').show();
                                                                                                             freshstatusflag=true;//定时查询事务操作是否完成标志
