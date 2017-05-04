@@ -3,11 +3,24 @@
         var $ = layui.jquery;
         var form = layui.form();
         layer = layui.layer;
-        
-        
+
+        var pk_staff_no= $("#pk_staff_no");
+        if (!pk_staff_no)
+        {
+            //alert("null or undefined or NaN");
+        }else{
+            pk_staff_no= $("#pk_staff_no").val();
+            if ($.trim(pk_staff_no).length > 0 ) {
+                $('#btnback').hide();
+                $('#backmain').hide();
+            }
+        }
+
         var pk_sno = $("#hidden_pk_sno").val();//初始值由服务器回传网页时生成
 
         if (pk_sno == null || pk_sno == '') { layer.alert('学号不正确！'); return; }
+
+
 
         $.ajax({
             url: "../../nradmingl/appserver/stu_server.aspx",

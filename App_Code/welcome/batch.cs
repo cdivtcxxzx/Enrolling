@@ -138,6 +138,8 @@ public class fresh_affair
     public string Parameters;//其他操作参数
     public string precondition1Message;//使能条件1提示信息
     public string precondition2Message;//使能条件2提示信息
+    public int Affair_Order;//显示序列
+    public string StatusDisplay;//是否显示状态
 }
 
 /// <summary>
@@ -626,6 +628,8 @@ public class batch
                         row.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
                         row.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
                         row.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
+                        row.Affair_Order = int.Parse(dt.Rows[i]["Affair_Order"] is DBNull ? "0" : dt.Rows[i]["Affair_Order"].ToString());//显示序列
+                        row.StatusDisplay = dt.Rows[i]["StatusDisplay"].ToString().Trim();//是否显示状态
                         result.Add(row);
                     }                
                 }
@@ -774,6 +778,8 @@ public class batch
                 result.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
                 result.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
                 result.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
+                result.Affair_Order = int.Parse(dt.Rows[i]["Affair_Order"] is DBNull ? "0" : dt.Rows[i]["Affair_Order"].ToString());//显示序列
+                result.StatusDisplay = dt.Rows[i]["StatusDisplay"].ToString().Trim();//是否显示状态
             }
         }
         catch (Exception ex)
@@ -931,10 +937,11 @@ public class batch
             {
                 return null;
             }
-            
-            string sqlstr = "select c.* from vw_fresh_student_base a,Fresh_Batch b,Fresh_Affair c "+
-                            " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO "+
-                            " and  a.PK_SNO=@cs1 and (upper(c.Affair_CHAR)='INTERACTIVE' or upper(c.Affair_CHAR)='STATUS') and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
+
+            string sqlstr = "select c.* from vw_fresh_student_base a,Fresh_Batch b,Fresh_Affair c " +
+                            " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO " +
+                            " and  a.PK_SNO=@cs1 and (upper(c.Affair_CHAR)='INTERACTIVE' or upper(c.Affair_CHAR)='STATUS') and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')" +
+                            " order by c.Affair_Order";
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
             if (dt != null && dt.Rows.Count>0)
             {
@@ -956,6 +963,8 @@ public class batch
                     row.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
                     row.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
                     row.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
+                    row.Affair_Order = int.Parse(dt.Rows[i]["Affair_Order"] is DBNull ? "0" : dt.Rows[i]["Affair_Order"].ToString());//显示序列
+                    row.StatusDisplay = dt.Rows[i]["StatusDisplay"].ToString().Trim();//是否显示状态
                     result.Add(row);
                 }
             }
@@ -1020,7 +1029,7 @@ public class batch
     ///功能描述：
     ///1、	根据“学号”查找该学生所有“事务类型”为“现场”或“两者”的“学生迎新事务”列表，列表为空返回null。否则第2步。
     ///2、	扫描“学生迎新事务”列表中的每一项。
-    ///3、	如果扫描项中的“迎新事务状态”等于“完成”，则扫描下一项。否则检查该项对应的“迎新事务定义”中的“返回迎新事务状态调用函数”（该函数返回“完成”、“未完成”、“开始”之一）是否为空，如果为空则扫描下一项，否则调用“返回迎新事务状态调用函数”并将调用值赋值给“迎新事务状态”并保持到数据库中，然后扫描下一项。
+    ///3、	如果扫描项中的“迎新事务状态”等于“完成”，则扫描下一项。否则检查该项对应的“迎新事务定义”中的“返回迎新事务状态调用函数”（该函数返回“未完成”等）是否为空，如果为空则扫描下一项，否则调用“返回迎新事务状态调用函数”并将调用值赋值给“迎新事务状态”并保持到数据库中，然后扫描下一项。
     ///4、	返回“学生迎新事务”列表。
     ///编写人：胡元
     ///参数：
@@ -1046,7 +1055,7 @@ public class batch
             //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
             //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='SCHOOL' or upper(c.Affair_Type)='BOTH')";
             string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
-                            "(case when d.Log_Status is null then '未完成' else d.Log_Status end) as Log_Status," +
+                            "(case when d.Log_Status is null then c.InitStatus else d.Log_Status end) as Log_Status," +
                             "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
                             " from vw_fresh_student_base a,Fresh_Batch b," +
                             "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
@@ -1068,7 +1077,8 @@ public class batch
                     row.Updater = dt.Rows[i]["Updater"].ToString().Trim();//更新者
                     row.Update_DT = dt.Rows[i]["Update_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Update_DT"].ToString());//更新时间
 
-                    if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    //if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    if (dt.Rows[i]["Log_Status"].ToString().Trim() != "已完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)             
                     {
                         /*Call_Function格式，web服务器url地址?方法名称，例如：http://localhost:3893/test/WebService.asmx?test_Log_Status*/
                         try
@@ -1220,7 +1230,7 @@ public class batch
     ///功能描述：
     ///1、	根据“学号”查找该学生所有“事务类型”为“学生”或“两者”的“学生迎新事务”列表，列表为空返回null。否则第2步。
     ///2、	扫描“学生迎新事务”列表中的每一项。
-    ///3、	如果扫描项中的“迎新事务状态”等于“完成”，则扫描下一项。否则检查该项对应的“迎新事务定义”中的“返回迎新事务状态调用函数”（该函数返回“完成”、“未完成”、“开始”之一）是否为空，如果为空则扫描下一项，否则调用“返回迎新事务状态调用函数”并将调用值赋值给“迎新事务状态”并保持到数据库中，然后扫描下一项。
+    ///3、	如果扫描项中的“迎新事务状态”等于“完成”，则扫描下一项。否则检查该项对应的“迎新事务定义”中的“返回迎新事务状态调用函数”（该函数返回“未完成”等）是否为空，如果为空则扫描下一项，否则调用“返回迎新事务状态调用函数”并将调用值赋值给“迎新事务状态”并保持到数据库中，然后扫描下一项。
     ///4、	返回“学生迎新事务”列表。
     ///编写人：胡元
     ///参数：
@@ -1246,7 +1256,7 @@ public class batch
             //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
             //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
             string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
-                "(case when d.Log_Status is null then '未完成' else d.Log_Status end) as Log_Status," +
+                "(case when d.Log_Status is null then c.InitStatus else d.Log_Status end) as Log_Status," +
                 "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
                 " from vw_fresh_student_base a,Fresh_Batch b," +
                 "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
@@ -1268,7 +1278,8 @@ public class batch
                     row.Updater = dt.Rows[i]["Updater"].ToString().Trim();//更新者
                     row.Update_DT = dt.Rows[i]["Update_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Update_DT"].ToString());//更新时间
 
-                    if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    //if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    if (dt.Rows[i]["Log_Status"].ToString().Trim() != "已完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
                     {
                         try
                         {
@@ -1932,9 +1943,14 @@ public class batch
             }
 
             //验证学生是否具备该事务操作权限
-            flag = batch_logic.check_student_affair_condition(PK_SNO, PK_AFFAIR_NO);//验证该生本事务操作前置条件是否满足
+            flag = true;
+            if (PK_STAFF_NO == null || PK_STAFF_NO.Trim().Length == 0)
+            {
+                flag = batch_logic.check_student_affair_condition(PK_SNO, PK_AFFAIR_NO);//验证该生本事务操作前置条件是否满足
+            }
             if (!flag)
             {
+                //前置条件不满足
                 fresh_affair data1 = batch_logic.get_affair(PK_AFFAIR_NO);
                 if (data1 != null)
                 {
@@ -2102,6 +2118,8 @@ public class batch
                     row.Parameters = dt.Rows[i]["Parameters"].ToString().Trim();//其他操作参数
                     row.precondition1Message = dt.Rows[i]["precondition1Message"].ToString().Trim();//使能条件1信息提示
                     row.precondition2Message = dt.Rows[i]["precondition2Message"].ToString().Trim();//使能条件2信息提示
+                    row.Affair_Order = int.Parse(dt.Rows[i]["Affair_Order"] is DBNull ? "0" : dt.Rows[i]["Affair_Order"].ToString());//显示序列
+                    row.StatusDisplay = dt.Rows[i]["StatusDisplay"].ToString().Trim();//是否显示状态
                     result.Add(row);
                 }
             }

@@ -3,6 +3,17 @@
         var $ = layui.jquery;
         layer = layui.layer;
 
+        var pk_staff_no= $("#pk_staff_no");
+        if (!pk_staff_no)
+        {
+            //alert("null or undefined or NaN");
+        }else{
+            pk_staff_no= $("#pk_staff_no").val();
+            if ($.trim(pk_staff_no).length > 0 ) {
+                $('#btnback').hide();
+            }
+        }
+
         //后端信息弹出信息
         var msg = $("#server_msg").val();
         if (msg!=null && msg.length != 0) {
@@ -142,12 +153,32 @@
 
             //监听提交
             form.on('submit(demo1)', function (data) {
-                console.log(data.field);
+                //console.log(data.field);
+
+                var cloneObj = function (obj) {
+                    var str, newobj = obj.constructor === Array ? [] : {};
+                    if (typeof obj !== 'object') {
+                        return;
+                    } else if (window.JSON) {
+                        str = JSON.stringify(obj), //序列化对象
+                            newobj = JSON.parse(str); //还原
+                    } else {
+                        for (var i in obj) {
+                            newobj[i] = typeof obj[i] === 'object' ? cloneObj(obj[i]) : obj[i];
+                        }
+                    }
+                    return newobj;
+                };
+                var newdata = cloneObj(data.field);
+                delete newdata.__VIEWSTATE;
+                delete newdata.__EVENTVALIDATION;
+                //console.log(newdata);
+
                 $.ajax({
                     url: "../../nradmingl/appserver/stu_server.aspx?type=xsxx_update",
                     type: "post",
                     dataType: "text",
-                    data: data.field,
+                    data: newdata,
                     success: function (data) {
                         var json_data = JSON.parse(data);
                         if (json_data.code == 'success') {

@@ -71,6 +71,9 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 
             #endregion
 
+            this.pk_staff_no.Value = pk_staff_no;
+            this.pk_affair_no.Value = pk_affair_no;
+
             //根据学号设置绑定各控件值
 
             if (xsxx_xh.Text.Length == 0)
@@ -235,8 +238,8 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
         DataTable xsxxok = dormitory.serch_xsxx(xsxx_xh.Text);
         if (xsxxok.Rows.Count > 0)
         {
-            this.xsxx_xm.Text = xsxxok.Rows[0][0].ToString();
-            this.xsxx_bj.Text = xsxxok.Rows[0][1].ToString();
+            this.xsxx_xm.Text = xsxxok.Rows[0]["姓名"].ToString();
+            this.xsxx_bj.Text = xsxxok.Rows[0]["班级名称"].ToString();
         }
 
     }
@@ -246,6 +249,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
         try
         {
             string czy = xsxx_xh.Text;
+            string pk_affair_no = this.pk_affair_no.Value;
             string bedid = "";
             if (Request["pk_staff_no"] != null)
             {
@@ -260,7 +264,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             if (tsxx.Split(',')[0] == "1")
             {
                 batch x = new batch();
-                x.set_affairlog(xsxx_xh.Text, czy, tsxx.Split(',')[1], czy);
+                x.set_affairlog(xsxx_xh.Text, pk_affair_no, tsxx.Split(',')[1], "system");
 
                 //写入操作记录
                 string urlok = HttpContext.Current.Request.Url.PathAndQuery;

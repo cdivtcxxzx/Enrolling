@@ -46,7 +46,9 @@ public partial class view_xsxx_extend : System.Web.UI.Page
         #endregion
         //get post获取学号
         //string pk_sno = "2";
-        hidden_pk_sno.Value = pk_sno.Trim();
+        this.hidden_pk_sno.Value = pk_sno.Trim();
+        this.pk_affair_no.Value = pk_affair_no.Trim();
+        this.pk_staff_no.Value = pk_staff_no;
 
 
         //获取民族

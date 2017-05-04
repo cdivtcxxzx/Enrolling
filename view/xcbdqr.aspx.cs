@@ -5,14 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class view_xsjbxx : System.Web.UI.Page
+public partial class view_xcbdqr : System.Web.UI.Page
 {
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        //PK_Affair_NO  事务编号
-        //PK_SNO        学生编号
-        //PK_Staff_NO   操作员编号
-
         #region 检查操作权限
         string pk_sno = Request.QueryString["pk_sno"];//获取学号
         if (pk_sno == null || pk_sno.Trim().Length == 0)
@@ -49,40 +46,17 @@ public partial class view_xsjbxx : System.Web.UI.Page
         }
         #endregion
 
-        this.hidden_pk_sno.Value = pk_sno;
+        #region 
+        this.pk_sno.Value = pk_sno;//其值应由会话中来，在学生登陆成功后被赋予初值
+        this.pk_affair_no.Value = pk_affair_no;//其值应由xszz-index.aspx或defaultczy.aspx传参过来
         this.pk_staff_no.Value = pk_staff_no;
-        if (!IsPostBack)
+        List<fresh_affair> data=batch_logic.get_freshstudent_affair_list(this.pk_sno.Value);
+        if (data == null || data.Count == 0)
         {
-            #region 信息清空    
-            //照片地址
-            xszpxx.ImageUrl = "";
-            //学号
-            xsxx_xh.Text = pk_sno;
-            //姓名
-            xsxx_xm.Text = "";
-            //性别
-            xsxx_xb.Text = "";
-            //身份证
-            xsxx_sfzh.Text = "";
-            //学历层次
-            xsxx_xlcc.Text = "";
-            //学院
-            xsxx_xy.Text = "";
-            //专业 
-            xsxx_zy.Text = "";
-            //年级
-            xsxx_nj.Text = "";
-            //班级名称
-            xsxx_bjmc.Text = "";
-            //班主任
-            xsxx_bzr.Text = "";
-            //班主任电话
-            xsxx_bzrdh.Text = "";
-            #endregion
-            
-            
-
+            throw new Exception("获取学生迎新事务数据错误");
         }
+        this.pk_batch_no.Value = data[0].FK_Batch_NO;
 
+        #endregion
     }
 }

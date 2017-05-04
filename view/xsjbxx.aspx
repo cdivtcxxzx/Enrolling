@@ -65,7 +65,7 @@
     		<blockquote class="layui-elem-quote">
           
             <i class="layui-icon">&#xe602;</i>迎新管理>>学生基本信息
-            <span style="float:right">
+            <span style="float:right"  id="btnback">
             
 				
                  <a href="javascript:window.location.go(-1);" class="layui-btn layui-btn-small">
@@ -109,6 +109,7 @@
 <form class="layui-form layui-form-pane" runat="server" action="">
     <asp:HiddenField ID="hidden_pk_sno" runat="server" />
     <asp:HiddenField ID="server_msg" runat="server" />
+    <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
     <div class="xsxx1"><div class="layui-form-item" pane="">
           <label class="layui-form-label" style="height:94%;display:none">照片：</label>
           <div class="layui-input-block" style="margin-left: 10px!important">
@@ -172,7 +173,7 @@
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></div></div>
         </div>
         <div class="layui-form-item" style="text-align:center">
-          <button class="layui-btn" onclick="javascript:">返回操作首页</button>
+          <button class="layui-btn" id="backmain" onclick="javascript:">返回操作首页</button>
         </div>
 
      </div>

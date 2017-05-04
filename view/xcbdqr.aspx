@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xsbjf.aspx.cs" Inherits="view_xsbjf" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xcbdqr.aspx.cs" Inherits="view_xcbdqr" %>
 
 
 <!DOCTYPE html>
@@ -64,12 +64,12 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>迎新管理>>选择费用
-            <span style="float:right;" id="btnback">            				
+            <i class="layui-icon">&#xe602;</i>迎新管理>>现场报到确认
+<%--            <span style="float:right;" id="btnback">            				
                  <a href="javascript:window.location.go(-1);" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
-           </span>
+           </span>--%>
 				
 			</blockquote>
  <!--顶部提示及导航OVER-->
@@ -137,45 +137,12 @@
                 </div>
          </div>
 
-         <div class="layui-form-item" pane="" style="margin-top:6px;margin-bottom:0px;">
-             <label class="layui-form-label">款项</label>
-               <div class="layui-input-block">
-                <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
-                    <asp:Label ID="Label1" runat="server" Text="金额(单位:元)"></asp:Label></div>
-                </div>
-         </div>
-
- <%--        <div class="layui-form-item" pane="" style="margin-bottom: 0px; height: 36px">
-             <div style="float: left; height: 36px; margin-top: 3px; width: 109px">
-                 <input style="text-align: center;" type="checkbox" name="like1[write]" lay-skin="primary" title="教材费" checked="">
-             </div>
-             <div class="layui-input-inline">
-                 <select name="modules" lay-verify="required" lay-search="">
-                     <option value="">请选择</option>
-                     <option value="1">layer</option>
-                     <option value="2">form</option>
-                     <option value="3">layim</option>
-
-                 </select><div class="layui-unselect layui-form-select">
-                     <div class="layui-select-title">
-                         <input type="text" placeholder="请选择" value="" class="layui-input layui-unselect"><i class="layui-edge"></i></div>
-                     <dl class="layui-anim layui-anim-upbit">
-                         <dd lay-value="1" class="">layer</dd>
-                         <dd lay-value="2" class="">form</dd>
-                         <dd lay-value="3" class="">layim</dd>
-                     </dl>
-                 </div>
-             </div>
-
-
-         </div>--%>
 
      </div>
 
     <div style="clear:both;"></div>
     <div class="xsxx2" style="text-align:center;">
-        <a href="javascript:void(0);" onclick="sure();" class="layui-btn layui-btn-small" id="sure" style="display:none;">确定</a>
-        <a href="javascript:void(0);" onclick="cancel();" class="layui-btn layui-btn-small" style="margin-left:18px;" id="cancel">返回</a>
+        <a href="javascript:void(0);" onclick="sure();" class="layui-btn layui-btn-small" id="sure" >确定现场报到</a>
     </div>
     </form>
 </div>        
@@ -185,7 +152,7 @@
 
         </div>
         <script type="text/javascript" src="../b_js/jquery.min2.js"></script>
-        <script type="text/javascript" src="../b_js/app/xsbjf.js"></script>
+        <script type="text/javascript" src="../b_js/app/xcbdqr.js"></script>
 
         <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
 

@@ -24,12 +24,15 @@
 </head>
 <body>
     <form id="form1" class="layui-form layui-form-pane" runat="server">
+                    <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
+                    <asp:HiddenField ID="pk_affair_no" Value="" runat="server" />
+
          <div class="admin-main">
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
             <i class="layui-icon">&#xe602;</i>迎新管理>>预分配宿舍
-            <span style="float:right">
+            <span style="float:right" id="btnback">
             
 				
                  <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
@@ -229,7 +232,7 @@
 
 <div class="layui-form-item" style="text-align:center">
           <asp:Button ID="sc_qsxz" runat="server"  class="layui-btn"  onclick="qsxz_Click" Text="确认寝室选择" />
-&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="Button1" runat="server"  class="layui-btn"  onclick="qsxz_Click2" Text="返回操作首页" />
+&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="backmain" runat="server"  class="layui-btn"  onclick="qsxz_Click2" Text="返回操作首页" />
         </div>
 
 
@@ -244,6 +247,20 @@
         <asp:HiddenField ID="hiddenSno" runat="server" />
 
     </form>
-    
+
+   <script type="text/javascript" src="../b_js/jquery.min2.js"></script>
+
+    <script type="text/javascript">
+        var pk_staff_no = $("#pk_staff_no");
+        if (!pk_staff_no) {
+            //alert("null or undefined or NaN");
+        } else {
+            pk_staff_no = $("#pk_staff_no").val();
+            if ($.trim(pk_staff_no).length > 0) {
+                $('#btnback').hide();
+                $('#backmain').hide();
+            }
+        }
+    </script>
 </body>
 </html>

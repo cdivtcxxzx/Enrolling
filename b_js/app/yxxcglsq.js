@@ -110,7 +110,7 @@ function add(value,valuename){
     layui.use(['form'], function () {
         var $ = layui.jquery;
         layer.open({
-            title: '选择人员',
+            title: '事务名称：'+valuename,
             type: 1,
             //area: ['800px', '600px'],
             content: $('#addstaff') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
@@ -118,16 +118,48 @@ function add(value,valuename){
             , btn1: function (index, layero) {
                 //按钮【按钮一】的回调
                 var yhid=$('#namelist').val();
-                layer.close(index);
+                if(yhid){
+                    var xm=$('#namelist').find("option:selected").text();
+                    console.log(yhid+'_'+xm);
+                    layer.close(index);
+                    $('#namelist option').remove();
+
+                    layer.open({
+                        title: '事务名称：'+valuename,
+                        type: 1,
+                        //area: ['800px', '600px'],
+                        content: $('#addstaff_content') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                        , btn: ['确定', '放弃']
+                        , btn1: function (index, layero) {
+                            //按钮【按钮一】的回调
+                            layer.close(index);
+                        }
+                        , btn2: function (index, layero) {
+                            //按钮【按钮二】的回调
+                            layer.close(index);
+
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                        , cancel: function () {
+                            //右上角关闭回调
+                            //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                    });
+                }else{
+                    alert('请选择人员');
+                }
+
+
             }
             , btn2: function (index, layero) {
                 //按钮【按钮二】的回调
-
+                layer.close(index);
+                $('#namelist option').remove();
                 //return false 开启该代码可禁止点击该按钮关闭
             }
             , cancel: function () {
                 //右上角关闭回调
-
+                $('#namelist option').remove();
                 //return false 开启该代码可禁止点击该按钮关闭
             }
         });

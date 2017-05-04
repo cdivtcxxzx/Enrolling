@@ -107,17 +107,19 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
 
             #endregion
             #region 数据筛选及ＳＱＬ数据源设置
-
-            DataTable count = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
-            if (count.Rows.Count > 0)
+            if (!IsPostBack)
             {
-                ViewState["count"] = count.Rows.Count.ToString();
+                DataTable count = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
+                if (count.Rows.Count > 0)
+                {
+                    ViewState["count"] = count.Rows.Count.ToString();
+                }
+                else
+                {
+                    ViewState["count"] = "0";
+                }
+                GridView1.DataBind();
             }
-            else
-            {
-                ViewState["count"] = "0";
-            }
-            GridView1.DataBind();
 
             try
             {
@@ -386,19 +388,9 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     protected string sycw(string isyn)
     {
         //剩余床位获取
-        if (isyn=="0")
-        {
-            return "<font color=red>未审核</font>";
-        }
-        if (isyn == "1")
-        {
-            return "<font color=green>已审核</font>";
-        }
-        if (isyn == "2")
-        {
-            return "<font color=red>被打回</font>";
-        }
-        return "未审核";
+
+        //return dormitory.serch_sycw(isyn.Trim()).ToString();
+        return "";
     }
     protected string fpcw(string isyn)
     {

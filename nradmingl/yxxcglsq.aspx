@@ -234,15 +234,43 @@
     </form>
 
     <div id="addstaff" style="display: none;">
-        <div>
-            <label >员工姓名</label>
-            <input type="text"  id="name" value="" />
-            <input type="button"  id="find" value="查询" onclick="finduser()" />
-        </div>
-        <div>
-            <select name="namelist" id="namelist"  size="20" style="width:95%;">
-            </select>
-        </div>
+            <div>
+                <label>操作员姓名</label>
+                <input type="text" id="name" value="" />
+                <input type="button" id="find" value="查询" onclick="finduser()" />
+            </div>
+            <div>
+                <select name="namelist" id="namelist" size="20" style="width: 95%;">
+                </select>
+            </div>
+    </div>
+    <div id="addstaff_content" style="display: none;">
+        <table align="center">
+            <tr>
+                <td>可选学院</td>
+                <td></td>
+                <td>已选学院</td>
+            </tr>
+            <tr>
+                <td>
+                <select name="c1" id="c1" size="8">
+                    <option>abc</option>
+                    <option>abc</option>
+                </select>
+                </td>
+                <td>
+                  <input type="button" id="add" value=">>" />
+                    <br /><br /><br />
+                  <input type="button" id="remove" value="<<" />
+                </td>
+                <td>
+                <select name="c2" id="c2" size="8" >
+                    <option>abc</option>
+                    <option>abc</option>
+                </select>
+                </td>
+            </tr>
+        </table>
     </div>
 </body>
 
