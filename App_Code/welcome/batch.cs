@@ -2024,7 +2024,7 @@ public class batch
 
 
     /// <summary>
-    ///功能名称：获取迎新批次目录
+    ///功能名称：获取当前有效的迎新批次目录
     ///功能描述：
     ///返回当前时间介于“迎新工作开始时间”和“迎新工作结束时间”之间迎新批次数据集合。否则返回null。
     ///编写人：胡元
@@ -2209,6 +2209,488 @@ public class batch
             try
             {
                 new c_log().logAdd("batch.cs", "get_affair_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+
+    /// <summary>
+    ///功能名称：获取有效的学院列表
+    ///功能描述：
+    ///获取用户列表
+    ///编写人：胡元
+    ///参数：
+    ///创建时间：2017-5-2
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    /// </summary>
+    /// <returns></returns>
+    public System.Data.DataTable get_collegelist()
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select * from Base_College where enabled='true' order by name";
+
+            result = Sqlhelper.Serach(sqlstr);
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_college", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+
+    /// <summary>
+    ///功能名称：修改迎新现场操作员权限
+    ///功能描述：
+    ///获取用户列表
+    ///编写人：胡元
+    ///参数：
+    ///创建时间：2017-5-2
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    /// </summary>
+    /// <returns></returns>
+    public bool modify_operator_auth(string PK_BATCH_NO, string PK_STAFF_NO, string PK_Affair_NO, string[] COLLEGELIST)
+    {
+        bool result = false;
+        try
+        {
+            if (PK_BATCH_NO == null || PK_BATCH_NO.Trim().Length == 0 || PK_Affair_NO == null || PK_Affair_NO.Trim().Length == 0
+                || PK_STAFF_NO == null || PK_STAFF_NO.Trim().Length == 0)
+            {
+                return result;
+            }
+            int jg = 0;
+            string sqlstr = "select * from Base_Staff"
+                            + " where PK_Staff_NO=@cs1";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_STAFF_NO.Trim()));
+            if (dt != null && dt.Rows.Count == 1)
+            {
+            }
+            else
+            {
+                sqlstr = "select * from yonghqx"
+                            + " where yhid=@cs1";
+                dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_STAFF_NO.Trim()));
+                if (dt == null || dt.Rows.Count == 0)
+                {
+                    throw new Exception("无效的用户编号");
+                }
+
+                string xm = "";
+                if (dt.Rows[0]["xm"] != null && !Convert.IsDBNull(dt.Rows[0]["xm"]))
+                {
+                    xm = dt.Rows[0]["xm"].ToString().Trim();
+                }
+
+                sqlstr = "insert into Base_Staff (PK_Staff_NO,Phone,FK_College_NO,Name,Gender,Password) values ("
+                    + "@cs1,'','',@cs2,'','')";
+                jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_STAFF_NO.Trim()), new SqlParameter("cs2", xm.Trim()));
+                if (jg == 0)
+                {
+                    throw new Exception("insert错误");
+                }
+            }
+
+
+            //根据PK_STAFF_NO和PK_BATCH_NO查看Fresh_Operator_AUTH是否有记录，没有即添加，否则取出PK_STAFF_NO对应的PK_Operator_AUTH
+            sqlstr = "select * from Fresh_Operator_AUTH"
+                            + " where FK_Fresh_Batch=@cs1 and FK_Staff_NO=@cs2";
+            dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", PK_STAFF_NO.Trim()));
+
+            string PK_Operator_AUTH=null;
+            if (dt!=null && dt.Rows.Count==1)
+            {
+                PK_Operator_AUTH=dt.Rows[0]["PK_Operator_AUTH"].ToString().Trim();
+            }else{
+                PK_Operator_AUTH = Guid.NewGuid().ToString().Trim();
+                sqlstr = "insert into Fresh_Operator_AUTH (PK_Operator_AUTH,FK_Fresh_Batch,FK_Staff_NO,Enabled) values (" 
+                    +"  @cs1,@cs2,@cs3,'enabled')";
+                jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_Operator_AUTH.Trim()), new SqlParameter("cs2", PK_BATCH_NO.Trim()),
+                new SqlParameter("cs3", PK_STAFF_NO.Trim()));
+                if(jg==0){
+                    throw new Exception("insert错误");
+                }
+            }
+            //根据PK_Operator_AUTH和PK_Affair_NO查看Fresh_Affair_AUTH，没有即添加，否则取出PK_Affair_AUTH
+            string PK_Affair_AUTH = null;
+            sqlstr = "select * from Fresh_Affair_AUTH"
+                   + " where FK_Operator_AUTH=@cs1 and FK_Affair_NO=@cs2";
+            dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_Operator_AUTH.Trim()), new SqlParameter("cs2", PK_Affair_NO.Trim()));
+            if (dt != null && dt.Rows.Count == 1)
+            {
+                PK_Affair_AUTH = dt.Rows[0]["PK_Affair_AUTH"].ToString().Trim();
+            }
+            else
+            {
+                PK_Affair_AUTH = Guid.NewGuid().ToString().Trim();
+                sqlstr = "insert into Fresh_Affair_AUTH (PK_Affair_AUTH,FK_Operator_AUTH,FK_Affair_NO) values ("
+                    + "  @cs1,@cs2,@cs3)";
+                jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_Affair_AUTH.Trim()), new SqlParameter("cs2", PK_Operator_AUTH.Trim()),
+                new SqlParameter("cs3", PK_Affair_NO.Trim()));
+                if (jg == 0)
+                {
+                    throw new Exception("insert错误");
+                }
+            }
+            //根据PK_Affair_AUTH删除Fresh_OPER_Scope中的记录，并根据COLLEGELIST添加记录
+            sqlstr = "delete from Fresh_OPER_Scope where FK_Affair_AUTH =@cs1";
+            Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_Affair_AUTH.Trim()));
+            bool isnull = true;
+            for (int i = 0; COLLEGELIST != null && COLLEGELIST.Length > i; i++)
+            {
+                if (COLLEGELIST[i] != null && COLLEGELIST[i].Trim().Length > 0)
+                {
+                    isnull = false;
+                    string PK_OPER_Scope = Guid.NewGuid().ToString().Trim();
+                    sqlstr = "insert into Fresh_OPER_Scope (PK_OPER_Scope,FK_Affair_AUTH,FK_College_NO) values ("
+                                        + "  @cs1,@cs2,@cs3)";
+                    jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_OPER_Scope.Trim()), new SqlParameter("cs2", PK_Affair_AUTH.Trim()),
+                    new SqlParameter("cs3", COLLEGELIST[i].Trim()));
+                    if (jg == 0)
+                    {
+                        throw new Exception("insert错误");
+                    }
+                }
+            }
+
+            if (isnull)
+            {
+                sqlstr = "delete from Fresh_Affair_AUTH"
+                       + " where FK_Operator_AUTH=@cs1 and FK_Affair_NO=@cs2";
+                Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_Operator_AUTH.Trim()), new SqlParameter("cs2", PK_Affair_NO.Trim()));
+            }
+
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "modify_operator_auth", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+
+
+
+    //某迎新批次全部或某学院数据
+    public System.Data.DataTable get_batch_collage(string PK_BATCH_NO, string College_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            if (College_NO == null || College_NO.Trim().Length == 0) 
+            {
+                sqlstr = "select distinct collage,College_NO from vw_fresh_student_base where FK_Fresh_Batch=@cs1 order by collage";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+            }
+            else
+            {
+                sqlstr = "select distinct collage,College_NO from vw_fresh_student_base where FK_Fresh_Batch=@cs1 and College_NO=@cs2 order by collage";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_collage", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //某迎新批次全校或某学院专业数据
+    public System.Data.DataTable get_batch_spe(string PK_BATCH_NO, string College_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+
+            if (College_NO == null || College_NO.Trim().Length == 0)
+            {
+                sqlstr = "select college_no,collage,spe_code,spe_name  from vw_fresh_student_base"
+                        + " where FK_Fresh_Batch=@cs1"
+                        + " GROUP BY college_no,collage,spe_code,spe_name order by SPE_Name";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+            }
+            else
+            {
+                sqlstr = "select college_no,collage,spe_code,spe_name  from vw_fresh_student_base"
+                        + " where FK_Fresh_Batch=@cs1  and College_NO=@cs2"
+                        + " GROUP BY college_no,collage,spe_code,spe_name order by SPE_Name";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
+            }
+
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_spe", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //某迎新批次全校或某学院学生男、女性别数据
+    public System.Data.DataTable get_batch_student_gender(string PK_BATCH_NO, string College_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            if (College_NO == null || College_NO.Trim().Length == 0)
+            {
+                sqlstr = "select b.Item_Name as gender,count(*) as gendercount from vw_fresh_student_base a,Base_Code_Item b"
+                        + " where a.Gender_Code=b.Item_NO and b.FK_Code='002' and a.FK_Fresh_Batch=@cs1 group by b.Item_Name";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+            }
+            else
+            {
+                sqlstr = "select b.Item_Name as gender,count(*) as gendercount from vw_fresh_student_base a,Base_Code_Item b"
+                        + " where a.Gender_Code=b.Item_NO and b.FK_Code='002' and a.FK_Fresh_Batch=@cs1 and a.College_NO=@cs2 group by b.Item_Name";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_student_gender", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+    //某迎新批次全校或某学院已设置班级数据
+    public System.Data.DataTable get_batch_spe_hasclass(string PK_BATCH_NO, string College_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            if (College_NO == null || College_NO.Trim().Length == 0)
+            {
+                sqlstr = "select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
+                        +"c.PK_Class_NO,c.Name as ClassName "
+                        +" from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
+                        +" where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
+                        +" and FK_Fresh_Batch=@cs1"
+                        +" GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
+                        +" c.PK_Class_NO,c.Name";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+            }
+            else
+            {
+                sqlstr = "select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
+                        + "c.PK_Class_NO,c.Name as ClassName "
+                        + " from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
+                        + " where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
+                        + " and FK_Fresh_Batch=@cs1 and College_NO=@cs2"
+                        + " GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
+                        + " c.PK_Class_NO,c.Name";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_spe_class", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //某迎新批次全校或某学院未设置班级的专业
+    public System.Data.DataTable get_batch_spe_nohasclass(string PK_BATCH_NO, string College_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            if (College_NO == null || College_NO.Trim().Length == 0)
+            {
+                sqlstr = "select * from "
+                        +" (select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name"
+                        +" from vw_fresh_student_base a,Fresh_spe b"
+                        +" where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] "
+                        +" and FK_Fresh_Batch=@cs1"
+                        +" GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name) as tb1"
+                        +" where tb1.SPE_Code not in "
+                        +" (select tb2.SPE_Code from "
+                        +"(select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,"
+                        +" d.Campus_Name,c.PK_Class_NO,c.Name as ClassName"
+                        +" from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
+                        +" where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
+                        + " and FK_Fresh_Batch=@cs1"
+                        +" GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
+                        +" c.PK_Class_NO,c.Name) as tb2)";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+            }
+            else
+            {
+                sqlstr = "select * from "
+                        + " (select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name"
+                        + " from vw_fresh_student_base a,Fresh_spe b"
+                        + " where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] "
+                        + " and FK_Fresh_Batch=@cs1 and College_NO=@cs2"
+                        + " GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name) as tb1"
+                        + " where tb1.SPE_Code not in "
+                        + " (select tb2.SPE_Code from "
+                        + "(select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,"
+                        + " d.Campus_Name,c.PK_Class_NO,c.Name as ClassName"
+                        + " from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
+                        + " where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
+                        + " and FK_Fresh_Batch=@cs1 and College_NO=@cs2"
+                        + " GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
+                        + " c.PK_Class_NO,c.Name) as tb2)";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_spe_class", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //某迎新批次全校或某学院班级中有学生的班级数据
+    public System.Data.DataTable get_batch_class_hasstudent(string PK_BATCH_NO, string College_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            if (College_NO == null || College_NO.Trim().Length == 0)
+            {
+                sqlstr = "select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
+                        +" from vw_fresh_student_base a,Fresh_Class b"
+                        +" where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Class_NO=b.PK_Class_NO and a.FK_Fresh_Batch=@cs1"
+                        +" GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+            }
+            else
+            {
+                sqlstr = "select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
+                        + " from vw_fresh_student_base a,Fresh_Class b"
+                        + " where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Class_NO=b.PK_Class_NO and a.FK_Fresh_Batch=@cs1 and a.College_NO=@cs2"
+                        + " GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_student_gender", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //某迎新批次全校或某学院存在未分班学生的专业数据
+    public System.Data.DataTable get_batch_spe_nohasclassstudent(string PK_BATCH_NO, string College_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            if (College_NO == null || College_NO.Trim().Length == 0)
+            {
+                sqlstr = "select a.[year],a.Collage,a.SPE_Name,count(*) as studentcount"
+                        +" from vw_fresh_student_base a"
+                        +" where (a.FK_Class_NO is null or len(rtrim(ltrim(a.FK_Class_NO)))=0) and a.FK_Fresh_Batch=@cs1"
+                        +" group by a.[year],a.Collage,a.SPE_Name";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+            }
+            else
+            {
+                sqlstr = "select a.[year],a.Collage,a.SPE_Name,count(*) as studentcount"
+                        + " from vw_fresh_student_base a"
+                        + " where (a.FK_Class_NO is null or len(rtrim(ltrim(a.FK_Class_NO)))=0) and a.FK_Fresh_Batch=@cs1 and a.College_NO=@cs2"
+                        + " group by a.[year],a.Collage,a.SPE_Name";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_student_gender", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //某迎新批次全校或某学院分错专业的学生数据
+    public System.Data.DataTable get_batch_class_hasstudent_buterror(string PK_BATCH_NO, string College_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            if (College_NO == null || College_NO.Trim().Length == 0)
+            {
+                sqlstr = "select a.[year],a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,b.Name as ClassName,a.FK_Class_NO,"
+                        +" d.Name as Class_Collage,c.SPE_Code as Class_SPE_Code,c.SPE_Name as Class_SPE_Name"
+                        +" from vw_fresh_student_base a,Fresh_Class b,Fresh_SPE c,Base_College d"
+                        +" where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Fresh_Batch=@cs1"
+                        +" and a.FK_Class_NO=b.PK_Class_NO and b.FK_SPE_NO=c.PK_SPE and c.FK_College_Code=d.PK_College and a.SPE_Code<>c.SPE_Code"
+                        +" order by classname";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+            }
+            else
+            {
+                sqlstr = "select a.[year],a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,b.Name as ClassName,a.FK_Class_NO,"
+                        + " d.Name as Class_Collage,c.SPE_Code as Class_SPE_Code,c.SPE_Name as Class_SPE_Name"
+                        + " from vw_fresh_student_base a,Fresh_Class b,Fresh_SPE c,Base_College d"
+                        + " where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Fresh_Batch=@cs1 and a.College_NO=@cs2"
+                        + " and a.FK_Class_NO=b.PK_Class_NO and b.FK_SPE_NO=c.PK_SPE and c.FK_College_Code=d.PK_College and a.SPE_Code<>c.SPE_Code"
+                        + " order by classname";
+                result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_student_gender", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;

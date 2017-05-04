@@ -529,6 +529,10 @@ function freshstatus(pk_affair_no,pk_sno,affair_oldstatus)
                 }
                 if(finishflag==false){
                     //要求继续刷新事务状态
+                    if(timeid!=null){
+                        clearTimeout(timeid);
+                        timeid=null;
+                    }
                     timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"','"+affair_oldstatus+"')", 800);
                 }else{
                     //alert('已进行过此操作');
@@ -538,6 +542,10 @@ function freshstatus(pk_affair_no,pk_sno,affair_oldstatus)
             },
             error: function (data) {
                 //要求继续刷新事务状态
+                if(timeid!=null){
+                    clearTimeout(timeid);
+                    timeid=null;
+                }
                 timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 800);
             }
         });
