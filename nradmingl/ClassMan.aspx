@@ -69,7 +69,7 @@
     <asp:GridView  OnRowCommand="GridView1_RowCommand"  ID="GridView1"  OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="False" 
             DataSourceID="ObjectDataSource1" CssClass="site-table table-hover"
             EmptyDataText="未获取到数据!" 
-            AllowPaging="True" AllowSorting="True">
+            AllowPaging="False" AllowSorting="True">
     <Columns>
     <asp:TemplateField>
                 <HeaderTemplate>
@@ -97,7 +97,7 @@
              <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '辅导员设置－<%# Eval("name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'Class_Counseller.aspx?id=<%# Eval("PK_Class_NO").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="辅导员设置">辅导员设置</a>
               <%-- &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
               </asp:LinkButton>--%>
-                    <%--<a href="javascript: " onclick="parent.layer.open({ type: 1,  title: '辅导员设置－<%# Eval("name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content:$('#div_layer')});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="辅导员设置">辅导员设置测试</a>
+                   <%-- <a href="javascript: " onclick="layer.open({ type: 1,  title: '辅导员设置－<%# Eval("name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content:layui.jquery('#div_layer')});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="辅导员设置">辅导员设置测试</a>
              --%>
             </ItemTemplate>
                 
@@ -154,7 +154,7 @@
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;每页显示<asp:TextBox ID="PageSize_Set" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>条<asp:LinkButton ID="buttion2" runat="server"  class="layui-btn layui-btn-mini" Text="设置"   OnClick="PageSize_Go" /></span><span style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;</b></font></span>
         </PagerTemplate>
     </asp:GridView>
-            <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetFilterClassDT" TypeName="GZJW"></asp:ObjectDataSource>
+            <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetFilterClassDT" TypeName="GZJW" ></asp:ObjectDataSource>
         <asp:SqlDataSource onselected="SqlDataSource1_Selected"   ID="SqlDataSource1" runat="server" 
             ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
             SelectCommand="SELECT row_number() over (order by  xw_neirong.fabutime desc)  AS 序号,xw_lanm.lmmc, xw_neirong.title, xw_neirong.author, xw_neirong.fabutime, xw_neirong.images,xw_neirong.isyn,xw_neirong.id,xw_lanm.glqx FROM xw_neirong INNER JOIN xw_lanm ON xw_neirong.LMID = xw_lanm.lmid">
@@ -191,7 +191,7 @@
   
     <!--引发ＬＡＹＵＩ前端必须ＪＳ　ＯＶＥＲ-->
    
-        <div id="div_layer">xxx</div>
+        
 
 
 	<script>
@@ -324,5 +324,6 @@
                  }  
     </script>
     </form>
+    <div id="div_layer" style="display:none">xxx</div>
 </body>
 </html>

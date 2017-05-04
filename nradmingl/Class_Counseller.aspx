@@ -36,7 +36,7 @@
         <div class="layui-form-item">
                 <label class="layui-form-label">班级：</label>
                 <div class="layui-input-inline">
-                    <asp:Label runat="server" Visible="false" ID="LB_Class_NO"></asp:Label><asp:Label runat="server" ID="LB_Class" CssClass="layui-form-label" ></asp:Label>
+                    <asp:Label runat="server" Visible="false" ID="LB_Class_NO"></asp:Label><asp:Label runat="server" ID="LB_Class" CssClass="layui-input inde" ></asp:Label>
                 </div>
             </div>
         <%--<asp:DropDownList runat="server" ID="DDL_class" DataSourceID="ObjectDataSource1" DataTextField="Name" DataValueField="PK_Class_NO"></asp:DropDownList>
@@ -61,12 +61,14 @@
                     <label class="layui-form-label">电话：</label>
                     <div class="layui-input-inline">
                         <asp:TextBox runat="server" ID="TB_phone" CssClass="layui-input"></asp:TextBox>
+                        <%--<asp:RegularExpressionValidator ID="rev_phone" runat="server" ValidationExpression="\d{3}-\d{8}|\d{4}-\{7,8}" ControlToValidate="TB_phone" ErrorMessage="请输入正确的手机号"></asp:RegularExpressionValidator>--%>
                     </div>
                 </div>
             <div class="layui-form-item">
                     <label class="layui-form-label">QQ：</label>
                     <div class="layui-input-inline">
                         <asp:TextBox runat="server" ID="TB_qq" CssClass="layui-input"></asp:TextBox>
+                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ValidationExpression="[1-9][0-9]{4,}" ControlToValidate="TB_qq" ErrorMessage="请输入正确的QQ号"></asp:RegularExpressionValidator>--%>
                     </div>
                 </div>
             <div style="margin-left:180px">
