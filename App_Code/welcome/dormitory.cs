@@ -1314,13 +1314,13 @@ public class dormitory
     /// 传入学生学号，获取学生基本信息
     /// </summary>
     /// <param name="PK_SNO">学号</param>
-    /// <returns>姓名，班级名称name</returns>
+    /// <returns>学号，姓名，性别，高考报名号，班级名称name</returns>
     public static DataTable serch_xsxx(string PK_SNO)
     {
         DataTable bjbh = new DataTable();
         try
         {
-            bjbh = Sqlhelper.Serach("SELECT     TOP (1)  Base_STU.Name AS 学生姓名, Fresh_Class.Name AS 班级名称 FROM         Base_STU LEFT OUTER JOIN               Fresh_Class ON Base_STU.FK_Class_NO = Fresh_Class.PK_Class_NO where PK_SNO='" + PK_SNO + "'");
+            bjbh = Sqlhelper.Serach("SELECT DISTINCT TOP (1) Base_STU.PK_SNO AS 学号, Base_STU.Name AS 姓名,Base_Code_Item.Item_Name 性别, Base_STU.Test_NO AS 高考报名号, Fresh_Class.Name AS 班级名称 FROM         Base_Code_Item RIGHT OUTER JOIN                  Base_STU ON Base_Code_Item.Item_NO = Base_STU.Gender_Code LEFT OUTER JOIN                 Fresh_Class ON Base_STU.FK_Class_NO = Fresh_Class.PK_Class_NO WHERE     (PK_SNO='" + PK_SNO + "') AND (Base_Code_Item.FK_Code = '002') ");
         }
         catch (Exception err)
         {
@@ -1497,9 +1497,17 @@ public class dormitory
     public static DataTable serch_room(string PK_SNO, string dormid,string floor)
     {
         DataTable bjbh = new DataTable();
+        //获取学生性别
+        string xbok = "";
+        DataTable xb = serch_xsxx(PK_SNO);
+        if(xb.Rows.Count>0)
+        {
+            xbok = xb.Rows[0]["性别"].ToString();
+        }
+        
         try
         {
-            bjbh = Sqlhelper.Serach("SELECT DISTINCT TOP (100) Fresh_Room.PK_Room_NO id, Fresh_Room.Room_NO name FROM         Fresh_Bed LEFT OUTER JOIN                  Fresh_Room LEFT OUTER JOIN                     Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type ON                       Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_STU ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE     (Base_STU.PK_SNO = '" + PK_SNO + "') AND (Fresh_Dorm.Dorm_NO = '"+dormid+"') AND (Fresh_Room.Floor = '"+floor+"') ORDER BY name DESC ");
+            bjbh = Sqlhelper.Serach("SELECT DISTINCT TOP (100) Fresh_Room.PK_Room_NO id, Fresh_Room.Room_NO name FROM         Fresh_Bed LEFT OUTER JOIN                  Fresh_Room LEFT OUTER JOIN                     Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type ON                       Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_STU ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE  Fresh_Room.Gender='"+xbok+"'  and  (Base_STU.PK_SNO = '" + PK_SNO + "') AND (Fresh_Dorm.Dorm_NO = '"+dormid+"') AND (Fresh_Room.Floor = '"+floor+"') ORDER BY name DESC ");
 
         }
         catch (Exception err)

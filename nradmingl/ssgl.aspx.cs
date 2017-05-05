@@ -107,17 +107,19 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
 
             #endregion
             #region 数据筛选及ＳＱＬ数据源设置
-
-            DataTable count = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
-            if (count.Rows.Count > 0)
+            if (!IsPostBack)
             {
-                ViewState["count"] = count.Rows.Count.ToString();
+                DataTable count = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
+                if (count.Rows.Count > 0)
+                {
+                    ViewState["count"] = count.Rows.Count.ToString();
+                }
+                else
+                {
+                    ViewState["count"] = "0";
+                }
+                GridView1.DataBind();
             }
-            else
-            {
-                ViewState["count"] = "0";
-            }
-            GridView1.DataBind();
 
             try
             {
