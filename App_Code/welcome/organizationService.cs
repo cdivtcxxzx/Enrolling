@@ -1,26 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Web;
 using model;
 
 /// <summary>
-///组织机构服务
-/// bool 操作员身份是否有效   
-/// 操作员 获取某操作员数据    
-/// 学生 获取某学生数据
-/// 专业 获取某专业数据
-/// 班级 获取某班级数据
-/// bool 学生身份是否有效
-/// 学院 获取学院数据
-/// 校区 获取校区数据
-/// 辅导员 获取辅助员信息
-/// 专业  根据专业主键获取专业实体信息
-/// bool 验证学生基本信息是否确认
-/// bool 判断添加学生基本信息确认记录
-/// 代码  获取指定大类型中某一类型的代码信息
-/// 代码[] 获取指定大类型中所有代码信息
+///组织机构服务(学生数据处理)
 /// </summary>
 public static class organizationService
 {
@@ -343,7 +330,6 @@ public static class organizationService
         return oDC.Base_Code_Items.Where(i => i.PK_Item == PK_item && i.Item_NO == item_no).SingleOrDefault();
     }
     #endregion
-
     #region 获取指定大类型中所有代码信息 getCodesItem
     /// <summary>
     /// 获取指定大类型中所有代码信息,比如民族类下的所有民族信息
@@ -354,6 +340,42 @@ public static class organizationService
     {
         organizationModelDataContext oDC = new organizationModelDataContext();
         return oDC.Base_Code_Items.Where(i => i.FK_Code == Code).ToList();
+    }
+    #endregion
+    #region 根据批次返回学生信息
+    /// <summary>
+    /// 根据批次返回学生信息（学号(PK_SNO)|高考报名号(Test_NO)|姓名(Name)|性别(Gender)|民族代码(Nation_code)|专业名称(SPE_Name)|学制(Xz)|年度(Year)|批次（Fresh_bath））
+    /// </summary>
+    /// <param name="batch">批次代码,“0”显示所有批次</param>
+    /// <returns></returns>
+    public static Array getStuByBatch(string batch)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+
+        var stu = from s in oDC.Base_STUs
+                  join zy in oDC.Fresh_SPEs on s.FK_SPE_Code equals zy.PK_SPE
+                  join f in oDC.Fresh_STUs on s.PK_SNO equals f.PK_SNO
+                  orderby s.PK_SNO
+                  select new
+                  {
+                      PK_SNO = s.PK_SNO,
+                      Test_NO = s.Test_NO,
+                      Name = s.Name,
+                      Gender = s.Gender_Code == "" ? "" : s.Gender_Code == "01" ? "男" : "女",
+                      Nation_code = s.Nation_Code,
+                      SPE_Name = zy.SPE_Name,
+                      Xz = zy.Xznx,
+                      Year = s.Year,
+                      Fresh_bath = f.FK_Fresh_Batch
+                  } ;
+        if (batch != "0")
+        {
+            return stu.Where(s => s.Fresh_bath == batch).ToArray();
+        }
+        else
+        {
+            return stu.ToArray();
+        }
     }
     #endregion
 }

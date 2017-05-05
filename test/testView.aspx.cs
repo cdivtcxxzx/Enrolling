@@ -57,6 +57,34 @@ public partial class test_testView : System.Web.UI.Page
         //    Response.Write(property.Name +","+ property.GetValue(stu_info, null) + "<br/> ");
         //}
 
-        Response.Write(DateTime.Now.ToShortDateString());
+        //Response.Write(DateTime.Now.ToShortDateString());
+
+        //测试多实体连查
+        //organizationModelDataContext oDC = new organizationModelDataContext();
+        //var stu = from s in oDC.Base_STUs
+        //          join zy in oDC.Fresh_SPEs on s.FK_SPE_Code equals zy.PK_SPE
+        //          join f in oDC.Fresh_STUs on s.PK_SNO equals f.PK_SNO
+        //          where f.FK_Fresh_Batch == "1"
+        //          orderby s.Name
+        //          select new
+        //          {
+        //              PK_SNO = s.PK_SNO,
+        //              Test_NO = s.Test_NO,
+        //              Name = s.Name,
+        //              Gender = s.Gender_Code=="" ? "" : s.Gender_Code == "01" ? "男" : "女",
+        //              Nation_code = s.Nation_Code,
+        //              SPE_Name = zy.SPE_Name,
+        //              Xz = zy.Xznx,
+        //              Year = s.Year
+        //          };
+
+        //GridView1.DataSource = stu;
+        //GridView1.DataBind();
+
+
+        //测试getStuByBatch
+        //GridView1.DataSource = organizationService.getStuByBatch("");
+        //GridView1.DataBind();
+        
     }
 }
