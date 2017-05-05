@@ -81,6 +81,11 @@ function clear() {
     $('#classhasstudentcount').html('0');
     $('#spenohasclassstudentcount').html('0');
     $('#classhasstudent_buterrorcount').html('0');
+    $('#hasbedcount').html('0');
+    $('#nohasbedcount').html('0');
+    $('#hasbed_buterrorcount').html('0');
+    $('#hascollageaffairacount').html('0');
+    $('#nohascollageaffairacount').html('0');
 
 }
 
@@ -176,6 +181,87 @@ function collagechange(pk_collage_no, pk_batch_no) {
                 var classhasstudent_buterror = json_data.data.classhasstudent_buterror;//分错专业的学生数据
                 if (classhasstudent_buterror) {
                     $('#classhasstudent_buterrorcount').html(classhasstudent_buterror.length);
+                }
+
+                var hasbed = json_data.data.hasbed;//已预分床位数据
+                if (hasbed) {
+                    var bedcount=0;
+                    for(i=0;i<hasbed.length;i++){
+                        var item = hasbed[i];
+                        bedcount=bedcount+parseInt(item.bedcount);
+                    }
+                    $('#hasbedcount').html(bedcount);
+                }
+
+                var nohasbedclass = json_data.data.nohasbedclass;//未预分床位人数数据
+                if (nohasbedclass) {
+                    var requirebedcount=0;
+                    for(i=0;i<nohasbedclass.length;i++){
+                        var item = nohasbedclass[i];
+                        requirebedcount=requirebedcount+parseInt(item.requirebedcount);
+                    }
+                    $('#nohasbedcount').html(requirebedcount);
+                }
+
+                var hasbed_buterror = json_data.data.hasbed_buterror;//已预分床位，但年或校区错误的数据
+                if (hasbed_buterror) {
+                    var bedcount=0;
+                    for(i=0;i<hasbed_buterror.length;i++){
+                        var item = hasbed_buterror[i];
+                        bedcount=bedcount+parseInt(item.bedcount);
+                    }
+                    $('#hasbed_buterrorcount').html(bedcount);
+                }
+
+                var hascounseller = json_data.data.hascounseller;//已设置班主任数据
+                if (hascounseller) {
+                    $('#hascounsellercount').html(hascounseller.length);
+                }
+                var nohascounseller = json_data.data.nohascounseller;//未设置班主任数据
+                if (nohascounseller) {
+                    $('#nohascounsellercount').html(nohascounseller.length);
+                }
+
+                var hascollageaffair = json_data.data.hascollageaffair;//已设置现场迎新事务的事务数据
+                if (hascollageaffair) {
+                    var count=0;
+                    var tmp=new Array();
+                    for(i=0;i<hascollageaffair.length;i++){
+                        var item = hascollageaffair[i];
+                        var find=false;
+                        for(var j=0;j<tmp.length;j++){
+                            if(tmp[j]==item.pk_affair_no){
+                                find=true;
+                                break;
+                            }
+                        }
+                        if(find==false){
+                            tmp[count]=item.pk_affair_no;
+                            count=count+1;
+                        }
+                    }
+                    $('#hascollageaffairacount').html(tmp.length);
+                }
+
+                var nohascollageaffair = json_data.data.nohascollageaffair;//未设置现场迎新事务的事务数据
+                if (nohascollageaffair) {
+                    var count=0;
+                    var tmp=new Array();
+                    for(i=0;i<nohascollageaffair.length;i++){
+                        var item = nohascollageaffair[i];
+                        var find=false;
+                        for(var j=0;j<tmp.length;j++){
+                            if(tmp[j]==item.pk_affair_no){
+                                find=true;
+                                break;
+                            }
+                        }
+                        if(find==false){
+                            tmp[count]=item.pk_affair_no;
+                            count=count+1;
+                        }
+                    }
+                    $('#nohascollageaffairacount').html(tmp.length);
                 }
 
             } else {

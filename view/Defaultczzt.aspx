@@ -236,7 +236,12 @@
                         <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" onclick="javascript:location.href='xszz-index.aspx';">辅导员设置</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
-                                <span id="xsxx_xh"><font color="red"><b>已设置班级数量  未设置班级数量</b></font></span>
+                                <span id="xsxx_xh"><font color="red">
+                                    <b>
+                                    <a href="#" onclick="detailclick('get_batch_hascounseller')">已设置班级数量:<span id="hascounsellercount"></span></a>  
+                                    <a href="#" onclick="detailclick('get_batch_nohascounseller')">未设置班级数量:<span id="nohascounsellercount"></span></a>
+                                    </b>
+                                    </font></span>
                             </div>
                         </div>
                     </div>
@@ -245,7 +250,13 @@
                         <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" onclick="javascript:location.href='xszz-index.aspx';">预分配宿舍</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
-                                <span id="xsxx_xh"><font color="red"><b>预分配人数</b>【查看各系分配详解】 遗漏人数</font></span>
+                                <span id="xsxx_xh"><font color="red">
+                                    <b>
+                                    <a href="#" onclick="detailclick('get_batch_hasbed')">已预分床位人数:<span id="hasbedcount"></span></a>  
+                                    <a href="#" onclick="detailclick('get_batch_nohasbedclass')">未预分床位人数:<span id="nohasbedcount"></span></a>
+                                    <a href="#" onclick="detailclick('get_batch_hasbed_buterror')">错分床位人数:<span id="hasbed_buterrorcount"></span></a>
+                                    </b>
+                                 </font></span>
                             </div>
                         </div>
                     </div>
@@ -253,7 +264,12 @@
                         <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" onclick="javascript:location.href='xszz-index.aspx';">操作员设置</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
-                                <span id="xsxx_xh"><font color="red"><b>已设置事务数量  遗漏事务数量</b></font></span>
+                                <span id="xsxx_xh"><font color="red">
+                                    <b>
+                                    <a href="#" onclick="detailclick('get_batch_hascollageaffair')">已设置学院的事务数量:<span id="hascollageaffairacount"></span></a>
+                                    <a href="#" onclick="detailclick('get_batch_nohascollageaffair')">漏设学院的事务数量:<span id="nohascollageaffairacount"></span></a>  
+                                    </b>
+                                 </font></span>
                             </div>
                         </div>
                     </div>
