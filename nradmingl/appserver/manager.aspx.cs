@@ -1234,6 +1234,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         System.Data.DataTable nohascounseller_data = batch_logic.get_batch_nohascounseller(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院未设置班主任数据，但年或校区错误的数据
                         System.Data.DataTable hascollageaffair_data = batch_logic.get_batch_hascollageaffair(pk_batch_no);//某迎新批次全校已设置现场迎新事务的事务数据，但年或校区错误的数据
                         System.Data.DataTable nohascollageaffair_data = batch_logic.get_batch_nohascollageaffair(pk_batch_no);//某迎新批次全校未设置现场迎新事务的事务数据，但年或校区错误的数据
+                        System.Data.DataTable collegefinancial_data = batch_logic.get_batch_college_financial(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院的专业财务交费项目数据，但年或校区错误的数据
 
 
                         result.code = "success";
@@ -1250,7 +1251,8 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                             hascounseller = hascounseller_data,
                                             nohascounseller = nohascounseller_data,
                                             hascollageaffair = hascollageaffair_data,
-                                            nohascollageaffair = nohascollageaffair_data
+                                            nohascollageaffair = nohascollageaffair_data,
+                                            collegefinancial = collegefinancial_data
                         };
                     }
                 }
@@ -2005,7 +2007,75 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region 某迎新批次全校或某学院的专业财务交费项目数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_college_financial"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
 
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_college_financial(pk_batch_no, pk_collage_no);
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            // Collage, College_NO,SPE_Name,SPE_Code,Fee_Code_Name,Fee_Name, Fee_Amount,Type_Name,Is_Must,Is_Online_Order,Fee_Code"
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("Collage"))
+                            {
+                                jg.Columns[i].ColumnName = "学院";
+                            }
+                            if (colname.Trim().Equals("College_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "学院编码";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业";
+                            }
+                            if (colname.Trim().Equals("SPE_Code"))
+                            {
+                                jg.Columns[i].ColumnName = "专业编码";
+                            }
+                            if (colname.Trim().Equals("Fee_Code_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "项目名称";
+                            }
+                            if (colname.Trim().Equals("Fee_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "项目条目";
+                            }
+                            if (colname.Trim().Equals("Fee_Amount"))
+                            {
+                                jg.Columns[i].ColumnName = "收费标准";
+                            }
+                            if (colname.Trim().Equals("Type_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "类型";
+                            }
+                            if (colname.Trim().Equals("Is_Must"))
+                            {
+                                jg.Columns[i].ColumnName = "必交";
+                            } 
+                            if (colname.Trim().Equals("Is_Online_Order"))
+                            {
+                                jg.Columns[i].ColumnName = "允许网上交费";
+                            }
+                            if (colname.Trim().Equals("Fee_Code"))
+                            {
+                                jg.Columns[i].ColumnName = "财务收费编号";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
 
 
             }

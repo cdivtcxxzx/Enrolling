@@ -3057,4 +3057,90 @@ public class batch
         }
         return result;
     }
+
+
+    //某迎新批次全校或某学院的专业财务交费项目数据
+    public System.Data.DataTable get_batch_college_financial(string PK_BATCH_NO, string College_NO)
+    {
+        System.Data.DataTable result = null;
+        System.Data.DataTable data = null;
+        try
+        {
+            string sqlstr = null;
+            if (College_NO == null || College_NO.Trim().Length == 0)
+            {
+                sqlstr = "select  Collage,College_NO,SPE_Name,SPE_Code from vw_fresh_student_base"
+                        + " where FK_Fresh_Batch=@cs1"
+                        +" group by Collage,College_NO,SPE_Name,SPE_Code";
+                data = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+            }
+            else
+            {
+                sqlstr = "select  Collage,College_NO,SPE_Name,SPE_Code from vw_fresh_student_base"
+                        + " where FK_Fresh_Batch=@cs1 and College_NO=@cs2"
+                        + " group by Collage,College_NO,SPE_Name,SPE_Code";
+                data = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
+            }
+            sqlstr = "select '' as Collage,'' as College_NO,'' as SPE_Name,'' as SPE_Code,'' as Fee_Code_Name,'' as Fee_Name, "
+                     + " '' as Fee_Amount,'' as Type_Name,'' as Is_Must,'' as Is_Online_Order,'' as Fee_Code" ;
+            result = Sqlhelper.Serach(sqlstr);
+            if (data != null && data.Rows.Count > 0)
+            {
+                financial financial_logic = new financial();
+                for (int i = 0; i < data.Rows.Count; i++)
+                {
+                    System.Data.DataRow newrow = null;
+                    string spe_code=data.Rows[i]["SPE_Code"].ToString().Trim();
+                    List<Financial.Fee_Item> fin_data = financial_logic.get_feeitem(PK_BATCH_NO, spe_code);
+                    if (fin_data != null)
+                    {
+                        for (int j = 0; j < fin_data.Count; j++)
+                        {
+                            newrow = result.NewRow();
+                            newrow["Collage"] = data.Rows[i]["Collage"].ToString().Trim();
+                            newrow["College_NO"] = data.Rows[i]["College_NO"].ToString().Trim();
+                            newrow["SPE_Name"] = data.Rows[i]["SPE_Name"].ToString().Trim();
+                            newrow["SPE_Code"] = data.Rows[i]["SPE_Code"].ToString().Trim();
+                            newrow["Fee_Code_Name"] = fin_data[j].Fee_Code_Name.ToString().Trim();
+                            newrow["Fee_Name"] = fin_data[j].Fee_Name.ToString().Trim();
+                            newrow["Fee_Amount"] = fin_data[j].Fee_Amount.ToString().Trim();
+                            newrow["Type_Name"] = fin_data[j].Type_Name.ToString().Trim();
+                            newrow["Is_Must"] = fin_data[j].Is_Must.ToString().Trim().Equals("1")?"是":"否";
+                            newrow["Is_Online_Order"] = fin_data[j].Is_Online_Order.ToString().Trim().Equals("1") ? "是" : "否";
+                            newrow["Fee_Code"] = fin_data[j].Fee_Code.ToString().Trim();
+                            result.Rows.Add(newrow);
+                        }
+                    }
+                    newrow = result.NewRow();
+                    newrow["Collage"] = "";
+                    newrow["College_NO"] = "";
+                    newrow["SPE_Name"] = "";
+                    newrow["SPE_Code"] = "";
+                    newrow["Fee_Code_Name"] = "";
+                    newrow["Fee_Name"] = "";
+                    newrow["Fee_Amount"] = "";
+                    newrow["Type_Name"] = "";
+                    newrow["Is_Must"] = "";
+                    newrow["Is_Online_Order"] = "";
+                    newrow["Fee_Code"] = "";
+                    result.Rows.Add(newrow);
+                }
+                result.AcceptChanges();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_nohascounseller", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+
+
 }

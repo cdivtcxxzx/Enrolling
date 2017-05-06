@@ -210,7 +210,9 @@
                         <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" onclick="javascript:location.href='xszz-index.aspx';">收费设置</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
-                                <span id="xsxx_xh"><font color="red"><b>必交项数量  必交遗漏专业数量  选交项数量</b></font></span>
+                                <span id="xsxx_xh"><font color="red">
+                                    <a href="#" onclick="detailclick('get_batch_college_financial')">交费项目数量:<span id="collegefinancialcount"></span></a>  
+                                 </font></span>
                             </div>
                         </div>
                     </div>

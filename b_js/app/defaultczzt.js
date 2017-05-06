@@ -86,6 +86,7 @@ function clear() {
     $('#hasbed_buterrorcount').html('0');
     $('#hascollageaffairacount').html('0');
     $('#nohascollageaffairacount').html('0');
+    $('#collegefinancialcount').html('0');
 
 }
 
@@ -263,6 +264,30 @@ function collagechange(pk_collage_no, pk_batch_no) {
                     }
                     $('#nohascollageaffairacount').html(tmp.length);
                 }
+
+                console.log(json_data.data.collegefinancial);
+                var collegefinancial = json_data.data.collegefinancial;//专业财务交费项目数据
+                if (collegefinancial) {
+                    var count=0;
+                    var tmp=new Array();
+                    for(i=0;i<collegefinancial.length;i++){
+                        var item = collegefinancial[i];
+                        var find=false;
+                        for(var j=0;j<tmp.length;j++){
+                            if(tmp[j]==item.Fee_Code){
+                                find=true;
+                                break;
+                            }
+                        }
+                        if(find==false  && $.trim(item.Fee_Code).length>0){
+                            tmp[count]=item.Fee_Code;
+                            count=count+1;
+                        }
+                    }
+                    $('#collegefinancialcount').html(tmp.length);
+                }
+
+
 
             } else {
                 alert(json_data.message);
