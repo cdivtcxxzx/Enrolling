@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -11,8 +12,29 @@ using model;
 /// </summary>
 public static class organizationService
 {
-    
-    
+    #region linq 查询转DataTable
+    /// <summary>
+    /// linq 查询转DataTable
+    /// </summary>
+    /// <typeparam name="T">泛型</typeparam>
+    /// <param name="array">枚举</param>
+    /// <returns></returns>
+    public static DataTable CopyToDataTable<T>(this IEnumerable<T> array)
+    {
+        var ret = new DataTable();
+        foreach (PropertyDescriptor dp in TypeDescriptor.GetProperties(typeof(T)))
+            ret.Columns.Add(dp.Name, dp.PropertyType);
+        foreach (T item in array)
+        {
+            var Row = ret.NewRow();
+            foreach (PropertyDescriptor dp in TypeDescriptor.GetProperties(typeof(T)))
+                Row[dp.Name] = dp.GetValue(item);
+            ret.Rows.Add(Row);
+        }
+        return ret;
+    }
+    #endregion
+
     #region 操作员身份是有效 staffVerify
     /// <summary>
     /// 功能描述：根据“员工编号”查询获取“密码明文”，如果“密文”==校验函数(“密码明文”,“验证码”)返回true。否则返回false。
@@ -68,6 +90,36 @@ public static class organizationService
     {
         organizationModelDataContext oDC = new organizationModelDataContext();
         return oDC.Base_STUs.Where(s => s.PK_SNO == sno).SingleOrDefault();
+    }
+    #endregion
+    #region 通过身份证查询是否有学生数据 getStu
+    /// <summary>
+    /// 根据“身份证号”返回是否有学生数据。
+    /// 编写人：陈智秋
+    /// 创建：2017.3.1
+    /// 更新：无
+    /// 版本：v0.0.1
+    /// </summary>
+    /// <param name="sfz">身份证号</param>
+    /// <returns>真假</returns>
+    public static bool getStuBySFZ(string sfz)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        return oDC.Base_STUs.Where(s => s.ID_NO == sfz).SingleOrDefault() != null;
+        
+    }
+    #endregion
+    #region 通过年级和专业查询学生数量 getStuCount
+    /// <summary>
+    /// 通过年级和专业查询学生数量
+    /// </summary>
+    /// <param name="FK_SPE">专业代码主键</param>
+    /// <param name="Year">年级</param>
+    /// <returns>学生数量</returns>
+    public static int getStuCount(string FK_SPE,string Year)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        return oDC.Base_STUs.Where(stu => stu.FK_SPE_Code == FK_SPE && stu.Year == Year).ToList<Base_STU>().Count;
     }
     #endregion
     #region 根据学年获取某专业数据 getSpe
@@ -321,13 +373,13 @@ public static class organizationService
     /// <summary>
     /// 获取代码项中某一小项数据
     /// </summary>
-    /// <param name="PK_item">大项主键</param>
+    /// <param name="FK_Code">大项类别代码</param>
     /// <param name="item_no">大项类的小项编码</param>
     /// <returns>代码项</returns>
-    public static Base_Code_Item getCodeItem(string PK_item,string item_no)
+    public static Base_Code_Item getCodeItem(string FK_Code, string item_no)
     {
         organizationModelDataContext oDC = new organizationModelDataContext();
-        return oDC.Base_Code_Items.Where(i => i.PK_Item == PK_item && i.Item_NO == item_no).SingleOrDefault();
+        return oDC.Base_Code_Items.Where(i => i.FK_Code == FK_Code && i.Item_NO == item_no).SingleOrDefault();
     }
     #endregion
     #region 获取指定大类型中所有代码信息 getCodesItem
@@ -342,16 +394,15 @@ public static class organizationService
         return oDC.Base_Code_Items.Where(i => i.FK_Code == Code).ToList();
     }
     #endregion
-    #region 根据批次返回学生信息
+    #region 根据批次返回学生信息 getStuByBatch
     /// <summary>
-    /// 根据批次返回学生信息（学号(PK_SNO)|高考报名号(Test_NO)|姓名(Name)|性别(Gender)|民族代码(Nation_code)|专业名称(SPE_Name)|学制(Xz)|年度(Year)|批次（Fresh_bath））
+    /// 根据批次返回学生信息（学号(PK_SNO)|高考报名号(Test_NO)|姓名(Name)|性别(Gender)|身份证号(ID_NO)|民族代码(Nation_code)|专业名称(SPE_Name)|学制(Xz)|年度(Year)|批次（Fresh_bath））
     /// </summary>
-    /// <param name="batch">批次代码,“0”显示所有批次</param>
+    /// <param name="batch">批次代码,"0"显示所有批次</param>
     /// <returns></returns>
-    public static Array getStuByBatch(string batch)
+    public static DataTable getStuByBatch(string batch)
     {
         organizationModelDataContext oDC = new organizationModelDataContext();
-
         var stu = from s in oDC.Base_STUs
                   join zy in oDC.Fresh_SPEs on s.FK_SPE_Code equals zy.PK_SPE
                   join f in oDC.Fresh_STUs on s.PK_SNO equals f.PK_SNO
@@ -362,6 +413,7 @@ public static class organizationService
                       Test_NO = s.Test_NO,
                       Name = s.Name,
                       Gender = s.Gender_Code == "" ? "" : s.Gender_Code == "01" ? "男" : "女",
+                      ID_NO = s.ID_NO,
                       Nation_code = s.Nation_Code,
                       SPE_Name = zy.SPE_Name,
                       Xz = zy.Xznx,
@@ -370,12 +422,65 @@ public static class organizationService
                   } ;
         if (batch != "0")
         {
-            return stu.Where(s => s.Fresh_bath == batch).ToArray();
+            //return stu.Where(s => s.Fresh_bath == batch).ToList<object>();
+            //return stu.Where(s => s.Fresh_bath == batch).ToArray();
+            return CopyToDataTable(stu.Where(s => s.Fresh_bath == batch));
         }
         else
         {
-            return stu.ToArray();
+            //return stu.ToList<object>();
+            //return stu.ToArray();
+            return CopyToDataTable(stu);
+        }
+
+    }
+    #endregion
+    #region 生成学号 createNum
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="year">年份</param>
+    /// <param name="FK_SPE">专业代码主键</param>
+    /// <param name="xz">学制</param>
+    /// <returns>学号</returns>
+    public static string  createNum(string year,string FK_SPE,string xz)
+    {
+        Fresh_SPE s = getSpe(FK_SPE);
+        if (s == null || year.Length != 4 || xz.Length != 2) return "";
+        int num = getStuCount(FK_SPE, year) + 1;
+        string str_num = num.ToString("000");
+        return year + s.SPE_Code + xz + str_num;
+    }
+    #endregion
+
+    #region 添加一条相应批次的学生数据, addStu
+    /// <summary>
+    /// 添加一条学生数据
+    /// </summary>
+    /// <param name="stu">学生实体</param>
+    /// <param name="batch">批次代码</param>
+    /// <returns>真假</returns>
+    public static bool addStu(Base_STU stu,string batch)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        Fresh_STU stu_batch = new Fresh_STU
+        {
+            PK_SNO = stu.PK_SNO,
+            FK_Fresh_Batch = batch
+        };
+        try
+        {
+            oDC.Base_STUs.InsertOnSubmit(stu);
+            oDC.Fresh_STUs.InsertOnSubmit(stu_batch);
+            oDC.SubmitChanges();
+            return true;
+        }
+        catch
+        {
+            
+            return false;
         }
     }
     #endregion
+
 }

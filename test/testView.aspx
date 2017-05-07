@@ -9,7 +9,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
+    <%--<div>
 
         <asp:DropDownList ID="DropDownList1" runat="server" AppendDataBoundItems="True" AutoPostBack="True" DataSourceID="LinqDataSource1" DataTextField="Batch_Name" DataValueField="PK_Batch_NO">
             <asp:ListItem Selected="True" Value="">--请选择批次--</asp:ListItem>
@@ -24,6 +24,8 @@
                 <asp:ControlParameter ControlID="DropDownList1" DefaultValue="“0”" Name="batch" PropertyName="SelectedValue" Type="String" />
             </SelectParameters>
         </asp:ObjectDataSource>
+        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />--%>
+
     </form>
 </body>
 

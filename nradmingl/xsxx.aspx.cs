@@ -95,12 +95,12 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
 
             #endregion
             #region 当前页浏览权限验证
-            //new c_login().tongyiyz(webpage, pagelm1, pageqx1, "进入" + pagelm1 + "页", true, pageqx1, pageqx2, pageqx3, pageqx4, pageqx5);
+            new c_login().tongyiyz(webpage, pagelm1, pageqx1, "进入" + pagelm1 + "页", true, pageqx1, pageqx2, pageqx3, pageqx4, pageqx5);
             //默认如权限１，若单独验证某个权限，如下方式
             //new c_login().powerYanzheng(Session["username"].ToString(), pagelm1, pageqx2, "2");//验证当前栏目关键字中的权限２,通常在按钮中需验证权限时使用
 
             #endregion
-                        
+            
         }
         catch (Exception err)
         {
@@ -116,12 +116,11 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
             }
             #endregion
         }
-    }
+    }//end Page_Load
 
     #region 设置页面显示条数事件
     protected void PageSize_Go(object sender, EventArgs e)
     {
-        //this.DropDownList2.Items.Insert(0, new ListItem("全部"));
 
         TextBox ps = (TextBox)this.GridView1.BottomPagerRow.FindControl("PageSize_Set");
         if (!string.IsNullOrEmpty(ps.Text))
@@ -131,25 +130,15 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
 
             if ((Int32.TryParse(ps.Text, out _PageSize) == true) && _PageSize > 0)
             {
-
                 GridView1.PageSize = _PageSize;
-                //this.SqlDataSource1.SelectCommand = ViewState["SqlDataSource1.SelectCommand"].ToString();
-                //GridView1.DataBind();
-                //GV_DataBind();
             }
 
         }
     }
     #endregion
+    
     #region 分页事件总页数
 
-    protected void SqlDataSource1_Selected(object sender, SqlDataSourceStatusEventArgs e)
-    {
-        ViewState["count"] = e.AffectedRows;
-
-        //ViewState["countbd"] = getbds();
-        //int s=GridView1.Rows
-    }
 
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -181,8 +170,6 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
             }
 
         }
-        //this.SqlDataSource1.SelectCommand = ViewState["SqlDataSource1.SelectCommand"].ToString();
-        //GridView1.DataBind();
 
     }
 
@@ -198,10 +185,59 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
         }
     }
     #endregion
-    
-    //行绑定事件
-    protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+    //民族列处理
+    public string show_mz(string mzdm)
     {
-
+        if (mzdm != "-1" && mzdm != "")
+        {
+            Base_Code_Item item = organizationService.getCodeItem("003", mzdm);
+            if (item != null)
+            {
+                return item.Item_Name;
+            }
+            else
+            {
+                return "";
+            }
+        }
+        return "";
     }
+
+    //导出数据
+    protected void exportexcel(object sender, EventArgs e)
+    {
+        string sel_batch = batch.SelectedValue.ToString();
+        DataTable dt = organizationService.getStuByBatch(sel_batch);
+        if (dt == null || dt.Rows.Count <= 0) { return; }
+        dt.Columns.Remove("Nation_code");
+        dt.Columns.Remove("Fresh_bath");
+        dt.Columns["PK_SNO"].ColumnName = "学号";
+        dt.Columns["Test_NO"].ColumnName = "报名号";
+        dt.Columns["Name"].ColumnName = "姓名";
+        dt.Columns["Gender"].ColumnName = "性别";
+        dt.Columns["ID_NO"].ColumnName = "身份证";
+        dt.Columns["SPE_Name"].ColumnName = "专业";
+        dt.Columns["Xz"].ColumnName = "学制";
+        dt.Columns["Year"].ColumnName = "年级";
+
+        #region 导出
+        //引用EXCEL导出类
+        toexcel xzfile = new toexcel();
+        string filen = xzfile.DatatableToExcel(dt, "学生数据导出");
+
+        
+        if (filen.Length > 4)
+        {
+            this.tsxx.Value = "<span style=\"font-size:Large;\"> <font color=green>导出成功,请<a href=" + filen + " target=_blank >点此下载</a></font></span>";
+            //this.g_ts.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
+
+        }
+        else
+        {
+            this.tsxx.Value = "<span style=\"font-size:Large;\"><font color=red>导出<b>失败</b>,请重试!</font></span>";
+
+        }
+        #endregion
+    }
+    
 }

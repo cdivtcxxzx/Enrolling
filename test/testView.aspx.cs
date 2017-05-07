@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -31,7 +32,7 @@ public partial class test_testView : System.Web.UI.Page
         //Response.Write(organizationService.stuUpdate("1", b));
 
         //测试代码获取
-        //Base_Code_Item item = organizationService.getCodeItem("001","01");
+        //Base_Code_Item item = organizationService.getCodeItem("003", "05");
         //if (item != null)
         //{
         //    Response.Write(item.Item_Name);
@@ -41,11 +42,11 @@ public partial class test_testView : System.Web.UI.Page
         //List<Base_Code_Item> code_items = organizationService.getCodesItem("003");
         //if (code_items.Count > 0)
         //{
-            //for (var i = 0; i < code_items.Count; i++)
-            //{
-            //    Response.Write(code_items[i].Item_Name+"<br/>");
-            //}
-            //Response.Write(JsonConvert.SerializeObject(code_items));
+        //    for (var i = 0; i < code_items.Count; i++)
+        //    {
+        //        Response.Write(code_items[i].Item_NO + "<br/>");
+        //    }
+        //    //Response.Write(JsonConvert.SerializeObject(code_items));
         //}
 
         //测试实体反射出属性
@@ -85,6 +86,58 @@ public partial class test_testView : System.Web.UI.Page
         //测试getStuByBatch
         //GridView1.DataSource = organizationService.getStuByBatch("");
         //GridView1.DataBind();
+
+        //民族|性别
+        //List<Base_Code_Item> mz = organizationService.getCodesItem("003");
+        //List<Base_Code_Item> xb = organizationService.getCodesItem("002");
+
+        //Base_Code_Item AMz =  mz.Where(m => m.Item_Name == "汉族").SingleOrDefault();
+        //Response.Write(organizationService.getSpe("9") == null);
+
+        //测试字符串指定位数输出
+        //int aNum = 1232;
+        //Response.Write(aNum.ToString("000"));
+
+        //测试学生数量查询
+        //Response.Write(organizationService.getStuCount("4","2017"));
+        //生成学号 createNum
+        Response.Write(organizationService.createNum("2017","1","03"));
         
     }
+    //测试导出
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        //Array s = organizationService.getStuByBatch("1");
+        toexcel xzfile = new toexcel();
+        //DataTable tb = new DataTable();
+        //tb.Columns.Add("学号");
+        //tb.Columns.Add("报名号");
+        //tb.Columns.Add("姓名");
+        //tb.Columns.Add("性别");
+        //tb.Columns.Add("民族代码");
+        //tb.Columns.Add("专业");
+        //tb.Columns.Add("学制");
+        //tb.Columns.Add("年级");
+        //foreach (var obj in s)
+        //{
+
+        //    Response.Write(obj.GetType());
+        //    Response.Write("<br/>");
+        //}
+
+        DataTable dt =  organizationService.getStuByBatch("1");
+        dt.Columns.Remove("Nation_code");
+        dt.Columns.Remove("Fresh_bath");
+        dt.Columns["PK_SNO"].ColumnName = "学号";
+        dt.Columns["Test_NO"].ColumnName = "报名号";
+        dt.Columns["Name"].ColumnName = "姓名";
+        dt.Columns["Gender"].ColumnName = "性别";
+        dt.Columns["SPE_Name"].ColumnName = "专业";
+        dt.Columns["Xz"].ColumnName = "学制";
+        dt.Columns["Year"].ColumnName = "年级";               
+        string filen = xzfile.DatatableToExcel(dt, "学生数据");
+        Response.Write(filen);
+    }
+
+
 }

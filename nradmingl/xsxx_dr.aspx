@@ -1,12 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xsxx.aspx.cs" Inherits="nradmingl_xsxx" validateRequest="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xsxx_dr.aspx.cs" Inherits="nradmingl_xsxx_dr" %>
 
 <!DOCTYPE html>
+<html lang="zh-cn">
+<head id="Head1" runat="server">
+    <title></title>
+    <meta charset="UTF-8" content="编码" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>学生管理</title>
     <!--引用ＬＡＹＵＩ前端必须ＣＳＳ-->
-
         <link rel="stylesheet" href="plugins/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" href="plugins/global.css" media="all" />
          <!--引用ＬＡＹＵＩ前端字体图标ＣＳＳ-->
@@ -15,66 +16,210 @@
 		<link rel="stylesheet" href="plugins/table.css" />
     
      <!--引用ＬＡＹＵＩ前端必须ＣＳＳ OVER-->
-    
-
+     <!--下面为步骤专用CSS样式-->
+   <style>
+   .wizard {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    background-clip: padding-box;
+    background-color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+.wizard ul {
+    list-style: none outside none;
+    padding: 0;
+    margin: 0;
+    width: 4000px;
+}
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+.wizard ul li:first-child {
+    -webkit-border-radius: 2px 0 0 0;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 2px 0 0 0;
+    -moz-background-clip: padding;
+    border-radius: 2px 0 0 0;
+    background-clip: padding-box;
+    padding-left: 20px;
+}
+.wizard ul li.active {
+    background: #fff;
+    color: #262626;
+}
+.wizard ul li {
+    float: left;
+    margin: 0;
+    padding: 0 20px 0 30px;
+    line-height: 46px;
+    position: relative;
+    background: #f5f5f5;
+    color: #d0d0d0;
+    font-size: 16px;
+    cursor: default;
+    -webkit-transition: all .218s ease;
+    -moz-transition: all .218s ease;
+    -o-transition: all .218s ease;
+    transition: all .218s ease;
+}
+.wizard ul li.active:before {
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: -1px;
+    height: 2px;
+    max-height: 2px;
+    overflow: hidden;
+    background-color: #337ab7;
+    z-index: 10000;
+}
+.wizard ul li.active .step {
+    border-color: #337ab7;
+    color: #337ab7;
+}
+.wizard ul li .step {
+    border: 2px solid #e5e5e5;
+    color: #ccc;
+    font-size: 13px;
+    border-radius: 100%;
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 20px;
+    text-align: center;
+    margin-right: 10px;
+}
+* {
+    padding: 0;
+    margin: 0;
+    font-size: 9pt;
+}
+.wizard ul li .chevron {
+    border: 20px solid transparent;
+    border-left: 14px solid #d4d4d4;
+    border-right: 0;
+    display: block;
+    position: absolute;
+    right: -14px;
+    top: 0;
+    z-index: 1;
+}
+.wizard ul li.active {
+    background: #fff;
+    color: #262626;
+}
+.wizard ul li {
+    float: left;
+    margin: 0;
+    padding: 0 0px 0 20px;
+    line-height: 38px;
+    position: relative;
+    background: #f5f5f5;
+    color: #d0d0d0;
+    font-size: 16px;
+    cursor: default;
+    -webkit-transition: all .218s ease;
+    -moz-transition: all .218s ease;
+    -o-transition: all .218s ease;
+    transition: all .218s ease;
+}
+.wizard ul li.active .chevron:before {
+    border-left: 14px solid #fff;
+}
+.wizard ul li .chevron:before {
+    border: 20px solid transparent;
+    border-left: 14px solid #f5f5f5;
+    border-right: 0;
+    content: "";
+    display: block;
+    position: absolute;
+    right: 1px;
+    top: -20px;
+    -webkit-transition: all .218s ease;
+    -moz-transition: all .218s ease;
+    -o-transition: all .218s ease;
+    transition: all .218s ease;
+}
+   </style>
+    <!--步骤专用CSS样式OVER-->
+   
 </head>
-<body>
-    <style>
-        .layui-form-select dl dd.layui-this {
-            background-color: #196BAB;
-            color: #fff;
-        }
-        select
-        {
-            height: 37px;
-        }
-
-    </style>
-    <form id="form1"  runat="server">
-    <div class="admin-main">
-      <blockquote class="layui-elem-quote">
-          <i class="layui-icon">&#xe602;</i>后台管理<i class="layui-icon">&#xe602;</i>学生信息
-           <span style="float:right">
-               <a href="#<%# DateTime.Now.ToShortTimeString() %>" class="layui-btn layui-btn-small hidden-xs">
-					<i class="layui-icon">&#x1002;</i> 刷新
-				</a>
-                  <a href="mb/xsxxdr.xls" class="layui-btn layui-btn-small hidden-xs">
-					<i class="layui-icon">&#xe62a;</i> 模板下载
-				</a>
-                 <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '学生数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'xsxx_dr.aspx?setp=1&mb=mb/xsxxdr.xls',btn:'完成'});" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe62f;</i>导入学生数据
-				</a>
-               
-                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' OnClick="exportexcel" ><i class="layui-icon">&#xe61e;</i>导出所选批次数据</asp:LinkButton>
-
-		  </span>       
-      </blockquote>
-
-                    <asp:ScriptManager ID="ScriptManager1" runat="server">
-                </asp:ScriptManager>
-        
-        <div>
-            <div class="layui-form-item">
-                       <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                  <ContentTemplate>
-                批次：
-                    <asp:DropDownList ID="batch" runat="server" AutoPostBack="True" 
+<body style="font-family: 微软雅黑,宋体,Arial,Helvetica,Verdana,sans-serif;"> 
+    <form id="form1" runat="server">
+     <div class="admin-main">
+     <blockquote class="layui-elem-quote">
+      <div id="wizard" class="wizard" data-target="#wizard-steps" style="border-left: none; border-top: none; border-right: none;">
+        <ul class="steps">
+            <li data-target="#step-1" class="active" style="padding-left:0px;"><span class="step">1</span>准备模板<span class="chevron"></span></li>
+            <li data-target="#step-2" id="setp2" runat="server"><span class="step">2</span>上传文件<span class="chevron"></span></li>
+            <li data-target="#step-3" id="setp3" runat="server"><span class="step">3</span>数据显示<span class="chevron"></span></li>
+           
+        </ul>
+        <span style=" float:right;"><a id="setpup" runat="server" class="layui-btn layui-btn-small" style="margin-right:15px;margin-top:4px;">上一步</a><a  id="setpdown" runat="server"  style="margin-right:15px;margin-top:4px;" class="layui-btn layui-btn-small">下一步</a></span>
+    </div>  
+				
+	</blockquote>
+    <asp:Label ID="ztxx" Font-Size="Medium" runat="server" Text=""></asp:Label>
+     <!--步骤1-->
+    <div  id="setp1cz" runat="server">
+     <blockquote class="layui-elem-quote">
+     <a href="#" class="layui-btn layui-btn-small" id="mbfile" runat="server">
+					<i class="layui-icon">&#xe61e;</i>下载模板
+				</a>&nbsp;&nbsp;&nbsp;&nbsp;<asp:DropDownList ID="DropDownListBatch" runat="server" AutoPostBack="True" 
                         DataSourceID="LinqDataSource1" DataTextField="Batch_Name" 
                         DataValueField="PK_Batch_NO" 
-                        Font-Size="Medium" AppendDataBoundItems="True">
-                        <asp:ListItem Selected="True" Value="0">显示所有批次</asp:ListItem>
+                        Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="DropDownListBatch_SelectedIndexChanged">
+                        <asp:ListItem  Value="-1">请选择批次</asp:ListItem>
                     </asp:DropDownList>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
-                      <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" Select="new (PK_Batch_NO, Batch_Name)" TableName="Fresh_Batches" OrderBy="PK_Batch_NO">
-                      </asp:LinqDataSource>
-                    </ContentTemplate></asp:UpdatePanel>
-            </div>
-        </div>    
-  <div>   
-                       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                  <ContentTemplate>
-  <asp:HiddenField ID="hdfWPBH" runat="server" />
-  <asp:GridView  ID="GridView1"  
+         <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" Select="new (PK_Batch_NO, Batch_Name)" TableName="Fresh_Batches" OrderBy="PK_Batch_NO">
+                      </asp:LinqDataSource>&nbsp;&nbsp;
+      <asp:Label ID="setp1ts" runat="server"
+         Text="请先下载EXCLE模板按模板准备导入数据,数据准备完成后选择相应批次,否则无法完成导入,选择好后请点击＂下一步＂!" 
+             Font-Size="Medium"></asp:Label>
+				
+	</blockquote>
+    </div>
+
+
+     <!--步骤2-->
+     <div   id="setp2cz" runat="server">
+       <blockquote class="layui-elem-quote">
+
+       <asp:FileUpload ID="FileUpload1" runat="server" />
+           <asp:Button 
+                ID="batch_import" runat="server" Text="点击上传" txttop="txttop" 
+                ToolTip="点此上传已经做好的新生excel表!" OnClientClick="this.value='正在上传..';" 
+                CssClass="layui-btn layui-btn-small" onclick="batch_import_Click" />
+    	
+	</blockquote>
+    <br />
+        <asp:GridView ID="GridView1" runat="server">
+        </asp:GridView> 
+    </div>
+
+
+     <!--步骤3-->
+    <div   id="setp3cz" runat="server">
+    显示当前批次、年级已导入的学生数据
+        
+     
+        <asp:GridView  ID="GridView2"  
           runat="server" AutoGenerateColumns="False" 
             DataSourceID="ObjectDataSource1" CssClass="site-table table-hover" 
             EmptyDataText="未查找相应批次的相关数据!" 
@@ -132,19 +277,6 @@
     <HeaderStyle CssClass="hidden-xs" />
     <ItemStyle CssClass="hidden-xs" />
     </asp:BoundField>
-        <asp:TemplateField HeaderText="" >
-                 
-                <HeaderTemplate>管理操作
-
-                </HeaderTemplate>
-                <ItemTemplate>                    
-             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '学生信息详情－<%# Eval("Name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'xsxx_detail.aspx?pk_sno=<%# Eval("PK_SNO").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情</a> <%--&nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
-              </asp:LinkButton>--%>
-            </ItemTemplate>
-                
-                </asp:TemplateField>
-
-
     </Columns>
     <PagerTemplate>
 <span style="float:left;padding-bottom: 8px;padding-top: 8px;" class="hidden-xs" >
@@ -195,44 +327,16 @@
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;
         </PagerTemplate>
     </asp:GridView>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService" OldValuesParameterFormatString="original_{0}" >
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService">
             <SelectParameters>
-                <asp:ControlParameter ControlID="batch" Name="batch" PropertyName="SelectedValue" 
-                    Type="String" DefaultValue="0" />
+                <asp:SessionParameter DefaultValue="-1" Name="batch" SessionField="batch" Type="String" />
             </SelectParameters>
-      </asp:ObjectDataSource>
-       
-   </ContentTemplate></asp:UpdatePanel>
+        </asp:ObjectDataSource>
+    </div>
+       </div>
 
-      <!--与后台配合的提示信息隐藏域-->
-            <asp:HiddenField ID="tsxx" runat="server" Value="" />
-			<!--与后台配合的提示信息隐藏域OVER-->
-            
-			<div class="admin-table-page" style="display:none">
-				<div id="page" class="page">
-				</div>
-			</div>
-		</div>
-     
-		<!--引发ＬＡＹＵＩ前端必须ＪＳ-->
-    <script type="text/javascript" src="plugins/layui/layui.js"></script>
-  
-    <!--引发ＬＡＹＵＩ前端必须ＪＳ　ＯＶＥＲ-->
-        <script>
-            layui.use(['layer', 'form', 'jquery'], function () {
-                var layer = layui.layer
-      , form = layui.form();
-                var $ = layui.jquery;
-                if ($("#tsxx").val() != "") {
-                    parent.layer.open({ content: $("#tsxx").val(), title: '提示信息(30秒后自动关闭)', btn: ['关闭'], time: 30000 });
-                    $("#tsxx").value = "";
-                }
-            });
-            layui.config({
-                base: 'plugins/layui/modules/'
-            });
-        </script>
-        </div>
+
+        <script type="text/javascript" src="plugins/layui/layui.js"></script>
     </form>
 </body>
 </html>
