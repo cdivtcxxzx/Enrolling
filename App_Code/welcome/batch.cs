@@ -3004,7 +3004,7 @@ public class batch
         {
             try
             {
-                new c_log().logAdd("batch.cs", "get_batch_nohascounseller", ex.Message, "2", "huyuan");//记录错误日志
+                new c_log().logAdd("batch.cs", "get_batch_hascollageaffair", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;
@@ -3050,7 +3050,7 @@ public class batch
         {
             try
             {
-                new c_log().logAdd("batch.cs", "get_batch_nohascounseller", ex.Message, "2", "huyuan");//记录错误日志
+                new c_log().logAdd("batch.cs", "get_batch_nohascollageaffair", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;
@@ -3133,7 +3133,7 @@ public class batch
         {
             try
             {
-                new c_log().logAdd("batch.cs", "get_batch_nohascounseller", ex.Message, "2", "huyuan");//记录错误日志
+                new c_log().logAdd("batch.cs", "get_batch_college_financial", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;
@@ -3141,6 +3141,131 @@ public class batch
         return result;
     }
 
+    //某批次、某班主任的班级数据(班级管理模块)
+    public System.Data.DataTable get_batch_ClassByCounseller(string PK_BATCH_NO,string PK_STAFF_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select b.* from Fresh_Counseller a,Fresh_Class b"
+                    +" where a.fk_staff_no=@cs2 and a.FK_Class_NO=b.PK_Class_NO and a.FK_Class_NO in ("
+                    +" select DISTINCT(fk_class_no) from vw_fresh_student_base"
+                    +" where FK_Fresh_Batch=@cs1)";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", PK_STAFF_NO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_ClassByCounseller", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 
+    //某批次事务列表(班级管理模块)
+    public System.Data.DataTable get_batch_affairlist(string PK_BATCH_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select affair_name,PK_Affair_NO from Fresh_Affair"
+                    +" where FK_Batch_NO=@cs1 and affair_char='interactive' and StatusDisplay='yes'"
+                    + " order by affair_order,affair_name";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_affairlist", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //某班级学生列表(班级管理模块)
+    public System.Data.DataTable get_classstudent(string PK_CLASS_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select [year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
+                    +" case when d.Tuition is null then '' else d.Tuition end as TuitionType"
+                    +" from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO"
+                    +" ,Fresh_Class b,Base_Code_Item c"
+                    +" where a.FK_Class_NO=b.PK_Class_NO and a.Gender_Code=c.Item_NO and c.FK_Code='002'"
+                    + " and a.FK_Class_NO=@cs1 order by name ";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_CLASS_NO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_classstudent", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //某班级学生的某事务状态列表(班级管理模块)
+    public System.Data.DataTable get_classstudentandaffairstatus(string PK_CLASS_NO,string PK_AFFAIR_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select [year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
+                    + " case when d.Tuition is null then '' else d.Tuition end as TuitionType,'' as affairstatus "
+                    + " from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO"
+                    + " ,Fresh_Class b,Base_Code_Item c"
+                    + " where a.FK_Class_NO=b.PK_Class_NO and a.Gender_Code=c.Item_NO and c.FK_Code='002'"
+                    + " and a.FK_Class_NO=@cs1 order by name ";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_CLASS_NO.Trim()));
+            if (result != null)
+            {
+                for (int i = 0; i < result.Rows.Count; i++)
+                {
+                    string pk_sno = result.Rows[i]["pk_sno"].ToString().Trim();
+                    List<fresh_affair_log> stu_loglist=this.get_studentaffairlog_list(pk_sno);
+                    List<fresh_affair_log> school_loglist=this.get_schoolaffairlog_list(pk_sno);
+                    for (int j = 0; stu_loglist != null && j < stu_loglist.Count; j++)
+                    {
+                        if (stu_loglist[j].FK_Affair_NO.Trim().Equals(PK_AFFAIR_NO.Trim()))
+                        {
+                            result.Rows[i]["affairstatus"] = stu_loglist[j].Log_Status.Trim();
+                        }
+                    }
+                    for (int j = 0; school_loglist != null && j < school_loglist.Count; j++)
+                    {
+                        if (school_loglist[j].FK_Affair_NO.Trim().Equals(PK_AFFAIR_NO.Trim()))
+                        {
+                            result.Rows[i]["affairstatus"] = school_loglist[j].Log_Status.Trim();
+                        }
+                    }
+                }
+                result.AcceptChanges();
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_classstudent", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 
 }

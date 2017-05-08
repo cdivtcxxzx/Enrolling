@@ -2077,7 +2077,67 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region 某批次、某班主任的班级数据
+                if (cs.Trim().Equals("get_batch_ClassByCounseller"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_staff_no = Request.QueryString.Get("pk_staff_no");
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0 && pk_staff_no != null && pk_staff_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_ClassByCounseller(pk_batch_no, pk_staff_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
 
+                #region    某批次事务列表(班级管理模块)
+                if (cs.Trim().Equals("get_batch_affairlist"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0 )
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_affairlist(pk_batch_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region  某班级学生列表(班级管理模块)
+                if (cs.Trim().Equals("get_classstudent"))
+                {
+                    string pk_class_no = Request.QueryString.Get("pk_class_no");
+                    if (pk_class_no != null && pk_class_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_classstudent(pk_class_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region  某班级学生的某事务状态列表(班级管理模块)
+                if (cs.Trim().Equals("get_classstudentandaffairstatus"))
+                {
+                    string pk_class_no = Request.QueryString.Get("pk_class_no");
+                    string pk_affair_no = Request.QueryString.Get("pk_affair_no");
+                    if (pk_class_no != null && pk_class_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_classstudentandaffairstatus(pk_class_no, pk_affair_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
             }
         }
         catch (Exception ex)

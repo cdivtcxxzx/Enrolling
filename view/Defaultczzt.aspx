@@ -131,7 +131,7 @@
                 }
             }
 
-                    .layui-form-select dl dd.layui-this {
+        .layui-form-select dl dd.layui-this {
             background-color: #196BAB;
             color: #fff;
         }
