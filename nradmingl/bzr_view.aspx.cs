@@ -26,7 +26,7 @@ public partial class nradmingl_Default3 : System.Web.UI.Page
         //{
         //    throw new Exception("没登陆");
         //}
-        this.pk_batch_no.Value = Session["pk_batch_no"];
-        this.pk_staff_no.Value = Session["pk_staff_no"];
+        this.pk_batch_no.Value = Session["pk_batch_no"].ToString().Trim();
+        this.pk_staff_no.Value = Session["pk_staff_no"].ToString().Trim();
     }
 }
