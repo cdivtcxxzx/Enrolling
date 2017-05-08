@@ -30,8 +30,6 @@
                     </select>
                 </div>
             </div>
-
-
             <div>
                 <table class="layui-table" id="affairlist">
                     <thead>
@@ -55,7 +53,6 @@
                             <th>操作员编号</th>
                             <th>操作员姓名</th>
                             <th>迎新年</th>
-                            <th>授权标志</th>
                             <th>授权操作学院</th>
                             <th></th>
                         </tr>
@@ -247,24 +244,32 @@
     <div id="addstaff_content" style="display: none;">
         <table align="center">
             <tr>
+                <td>姓名:<label id="username"></label></td>
+                <td></td>
+                <td >
+                   
+                </td>
+            </tr>
+          
+            <tr>
                 <td>可选学院</td>
                 <td></td>
                 <td>已选学院</td>
             </tr>
             <tr>
                 <td>
-                <select name="c1" id="c1" size="8">
+                <select name="collegelist" id="collegelist" size="8">
                     <option>abc</option>
                     <option>abc</option>
                 </select>
                 </td>
                 <td>
-                  <input type="button" id="add" value=">>" />
+                  <input type="button" id="add" value=">>" onclick="additem()" />
                     <br /><br /><br />
-                  <input type="button" id="remove" value="<<" />
+                  <input type="button" id="remove" value="<<" onclick="removeitem()" />
                 </td>
                 <td>
-                <select name="c2" id="c2" size="8" >
+                <select name="selectedcollegelist" id="selectedcollegelist" size="8" >
                     <option>abc</option>
                     <option>abc</option>
                 </select>

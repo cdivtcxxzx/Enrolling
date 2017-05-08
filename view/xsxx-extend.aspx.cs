@@ -54,7 +54,7 @@ public partial class view_xsxx_extend : System.Web.UI.Page
         //获取民族
         xsxx_mz.DataSource = organizationService.getCodesItem("003");
         xsxx_mz.DataTextField = "Item_Name";
-        xsxx_mz.DataValueField = "PK_Item";
+        xsxx_mz.DataValueField = "Item_NO";
         xsxx_mz.DataBind();
         xsxx_mz.Items.Insert(0, new ListItem("请选择", "-1"));
 
