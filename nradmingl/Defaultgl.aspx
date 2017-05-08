@@ -25,7 +25,7 @@
 				<div class="layui-main">
 					<div class="admin-login-box">
 						<a class="logo"  href="/">
-							<span style="font-size: 22px;">迎新管理系统</span>
+							<span style="font-size: 22px;">迎新管理系统后台首页</span>
 						</a>
 						<div title="左侧导航菜单显示/隐藏" class="admin-side-toggle  hidden-xs">
 							<i class="fa fa-chevron-left" aria-hidden="true"></i>
@@ -84,7 +84,7 @@
                   
 					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
 						<div class="layui-tab-item layui-show">
-							<iframe src="/view/.aspx"></iframe>
+							<iframe src="/view/Defaultczzt.aspx"></iframe>
 						</div>
 					</div>
 				</div>
