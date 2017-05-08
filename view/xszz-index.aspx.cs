@@ -11,10 +11,11 @@ public partial class view_xszz_index : System.Web.UI.Page
     {
         //访问本网页用户的授权验证
 
+        string pk_sno = Request.QueryString["pk_sno"];//获取学号
 
         #region 控制业务代码
-        this.pk_sno.Value = "2";//其值应由会话中来，在学生登陆成功后被赋予初值
-
+        Session["pk_sno"] = pk_sno;
+        this.pk_sno.Value = Session["pk_sno"].ToString().Trim();//其值应由会话中来，在学生登陆成功后被赋予初值
 
         #endregion
     }

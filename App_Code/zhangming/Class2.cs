@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Security.Cryptography;
 
 
+
 namespace Web
 {
     /// <summary> 
@@ -35,7 +36,7 @@ namespace Web
         ///  
         /// 格式: ".gif,.exe" 或更多 
         /// </summary> 
-        public string FileType = ".jpg,.gif,.png,.xls";
+        public string FileType = ".jpg,.gif,.png,.xls,.rar";
 
         /// <summary> 
         /// 上传错误 
@@ -89,7 +90,7 @@ namespace Web
             string Path = this.FilePath;
 
             // 目录格式 
-            string Date = DateTime.Now.ToString("yyyy-MM-dd");
+            string Date = DateTime.Now.ToString("yyyy-MM-dd")+DateTime.Now.Hour.ToString();
             string dir = HttpContext.Current.Server.MapPath(Path + "/" + file1);
 
             // 注册文件信息 
@@ -109,7 +110,7 @@ namespace Web
         {
             // 获取允许允许上传类型列表 
             string[] TypeList = this.FileType.Split(',');
-            string Date = DateTime.Now.ToString("yyyy-MM-dd");
+            string Date = DateTime.Now.ToString("yyyy-MM-dd")+DateTime.Now.Hour.ToString();
             // 获取上传文件类型(小写) 
             string Type = Path.GetExtension(FileName).ToLowerInvariant();
             string Name = Path.GetFileNameWithoutExtension(FileName);
@@ -123,7 +124,7 @@ namespace Web
             // 验证类型 
             if (TypeList.Contains(Type) == false)
             {
-                this.TryError("文件类型非法!");
+                this.TryError("文件类型非法!仅能上传.xls和.rar!");
                 return false;
             }
             return true;
