@@ -469,6 +469,10 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     {
         GridView1.DataBind();
     }
+    protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+
+    }
 }
 
    
