@@ -26,6 +26,7 @@
         }
         select
         {
+            display:inline-block;
             height: 37px;
         }
 
