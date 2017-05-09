@@ -64,9 +64,9 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>迎新管理>>交费列表
+            <i class="layui-icon">&#xe602;</i>学生网上自助报到>>交费列表
             <span style="float:right;" id="btnback">            				
-                 <a href="javascript:window.location.go(-1);" class="layui-btn layui-btn-small">
+                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
            </span>

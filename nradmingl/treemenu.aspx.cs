@@ -162,7 +162,10 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
                         #endregion
 
                         #endregion
-
+                        if (qxok == "1")
+                        {
+                            sc += "]}";
+                        }
                     }
                     else
                     {
@@ -180,10 +183,7 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
 
                     }
                 }
-                if (qxok == "1")
-                {
-                    sc += "]}";
-                }
+                
                 qxok = "0";
                 // Response.Write("{\"title\": \"基本元素\",\"icon\": \"fa-cubes\",\"spread\": true,\"children\": ");
 
@@ -197,7 +197,7 @@ public partial class nradmingl_treemenu : System.Web.UI.Page
         {
             sc="[]";
         }
-        //sc=sc.Replace("[,","[").Replace("]}]},","").Replace("]}]}]}",",").Replace(",]}]}","");
+        //sc = sc.Replace("}]}]", "}]");
         //if (sc.Contains("@"))
         //{
 

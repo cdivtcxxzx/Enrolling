@@ -64,11 +64,11 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>迎新管理>>学生基本信息
+            <i class="layui-icon">&#xe602;</i>学生网上自助报到>>学生基本信息
             <span style="float:right"  id="btnback">
             
 				
-                 <a href="javascript:window.location.go(-1);" class="layui-btn layui-btn-small">
+                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
                </span>
@@ -153,7 +153,7 @@
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zy" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">年级</label>
+          <label class="layui-form-label">年级：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_nj" runat="server" Text=""></asp:Label></div></div>
         </div>
@@ -168,12 +168,17 @@
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任电话</label>
+          <label class="layui-form-label">班主任电话：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></div></div>
         </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">班主任QQ：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrqq" runat="server" Text=""></asp:Label></div></div>
+        </div>
         <div class="layui-form-item" style="text-align:center">
-          <button class="layui-btn" id="backmain" onclick="javascript:">返回操作首页</button>
+          <button class="layui-btn" id="backmain" onclick="javascript:history.go(-1);">返回操作首页</button>
         </div>
 
      </div>

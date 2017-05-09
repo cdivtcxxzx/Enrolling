@@ -82,8 +82,11 @@ public partial class nradmingl_treemenuxs : System.Web.UI.Page
                 //        //Response.Write(Session["UserName"].ToString() + dt.Rows[i]["gjz"].ToString() + "有权限");
                 //    }
                 //}
+
+              
                 url = dt.Rows[i]["url"].ToString().Replace("pk_sno=", "pk_sno="+Session["username"].ToString());
                 string sqlSerachByDhcdh2 = "SELECT * FROM lanm WHERE (sfdhxs=1) and fid='" + dt.Rows[i]["lmid"].ToString() + "' order by px asc";
+                //Response.Write(sqlSerachByDhcdh2);
                 DataTable dt2 = Sqlhelper.Serach(sqlSerachByDhcdh2);
 
                 if (dt2.Rows.Count > 0)
@@ -107,29 +110,11 @@ public partial class nradmingl_treemenuxs : System.Web.UI.Page
                             sc += ",{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"children\": [";
                         }
                     }
-                    qxok = "0";
+                   
                     string isone2 = "0";
                     for (int c = 0; c < dt2.Rows.Count; c++)
                     {
                         //展示第三级
-
-
-
-
-
-
-
-
-                        qxok = "0";
-
-
-                        //if (Session["UserName"] != null)
-                        //{
-                        //    if (new c_login().powerYanzheng(Session["UserName"].ToString(), dt2.Rows[c]["gjz"].ToString(), "浏览", "2"))
-                        //    {
-                        //        qxok = "1";
-                        //    }
-                        //}
                         url = dt2.Rows[c]["url"].ToString().Replace("pk_sno=", "pk_sno=" + Session["username"].ToString()); ;
 
                         if (isone2 == "0")
@@ -151,7 +136,7 @@ public partial class nradmingl_treemenuxs : System.Web.UI.Page
 
                         }
 
-                        qxok = "0";
+                       
 
                     }
 

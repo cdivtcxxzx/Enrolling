@@ -48,9 +48,6 @@ namespace model
     partial void InsertFresh_Confirm(Fresh_Confirm instance);
     partial void UpdateFresh_Confirm(Fresh_Confirm instance);
     partial void DeleteFresh_Confirm(Fresh_Confirm instance);
-    partial void InsertBase_STU(Base_STU instance);
-    partial void UpdateBase_STU(Base_STU instance);
-    partial void DeleteBase_STU(Base_STU instance);
     partial void InsertBase_Code(Base_Code instance);
     partial void UpdateBase_Code(Base_Code instance);
     partial void DeleteBase_Code(Base_Code instance);
@@ -66,6 +63,9 @@ namespace model
     partial void InsertFresh_SPE(Fresh_SPE instance);
     partial void UpdateFresh_SPE(Fresh_SPE instance);
     partial void DeleteFresh_SPE(Fresh_SPE instance);
+    partial void InsertBase_STU(Base_STU instance);
+    partial void UpdateBase_STU(Base_STU instance);
+    partial void DeleteBase_STU(Base_STU instance);
     #endregion
 		
 		public organizationModelDataContext() : 
@@ -146,14 +146,6 @@ namespace model
 			}
 		}
 		
-		public System.Data.Linq.Table<Base_STU> Base_STUs
-		{
-			get
-			{
-				return this.GetTable<Base_STU>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Base_Code> Base_Codes
 		{
 			get
@@ -191,6 +183,14 @@ namespace model
 			get
 			{
 				return this.GetTable<Fresh_SPE>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Base_STU> Base_STUs
+		{
+			get
+			{
+				return this.GetTable<Base_STU>();
 			}
 		}
 	}
@@ -1095,524 +1095,6 @@ namespace model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Base_STU")]
-	public partial class Base_STU : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _PK_SNO;
-		
-		private string _FK_SPE_Code;
-		
-		private string _Year;
-		
-		private string _Test_NO;
-		
-		private string _ID_NO;
-		
-		private string _Name;
-		
-		private string _Gender_Code;
-		
-		private string _Photo;
-		
-		private string _Status_Code;
-		
-		private System.Nullable<System.DateTime> _DT_Initial;
-		
-		private string _FK_Class_NO;
-		
-		private string _Password;
-		
-		private string _QQ;
-		
-		private string _Phone;
-		
-		private string _Height;
-		
-		private string _Weight;
-		
-		private string _Nation_Code;
-		
-		private string _Census;
-		
-		private string _Politics_Code;
-		
-		private string _Home_add;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPK_SNOChanging(string value);
-    partial void OnPK_SNOChanged();
-    partial void OnFK_SPE_CodeChanging(string value);
-    partial void OnFK_SPE_CodeChanged();
-    partial void OnYearChanging(string value);
-    partial void OnYearChanged();
-    partial void OnTest_NOChanging(string value);
-    partial void OnTest_NOChanged();
-    partial void OnID_NOChanging(string value);
-    partial void OnID_NOChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnGender_CodeChanging(string value);
-    partial void OnGender_CodeChanged();
-    partial void OnPhotoChanging(string value);
-    partial void OnPhotoChanged();
-    partial void OnStatus_CodeChanging(string value);
-    partial void OnStatus_CodeChanged();
-    partial void OnDT_InitialChanging(System.Nullable<System.DateTime> value);
-    partial void OnDT_InitialChanged();
-    partial void OnFK_Class_NOChanging(string value);
-    partial void OnFK_Class_NOChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    partial void OnQQChanging(string value);
-    partial void OnQQChanged();
-    partial void OnPhoneChanging(string value);
-    partial void OnPhoneChanged();
-    partial void OnHeightChanging(string value);
-    partial void OnHeightChanged();
-    partial void OnWeightChanging(string value);
-    partial void OnWeightChanged();
-    partial void OnNation_CodeChanging(string value);
-    partial void OnNation_CodeChanged();
-    partial void OnCensusChanging(string value);
-    partial void OnCensusChanged();
-    partial void OnPolitics_CodeChanging(string value);
-    partial void OnPolitics_CodeChanged();
-    partial void OnHome_addChanging(string value);
-    partial void OnHome_addChanged();
-    #endregion
-		
-		public Base_STU()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PK_SNO", DbType="NVarChar(20) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string PK_SNO
-		{
-			get
-			{
-				return this._PK_SNO;
-			}
-			set
-			{
-				if ((this._PK_SNO != value))
-				{
-					this.OnPK_SNOChanging(value);
-					this.SendPropertyChanging();
-					this._PK_SNO = value;
-					this.SendPropertyChanged("PK_SNO");
-					this.OnPK_SNOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_SPE_Code", DbType="NVarChar(50)")]
-		public string FK_SPE_Code
-		{
-			get
-			{
-				return this._FK_SPE_Code;
-			}
-			set
-			{
-				if ((this._FK_SPE_Code != value))
-				{
-					this.OnFK_SPE_CodeChanging(value);
-					this.SendPropertyChanging();
-					this._FK_SPE_Code = value;
-					this.SendPropertyChanged("FK_SPE_Code");
-					this.OnFK_SPE_CodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="NVarChar(10)")]
-		public string Year
-		{
-			get
-			{
-				return this._Year;
-			}
-			set
-			{
-				if ((this._Year != value))
-				{
-					this.OnYearChanging(value);
-					this.SendPropertyChanging();
-					this._Year = value;
-					this.SendPropertyChanged("Year");
-					this.OnYearChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Test_NO", DbType="NVarChar(20)")]
-		public string Test_NO
-		{
-			get
-			{
-				return this._Test_NO;
-			}
-			set
-			{
-				if ((this._Test_NO != value))
-				{
-					this.OnTest_NOChanging(value);
-					this.SendPropertyChanging();
-					this._Test_NO = value;
-					this.SendPropertyChanged("Test_NO");
-					this.OnTest_NOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_NO", DbType="NVarChar(20)")]
-		public string ID_NO
-		{
-			get
-			{
-				return this._ID_NO;
-			}
-			set
-			{
-				if ((this._ID_NO != value))
-				{
-					this.OnID_NOChanging(value);
-					this.SendPropertyChanging();
-					this._ID_NO = value;
-					this.SendPropertyChanged("ID_NO");
-					this.OnID_NOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(20)")]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender_Code", DbType="NVarChar(10)")]
-		public string Gender_Code
-		{
-			get
-			{
-				return this._Gender_Code;
-			}
-			set
-			{
-				if ((this._Gender_Code != value))
-				{
-					this.OnGender_CodeChanging(value);
-					this.SendPropertyChanging();
-					this._Gender_Code = value;
-					this.SendPropertyChanged("Gender_Code");
-					this.OnGender_CodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Photo", DbType="NVarChar(255)")]
-		public string Photo
-		{
-			get
-			{
-				return this._Photo;
-			}
-			set
-			{
-				if ((this._Photo != value))
-				{
-					this.OnPhotoChanging(value);
-					this.SendPropertyChanging();
-					this._Photo = value;
-					this.SendPropertyChanged("Photo");
-					this.OnPhotoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status_Code", DbType="NVarChar(10)")]
-		public string Status_Code
-		{
-			get
-			{
-				return this._Status_Code;
-			}
-			set
-			{
-				if ((this._Status_Code != value))
-				{
-					this.OnStatus_CodeChanging(value);
-					this.SendPropertyChanging();
-					this._Status_Code = value;
-					this.SendPropertyChanged("Status_Code");
-					this.OnStatus_CodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_Initial", DbType="DateTime")]
-		public System.Nullable<System.DateTime> DT_Initial
-		{
-			get
-			{
-				return this._DT_Initial;
-			}
-			set
-			{
-				if ((this._DT_Initial != value))
-				{
-					this.OnDT_InitialChanging(value);
-					this.SendPropertyChanging();
-					this._DT_Initial = value;
-					this.SendPropertyChanged("DT_Initial");
-					this.OnDT_InitialChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Class_NO", DbType="NVarChar(50)")]
-		public string FK_Class_NO
-		{
-			get
-			{
-				return this._FK_Class_NO;
-			}
-			set
-			{
-				if ((this._FK_Class_NO != value))
-				{
-					this.OnFK_Class_NOChanging(value);
-					this.SendPropertyChanging();
-					this._FK_Class_NO = value;
-					this.SendPropertyChanged("FK_Class_NO");
-					this.OnFK_Class_NOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(50)")]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QQ", DbType="NVarChar(20)")]
-		public string QQ
-		{
-			get
-			{
-				return this._QQ;
-			}
-			set
-			{
-				if ((this._QQ != value))
-				{
-					this.OnQQChanging(value);
-					this.SendPropertyChanging();
-					this._QQ = value;
-					this.SendPropertyChanged("QQ");
-					this.OnQQChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(20)")]
-		public string Phone
-		{
-			get
-			{
-				return this._Phone;
-			}
-			set
-			{
-				if ((this._Phone != value))
-				{
-					this.OnPhoneChanging(value);
-					this.SendPropertyChanging();
-					this._Phone = value;
-					this.SendPropertyChanged("Phone");
-					this.OnPhoneChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Height", DbType="NVarChar(10)")]
-		public string Height
-		{
-			get
-			{
-				return this._Height;
-			}
-			set
-			{
-				if ((this._Height != value))
-				{
-					this.OnHeightChanging(value);
-					this.SendPropertyChanging();
-					this._Height = value;
-					this.SendPropertyChanged("Height");
-					this.OnHeightChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Weight", DbType="NVarChar(10)")]
-		public string Weight
-		{
-			get
-			{
-				return this._Weight;
-			}
-			set
-			{
-				if ((this._Weight != value))
-				{
-					this.OnWeightChanging(value);
-					this.SendPropertyChanging();
-					this._Weight = value;
-					this.SendPropertyChanged("Weight");
-					this.OnWeightChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nation_Code", DbType="NVarChar(10)")]
-		public string Nation_Code
-		{
-			get
-			{
-				return this._Nation_Code;
-			}
-			set
-			{
-				if ((this._Nation_Code != value))
-				{
-					this.OnNation_CodeChanging(value);
-					this.SendPropertyChanging();
-					this._Nation_Code = value;
-					this.SendPropertyChanged("Nation_Code");
-					this.OnNation_CodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Census", DbType="NVarChar(50)")]
-		public string Census
-		{
-			get
-			{
-				return this._Census;
-			}
-			set
-			{
-				if ((this._Census != value))
-				{
-					this.OnCensusChanging(value);
-					this.SendPropertyChanging();
-					this._Census = value;
-					this.SendPropertyChanged("Census");
-					this.OnCensusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Politics_Code", DbType="NVarChar(10)")]
-		public string Politics_Code
-		{
-			get
-			{
-				return this._Politics_Code;
-			}
-			set
-			{
-				if ((this._Politics_Code != value))
-				{
-					this.OnPolitics_CodeChanging(value);
-					this.SendPropertyChanging();
-					this._Politics_Code = value;
-					this.SendPropertyChanged("Politics_Code");
-					this.OnPolitics_CodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Home_add", DbType="NVarChar(255)")]
-		public string Home_add
-		{
-			get
-			{
-				return this._Home_add;
-			}
-			set
-			{
-				if ((this._Home_add != value))
-				{
-					this.OnHome_addChanging(value);
-					this.SendPropertyChanging();
-					this._Home_add = value;
-					this.SendPropertyChanged("Home_add");
-					this.OnHome_addChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Base_Code")]
 	public partial class Base_Code : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2474,6 +1956,548 @@ namespace model
 					this._Xznx = value;
 					this.SendPropertyChanged("Xznx");
 					this.OnXznxChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Base_STU")]
+	public partial class Base_STU : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _PK_SNO;
+		
+		private string _FK_SPE_Code;
+		
+		private string _Year;
+		
+		private string _Test_NO;
+		
+		private string _ID_NO;
+		
+		private string _Name;
+		
+		private string _Gender_Code;
+		
+		private string _Photo;
+		
+		private string _Status_Code;
+		
+		private System.Nullable<System.DateTime> _DT_Initial;
+		
+		private string _FK_Class_NO;
+		
+		private string _Password;
+		
+		private string _QQ;
+		
+		private string _Phone;
+		
+		private string _Height;
+		
+		private string _Weight;
+		
+		private string _Nation_Code;
+		
+		private string _Census;
+		
+		private string _Politics_Code;
+		
+		private string _Home_add;
+		
+		private string _Phone_dr;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPK_SNOChanging(string value);
+    partial void OnPK_SNOChanged();
+    partial void OnFK_SPE_CodeChanging(string value);
+    partial void OnFK_SPE_CodeChanged();
+    partial void OnYearChanging(string value);
+    partial void OnYearChanged();
+    partial void OnTest_NOChanging(string value);
+    partial void OnTest_NOChanged();
+    partial void OnID_NOChanging(string value);
+    partial void OnID_NOChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnGender_CodeChanging(string value);
+    partial void OnGender_CodeChanged();
+    partial void OnPhotoChanging(string value);
+    partial void OnPhotoChanged();
+    partial void OnStatus_CodeChanging(string value);
+    partial void OnStatus_CodeChanged();
+    partial void OnDT_InitialChanging(System.Nullable<System.DateTime> value);
+    partial void OnDT_InitialChanged();
+    partial void OnFK_Class_NOChanging(string value);
+    partial void OnFK_Class_NOChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    partial void OnQQChanging(string value);
+    partial void OnQQChanged();
+    partial void OnPhoneChanging(string value);
+    partial void OnPhoneChanged();
+    partial void OnHeightChanging(string value);
+    partial void OnHeightChanged();
+    partial void OnWeightChanging(string value);
+    partial void OnWeightChanged();
+    partial void OnNation_CodeChanging(string value);
+    partial void OnNation_CodeChanged();
+    partial void OnCensusChanging(string value);
+    partial void OnCensusChanged();
+    partial void OnPolitics_CodeChanging(string value);
+    partial void OnPolitics_CodeChanged();
+    partial void OnHome_addChanging(string value);
+    partial void OnHome_addChanged();
+    partial void OnPhone_drChanging(string value);
+    partial void OnPhone_drChanged();
+    #endregion
+		
+		public Base_STU()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PK_SNO", DbType="NVarChar(20) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string PK_SNO
+		{
+			get
+			{
+				return this._PK_SNO;
+			}
+			set
+			{
+				if ((this._PK_SNO != value))
+				{
+					this.OnPK_SNOChanging(value);
+					this.SendPropertyChanging();
+					this._PK_SNO = value;
+					this.SendPropertyChanged("PK_SNO");
+					this.OnPK_SNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_SPE_Code", DbType="NVarChar(50)")]
+		public string FK_SPE_Code
+		{
+			get
+			{
+				return this._FK_SPE_Code;
+			}
+			set
+			{
+				if ((this._FK_SPE_Code != value))
+				{
+					this.OnFK_SPE_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._FK_SPE_Code = value;
+					this.SendPropertyChanged("FK_SPE_Code");
+					this.OnFK_SPE_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="NVarChar(10)")]
+		public string Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this.OnYearChanging(value);
+					this.SendPropertyChanging();
+					this._Year = value;
+					this.SendPropertyChanged("Year");
+					this.OnYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Test_NO", DbType="NVarChar(20)")]
+		public string Test_NO
+		{
+			get
+			{
+				return this._Test_NO;
+			}
+			set
+			{
+				if ((this._Test_NO != value))
+				{
+					this.OnTest_NOChanging(value);
+					this.SendPropertyChanging();
+					this._Test_NO = value;
+					this.SendPropertyChanged("Test_NO");
+					this.OnTest_NOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID_NO", DbType="NVarChar(20)")]
+		public string ID_NO
+		{
+			get
+			{
+				return this._ID_NO;
+			}
+			set
+			{
+				if ((this._ID_NO != value))
+				{
+					this.OnID_NOChanging(value);
+					this.SendPropertyChanging();
+					this._ID_NO = value;
+					this.SendPropertyChanged("ID_NO");
+					this.OnID_NOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(20)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender_Code", DbType="NVarChar(10)")]
+		public string Gender_Code
+		{
+			get
+			{
+				return this._Gender_Code;
+			}
+			set
+			{
+				if ((this._Gender_Code != value))
+				{
+					this.OnGender_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._Gender_Code = value;
+					this.SendPropertyChanged("Gender_Code");
+					this.OnGender_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Photo", DbType="NVarChar(255)")]
+		public string Photo
+		{
+			get
+			{
+				return this._Photo;
+			}
+			set
+			{
+				if ((this._Photo != value))
+				{
+					this.OnPhotoChanging(value);
+					this.SendPropertyChanging();
+					this._Photo = value;
+					this.SendPropertyChanged("Photo");
+					this.OnPhotoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status_Code", DbType="NVarChar(10)")]
+		public string Status_Code
+		{
+			get
+			{
+				return this._Status_Code;
+			}
+			set
+			{
+				if ((this._Status_Code != value))
+				{
+					this.OnStatus_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._Status_Code = value;
+					this.SendPropertyChanged("Status_Code");
+					this.OnStatus_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_Initial", DbType="DateTime")]
+		public System.Nullable<System.DateTime> DT_Initial
+		{
+			get
+			{
+				return this._DT_Initial;
+			}
+			set
+			{
+				if ((this._DT_Initial != value))
+				{
+					this.OnDT_InitialChanging(value);
+					this.SendPropertyChanging();
+					this._DT_Initial = value;
+					this.SendPropertyChanged("DT_Initial");
+					this.OnDT_InitialChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Class_NO", DbType="NVarChar(50)")]
+		public string FK_Class_NO
+		{
+			get
+			{
+				return this._FK_Class_NO;
+			}
+			set
+			{
+				if ((this._FK_Class_NO != value))
+				{
+					this.OnFK_Class_NOChanging(value);
+					this.SendPropertyChanging();
+					this._FK_Class_NO = value;
+					this.SendPropertyChanged("FK_Class_NO");
+					this.OnFK_Class_NOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(50)")]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_QQ", DbType="NVarChar(20)")]
+		public string QQ
+		{
+			get
+			{
+				return this._QQ;
+			}
+			set
+			{
+				if ((this._QQ != value))
+				{
+					this.OnQQChanging(value);
+					this.SendPropertyChanging();
+					this._QQ = value;
+					this.SendPropertyChanged("QQ");
+					this.OnQQChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="NVarChar(20)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Height", DbType="NVarChar(10)")]
+		public string Height
+		{
+			get
+			{
+				return this._Height;
+			}
+			set
+			{
+				if ((this._Height != value))
+				{
+					this.OnHeightChanging(value);
+					this.SendPropertyChanging();
+					this._Height = value;
+					this.SendPropertyChanged("Height");
+					this.OnHeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Weight", DbType="NVarChar(10)")]
+		public string Weight
+		{
+			get
+			{
+				return this._Weight;
+			}
+			set
+			{
+				if ((this._Weight != value))
+				{
+					this.OnWeightChanging(value);
+					this.SendPropertyChanging();
+					this._Weight = value;
+					this.SendPropertyChanged("Weight");
+					this.OnWeightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nation_Code", DbType="NVarChar(10)")]
+		public string Nation_Code
+		{
+			get
+			{
+				return this._Nation_Code;
+			}
+			set
+			{
+				if ((this._Nation_Code != value))
+				{
+					this.OnNation_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._Nation_Code = value;
+					this.SendPropertyChanged("Nation_Code");
+					this.OnNation_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Census", DbType="NVarChar(50)")]
+		public string Census
+		{
+			get
+			{
+				return this._Census;
+			}
+			set
+			{
+				if ((this._Census != value))
+				{
+					this.OnCensusChanging(value);
+					this.SendPropertyChanging();
+					this._Census = value;
+					this.SendPropertyChanged("Census");
+					this.OnCensusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Politics_Code", DbType="NVarChar(10)")]
+		public string Politics_Code
+		{
+			get
+			{
+				return this._Politics_Code;
+			}
+			set
+			{
+				if ((this._Politics_Code != value))
+				{
+					this.OnPolitics_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._Politics_Code = value;
+					this.SendPropertyChanged("Politics_Code");
+					this.OnPolitics_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Home_add", DbType="NVarChar(255)")]
+		public string Home_add
+		{
+			get
+			{
+				return this._Home_add;
+			}
+			set
+			{
+				if ((this._Home_add != value))
+				{
+					this.OnHome_addChanging(value);
+					this.SendPropertyChanging();
+					this._Home_add = value;
+					this.SendPropertyChanged("Home_add");
+					this.OnHome_addChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone_dr", DbType="VarChar(20)")]
+		public string Phone_dr
+		{
+			get
+			{
+				return this._Phone_dr;
+			}
+			set
+			{
+				if ((this._Phone_dr != value))
+				{
+					this.OnPhone_drChanging(value);
+					this.SendPropertyChanging();
+					this._Phone_dr = value;
+					this.SendPropertyChanged("Phone_dr");
+					this.OnPhone_drChanged();
 				}
 			}
 		}

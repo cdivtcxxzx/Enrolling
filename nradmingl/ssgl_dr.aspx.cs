@@ -198,15 +198,46 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
         {
             //ztxx.Text="上传成功,下面列出了不成功有误的数据请核对!</font>";
            
-            //开始显示数据，将数据存入datatable中
+#region 开始显示数据，将数据存入datatable中,并判断列是否正确
             DataTable x = new DataTable();
-            //将EXCEL表中所有数据存入x表格中
-            x = ReadXLSByExcel(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), zd);
-            DataTable clok = new DataTable();
-            //循环输出，判断
-            string[] zds = zd.Split(',');
+            //将EXCEL表中所有数据存入x表格中,clok用于后面存所有记录，x记录错误记录
+            toexcel todatatable = new toexcel();
+            x = todatatable.ExcelfileToDatatalbe(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), true);
+            DataTable clok = new DataTable();          
             //读取所有行
+            //判断各列名是否正确
+            string err = "";
+            int colzs = zd.Split(',').Length;
+            for (int i = 0; i < colzs; i++)
+            {
+                if (x.Columns.Contains(zd.Split(',')[i].ToString()))
+                {
+                    //存在
 
+                }
+                else
+                {
+                    //不存在
+                    if (err == "")
+                    {
+                        err +=zd.Split(',')[i].ToString();
+                    }
+                    else
+                    {
+                        err += "," + zd.Split(',')[i].ToString();
+                    }
+                }
+                
+            }
+            if (err.Length > 0)
+            {
+                this.ztxx.Text = "<font color=red>模板有" + colzs.ToString() + "列【" + zd + "】<br>【" + err + "】列未找到，请确认数据准备正确!</font>";
+                GridView1.DataSource = x;
+                GridView1.DataBind();
+
+                return;
+            }
+#endregion
 
             if (x.Rows.Count > 0)
             {
@@ -648,64 +679,78 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
     }
     public DataTable ReadXLSByExcel(string fileFullPath, string zd)
     {
-        string strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Jet OLEDB:Database Password=;Data Source=" + fileFullPath + ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1;\"";//只适合xls后缀
-        // "Provider=Microsoft.Jet.OLEDB.4.0;Jet OLEDB:Database Password=;Extended properties=Excel 5.0;Data Source="&Server.MapPath("/zsgl/upload/"+request("filename"))
-        // string  strConn = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileFullPath + ";Extended Properties='Excel 12.0;HDR=YES;IMEX=1;'";
-        // Response.Write(strConn);
-        //    参数HDR的值：HDR=Yes，这代表第一行是标题，不做为数据使用 ，如果用HDR=NO，则表示第一行不是标题，做为数据来使用。系统默认的是YES  。
-        //参数IMEX值：具体什么意思我也不清楚哈，不过如果没有设置=1的话，在单元格里面的中文有时不能正确读取到，会读到null。
-        // 官方的解释：
-        // IMEX ( IMport EXport mode )设置
-        //当 IMEX=0 时为“汇出模式”，这个模式开启的 Excel 档案只能用来做“写入”用途。
-        //当 IMEX=1 时为“汇入模式”，这个模式开启的 Excel 档案只能用来做“读取”用途。
-        //当 IMEX=2 时为“连結模式”，这个模式开启的 Excel 档案可同时支援“读取”与“写入”用途。
-        string tableName = "";
 
-        using (OleDbConnection oleConn = new OleDbConnection(strConn))
-        {
-            try
-            {
-                oleConn.Open();
-            }
-            catch (Exception ex)
-            {
-                this.ztxx.Text = "<font color=red>文件格式不对，请把需上传的文件另存为2003版XLS</font>" + ex.Message;
-            }
+        #region 使用EXCEL控件转为DATATABLE
+        string err="";
+        toexcel todatatable = new toexcel();
+        DataTable ok=todatatable.ExcelfileToDatatalbe(fileFullPath, true);
+        
+            
+        #endregion
+        GridView1.DataSource = ok;
+        GridView1.DataBind();
+        
+        return ok;
+        //#region 使用原生EXCEL操作方法
+        //string strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Jet OLEDB:Database Password=;Data Source=" + fileFullPath + ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1;\"";//只适合xls后缀
+        //// "Provider=Microsoft.Jet.OLEDB.4.0;Jet OLEDB:Database Password=;Extended properties=Excel 5.0;Data Source="&Server.MapPath("/zsgl/upload/"+request("filename"))
+        //// string  strConn = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileFullPath + ";Extended Properties='Excel 12.0;HDR=YES;IMEX=1;'";
+        //// Response.Write(strConn);
+        ////    参数HDR的值：HDR=Yes，这代表第一行是标题，不做为数据使用 ，如果用HDR=NO，则表示第一行不是标题，做为数据来使用。系统默认的是YES  。
+        ////参数IMEX值：具体什么意思我也不清楚哈，不过如果没有设置=1的话，在单元格里面的中文有时不能正确读取到，会读到null。
+        //// 官方的解释：
+        //// IMEX ( IMport EXport mode )设置
+        ////当 IMEX=0 时为“汇出模式”，这个模式开启的 Excel 档案只能用来做“写入”用途。
+        ////当 IMEX=1 时为“汇入模式”，这个模式开启的 Excel 档案只能用来做“读取”用途。
+        ////当 IMEX=2 时为“连結模式”，这个模式开启的 Excel 档案可同时支援“读取”与“写入”用途。
+        //string tableName = "";
 
-            try
-            {
-                DataTable sheetNames = oleConn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
-                //DataTable sheetNames = oleConn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, null);
+        //using (OleDbConnection oleConn = new OleDbConnection(strConn))
+        //{
+        //    try
+        //    {
+        //        oleConn.Open();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        this.ztxx.Text = "<font color=red>文件格式不对，请把需上传的文件另存为2003版XLS</font>" + ex.Message;
+        //    }
 
-                tableName = sheetNames.Rows[0][2].ToString().Trim();//获取 Excel 的表名，默认值是sheet1
+        //    try
+        //    {
+        //        DataTable sheetNames = oleConn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
+        //        //DataTable sheetNames = oleConn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, null);
+
+        //        tableName = sheetNames.Rows[0][2].ToString().Trim();//获取 Excel 的表名，默认值是sheet1
                 
-                if (tableName.Length <= 0)
-                {
-                    this.ztxx.Text = "<font color=red>EXCEL中的表不正确</font>";
-                    return new DataTable();
+        //        if (tableName.Length <= 0)
+        //        {
+        //            this.ztxx.Text = "<font color=red>EXCEL中的表不正确</font>";
+        //            return new DataTable();
                     
-                }
+        //        }
 
 
-                string sql = "select " + zd + " from [" + tableName + "] ";
+        //        string sql = "select " + zd + " from [" + tableName + "] ";
 
 
-                DataSet ds = new DataSet();
-                OleDbCommand objCmd = new OleDbCommand(sql, oleConn);
-                OleDbDataAdapter myData = new OleDbDataAdapter(sql, oleConn);
-                myData.Fill(ds, tableName);//填充数据
+        //        DataSet ds = new DataSet();
+        //        OleDbCommand objCmd = new OleDbCommand(sql, oleConn);
+        //        OleDbDataAdapter myData = new OleDbDataAdapter(sql, oleConn);
+        //        myData.Fill(ds, tableName);//填充数据
 
-                return ds.Tables[0];
+        //        return ds.Tables[0];
 
-            }
+        //    }
 
-            catch (Exception ex)
-            {
-                this.ztxx.Text = "<font color=red>文件格式不对，请下载模版重新准备数据，不要改变列的名字和排列顺序【" + zd + "】<br>" + ex.Message + "</font>";
-                return new DataTable();
+        //    catch (Exception ex)
+        //    {
+        //        this.ztxx.Text = "<font color=red>文件格式不对，请下载模版重新准备数据，不要改变列的名字和排列顺序【" + zd + "】<br>" + ex.Message + "</font>";
+        //        return new DataTable();
 
-            }
-        }
-       
+        //    }
+        //}
+        //#endregion
+
     }
 }
