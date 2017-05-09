@@ -52,16 +52,6 @@
       <Column Name="Confirm_Date" Type="System.DateTime" DbType="DateTime2" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Fresh_SPE" Member="Fresh_SPEs">
-    <Type Name="Fresh_SPE">
-      <Column Name="SPE_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Year" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="SPE_Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="EDU_Level_Code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="FK_College_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="PK_SPE" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.Base_STU" Member="Base_STUs">
     <Type Name="Base_STU">
       <Column Name="PK_SNO" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -101,6 +91,38 @@
       <Column Name="Item_Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="Remark" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="Item_NO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fresh_Batch" Member="Fresh_Batches">
+    <Type Name="Fresh_Batch">
+      <Column Name="PK_Batch_NO" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Batch_Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="STU_Type" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Welcome_Begin" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Welcome_End" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Service_Begin" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Service_End" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Enabled" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Financial_PK_Fee" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Financial_XH_Prefix" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fresh_STU" Member="Fresh_STUs">
+    <Type Name="Fresh_STU">
+      <Column Name="PK_SNO" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FK_Fresh_Batch" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Fresh_SPE" Member="Fresh_SPEs">
+    <Type Name="Fresh_SPE">
+      <Column Name="SPE_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Year" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="SPE_Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EDU_Level_Code" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="FK_College_Code" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PK_SPE" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Xznx" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

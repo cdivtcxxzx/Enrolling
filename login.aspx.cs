@@ -130,6 +130,7 @@ public partial class admin_Default : System.Web.UI.Page
         }
 
         #endregion
+        account_displayname.Style.Add("display", "none");
 #region 学生登陆
         string sf = "";
         if (Request["sf"] != null)
@@ -141,6 +142,15 @@ public partial class admin_Default : System.Web.UI.Page
             this.login_title.InnerHtml = "学生网上自助报到登陆";
             this.txt_name.Attributes.Add("placeholder", "请输入高考报名号");
             this.txt_pwd.Attributes.Add("placeholder", "默认密码为身份证后六位");
+
+        }
+        if (sf == "czy")
+        {
+            pc.Visible = true;
+            account_displayname.Style.Add("display", "");
+            this.login_title.InnerHtml = "迎新操作员登陆";
+            this.txt_name.Attributes.Add("placeholder", "请输入用户名");
+            this.txt_pwd.Attributes.Add("placeholder", "请输入密码");
 
         }
 
@@ -324,6 +334,8 @@ public partial class admin_Default : System.Web.UI.Page
                     {
                         //登陆成功
                         Session["username"] = userxs.Rows[0]["PK_SNO"].ToString();
+                        Session["pk_sno"] = userxs.Rows[0]["PK_SNO"].ToString();
+                        Session["pk_sno_name"] = userxs.Rows[0]["Name"].ToString();
                         Session["name"] = userxs.Rows[0]["Name"].ToString();
                         try
                         {
@@ -393,12 +405,19 @@ public partial class admin_Default : System.Web.UI.Page
                     {
                         Response.Write("<script>alert('对不起,你无权使用本系统！');top.location.href=/';</script>");
                     }
+                    if (login_title.InnerText == "迎新操作员登陆")
+                    {
+                        
+                        Session["pk_batch_no"] = pc.SelectedValue; ;
+                        Session["pk_staff_no"] = Session["UserName"].ToString();
 
+                    }
                     Response.Write("<script>alert('登陆成功！');</script>");
                     //Server.Transfer("~/"+Sqlhelper.gldir+"/default.aspx");
                     if (Request.QueryString["url"] != null)
                     {
                         //=号|,&号@
+
                         string x = Request["url"].ToString().Replace("|", "=").Replace("@", "&");
                         Response.Redirect(Request["url"].ToString());
                     }

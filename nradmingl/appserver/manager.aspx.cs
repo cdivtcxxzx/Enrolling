@@ -1069,7 +1069,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
-                #region 获取迎新批次目录
+                #region 获取当前有效的迎新批次目录
                 if (cs.Trim().Equals("get_freshbatch_welcome_list"))
                 {
                     batch batch_logic = new batch();
@@ -1115,14 +1115,11 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 if (cs.Trim().Equals("get_yonghqx"))
                 {
                     string username = Request.QueryString["username"];
-                    //if (username != null && username.Trim().Length != 0)
-                    {
-                        batch batch_logic = new batch();
-                        System.Data.DataTable jg = batch_logic.get_yonghqx(username);
-                        result.code = "success";
-                        result.message = "成功";
-                        result.data = jg;
-                    }
+                    batch batch_logic = new batch();
+                    System.Data.DataTable jg = batch_logic.get_yonghqx(username);
+                    result.code = "success";
+                    result.message = "成功";
+                    result.data = jg;
                 }
                 #endregion
 
@@ -1164,6 +1161,983 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region 获取有效的学院列表
+                if (cs.Trim().Equals("get_collegelist"))
+                {
+                    batch batch_logic = new batch();
+                    System.Data.DataTable jg = batch_logic.get_collegelist();
+                    result.code = "success";
+                    result.message = "成功";
+                    result.data = jg;
+                }
+                #endregion
+
+                #region  修改迎新现场操作员权限
+                if (cs.Trim().Equals("modify_operator_auth"))
+                {
+                    string pk_batch_no = Request.Form.Get("pk_batch_no");
+                    string pk_affair_no = Request.Form.Get("pk_affair_no");
+                    string pk_staff_no = Request.Form.Get("pk_staff_no");
+                    string colleges = Request.Form.Get("colleges");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0 && pk_affair_no != null && pk_affair_no.Trim().Length != 0)
+                    {
+                        string[] colleges_list = null;
+                        colleges_list=colleges.Split(',');
+                        batch batch_logic = new batch();
+                        batch_logic.modify_operator_auth(pk_batch_no, pk_staff_no, pk_affair_no, colleges_list);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = null;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院数据
+                if (cs.Trim().Equals("get_batch_collage"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_collage(pk_batch_no, pk_collage_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院迎新数据准备概要状态数据
+                if (cs.Trim().Equals("get_batch_collage_outline_status"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable collage_data = batch_logic.get_batch_collage(pk_batch_no, pk_collage_no);//某迎新批次全部或某学院数据
+                        System.Data.DataTable spe_data = batch_logic.get_batch_spe(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院专业数据
+                        System.Data.DataTable studentgender_data = batch_logic.get_batch_student_gender(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院学生男、女性别数据
+                        System.Data.DataTable spehasclass_data = batch_logic.get_batch_spe_hasclass(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院已设置班级数据
+                        System.Data.DataTable spenohasclass_data = batch_logic.get_batch_spe_nohasclass(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院未设置班级的专业
+                        System.Data.DataTable classhasstudent_data = batch_logic.get_batch_class_hasstudent(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院班级中有学生的班级数据
+                        System.Data.DataTable spenohasclassstudent_data = batch_logic.get_batch_spe_nohasclassstudent(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院存在未分班学生的专业数据
+                        System.Data.DataTable classhasstudent_buterror_data = batch_logic.get_batch_class_hasstudent_buterror(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院分错专业的学生数据
+                        System.Data.DataTable hasbed_data = batch_logic.get_batch_hasbed(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院学生已预分床位数据
+                        System.Data.DataTable nohasbedclass_data = batch_logic.get_batch_nohasbedclass(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院学生未预分床位人数数据
+                        System.Data.DataTable hasbed_buterror_data = batch_logic.get_batch_hasbed_buterror(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院学生已预分床位，但年或校区错误的数据
+                        System.Data.DataTable hascounseller_data = batch_logic.get_batch_hascounseller(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院已设置班主任数据，但年或校区错误的数据
+                        System.Data.DataTable nohascounseller_data = batch_logic.get_batch_nohascounseller(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院未设置班主任数据，但年或校区错误的数据
+                        System.Data.DataTable hascollageaffair_data = batch_logic.get_batch_hascollageaffair(pk_batch_no);//某迎新批次全校已设置现场迎新事务的事务数据，但年或校区错误的数据
+                        System.Data.DataTable nohascollageaffair_data = batch_logic.get_batch_nohascollageaffair(pk_batch_no);//某迎新批次全校未设置现场迎新事务的事务数据，但年或校区错误的数据
+                        System.Data.DataTable collegefinancial_data = batch_logic.get_batch_college_financial(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院的专业财务交费项目数据，但年或校区错误的数据
+
+
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = new { student_gender = studentgender_data, collage = collage_data, spe = spe_data,
+                                            spehasclass = spehasclass_data,
+                                            spenohasclass = spenohasclass_data,
+                                            classhasstudent = classhasstudent_data,
+                                            spenohasclassstudent = spenohasclassstudent_data,
+                                            classhasstudent_buterror = classhasstudent_buterror_data,
+                                            hasbed= hasbed_data,
+                                            nohasbedclass = nohasbedclass_data,
+                                            hasbed_buterror = hasbed_buterror_data,
+                                            hascounseller = hascounseller_data,
+                                            nohascounseller = nohascounseller_data,
+                                            hascollageaffair = hascollageaffair_data,
+                                            nohascollageaffair = nohascollageaffair_data,
+                                            collegefinancial = collegefinancial_data
+                        };
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院数据(汉字列头)
+                if (cs.Trim().Equals("get_detail_batch_collage"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_collage(pk_batch_no, pk_collage_no);
+                        for (int i = 0; jg!=null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("collage"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("College_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "学院编码";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院专业数据(汉字列头)
+                if (cs.Trim().Equals("get_detail_batch_spe"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_spe(pk_batch_no, pk_collage_no);
+                        //college_no,collage,spe_code,spe_name
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("collage"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("college_no"))
+                            {
+                                jg.Columns[i].ColumnName = "学院编码";
+                            }
+                            if (colname.Trim().Equals("spe_code"))
+                            {
+                                jg.Columns[i].ColumnName = "专业编码";
+                            }
+                            if (colname.Trim().Equals("spe_name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院已设置班级数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_spe_hasclass"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_spe_hasclass(pk_batch_no, pk_collage_no);
+                        //a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,c.PK_Class_NO,c.Name as ClassName 
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("FK_Fresh_Batch"))
+                            {
+                                jg.Columns[i].ColumnName = "批次编码";
+                            }
+                            if (colname.Trim().Equals("year"))
+                            {
+                                jg.Columns[i].ColumnName = "年级";
+                            }
+                            if (colname.Trim().Equals("Campus_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "校区编码";
+                            }
+                            if (colname.Trim().Equals("Campus_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "校区名称";
+                            }
+                            if (colname.Trim().Equals("PK_Class_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "班级编码";
+                            }
+                            if (colname.Trim().Equals("ClassName"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("Collage"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("College_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "学院编码";
+                            }
+                            if (colname.Trim().Equals("SPE_Code"))
+                            {
+                                jg.Columns[i].ColumnName = "专业编码";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院未设置班级的专业(汉字列头)
+                if (cs.Trim().Equals("get_batch_spe_nohasclass"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_spe_nohasclass(pk_batch_no, pk_collage_no);
+                        //a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name 
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("FK_Fresh_Batch"))
+                            {
+                                jg.Columns[i].ColumnName = "批次编码";
+                            }
+                            if (colname.Trim().Equals("year"))
+                            {
+                                jg.Columns[i].ColumnName = "年级";
+                            }
+                            if (colname.Trim().Equals("Collage"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("College_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "学院编码";
+                            }
+                            if (colname.Trim().Equals("SPE_Code"))
+                            {
+                                jg.Columns[i].ColumnName = "专业编码";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院班级中有学生的班级数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_class_hasstudent"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_class_hasstudent(pk_batch_no, pk_collage_no);
+                        //a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,studentcount
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("studentcount"))
+                            {
+                                jg.Columns[i].ColumnName = "人数";
+                            }
+                            if (colname.Trim().Equals("year"))
+                            {
+                                jg.Columns[i].ColumnName = "年级";
+                            }
+                            if (colname.Trim().Equals("Collage"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                            if (colname.Trim().Equals("classname"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("PK_Class_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "班级编码";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院存在未分班学生的专业数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_spe_nohasclassstudent"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_spe_nohasclassstudent(pk_batch_no, pk_collage_no);
+                        //a.[year],a.Collage,a.SPE_Name,studentcount
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("studentcount"))
+                            {
+                                jg.Columns[i].ColumnName = "人数";
+                            }
+                            if (colname.Trim().Equals("year"))
+                            {
+                                jg.Columns[i].ColumnName = "年级";
+                            }
+                            if (colname.Trim().Equals("Collage"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院分错专业的学生数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_class_hasstudent_buterror"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_class_hasstudent_buterror(pk_batch_no, pk_collage_no);
+                        //a.[year],a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,b.Name as ClassName,a.FK_Class_NO,
+                        //d.Name as Class_Collage,c.SPE_Code as Class_SPE_Code,c.SPE_Name as Class_SPE_Name
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("year"))
+                            {
+                                jg.Columns[i].ColumnName = "年级";
+                            }
+                            if (colname.Trim().Equals("Collage"))
+                            {
+                                jg.Columns[i].ColumnName = "学生所属学院名称";
+                            }
+                            if (colname.Trim().Equals("SPE_Code"))
+                            {
+                                jg.Columns[i].ColumnName = "学生所属专业编码";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "学生所属专业名称";
+                            }
+                            if (colname.Trim().Equals("Name"))
+                            {
+                                jg.Columns[i].ColumnName = "姓名";
+                            }
+                            if (colname.Trim().Equals("PK_SNO"))
+                            {
+                                jg.Columns[i].ColumnName = "学号";
+                            }
+                            if (colname.Trim().Equals("Test_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "高考报名号";
+                            }
+                            if (colname.Trim().Equals("ClassName"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("FK_Class_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "班级编码";
+                            }
+                            if (colname.Trim().Equals("Class_Collage"))
+                            {
+                                jg.Columns[i].ColumnName = "班级所属学院";
+                            }
+                            if (colname.Trim().Equals("Class_SPE_Code"))
+                            {
+                                jg.Columns[i].ColumnName = "班级所属专业编码";
+                            }
+                            if (colname.Trim().Equals("Class_SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "班级所属专业名称";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院学生已预分床位数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_hasbed"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_hasbed(pk_batch_no, pk_collage_no);
+                        //class_campus_name,collegename,spe_name,classname,pk_class_no,gender,dormname,bedcount,
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("class_campus_name"))
+                            {
+                                jg.Columns[i].ColumnName = "校区";
+                            }
+                            if (colname.Trim().Equals("collegename"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("classname"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("pk_class_no"))
+                            {
+                                jg.Columns[i].ColumnName = "班级编码";
+                            }
+                            if (colname.Trim().Equals("spe_name"))
+                            {
+                                jg.Columns[i].ColumnName = "学生所属专业名称";
+                            }
+                            if (colname.Trim().Equals("gender"))
+                            {
+                                jg.Columns[i].ColumnName = "性别";
+                            }
+                            if (colname.Trim().Equals("dormname"))
+                            {
+                                jg.Columns[i].ColumnName = "宿舍名称";
+                            }
+                            if (colname.Trim().Equals("bedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "床位数量";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院学生未预分床位人数数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_nohasbedclass"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_nohasbedclass(pk_batch_no, pk_collage_no);
+                        //tm1.Campus_Name,tm1.Name,tm1.SPE_Name,tm1.ClassName,tm2.gender,tm2.studentcount,tm2.hasbedcount,tm2.nohasbedcount,tm2.requirebedcount
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("Campus_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "校区";
+                            }
+                            if (colname.Trim().Equals("Name"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("ClassName"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                            if (colname.Trim().Equals("gender"))
+                            {
+                                jg.Columns[i].ColumnName = "性别";
+                            }
+                            if (colname.Trim().Equals("studentcount"))
+                            {
+                                jg.Columns[i].ColumnName = "学生人数";
+                            }
+                            if (colname.Trim().Equals("hasbedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "已预分床位数";
+                            }
+                            if (colname.Trim().Equals("nohasbedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "学生床位差";
+                            }
+                            if (colname.Trim().Equals("requirebedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "实际未预分人数";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院学生已预分床位，但年或校区错误的数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_hasbed_buterror"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_hasbed_buterror(pk_batch_no, pk_collage_no);
+                        //a.year as dorm_year,a.campus_name as dorm_campus_name,a.dormname as dorm_name,a.dorm_no
+                        //a.gender,collegename,spe_name,class_campus_name,class_year,classname,pk_class_no,bedcount
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("dorm_campus_name"))
+                            {
+                                jg.Columns[i].ColumnName = "宿舍所在校区";
+                            }
+                            if (colname.Trim().Equals("collegename"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("classname"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("spe_name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                            if (colname.Trim().Equals("gender"))
+                            {
+                                jg.Columns[i].ColumnName = "性别";
+                            }
+                            if (colname.Trim().Equals("dorm_year"))
+                            {
+                                jg.Columns[i].ColumnName = "宿舍年";
+                            }
+                            if (colname.Trim().Equals("dorm_name"))
+                            {
+                                jg.Columns[i].ColumnName = "宿舍名称";
+                            }
+                            if (colname.Trim().Equals("dorm_no"))
+                            {
+                                jg.Columns[i].ColumnName = "宿舍编号";
+                            }
+                            if (colname.Trim().Equals("class_campus_name"))
+                            {
+                                jg.Columns[i].ColumnName = "班级所在校区";
+                            }
+                            if (colname.Trim().Equals("class_year"))
+                            {
+                                jg.Columns[i].ColumnName = "班级所在年级";
+                            }
+                            if (colname.Trim().Equals("pk_class_no"))
+                            {
+                                jg.Columns[i].ColumnName = "班级编号";
+                            }
+                            if (colname.Trim().Equals("bedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "床位数量";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院已设置班主任数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_hascounseller"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_hascounseller(pk_batch_no, pk_collage_no);
+                        //a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name,d.name,c.phone,c.qq
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("collagename"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("ClassName"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                            if (colname.Trim().Equals("PK_Class_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "班级编码";
+                            }
+                            if (colname.Trim().Equals("Campus_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "班级所在校区";
+                            }
+                            if (colname.Trim().Equals("name"))
+                            {
+                                jg.Columns[i].ColumnName = "姓名";
+                            }
+                            if (colname.Trim().Equals("phone"))
+                            {
+                                jg.Columns[i].ColumnName = "联系电话";
+                            }
+                            if (colname.Trim().Equals("qq"))
+                            {
+                                jg.Columns[i].ColumnName = "qq号码";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院未设置班主任数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_nohascounseller"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_nohascounseller(pk_batch_no, pk_collage_no);
+                        //a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("collagename"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("ClassName"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                            if (colname.Trim().Equals("PK_Class_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "班级编码";
+                            }
+                            if (colname.Trim().Equals("Campus_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "班级所在校区";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校已设置现场迎新事务的事务数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_hascollageaffair"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_hascollageaffair(pk_batch_no);
+                        //kk2.Affair_Name,kk2.Affair_Type,kk1.pk_affair_no,kk1.college_no as college_no,kk3.Name as collegename
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("Affair_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "事务名称";
+                            }
+                            if (colname.Trim().Equals("Affair_Type"))
+                            {
+                                jg.Columns[i].ColumnName = "类型";
+                            }
+                            if (colname.Trim().Equals("pk_affair_no"))
+                            {
+                                jg.Columns[i].ColumnName = "事务编号";
+                            }
+                            if (colname.Trim().Equals("college_no"))
+                            {
+                                jg.Columns[i].ColumnName = "学院编号";
+                            }
+                            if (colname.Trim().Equals("collegename"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校未设置现场迎新事务的事务数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_nohascollageaffair"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_nohascollageaffair(pk_batch_no);
+                        //kk2.Affair_Name,kk2.Affair_Type,kk1.pk_affair_no,kk1.college_no as require_college_no,kk3.Name as require_collegename
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("Affair_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "事务名称";
+                            }
+                            if (colname.Trim().Equals("Affair_Type"))
+                            {
+                                jg.Columns[i].ColumnName = "类型";
+                            }
+                            if (colname.Trim().Equals("pk_affair_no"))
+                            {
+                                jg.Columns[i].ColumnName = "事务编号";
+                            }
+                            if (colname.Trim().Equals("require_college_no"))
+                            {
+                                jg.Columns[i].ColumnName = "学院编号";
+                            }
+                            if (colname.Trim().Equals("require_collegename"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院的专业财务交费项目数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_college_financial"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_college_financial(pk_batch_no, pk_collage_no);
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            // Collage, College_NO,SPE_Name,SPE_Code,Fee_Code_Name,Fee_Name, Fee_Amount,Type_Name,Is_Must,Is_Online_Order,Fee_Code"
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("Collage"))
+                            {
+                                jg.Columns[i].ColumnName = "学院";
+                            }
+                            if (colname.Trim().Equals("College_NO"))
+                            {
+                                jg.Columns[i].ColumnName = "学院编码";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业";
+                            }
+                            if (colname.Trim().Equals("SPE_Code"))
+                            {
+                                jg.Columns[i].ColumnName = "专业编码";
+                            }
+                            if (colname.Trim().Equals("Fee_Code_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "项目名称";
+                            }
+                            if (colname.Trim().Equals("Fee_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "项目条目";
+                            }
+                            if (colname.Trim().Equals("Fee_Amount"))
+                            {
+                                jg.Columns[i].ColumnName = "收费标准";
+                            }
+                            if (colname.Trim().Equals("Type_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "类型";
+                            }
+                            if (colname.Trim().Equals("Is_Must"))
+                            {
+                                jg.Columns[i].ColumnName = "必交";
+                            } 
+                            if (colname.Trim().Equals("Is_Online_Order"))
+                            {
+                                jg.Columns[i].ColumnName = "允许网上交费";
+                            }
+                            if (colname.Trim().Equals("Fee_Code"))
+                            {
+                                jg.Columns[i].ColumnName = "财务收费编号";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某批次、某班主任的班级数据
+                if (cs.Trim().Equals("get_batch_ClassByCounseller"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_staff_no = Request.QueryString.Get("pk_staff_no");
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0 && pk_staff_no != null && pk_staff_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_ClassByCounseller(pk_batch_no, pk_staff_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region    某批次事务列表(班级管理模块)
+                if (cs.Trim().Equals("get_batch_affairlist"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0 )
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_affairlist(pk_batch_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region  某班级学生列表(班级管理模块)
+                if (cs.Trim().Equals("get_classstudent"))
+                {
+                    string pk_class_no = Request.QueryString.Get("pk_class_no");
+                    if (pk_class_no != null && pk_class_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_classstudent(pk_class_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region  某班级学生的某事务状态列表(班级管理模块)
+                if (cs.Trim().Equals("get_classstudentandaffairstatus"))
+                {
+                    string pk_class_no = Request.QueryString.Get("pk_class_no");
+                    string pk_affair_no = Request.QueryString.Get("pk_affair_no");
+                    if (pk_class_no != null && pk_class_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_classstudentandaffairstatus(pk_class_no, pk_affair_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
             }
         }
         catch (Exception ex)

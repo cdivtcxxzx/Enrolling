@@ -48,9 +48,6 @@ namespace model
     partial void InsertFresh_Confirm(Fresh_Confirm instance);
     partial void UpdateFresh_Confirm(Fresh_Confirm instance);
     partial void DeleteFresh_Confirm(Fresh_Confirm instance);
-    partial void InsertFresh_SPE(Fresh_SPE instance);
-    partial void UpdateFresh_SPE(Fresh_SPE instance);
-    partial void DeleteFresh_SPE(Fresh_SPE instance);
     partial void InsertBase_STU(Base_STU instance);
     partial void UpdateBase_STU(Base_STU instance);
     partial void DeleteBase_STU(Base_STU instance);
@@ -60,6 +57,15 @@ namespace model
     partial void InsertBase_Code_Item(Base_Code_Item instance);
     partial void UpdateBase_Code_Item(Base_Code_Item instance);
     partial void DeleteBase_Code_Item(Base_Code_Item instance);
+    partial void InsertFresh_Batch(Fresh_Batch instance);
+    partial void UpdateFresh_Batch(Fresh_Batch instance);
+    partial void DeleteFresh_Batch(Fresh_Batch instance);
+    partial void InsertFresh_STU(Fresh_STU instance);
+    partial void UpdateFresh_STU(Fresh_STU instance);
+    partial void DeleteFresh_STU(Fresh_STU instance);
+    partial void InsertFresh_SPE(Fresh_SPE instance);
+    partial void UpdateFresh_SPE(Fresh_SPE instance);
+    partial void DeleteFresh_SPE(Fresh_SPE instance);
     #endregion
 		
 		public organizationModelDataContext() : 
@@ -140,14 +146,6 @@ namespace model
 			}
 		}
 		
-		public System.Data.Linq.Table<Fresh_SPE> Fresh_SPEs
-		{
-			get
-			{
-				return this.GetTable<Fresh_SPE>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Base_STU> Base_STUs
 		{
 			get
@@ -169,6 +167,30 @@ namespace model
 			get
 			{
 				return this.GetTable<Base_Code_Item>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Fresh_Batch> Fresh_Batches
+		{
+			get
+			{
+				return this.GetTable<Fresh_Batch>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Fresh_STU> Fresh_STUs
+		{
+			get
+			{
+				return this.GetTable<Fresh_STU>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Fresh_SPE> Fresh_SPEs
+		{
+			get
+			{
+				return this.GetTable<Fresh_SPE>();
 			}
 		}
 	}
@@ -1073,188 +1095,6 @@ namespace model
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fresh_SPE")]
-	public partial class Fresh_SPE : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _SPE_Code;
-		
-		private string _Year;
-		
-		private string _SPE_Name;
-		
-		private string _EDU_Level_Code;
-		
-		private string _FK_College_Code;
-		
-		private string _PK_SPE;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSPE_CodeChanging(string value);
-    partial void OnSPE_CodeChanged();
-    partial void OnYearChanging(string value);
-    partial void OnYearChanged();
-    partial void OnSPE_NameChanging(string value);
-    partial void OnSPE_NameChanged();
-    partial void OnEDU_Level_CodeChanging(string value);
-    partial void OnEDU_Level_CodeChanged();
-    partial void OnFK_College_CodeChanging(string value);
-    partial void OnFK_College_CodeChanged();
-    partial void OnPK_SPEChanging(string value);
-    partial void OnPK_SPEChanged();
-    #endregion
-		
-		public Fresh_SPE()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SPE_Code", DbType="NVarChar(50)")]
-		public string SPE_Code
-		{
-			get
-			{
-				return this._SPE_Code;
-			}
-			set
-			{
-				if ((this._SPE_Code != value))
-				{
-					this.OnSPE_CodeChanging(value);
-					this.SendPropertyChanging();
-					this._SPE_Code = value;
-					this.SendPropertyChanged("SPE_Code");
-					this.OnSPE_CodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="NVarChar(20)")]
-		public string Year
-		{
-			get
-			{
-				return this._Year;
-			}
-			set
-			{
-				if ((this._Year != value))
-				{
-					this.OnYearChanging(value);
-					this.SendPropertyChanging();
-					this._Year = value;
-					this.SendPropertyChanged("Year");
-					this.OnYearChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SPE_Name", DbType="NVarChar(50)")]
-		public string SPE_Name
-		{
-			get
-			{
-				return this._SPE_Name;
-			}
-			set
-			{
-				if ((this._SPE_Name != value))
-				{
-					this.OnSPE_NameChanging(value);
-					this.SendPropertyChanging();
-					this._SPE_Name = value;
-					this.SendPropertyChanged("SPE_Name");
-					this.OnSPE_NameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EDU_Level_Code", DbType="NVarChar(20)")]
-		public string EDU_Level_Code
-		{
-			get
-			{
-				return this._EDU_Level_Code;
-			}
-			set
-			{
-				if ((this._EDU_Level_Code != value))
-				{
-					this.OnEDU_Level_CodeChanging(value);
-					this.SendPropertyChanging();
-					this._EDU_Level_Code = value;
-					this.SendPropertyChanged("EDU_Level_Code");
-					this.OnEDU_Level_CodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_College_Code", DbType="NVarChar(50)")]
-		public string FK_College_Code
-		{
-			get
-			{
-				return this._FK_College_Code;
-			}
-			set
-			{
-				if ((this._FK_College_Code != value))
-				{
-					this.OnFK_College_CodeChanging(value);
-					this.SendPropertyChanging();
-					this._FK_College_Code = value;
-					this.SendPropertyChanged("FK_College_Code");
-					this.OnFK_College_CodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PK_SPE", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string PK_SPE
-		{
-			get
-			{
-				return this._PK_SPE;
-			}
-			set
-			{
-				if ((this._PK_SPE != value))
-				{
-					this.OnPK_SPEChanging(value);
-					this.SendPropertyChanging();
-					this._PK_SPE = value;
-					this.SendPropertyChanged("PK_SPE");
-					this.OnPK_SPEChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Base_STU")]
 	public partial class Base_STU : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2040,6 +1880,600 @@ namespace model
 					this._Item_NO = value;
 					this.SendPropertyChanged("Item_NO");
 					this.OnItem_NOChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fresh_Batch")]
+	public partial class Fresh_Batch : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _PK_Batch_NO;
+		
+		private string _Batch_Name;
+		
+		private string _Year;
+		
+		private string _STU_Type;
+		
+		private System.DateTime _Welcome_Begin;
+		
+		private System.DateTime _Welcome_End;
+		
+		private System.DateTime _Service_Begin;
+		
+		private System.DateTime _Service_End;
+		
+		private string _Enabled;
+		
+		private string _Financial_PK_Fee;
+		
+		private string _Financial_XH_Prefix;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPK_Batch_NOChanging(string value);
+    partial void OnPK_Batch_NOChanged();
+    partial void OnBatch_NameChanging(string value);
+    partial void OnBatch_NameChanged();
+    partial void OnYearChanging(string value);
+    partial void OnYearChanged();
+    partial void OnSTU_TypeChanging(string value);
+    partial void OnSTU_TypeChanged();
+    partial void OnWelcome_BeginChanging(System.DateTime value);
+    partial void OnWelcome_BeginChanged();
+    partial void OnWelcome_EndChanging(System.DateTime value);
+    partial void OnWelcome_EndChanged();
+    partial void OnService_BeginChanging(System.DateTime value);
+    partial void OnService_BeginChanged();
+    partial void OnService_EndChanging(System.DateTime value);
+    partial void OnService_EndChanged();
+    partial void OnEnabledChanging(string value);
+    partial void OnEnabledChanged();
+    partial void OnFinancial_PK_FeeChanging(string value);
+    partial void OnFinancial_PK_FeeChanged();
+    partial void OnFinancial_XH_PrefixChanging(string value);
+    partial void OnFinancial_XH_PrefixChanged();
+    #endregion
+		
+		public Fresh_Batch()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PK_Batch_NO", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string PK_Batch_NO
+		{
+			get
+			{
+				return this._PK_Batch_NO;
+			}
+			set
+			{
+				if ((this._PK_Batch_NO != value))
+				{
+					this.OnPK_Batch_NOChanging(value);
+					this.SendPropertyChanging();
+					this._PK_Batch_NO = value;
+					this.SendPropertyChanged("PK_Batch_NO");
+					this.OnPK_Batch_NOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Batch_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Batch_Name
+		{
+			get
+			{
+				return this._Batch_Name;
+			}
+			set
+			{
+				if ((this._Batch_Name != value))
+				{
+					this.OnBatch_NameChanging(value);
+					this.SendPropertyChanging();
+					this._Batch_Name = value;
+					this.SendPropertyChanged("Batch_Name");
+					this.OnBatch_NameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this.OnYearChanging(value);
+					this.SendPropertyChanging();
+					this._Year = value;
+					this.SendPropertyChanged("Year");
+					this.OnYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STU_Type", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string STU_Type
+		{
+			get
+			{
+				return this._STU_Type;
+			}
+			set
+			{
+				if ((this._STU_Type != value))
+				{
+					this.OnSTU_TypeChanging(value);
+					this.SendPropertyChanging();
+					this._STU_Type = value;
+					this.SendPropertyChanged("STU_Type");
+					this.OnSTU_TypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Welcome_Begin", DbType="DateTime NOT NULL")]
+		public System.DateTime Welcome_Begin
+		{
+			get
+			{
+				return this._Welcome_Begin;
+			}
+			set
+			{
+				if ((this._Welcome_Begin != value))
+				{
+					this.OnWelcome_BeginChanging(value);
+					this.SendPropertyChanging();
+					this._Welcome_Begin = value;
+					this.SendPropertyChanged("Welcome_Begin");
+					this.OnWelcome_BeginChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Welcome_End", DbType="DateTime NOT NULL")]
+		public System.DateTime Welcome_End
+		{
+			get
+			{
+				return this._Welcome_End;
+			}
+			set
+			{
+				if ((this._Welcome_End != value))
+				{
+					this.OnWelcome_EndChanging(value);
+					this.SendPropertyChanging();
+					this._Welcome_End = value;
+					this.SendPropertyChanged("Welcome_End");
+					this.OnWelcome_EndChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Service_Begin", DbType="DateTime NOT NULL")]
+		public System.DateTime Service_Begin
+		{
+			get
+			{
+				return this._Service_Begin;
+			}
+			set
+			{
+				if ((this._Service_Begin != value))
+				{
+					this.OnService_BeginChanging(value);
+					this.SendPropertyChanging();
+					this._Service_Begin = value;
+					this.SendPropertyChanged("Service_Begin");
+					this.OnService_BeginChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Service_End", DbType="DateTime NOT NULL")]
+		public System.DateTime Service_End
+		{
+			get
+			{
+				return this._Service_End;
+			}
+			set
+			{
+				if ((this._Service_End != value))
+				{
+					this.OnService_EndChanging(value);
+					this.SendPropertyChanging();
+					this._Service_End = value;
+					this.SendPropertyChanged("Service_End");
+					this.OnService_EndChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enabled", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string Enabled
+		{
+			get
+			{
+				return this._Enabled;
+			}
+			set
+			{
+				if ((this._Enabled != value))
+				{
+					this.OnEnabledChanging(value);
+					this.SendPropertyChanging();
+					this._Enabled = value;
+					this.SendPropertyChanged("Enabled");
+					this.OnEnabledChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Financial_PK_Fee", DbType="NVarChar(50)")]
+		public string Financial_PK_Fee
+		{
+			get
+			{
+				return this._Financial_PK_Fee;
+			}
+			set
+			{
+				if ((this._Financial_PK_Fee != value))
+				{
+					this.OnFinancial_PK_FeeChanging(value);
+					this.SendPropertyChanging();
+					this._Financial_PK_Fee = value;
+					this.SendPropertyChanged("Financial_PK_Fee");
+					this.OnFinancial_PK_FeeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Financial_XH_Prefix", DbType="NVarChar(20)")]
+		public string Financial_XH_Prefix
+		{
+			get
+			{
+				return this._Financial_XH_Prefix;
+			}
+			set
+			{
+				if ((this._Financial_XH_Prefix != value))
+				{
+					this.OnFinancial_XH_PrefixChanging(value);
+					this.SendPropertyChanging();
+					this._Financial_XH_Prefix = value;
+					this.SendPropertyChanged("Financial_XH_Prefix");
+					this.OnFinancial_XH_PrefixChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fresh_STU")]
+	public partial class Fresh_STU : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _PK_SNO;
+		
+		private string _FK_Fresh_Batch;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPK_SNOChanging(string value);
+    partial void OnPK_SNOChanged();
+    partial void OnFK_Fresh_BatchChanging(string value);
+    partial void OnFK_Fresh_BatchChanged();
+    #endregion
+		
+		public Fresh_STU()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PK_SNO", DbType="NVarChar(20) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string PK_SNO
+		{
+			get
+			{
+				return this._PK_SNO;
+			}
+			set
+			{
+				if ((this._PK_SNO != value))
+				{
+					this.OnPK_SNOChanging(value);
+					this.SendPropertyChanging();
+					this._PK_SNO = value;
+					this.SendPropertyChanged("PK_SNO");
+					this.OnPK_SNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_Fresh_Batch", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string FK_Fresh_Batch
+		{
+			get
+			{
+				return this._FK_Fresh_Batch;
+			}
+			set
+			{
+				if ((this._FK_Fresh_Batch != value))
+				{
+					this.OnFK_Fresh_BatchChanging(value);
+					this.SendPropertyChanging();
+					this._FK_Fresh_Batch = value;
+					this.SendPropertyChanged("FK_Fresh_Batch");
+					this.OnFK_Fresh_BatchChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Fresh_SPE")]
+	public partial class Fresh_SPE : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _SPE_Code;
+		
+		private string _Year;
+		
+		private string _SPE_Name;
+		
+		private string _EDU_Level_Code;
+		
+		private string _FK_College_Code;
+		
+		private string _PK_SPE;
+		
+		private string _Xznx;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSPE_CodeChanging(string value);
+    partial void OnSPE_CodeChanged();
+    partial void OnYearChanging(string value);
+    partial void OnYearChanged();
+    partial void OnSPE_NameChanging(string value);
+    partial void OnSPE_NameChanged();
+    partial void OnEDU_Level_CodeChanging(string value);
+    partial void OnEDU_Level_CodeChanged();
+    partial void OnFK_College_CodeChanging(string value);
+    partial void OnFK_College_CodeChanged();
+    partial void OnPK_SPEChanging(string value);
+    partial void OnPK_SPEChanged();
+    partial void OnXznxChanging(string value);
+    partial void OnXznxChanged();
+    #endregion
+		
+		public Fresh_SPE()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SPE_Code", DbType="NVarChar(50)")]
+		public string SPE_Code
+		{
+			get
+			{
+				return this._SPE_Code;
+			}
+			set
+			{
+				if ((this._SPE_Code != value))
+				{
+					this.OnSPE_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._SPE_Code = value;
+					this.SendPropertyChanged("SPE_Code");
+					this.OnSPE_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="NVarChar(20)")]
+		public string Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this.OnYearChanging(value);
+					this.SendPropertyChanging();
+					this._Year = value;
+					this.SendPropertyChanged("Year");
+					this.OnYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SPE_Name", DbType="NVarChar(50)")]
+		public string SPE_Name
+		{
+			get
+			{
+				return this._SPE_Name;
+			}
+			set
+			{
+				if ((this._SPE_Name != value))
+				{
+					this.OnSPE_NameChanging(value);
+					this.SendPropertyChanging();
+					this._SPE_Name = value;
+					this.SendPropertyChanged("SPE_Name");
+					this.OnSPE_NameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EDU_Level_Code", DbType="NVarChar(20)")]
+		public string EDU_Level_Code
+		{
+			get
+			{
+				return this._EDU_Level_Code;
+			}
+			set
+			{
+				if ((this._EDU_Level_Code != value))
+				{
+					this.OnEDU_Level_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._EDU_Level_Code = value;
+					this.SendPropertyChanged("EDU_Level_Code");
+					this.OnEDU_Level_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK_College_Code", DbType="NVarChar(50)")]
+		public string FK_College_Code
+		{
+			get
+			{
+				return this._FK_College_Code;
+			}
+			set
+			{
+				if ((this._FK_College_Code != value))
+				{
+					this.OnFK_College_CodeChanging(value);
+					this.SendPropertyChanging();
+					this._FK_College_Code = value;
+					this.SendPropertyChanged("FK_College_Code");
+					this.OnFK_College_CodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PK_SPE", DbType="NVarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string PK_SPE
+		{
+			get
+			{
+				return this._PK_SPE;
+			}
+			set
+			{
+				if ((this._PK_SPE != value))
+				{
+					this.OnPK_SPEChanging(value);
+					this.SendPropertyChanging();
+					this._PK_SPE = value;
+					this.SendPropertyChanged("PK_SPE");
+					this.OnPK_SPEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Xznx", DbType="NVarChar(10)")]
+		public string Xznx
+		{
+			get
+			{
+				return this._Xznx;
+			}
+			set
+			{
+				if ((this._Xznx != value))
+				{
+					this.OnXznxChanging(value);
+					this.SendPropertyChanging();
+					this._Xznx = value;
+					this.SendPropertyChanged("Xznx");
+					this.OnXznxChanged();
 				}
 			}
 		}
