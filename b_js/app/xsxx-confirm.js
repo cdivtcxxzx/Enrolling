@@ -100,7 +100,7 @@
                                 $('#xsxx_xm').text(json_data.data[i].data.Name);
                                 $('#xsxx_xb').text(json_data.data[i].data.Gender_Code);
                                 $('#xsxx_sfzh').text(json_data.data[i].data.ID_NO);
-                                $('#xsxx_lxdh').text(json_data.data[i].data.Phone);
+                                $('#xsxx_lxdh').text(json_data.data[i].data.Phone_dr);
                                 $('#xsxx_test').text(json_data.data[i].data.Test_NO);
                             }
                             if (json_data.data[i].name == 'spe') {
@@ -111,6 +111,7 @@
                             }
                             if (json_data.data[i].name == 'counseller') {
                                 $('#lqxx_bzr').text(json_data.data[i].data.name);
+                                $('#lqxx_bzrdh').text(json_data.data[i].data.phone);
                             }
                         }//end for
                     }//end if length > 0

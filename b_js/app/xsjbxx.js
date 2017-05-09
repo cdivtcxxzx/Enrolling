@@ -51,6 +51,7 @@
                             if (json_data.data[i].name == 'counseller') {
                                 $('#xsxx_bzr').text(json_data.data[i].data.name);
                                 $('#xsxx_bzrdh').text(json_data.data[i].data.phone);
+                                $('#xsxx_bzrqq').text(json_data.data[i].data.qq);
                             }
                         }//end for
                     }//end if length > 0

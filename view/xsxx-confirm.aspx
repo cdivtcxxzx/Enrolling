@@ -205,6 +205,12 @@
                             <asp:Label ID="lqxx_bzr" CssClass="layui-input" runat="server" Text=""></asp:Label>
                         </div>
                     </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">班主任电话：</label>
+                        <div class="layui-input-block">
+                            <asp:Label ID="lqxx_bzrdh" CssClass="layui-input" runat="server" Text=""></asp:Label>
+                        </div>
+                    </div>
                     <div class="layui-form-item" id="xx_confirm_div"   style="display:none;">
                         <span style="color: #ffd800; margin-bottom: 10px; display: inline-block;">请仔细核对个人信息，确认信息有无错误；信息有误请及时联系班主任！</span>
                         <div class="layui-input-block">
