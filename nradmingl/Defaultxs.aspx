@@ -76,7 +76,7 @@
 			<div class="layui-body" style="bottom: 0;" id="admin-body">
 				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
                
-					<ul class="layui-tab-title">
+					<ul style="display:none;" class="layui-tab-title">
 						<li class="layui-this">
 							<i class="fa fa-dashboard" aria-hidden="true"></i>
 							<cite>演示首页</cite>

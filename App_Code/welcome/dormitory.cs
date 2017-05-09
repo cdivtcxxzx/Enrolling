@@ -1458,8 +1458,8 @@ public class dormitory
             if (cxnonull == "1")
             {
                 //更新
-                sql = "UPDATE [Fresh_Room] set " + usql + " WHERE where Room_NO='" + roomid + "'";
-                if (Sqlhelper.ExcuteNonQuery("UPDATE [Fresh_Room] set " + usql + " WHERE where Room_NO='" + roomid + "'") > 0)
+                sql = "UPDATE [Fresh_Room] set " + usql + " WHERE  Room_NO='" + roomid + "'";
+                if (Sqlhelper.ExcuteNonQuery("UPDATE [Fresh_Room] set " + usql + " WHERE  Room_NO='" + roomid + "'") > 0)
                 {
                     return "1@更新数据成功！";
                 }
