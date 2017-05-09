@@ -3309,6 +3309,7 @@ public class batch
                 dt_student.Columns.Remove("spe_name");
                 dt_student.Columns.Remove("Status_Code");
                 dt_student.Columns.Remove("TuitionType");
+
                 dt_student.AcceptChanges();
                 if (dt_affair != null && dt_affair.Rows.Count > 0)
                 {
@@ -3335,6 +3336,11 @@ public class batch
                         }
                     }
                 }
+                dt_student.Columns["name"].ColumnName = "姓名";
+                dt_student.Columns["gender"].ColumnName = "性别";
+                dt_student.Columns["pk_sno"].ColumnName = "学号";
+                dt_student.Columns["test_no"].ColumnName = "高考报名号";
+                dt_student.Columns["id_no"].ColumnName = "身份证号";
                 dt_student.AcceptChanges();
                 result = dt_student;
             }

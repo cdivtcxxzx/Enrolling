@@ -69,9 +69,9 @@ function batchchange() {
                     }
                 }
                 $('#classlist').change(function () {
-                    getstudent();
+                    getstudentstatus();
                 });
-                getstudent();
+                getstudentstatus();
             } else {
                 alert(json_data.message);
             }
@@ -83,37 +83,35 @@ function batchchange() {
 
 }
 
-
-
-function getstudent() {
+function getstudentstatus() {
     var pk_class_no=$('#classlist').children('option:selected').val();
+    var pk_batch_no=$('#batchlist').children('option:selected').val();
 
     $.ajax({
         url: "/nradmingl/appserver/manager.aspx",
         type: "get",
         dataType: "text",
-        data: { "cs": "get_classstudent","pk_class_no":pk_class_no},
+        data: { "cs": "get_classstudentaffairlog","pk_batch_no":pk_batch_no,"pk_class_no":pk_class_no},
         success: function (data) {
             var json_data = JSON.parse(data);
             if (json_data.code == 'success') {
-                $('#studentlist tbody tr').remove();
+                $('#studentlist tr').remove();
+                if(json_data.data!=null && json_data.data.length>0){
+                    var item=json_data.data[0];
+                    var str='<tr>';
+                    for(var key in item){
+                        str=str+'<td>'+key+'</td>';
+                    }
+                    str=str+'</tr>';
+                    $('#studentlist').append(str);
+                }
                 for(i=0;json_data.data!=null && i<json_data.data.length;i++){
                     var item=json_data.data[i];
+                    console.log(item);
                     var str='<tr>';
-                    str=str+'<td>'+(i+1)+'</td>';
-                    str=str+'<td>'+item.year+'</td>';
-                    str=str+'<td>'+item.collage+'</td>';
-                    str=str+'<td>'+item.spe_name+'</td>';
-                    str=str+'<td>'+item.name+'</td>';
-                    str=str+'<td>'+item.gender+'</td>';
-                    str=str+'<td>'+item.pk_sno+'</td>';
-                    str=str+'<td>'+item.test_no+'</td>';
-                    str=str+'<td>'+item.id_no+'</td>';
-                    str=str+'<td>'+item.Status_Code+'</td>';
-                    str=str+'<td>'+item.TuitionType+'</td>';
-                    str=str+'<td>';
-                    str=str+'<a href="#" onclick="studentdetail()" class="layui-btn layui-btn-mini" title="学生信息">学生详情</a>';
-                    str=str+'</td>';
+                    for(var key in item){
+                        str=str+'<td>'+item[key]+'</td>';
+                    }
                     str=str+'</tr>';
                     $('#studentlist').append(str);
                 }
