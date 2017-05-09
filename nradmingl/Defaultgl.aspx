@@ -76,7 +76,7 @@
 					<ul class="layui-tab-title">
 						<li class="layui-this">
 							<i class="fa fa-dashboard" aria-hidden="true"></i>
-							<cite>演示首页</cite>
+							<cite>迎新管理首页</cite>
 						</li>
             
 					</ul>
@@ -84,7 +84,7 @@
                   
 					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
 						<div class="layui-tab-item layui-show">
-							<iframe src="xys.aspx"></iframe>
+							<iframe src="/view/Defaultczzt.aspx"></iframe>
 						</div>
 					</div>
 				</div>

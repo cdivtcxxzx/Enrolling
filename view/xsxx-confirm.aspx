@@ -116,9 +116,9 @@
 <body>
     <div class="admin-main">
         <blockquote class="layui-elem-quote">
-            <i class="layui-icon">&#xe602;</i>迎新管理<i class="layui-icon">&#xe602;</i>信息确认
+            <i class="layui-icon">&#xe602;</i>学生网上自助报到<i class="layui-icon">&#xe602;</i>信息确认
             <span style="float: right" id="btnback">
-                <a href="javascript:window.location.go(-1);" class="layui-btn layui-btn-small">
+                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe603;</i>
                 </a>
             </span>

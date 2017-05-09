@@ -221,7 +221,7 @@
             </div>
 
             <ul class="main-nav" id="topmenu" runat="server">
-               <li class="nav-docs" style="margin:50px 15px;display:none;"><a href="#">会员注册</a>
+               <li class="nav-docs" style="margin:50px 15px;display:none;"><a href="#">用户注册</a>
               </li>
 				<li class="nav-community"  style="margin:10px 15px;display:none;"><a href="#">用户登陆</a>
                 </li>
@@ -458,7 +458,7 @@ img {
 </div>
 <!-- 轮播处理结束 --></div>
                     <div class="post-content">
-                      <p id="rdxw" runat="server"><b><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs">【学生登陆】</a></b><b><a href="/view/xszz-index.aspx?pk_sno=2">【测试学生2】</a></b><a href="/view/xszz-index.aspx?pk_sno=2">【测试学生2】</a><a href="/view/xszz-index.aspx?pk_sno=3">【测试学生3】</a><a href="/view/xszz-index.aspx?pk_sno=4">【测试学生4】</a><a href="/view/xszz-index.aspx?pk_sno=5">【测试学生5】</a></p>
+                      <p id="rdxw" runat="server"><b><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs">【学生登陆】</a></b><b><a href="/login.aspx?url=/nradmingl/defaultczy.aspx&sf=czy">【操作员登陆】</a></b><a href="/view/xszz-index.aspx?pk_sno=2">【测试学生2】</a><a href="/view/xszz-index.aspx?pk_sno=3">【测试学生3】</a><a href="/view/xszz-index.aspx?pk_sno=4">【测试学生4】</a><a href="/view/xszz-index.aspx?pk_sno=5">【测试学生5】</a></p>
                     </div>
                     <div class="post-permalink" id="read1" runat="server"> <a href="#" class="btn btn-default">阅读全文</a> </div>
                   </article>

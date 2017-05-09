@@ -41,8 +41,8 @@
                 <!--调用C#原生按钮设置样式举例(含批量操作)-->
                 <asp:LinkButton CssClass="layui-btn layui-btn-small" name="btnDelete" onclick="Button3_Click"  txttop="txttop" ToolTip="先选择后，再批量删除！" ID="btnDelete" runat="server"   OnClientClick="return batchAudit('btnDelete');"   Text='' ><i class="layui-icon">&#xe640;</i> 删除</asp:LinkButton>
                 <!--调用C#原生按钮设置样式举例OVER-->
-                <a href="#" class="layui-btn layui-btn-small hidden-xs">
-					<i class="layui-icon">&#xe630;</i> 审核
+                <a href="javascript:" onclick="layer.open({  type: 1,  title: 'DIV弹出演示',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: layui.jquery('#testdiv'),btn:'完成'});"  class="layui-btn layui-btn-small hidden-xs">
+					<i class="layui-icon">&#xe630;</i> 弹DIV
 				</a>
                 <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '项目任务导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'kfrwdr.aspx?setp=1&mb=kfgl',btn:'完成'});" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe62f;</i> 导入
@@ -336,5 +336,6 @@
                  }  
     </script>
     </form>
+    <div id="testdiv">xxxxxx</div>
 </body>
 </html>

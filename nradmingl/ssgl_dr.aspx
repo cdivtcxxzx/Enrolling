@@ -198,20 +198,20 @@ ul, menu, dir {
        <asp:FileUpload ID="FileUpload1" runat="server" />
            <asp:Button 
                 ID="batch_import" runat="server" Text="点击上传" txttop="txttop" 
-                ToolTip="点此上传已经做好的新生excel表!" OnClientClick="this.value='正在上传..';" 
-                CssClass="layui-btn layui-btn-small" onclick="batch_import_Click" Enabled="False" />
+                ToolTip="点此上传已经做好的新生excel表!"  
+                CssClass="layui-btn layui-btn-small" onclick="batch_import_Click"  />
     	
 	</blockquote>
     <br />
-         
+          <asp:GridView ID="GridView1" runat="server">
+        </asp:GridView>
     </div>
 
 
      <!--步骤3-->
     <div   id="setp3cz" runat="server">
     显示导入结果
-        <asp:GridView ID="GridView1" runat="server">
-        </asp:GridView>
+       
     </div>
        </div>
 
