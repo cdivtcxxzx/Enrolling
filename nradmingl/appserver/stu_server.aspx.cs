@@ -112,7 +112,7 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                                             model.Base_Staff staff = organizationService.getOperator(FK_Staff_NO.Trim());
                                             if (staff != null)
                                             {
-                                                newdata.Add(new { name = "counseller", data = new { name = staff.Name, phone = staff.Phone } });
+                                                newdata.Add(new { name = "counseller", data = new { name = staff.Name, phone = staff.Phone, qq = counseller.QQ} });
                                             }
                                         }
                                     }
