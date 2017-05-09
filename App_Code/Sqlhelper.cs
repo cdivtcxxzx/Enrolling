@@ -11,8 +11,6 @@ public class Sqlhelper
     public static string conStr =ConfigurationManager.ConnectionStrings["SqlConnString"].ConnectionString;
     //高职教务sql
     public static string conStr_gzjw = ConfigurationManager.ConnectionStrings["gzjwConnectionString"].ConnectionString;
-    //费用信息系统sql
-    public static string conStr_cost = ConfigurationManager.ConnectionStrings["costConnectionString"].ConnectionString;
    //读取管理目录
     public static string gldir = ConfigurationManager.ConnectionStrings["gldir"].ConnectionString;
     //读取服务端口信息
