@@ -42,7 +42,9 @@
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
              --%>
-                 <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="清空预分配数据" ID="LinkButton12" runat="server"    Text='' ><i class="layui-icon">&#xe630;</i>清空预分配数据</asp:LinkButton>
+               <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据清除',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'ssgl_clear.aspx',btn:'完成'});" class="layui-btn layui-btn-small">
+					<i class="layui-icon">&#xe630;</i>清空预分配数据
+				</a>
                   <a href="mb/ssfypdr.xls" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe62a;</i> 模板下载
 				</a>
