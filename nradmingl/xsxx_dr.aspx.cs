@@ -15,7 +15,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "学生数据导入管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
+    private string pagelm1 = "学生数据管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
     private string upfile = "xsxx_upload";//导入上传的临时文件名称
     //导入模板的字段
     private string zd = "高考报名号,姓名,性别,身份证号,民族,专业代码,学制,年级,联系电话";

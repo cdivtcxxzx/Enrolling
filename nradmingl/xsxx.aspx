@@ -35,7 +35,7 @@
       <blockquote class="layui-elem-quote">
           <i class="layui-icon">&#xe602;</i>后台管理<i class="layui-icon">&#xe602;</i>学生信息
            <span style="float:right">
-               <a href="#<%# DateTime.Now.ToShortTimeString() %>" class="layui-btn layui-btn-small hidden-xs">
+               <a href="xsxx.aspx" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#x1002;</i> 刷新
 				</a>
                   <a href="mb/xsxxdr.xls" class="layui-btn layui-btn-small hidden-xs">
@@ -100,7 +100,7 @@
         <HeaderStyle CssClass="hidden-xs" />
         <ItemStyle CssClass="hidden-xs" />
         </asp:BoundField>
-    <asp:BoundField DataField="Name" HeaderText="姓名" SortExpression="GenderName"/>
+    <asp:BoundField DataField="Name" HeaderText="姓名" SortExpression="Name"/>
     <asp:BoundField DataField="Gender" HeaderText="性别"   SortExpression="Gender"/>
     <asp:BoundField DataField="ID_NO" HeaderText="身份证"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="ID_NO">
         
