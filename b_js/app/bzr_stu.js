@@ -109,6 +109,11 @@ function getstudent() {
                     str=str+'<td>'+item.pk_sno+'</td>';
                     str=str+'<td>'+item.test_no+'</td>';
                     str=str+'<td>'+item.id_no+'</td>';
+                    if($.trim(item.phone)===','){
+                        str=str+'<td></td>';
+                    }else{
+                        str=str+'<td>'+item.phone+'</td>';
+                    }
                     str=str+'<td>'+item.Status_Code+'</td>';
                     str=str+'<td>'+item.TuitionType+'</td>';
                     str=str+'<td>';

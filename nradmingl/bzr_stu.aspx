@@ -85,6 +85,7 @@
                                 <th scope="col">学号</th>
                                 <th scope="col">身份证号</th>
                                 <th scope="col">高考报名号</th>
+                                <th scope="col">联系电话</th>
                                 <th scope="col">现场报到情况</th>
                                 <th scope="col">学费情况</th>
                                 <th scope="col"></th>
