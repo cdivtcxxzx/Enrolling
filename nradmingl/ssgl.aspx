@@ -34,7 +34,7 @@
     <form id="form1"  runat="server">
     <div class="admin-main">
       <blockquote class="layui-elem-quote">
-          <i class="layui-icon">&#xe602;</i>学生宿舍管理<i class="layui-icon">&#xe602;</i>宿舍信息
+          <i class="layui-icon">&#xe602;</i>学生寝室预分配<i class="layui-icon">&#xe602;</i>宿舍信息
            <span style="float:right">
 
             <!--调用C#原生按钮设置样式举例OVER-->

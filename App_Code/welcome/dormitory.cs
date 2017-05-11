@@ -1101,7 +1101,7 @@ public class dormitory
            
             if (Year.Length < 1)
             {
-                err = "年度不能为空！";
+                err += "年度不能为空！";
             }
             else
             {
@@ -1112,7 +1112,7 @@ public class dormitory
 
             if (Type_Name.Length < 1)
             {
-                err = "房间类型名称不能为空！";
+                err += "房间类型名称不能为空！";
             }
             else
             {
@@ -1223,7 +1223,7 @@ public class dormitory
             
             if (Year.Length < 1)
             {
-                err = "年度不能为空！";
+                err += "年度不能为空！";
             }
             else
             {
@@ -1255,7 +1255,7 @@ public class dormitory
             }
             else
             {
-                err = "宿舍名称不能为空";
+                err += "宿舍名称不能为空";
                
             }
             if (Campus_Name.Length > 0)
@@ -1274,7 +1274,7 @@ public class dormitory
             }
             else
             {
-                err = "校区名称不能为空！";
+                err += "校区名称不能为空！";
             }
            
             
@@ -1362,7 +1362,7 @@ public class dormitory
             //房间编号
             if (roomid.Length < 1)
             {
-                err = "房间编号不能为空！";
+                err += "房间编号不能为空！";
             }
             else
             {
@@ -1402,7 +1402,7 @@ public class dormitory
             }
             else
             {
-                err = "公寓名称不能为空";
+                err += "公寓名称不能为空";
 
             }
             if(floor.Length>0)
@@ -1413,7 +1413,7 @@ public class dormitory
             }
             else
             {
-                 err = "楼层不能为空";
+                 err += "楼层不能为空";
             }
             //性别
             if (gender.Length > 0)
@@ -1424,7 +1424,7 @@ public class dormitory
             }
             else
             {
-                err = "性别不能为空";
+                err += "性别不能为空";
             }
 
             // [Gender],[FK_Room_Type]
@@ -1447,7 +1447,7 @@ public class dormitory
             }
             else
             {
-                err = "房间类型名称不能为空！";
+                err += "房间类型名称不能为空！";
             }
 
 
@@ -1531,7 +1531,7 @@ public class dormitory
             string roomzj = "";
             if (roomid.Length < 1)
             {
-                err = "房间编号不能为空！";
+                err += "房间编号不能为空！";
             }
             else
             {
@@ -1548,7 +1548,7 @@ public class dormitory
                 }
                 else
                 {
-                    err = "无房间信息！";
+                    err += "无房间信息！";
                 }
 
 
@@ -1558,7 +1558,7 @@ public class dormitory
             //SELECT TOP 1 [PK_Bed_NO] ,[Bed_NO],[Bed_Name],[FK_Bed_Type],[FK_Room_NO]  FROM [yxxt_data].[dbo].[Fresh_Bed] where Bed_NO='01' and FK_Room_NO='1'
             if (bedid.Length < 1)
             {
-                err = "床位编号不能为空！";
+                err += "床位编号不能为空！";
             }
             else
             {
@@ -1683,7 +1683,7 @@ public class dormitory
             string roomzj = "";
             if (roomid.Length < 1)
             {
-                err = "房间编号不能为空！";
+                err += "房间编号不能为空！";
             }
             else
             {
@@ -1696,7 +1696,7 @@ public class dormitory
                 }
                 else
                 {
-                    err = "无房间信息！";
+                    err += "无房间信息！";
                 }
 
 
@@ -1705,7 +1705,7 @@ public class dormitory
             string bjzj = "";
             if (bjmc.Length < 1)
             {
-                err = "班级名称不能为空！";
+                err += "班级名称不能为空！";
             }
             else
             {
@@ -1718,7 +1718,7 @@ public class dormitory
                 }
                 else
                 {
-                    err = "系统中无【"+bjmc+"】班级信息！";
+                    err += "系统中无【"+bjmc+"】班级信息！";
                 }
 
 
@@ -1727,7 +1727,7 @@ public class dormitory
             //SELECT TOP 1 [PK_Bed_NO] ,[Bed_NO],[Bed_Name],[FK_Bed_Type],[FK_Room_NO]  FROM [yxxt_data].[dbo].[Fresh_Bed] where Bed_NO='01' and FK_Room_NO='1'
             if (bedid.Length < 1)
             {
-                err = "床位编号不能为空！";
+                err += "床位编号不能为空！";
             }
             else
             {
@@ -1740,6 +1740,7 @@ public class dormitory
                     //usql += "FK_Bed_NO='" + bedzj + "','remark=" + cx.Rows[0]["PK_Bed_NO"].ToString() + "','" + czy + DateTime.Now.ToString() + "插入预分配数据'"; ; ;
                     //FK_Class_NO
                 }
+                
             }
 
             //查询床位是否已分配
@@ -1747,7 +1748,7 @@ public class dormitory
             
             if (bedzj.Length < 1)
             {
-                err = "床位未找到！如果你是第一次导入，请勾选【同时更新寝室床位等信息】";
+                err += "床位未找到！如果你是第一次导入，请勾选【同时更新寝室床位等信息】";
             }
             else
             {
@@ -1760,7 +1761,7 @@ public class dormitory
                     DataTable cxxq = Sqlhelper.Serach("SELECT     TOP (1) Fresh_Bed_Log.FK_SNO AS 学号, Base_STU.Year AS 年度, Base_STU.Name AS 姓名, Fresh_Class.Name AS 班级名称 FROM         Fresh_Bed_Log INNER JOIN                      Base_STU ON Fresh_Bed_Log.FK_SNO = Base_STU.PK_SNO INNER JOIN   Fresh_Class ON Base_STU.FK_Class_NO = Fresh_Class.PK_Class_NO WHERE     (Fresh_Bed_Log.PK_Bed_Log = '"+bedzj+"')");
                     if (cxxq.Rows.Count > 0)
                     {
-                        err = "该床位已被" +cxxq.Rows[0]["年度"].ToString()+"级"+ cxxq.Rows[0]["班级名称"].ToString() + cxxq.Rows[0]["姓名"].ToString() + "选择，不能重新分配！";
+                        err += "该床位已被" +cxxq.Rows[0]["年度"].ToString()+"级"+ cxxq.Rows[0]["班级名称"].ToString() + cxxq.Rows[0]["姓名"].ToString() + "选择，不能重新分配！";
                     }
                     else
                     {
@@ -1777,7 +1778,7 @@ public class dormitory
                         }
                     }
                     #endregion
-                    csql += "找到已经分配了房间,不能插入";
+                    csql += "已经分配了房间,不能插入";
                      //FK_Class_NO
                 }
                 else

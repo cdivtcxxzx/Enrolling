@@ -719,6 +719,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         GridView2.Visible = true;
                         GridView1.Visible = false;
                         CheckBox1.Checked = true;
+                        dcerr.Visible = false;
                     }
                     this.ztxx.Text = "<font color=red>成功" + zhs.ToString() + "条记录!!</font>";
                     for (int ok = delok.Length - 1; ok >= 0; ok--)
@@ -802,16 +803,23 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
     }
     protected void GridView1_RowCreated(object sender, GridViewRowEventArgs e)
     {
-        if (e.Row.RowType != DataControlRowType.Pager)//如果不是分页列
+        try
         {
-            //将GRIDVIEW的第一列隐藏
-            e.Row.Cells[6].Attributes.Add("style", "display:none;");
-            e.Row.Cells[0].Attributes.Add("style", "text-align:left;width:40%;text-indent:-30px;padding-left:40px");
-            e.Row.Cells[1].Attributes.Add("style", "width:50px;");
-            //e.Row.Cells[2].Attributes.Add("style", "width:60px;");
-            //e.Row.Cells[3].Attributes.Add("style", "width:40px;");
-            //e.Row.Cells[4].Attributes.Add("style", "width:60px;");
-            //e.Row.Cells[5].Attributes.Add("style", "width:100px;");
+            if (e.Row.RowType != DataControlRowType.Pager)//如果不是分页列
+            {
+                //将GRIDVIEW的第一列隐藏
+                e.Row.Cells[6].Attributes.Add("style", "display:none;");
+                e.Row.Cells[0].Attributes.Add("style", "text-align:left;width:40%;text-indent:-30px;padding-left:40px");
+                e.Row.Cells[1].Attributes.Add("style", "width:50px;");
+                //e.Row.Cells[2].Attributes.Add("style", "width:60px;");
+                //e.Row.Cells[3].Attributes.Add("style", "width:40px;");
+                //e.Row.Cells[4].Attributes.Add("style", "width:60px;");
+                //e.Row.Cells[5].Attributes.Add("style", "width:100px;");
+            }
+        }
+        catch(Exception e3)
+        {
+            ztxx.Text += "模板准备有误：" + e3.Message;
         }
     }
     protected string cwts(string ts)
@@ -834,8 +842,13 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
         }
         else
         {
+            dcerr.Visible = false;
             GridView2.Visible = false;
             GridView1.Visible = true;
         }
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        //下载错误模板
     }
 }
