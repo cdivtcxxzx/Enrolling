@@ -1123,7 +1123,7 @@ public class dormitory
            // sql = "INSERT INTO [Fresh_Room_Type]([PK_Room_Type],[Type_NO],[remark],[Year],[Type_Name])VALUES('" + guid + "'" + csql + ")";
 
            // return "0@" + sql;
-            if (err.Length > 0) return "0," + err;
+            if (err.Length > 0) return "0@" + err;
 
             //操作
             if ((cxnonull == "1" || cxnonull == "2"))
@@ -1279,7 +1279,7 @@ public class dormitory
            
             
 
-            if (err.Length > 0) return "0," + err;
+            if (err.Length > 0) return "0@" + err;
 
             //操作
             if (cxnonull == "1")
@@ -1452,7 +1452,7 @@ public class dormitory
 
 
 
-            if (err.Length > 0) return "0," + err;
+            if (err.Length > 0) return "0@" + err;
 
             //操作
             if (cxnonull == "1")
@@ -1518,6 +1518,7 @@ public class dormitory
         string sql = "";
         string usql = "";
         string csql = "";
+        string sqlcs = "";
         string bz = "";
         string guid = Guid.NewGuid().ToString();//自动生成主键和编号
         string cxnonull = "";
@@ -1535,7 +1536,9 @@ public class dormitory
             else
             {
                 //查询是否已经有该房间了
-                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 *  FROM [yxxt_data].[dbo].[Fresh_Room] where Room_NO='" + roomid + "'");
+                //SELECT TOP 1 [PK_Room_NO]  FROM [Fresh_Room] where Room_NO=''
+                sqlcs = "SELECT TOP 1 *  FROM [Fresh_Room] where Room_NO='" + roomid + "'";
+                DataTable cx = Sqlhelper.Serach(sqlcs);
                 if (cx.Rows.Count > 0)
                 {
                     roomzj = cx.Rows[0]["PK_Room_NO"].ToString();
@@ -1551,6 +1554,7 @@ public class dormitory
 
             }
             //查询是否已经有该床位
+           ;
             //SELECT TOP 1 [PK_Bed_NO] ,[Bed_NO],[Bed_Name],[FK_Bed_Type],[FK_Room_NO]  FROM [yxxt_data].[dbo].[Fresh_Bed] where Bed_NO='01' and FK_Room_NO='1'
             if (bedid.Length < 1)
             {
@@ -1558,20 +1562,26 @@ public class dormitory
             }
             else
             {
-                //查询是否已经有该房间了
-                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 [PK_Bed_NO] ,[Bed_NO],[Bed_Name],[FK_Bed_Type],[FK_Room_NO]  FROM [yxxt_data].[dbo].[Fresh_Bed] where Bed_NO='"+bedid+"' and FK_Room_NO='"+roomzj+"'");
+                //查询是否已经有该床位了
+                //sql = "查询是否已经有该床位" + "SELECT TOP 1 [PK_Bed_NO] ,[Bed_NO],[Bed_Name],[FK_Bed_Type],[FK_Room_NO]  FROM [Fresh_Bed] where Bed_NO='" + bedid + "' and FK_Room_NO='" + roomzj + "'";
+                sqlcs = "SELECT TOP 1 [PK_Bed_NO] ,[Bed_NO],[Bed_Name],[FK_Bed_Type],[FK_Room_NO]  FROM [Fresh_Bed] where Bed_NO='" + bedid + "' and FK_Room_NO='" + roomzj + "'";
+                DataTable cx = Sqlhelper.Serach(sqlcs);
                 if (cx.Rows.Count > 0)
                 {
                     cxnonull = "1";
-                    usql += "Bed_NO='" + cx.Rows[0]["Bed_NO"].ToString() + "'" + ",[remark]='" + cx.Rows[0]["Bed_NO"].ToString() +czy+DateTime.Now.ToString()+ "更新床位数据'";
+                    usql += ",Bed_NO='" + cx.Rows[0]["Bed_NO"].ToString() + "'";
                    
+                        usql += ",[remark]='" + cx.Rows[0]["Bed_NO"].ToString() + czy + DateTime.Now.ToString() + "更新床位数据|'";
+                    
 
                 }
                 else
                 {
-                    csql += ",'" + cx.Rows[0]["Bed_NO"].ToString() + "','" + czy + DateTime.Now.ToString() + "更新床位数据'"; ;
+                    
+                    csql += ",'" + bedid+ "','" + czy + DateTime.Now.ToString() + "插入床位数据|'"; ;
+                
                 }
-
+                
 
             }
 
@@ -1584,27 +1594,27 @@ public class dormitory
             if (bedname.Length > 0)
             {
 
-                usql += "Bed_Name='" + bedname + "'";
+                usql += ",Bed_Name='" + bedname + "'";
                 csql += ",'" + bedname + "'";
             }
-           
-            
+
+            //sql = "检测结束";
 
 
-            if (err.Length > 0) return "0," + err;
+            if (err.Length > 0) return "0@" + err;
 
             //操作
             if (cxnonull == "1")
             {
                 //更新
-
-                if (Sqlhelper.ExcuteNonQuery("UPDATE [Fresh_Bed] set " + usql + " WHERE where Bed_NO='" + bedid + "'") > 0)
+                sql = "UPDATE [Fresh_Bed] set " + usql + " WHERE  Bed_NO='" + bedid + "'";
+                if (Sqlhelper.ExcuteNonQuery(sql) > 0)
                 {
-                    return "1,更新数据成功！";
+                    return "1@更新床位数据成功！";
                 }
                 else
                 {
-                    return "0,更新数据失败！";
+                    return "0@更新床位数据失败！";
                 }
 
 
@@ -1612,13 +1622,15 @@ public class dormitory
             else
             {
                 //创建
-                if (Sqlhelper.ExcuteNonQuery("INSERT INTO [Fresh_Bed]  ([PK_Bed_NO],[FK_Room_NO],[Bed_NO],[remark],[Bed_Name])VALUES('" + guid + "'" + csql + ")") > 0)
+                sql = "INSERT INTO [Fresh_Bed]  ([PK_Bed_NO],[FK_Room_NO],[Bed_NO],[remark],[Bed_Name])VALUES('" + guid + "'" + csql + ")";
+                
+                if (Sqlhelper.ExcuteNonQuery(sql) > 0)
                 {
-                    return "1,插入数据成功！";
+                    return "1@插入床位数据成功！";
                 }
                 else
                 {
-                    return "0,插入数据失败！";
+                    return "0@插入床位数据失败！";
                 }
             }
         }
@@ -1630,7 +1642,14 @@ public class dormitory
                 throw;
             }
             catch { }
-            return "0,失败" + e1.Message;
+            if (modezt)
+            {
+                return "0@插入床位数据失败" + e1.Message + sql;
+            }
+            else
+            {
+                return "0@插入床位数据失败" + e1.Message;
+            }
         }
 
 
@@ -1669,7 +1688,7 @@ public class dormitory
             else
             {
                 //查询是否已经有该房间了
-                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 *  FROM [yxxt_data].[dbo].[Fresh_Room] where Room_NO='" + roomid + "'");
+                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 *  FROM [Fresh_Room] where Room_NO='" + roomid + "'");
                 if (cx.Rows.Count > 0)
                 {
                     roomzj = cx.Rows[0]["PK_Room_NO"].ToString();
@@ -1678,6 +1697,28 @@ public class dormitory
                 else
                 {
                     err = "无房间信息！";
+                }
+
+
+            }
+            //获取班级信息
+            string bjzj = "";
+            if (bjmc.Length < 1)
+            {
+                err = "班级名称不能为空！";
+            }
+            else
+            {
+                //查询是否已经有该房间了
+                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 [PK_Class_NO]  FROM [Fresh_Class] where Name='" + bjmc + "'");
+                if (cx.Rows.Count > 0)
+                {
+                    bjzj = cx.Rows[0]["PK_Class_NO"].ToString();
+
+                }
+                else
+                {
+                    err = "系统中无【"+bjmc+"】班级信息！";
                 }
 
 
@@ -1702,62 +1743,85 @@ public class dormitory
             }
 
             //查询床位是否已分配
+
+            
             if (bedzj.Length < 1)
             {
-                err = "床位未找到！";
+                err = "床位未找到！如果你是第一次导入，请勾选【同时更新寝室床位等信息】";
             }
             else
             {
-                //查询是否已经有该房间了
+                //查询是否已经分配该房间了
                 DataTable cx = Sqlhelper.Serach("SELECT TOP 1 [PK_Bed_Class_Log],[FK_Bed_NO],[FK_Class_NO],[remark] FROM [Fresh_Bed_Class_Log] where FK_Bed_NO='"+bedzj+"'");
                 if (cx.Rows.Count > 0)
                 {
+                    //先查询学生是否已经选择寝室，如果该寝室已经被选过了，就不能再分配该寝室
+                    #region 查询选寝室情况
+                    DataTable cxxq = Sqlhelper.Serach("SELECT     TOP (1) Fresh_Bed_Log.FK_SNO AS 学号, Base_STU.Year AS 年度, Base_STU.Name AS 姓名, Fresh_Class.Name AS 班级名称 FROM         Fresh_Bed_Log INNER JOIN                      Base_STU ON Fresh_Bed_Log.FK_SNO = Base_STU.PK_SNO INNER JOIN   Fresh_Class ON Base_STU.FK_Class_NO = Fresh_Class.PK_Class_NO WHERE     (Fresh_Bed_Log.PK_Bed_Log = '"+bedzj+"')");
+                    if (cxxq.Rows.Count > 0)
+                    {
+                        err = "该床位已被" +cxxq.Rows[0]["年度"].ToString()+"级"+ cxxq.Rows[0]["班级名称"].ToString() + cxxq.Rows[0]["姓名"].ToString() + "选择，不能重新分配！";
+                    }
+                    else
+                    {
+                        cxnonull = "1";
+                        if (cx.Rows[0]["remark"].ToString().Length >2000)
+                        {
+                            usql += "FK_Bed_NO='" + bedzj + "',FK_Class_NO='" + bjzj + "',remark='" + czy + DateTime.Now.ToString() + "更新预分配数据,因备注大于1000字符，重写备注，原床位主键为：" + bedzj + "|'";
+                    
+                        }
+                        else
+                        {
 
-
-                    usql += "FK_Bed_NO='" + bedzj + "',FK_Class_NO='"+roomzj+"',remark='" + cx.Rows[0]["remark"].ToString() + "','" + czy + DateTime.Now.ToString() + "更新预分配数据，原床位主键为：" + bedzj + "'"; 
-                    //FK_Class_NO
+                            usql += "FK_Bed_NO='" + bedzj + "',FK_Class_NO='" + bjzj + "',remark='" + cx.Rows[0]["remark"].ToString() + "" + czy + DateTime.Now.ToString() + "更新预分配数据，原床位主键为：" + bedzj + "|'";
+                        }
+                    }
+                    #endregion
+                    csql += "找到已经分配了房间,不能插入";
+                     //FK_Class_NO
                 }
                 else
                 {
-                    csql = bedzj + "','" + roomzj + "','" + czy + DateTime.Now.ToString() + "插入预分配数据'";
+                    csql = bedzj + "','" + bjzj + "','" + czy + DateTime.Now.ToString() + "插入预分配数据|'";
                    
                 }
             }
 
 
 
+           // return "0@失败" + err + csql;
 
 
 
-
-            if (err.Length > 0) return "0," + err;
+            if (err.Length > 0) return "0@" + err;
 
             //操作
             if (cxnonull == "1")
             {
                 //更新
-
-                if (Sqlhelper.ExcuteNonQuery("UPDATE [[PK_Bed_Class_Log]] set " + usql + " WHERE where FK_Bed_NO='" + bedzj + "'") > 0)
+                sql = "UPDATE [Fresh_Bed_Class_Log] set " + usql + " WHERE  FK_Bed_NO='" + bedzj + "'";
+                if (Sqlhelper.ExcuteNonQuery(sql) > 0)
                 {
-                    return "1,更新数据成功！";
+                    return "1@更新数据成功！";
                 }
                 else
                 {
-                    return "0,更新数据失败！";
+                    return "0@更新数据失败！";
                 }
-
+                
 
             }
             else
             {
                 //创建
-                if (Sqlhelper.ExcuteNonQuery("INSERT INTO [PK_Bed_Class_Log]  ([PK_Bed_Class_Log],[FK_Bed_NO],[FK_Class_NO],[remark])VALUES('" + guid + "','" + csql + ")") > 0)
+                sql = "INSERT INTO [Fresh_Bed_Class_Log]  ([PK_Bed_Class_Log],[FK_Bed_NO],[FK_Class_NO],[remark])VALUES('" + guid + "','" + csql + ")";
+                if (Sqlhelper.ExcuteNonQuery(sql) > 0)
                 {
-                    return "1,插入数据成功！";
+                    return "1@插入数据成功！";
                 }
                 else
                 {
-                    return "0,插入数据失败！";
+                    return "0@插入数据失败！";
                 }
             }
         }
@@ -1769,7 +1833,15 @@ public class dormitory
                 throw;
             }
             catch { }
-            return "0,失败" + e1.Message;
+            if (modezt)
+            {
+                return "0@预分配失败:" + e1.Message+sql;
+            }
+            else
+            {
+
+                return "0@预分配失败:" + e1.Message;
+            }
         }
 
 

@@ -28,6 +28,8 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
     private string upfile = "预分配寝室导入";//导入上传的临时文件名称
     //导入模板的字段
     private string zd = "序号,年度,校区,公寓名称,楼层,房间编号,房间类型,性别,房间人数,床位编号,床位位置说明,班级名称";
+    //错误提示时，要隐藏的字段
+    private  string removeok = "年度,校区,公寓名称,楼层,房间类型,房间人数,床位位置说明";
 
     private string pageqx1 = "导入";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";
@@ -91,42 +93,45 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
             //new c_login().powerYanzheng(Session["username"].ToString(), pagelm1, pageqx2, "2");//验证当前栏目关键字中的权限２,通常在按钮中需验证权限时使用
             #endregion
             #region 控制导入步骤各环节的显示
-            if (Request["setp"] != null && Request["mb"] != null)
+            if(!IsPostBack)
             {
-                if (Request["setp"].ToString() == "1")
+                if (Request["setp"] != null && Request["mb"] != null)
                 {
-                    setpdown.Style.Add("display", "");
-                    setpup.Style.Add("display", "none");
-                    setpdown.HRef = "?setp=2&mb=" + Request["mb"].ToString();
+                    if (Request["setp"].ToString() == "1")
+                    {
+                        setpdown.Style.Add("display", "");
+                        setpup.Style.Add("display", "none");
+                        setpdown.HRef = "?setp=2&mb=" + Request["mb"].ToString();
 
-                    setp1cz.Style.Add("display", "");
-                    setp2cz.Style.Add("display", "none");
-                    setp3cz.Style.Add("display", "none");
-                }
-                if (Request["setp"].ToString() == "2")
-                {
-                    setp2.Attributes.Add("class", "active");
+                        setp1cz.Style.Add("display", "");
+                        setp2cz.Style.Add("display", "none");
+                        setp3cz.Style.Add("display", "none");
+                    }
+                    if (Request["setp"].ToString() == "2")
+                    {
+                        setp2.Attributes.Add("class", "active");
 
-                    setpdown.Style.Add("display", "");
-                    setpup.Style.Add("display", "");
-                    setpup.HRef = "?setp=1&mb=" + Request["mb"].ToString();
-                    setpdown.HRef = "?setp=3&mb=" + Request["mb"].ToString();
-                    setp1cz.Style.Add("display", "none");
-                    setp2cz.Style.Add("display", "");
-                    setp3cz.Style.Add("display", "none");
-                }
-                if (Request["setp"].ToString() == "3")
-                {
-                    setp2.Attributes.Add("class", "active");
-                    setp3.Attributes.Add("class", "active");
-                    setpdown.Style.Add("display", "none");
-                    setpup.Style.Add("display", "");
-                    setpup.HRef = "?setp=2&mb=" + Request["mb"].ToString();
+                        setpdown.Style.Add("display", "");
+                        setpup.Style.Add("display", "");
+                        setpup.HRef = "?setp=1&mb=" + Request["mb"].ToString();
+                        setpdown.HRef = "?setp=3&mb=" + Request["mb"].ToString();
+                        setp1cz.Style.Add("display", "none");
+                        setp2cz.Style.Add("display", "");
+                        setp3cz.Style.Add("display", "none");
+                    }
+                    if (Request["setp"].ToString() == "3")
+                    {
+                        setp2.Attributes.Add("class", "active");
+                        setp3.Attributes.Add("class", "active");
+                        setpdown.Style.Add("display", "none");
+                        setpup.Style.Add("display", "");
+                        setpup.HRef = "?setp=2&mb=" + Request["mb"].ToString();
 
-                    setp1cz.Style.Add("display", "none");
-                    setp2cz.Style.Add("display", "none");
-                    setp3cz.Style.Add("display", "");
+                        setp1cz.Style.Add("display", "none");
+                        setp2cz.Style.Add("display", "none");
+                        setp3cz.Style.Add("display", "");
 
+                    }
                 }
             #endregion
                 #region 根据参数提供第一步的模板下载(mb=auto:使用配置的数据库语句自动生成EXCEL,mb=文件名路径)
@@ -248,7 +253,8 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                 //循环读取并判断所有字段
                 int updatetype = 0;//类型更新只写一次
                 int updatedorm = 0;//宿舍更新只写一次e
-                int updateroom = 0;
+                int updateroom = 0;//房间备注只写一次
+                int updatebed = 0;//只更新一次床位备注
                 for (int ii = 0; ii < x.Rows.Count; ii++)
                 {
                     //设置默认错误提示为空
@@ -270,6 +276,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         string xb = x.Rows[ii]["性别"].ToString().Replace("'", "");
                         string roomrs = x.Rows[ii]["房间人数"].ToString().Replace("'", "");
                         string cwbh = x.Rows[ii]["床位编号"].ToString().Replace("'", "");
+                        string cwms = x.Rows[ii]["床位位置说明"].ToString().Replace("'", "");
                         string bjmc = x.Rows[ii]["班级名称"].ToString().Replace("'", "");
                         int nuber;
                         #region 验证年度
@@ -281,7 +288,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                             if (!int.TryParse(nd, out nuber))
                             {
                                 //非数字
-                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + nd + "不符要求，年度只能为4位数字！";
+                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + "年度列：" + nd + "不符要求，年度只能为4位数字！";
                             }
 
                         }
@@ -290,7 +297,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                             //不满足，抛出错误提示
                             if (nd.Length > 0)
                             {
-                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + "年度位数不对，只能为4位数字！";
+                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + "年度列："+"年度位数不对，只能为4位数字！";
                             }
                             else
                             {
@@ -305,11 +312,12 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         if (floor.Length <=2)
                         {
 
-                            if (!int.TryParse(nd, out nuber))
+                            if (!int.TryParse(floor, out nuber))
                             {
                                 //非数字
-                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + floor + "不符要求，楼层只能为2位以内数字！";
+                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + "楼层列：" + floor + "不符要求，楼层只能为2位以内数字！";
                             }
+                            
                             if (floor.Length == 0)
                            
                             {
@@ -404,13 +412,13 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         #endregion
 
                         #region 验证房间人数是否为数字
-                        if (nd.Length > 0)
+                        if (roomrs.Length > 0)
                         {
 
-                            if (!int.TryParse(nd, out nuber))
+                            if (!int.TryParse(roomrs, out nuber))
                             {
                                 //非数字
-                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + nd + "不符要求，年度只能为数字！";
+                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + "房间人数列：" + roomrs + "不符要求，年度只能为数字！";
                             }
                             else
                             {
@@ -468,101 +476,143 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                             string cgjj = "";
                             try
                             {
-                                #region 导入房间类型
-                                string sqlupdate = "";
-                                if (roomtypeyz > 0)
+                                if (updateroom_c.Checked)
                                 {
-                                    //更新
-                                    if (updatetype == 0)
+                                    #region 导入房间类型
+                                    string sqlupdate = "";
+                                    if (roomtypeyz > 0)
                                     {
+                                        //更新
+                                        if (updatetype == 0)
+                                        {
 
-                                        sqlupdate = dormitory.update_Roomtype("", nd, roomtype, Session["username"].ToString(),0);
+                                            sqlupdate = dormitory.update_Roomtype("", nd, roomtype, Session["username"].ToString(), 0);
+                                        }
+                                        else
+                                        {
+                                            sqlupdate = dormitory.update_Roomtype("", nd, roomtype, Session["username"].ToString(), 1);
+                                        }
                                     }
                                     else
                                     {
-                                        sqlupdate = dormitory.update_Roomtype("", nd, roomtype, Session["username"].ToString(), 1);
+                                        //写入
+                                        sqlupdate = dormitory.update_Roomtype("", nd, roomtype, Session["username"].ToString(), 0);
                                     }
-                                }
-                                else
-                                {
-                                    //写入
-                                    sqlupdate = dormitory.update_Roomtype("", nd, roomtype, Session["username"].ToString(),0);
-                                }
-                                cgjj = sqlupdate.Split('@')[0].ToString();
-                                if (cgjj == "1")
-                                {
-                                    updatetype = 1;
-                                }
-                                else
-                                {
-                                    x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdate.Split('@')[1].ToString() + "";
-                                }
-                                #endregion
-                                #region 导入公寓宿舍信息
-                               
-                                if (dormyz > 0)
-                                {
-                                    //更新
-                                    if (updatedorm == 0)
+                                    cgjj = sqlupdate.Split('@')[0].ToString();
+                                    if (cgjj == "1")
                                     {
-
-                                        sqlupdate = dormitory.update_Fresh_Dorm(nd, dormname, xq, Session["username"].ToString(),0);
+                                        updatetype = 1;
                                     }
                                     else
                                     {
-                                        sqlupdate = dormitory.update_Fresh_Dorm(nd, dormname, xq, Session["username"].ToString(),1);
+                                        x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdate.Split('@')[1].ToString() + "";
                                     }
-                                }
-                                else
-                                {
-                                    //写入
-                                    sqlupdate =  dormitory.update_Fresh_Dorm(nd, dormname, xq, Session["username"].ToString(),1);
-                                }
-                                cgjj = sqlupdate.Split('@')[0].ToString();
-                                if (cgjj == "1")
-                                {
-                                    updatedorm = 1;
-                                }
-                                else
-                                {
-                                    x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdate.Split('@')[1].ToString() + "";
-                                }
-                                #endregion
-                                //宿舍
+                                    #endregion
+                                    #region 导入公寓宿舍信息
 
-                                #region 导入房间信息
-
-                                if (roomyz > 0)
-                                {
-                                    //更新
-                                    if (updateroom == 0)
+                                    if (dormyz > 0)
                                     {
+                                        //更新
+                                        if (updatedorm == 0)
+                                        {
 
-                                        sqlupdate = dormitory.update_Fresh_room(roomid, dormname, floor, roomtype, xb, Session["username"].ToString(), 0);
+                                            sqlupdate = dormitory.update_Fresh_Dorm(nd, dormname, xq, Session["username"].ToString(), 0);
+                                        }
+                                        else
+                                        {
+                                            sqlupdate = dormitory.update_Fresh_Dorm(nd, dormname, xq, Session["username"].ToString(), 1);
+                                        }
                                     }
                                     else
                                     {
+                                        //写入
+                                        sqlupdate = dormitory.update_Fresh_Dorm(nd, dormname, xq, Session["username"].ToString(), 1);
+                                    }
+                                    cgjj = sqlupdate.Split('@')[0].ToString();
+                                    if (cgjj == "1")
+                                    {
+                                        updatedorm = 1;
+                                    }
+                                    else
+                                    {
+                                        x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdate.Split('@')[1].ToString() + "";
+                                    }
+                                    #endregion
+                                    //宿舍
+
+                                    #region 导入房间信息
+
+                                    if (roomyz > 0)
+                                    {
+                                        //更新
+                                        if (updateroom == 0)
+                                        {
+
+                                            sqlupdate = dormitory.update_Fresh_room(roomid, dormname, floor, roomtype, xb, Session["username"].ToString(), 0);
+                                        }
+                                        else
+                                        {
+                                            sqlupdate = dormitory.update_Fresh_room(roomid, dormname, floor, roomtype, xb, Session["username"].ToString(), 1);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //写入
                                         sqlupdate = dormitory.update_Fresh_room(roomid, dormname, floor, roomtype, xb, Session["username"].ToString(), 1);
                                     }
+                                    cgjj = sqlupdate.Split('@')[0].ToString();
+                                    if (cgjj == "1")
+                                    {
+                                        updateroom = 1;
+                                    }
+                                    else
+                                    {
+                                        x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdate.Split('@')[1].ToString() + "";
+                                    }
+                                    #endregion
+                                    //房间
+                                    //床位
+                                    //Response.Write("导入床位信息");
+                                    #region 导入床位信息
+
+                                    if (bedyz > 0)
+                                    {
+                                        //更新
+                                        
+                                            sqlupdate = dormitory.update_Fresh_bed(cwbh,cwms,roomid, Session["username"].ToString());
+                                       
+                                    }
+                                    else
+                                    {
+                                        //写入
+                                        sqlupdate = dormitory.update_Fresh_bed(cwbh, cwms, roomid, Session["username"].ToString());
+                                    }
+
+                                   // Response.Write("导入结果：" + sqlupdate);
+                                    cgjj = sqlupdate.Split('@')[0].ToString();
+                                    if (cgjj == "1")
+                                    {
+                                        updatebed = 1;
+                                    }
+                                    else
+                                    {
+                                        x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdate.Split('@')[1].ToString() + "";
+                                    }
+                                    #endregion
                                 }
-                                else
+                                //班级预分配床位
+                                #region 班级预分配床位
+                                string sqlupdat = "";
+                                if (bjmcyz > 0)
                                 {
-                                    //写入
-                                    sqlupdate = dormitory.update_Fresh_room(roomid, dormname, floor, roomtype, xb, Session["username"].ToString(), 1);
+                                    sqlupdat = dormitory.update_Fresh_bedyfp(cwbh,roomid,bjmc,Session["username"].ToString()) ;
                                 }
-                                cgjj = sqlupdate.Split('@')[0].ToString();
-                                if (cgjj == "1")
+                                cgjj = sqlupdat.Split('@')[0].ToString();
+                                if (cgjj != "1")
                                 {
-                                    updateroom = 1;
-                                }
-                                else
-                                {
-                                    x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdate.Split('@')[1].ToString() + "";
+                                   x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdat.Split('@')[1].ToString() + "";
                                 }
                                 #endregion
-                                //房间
-                                //床位
-                                //班级预分配床位
 
 
                             }
@@ -592,7 +642,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                             }
                             else
                             {
-                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + "写入数据库失败!";
+                                x.Rows[ii]["错误提示"] =x.Rows[ii]["错误提示"].ToString();
                             }
                             #endregion
 
@@ -608,21 +658,69 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                     }
 
                     //精细化错误提示
-                    if (x.Rows[ii]["错误提示"].ToString().Length > 3)
+                    if (x.Rows[ii]["错误提示"].ToString().Length > 1)
                     {
                         x.Rows[ii]["错误提示"] = "第" + (ii + 1).ToString() + "行:" + x.Rows[ii]["错误提示"].ToString();
+                    }
+                    else
+                    {
+                        x.Rows[ii]["错误提示"] = "导入成功";
                     }
 
                 }
                 #region (3)删除已经提交成功的行，仅显示错误提示,此逻辑不用修改
                 //记录全部错误和正确记录
                 clok = x;
+                if (clok.Rows.Count > 0)
+                {
+                    //Response.Write(clok.Rows.Count.ToString());
+                    for (int re = 0; re < removeok.Split(',').Length; re++)
+                    {
+                        try
+                        {
+                            //x.Columns.Remove(removeok.Split(',')[re].ToString());
+                            clok.Columns.Remove(removeok.Split(',')[re].ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex.Message == "列“" + removeok.Split(',')[re].ToString() + "”不属于表 。")
+                            {
+                                this.ztxx.Text += "<font color=red>你上传的数据中的“" + removeok.Split(',')[re].ToString() + "”列取名不正确，请检查!</font>";
+                            }
+                            else
+                            {
+                                this.ztxx.Text += "<font color=red>" + ex.Message + "!</font>";
+                            }
+                        }
+                    }
+                    GridView2.DataSource = clok;
+                   
+                    GridView2.DataBind();
+                }
+                
+                //clok.Columns["错误提示"].ColumnName = "操作提示";  
 
+                //Response.Write("需删除的行："+delrow+"!");
                 string[] delok = delrow.Split(',');
-                if (delok.Length > 0)
+                if (delok.Length > 1)
                 {//删除指定行
+                    int zhs = delok.Length;
+                    if (!delrow.Contains(","))
+                    {
+                        zhs = 0;
+                       
 
-                    this.ztxx.Text = "<font color=red>成功" + delok.Length.ToString() + "条记录!!</font>";
+
+                    }
+                    if (clok.Rows.Count == zhs)
+                    {
+                        //如果导入的记录全正确，显示全部正确记录
+                        //Response.Write("如果导入的记录全正确，显示全部正确记录");
+                        GridView2.Visible = true;
+                        GridView1.Visible = false;
+                        CheckBox1.Checked = true;
+                    }
+                    this.ztxx.Text = "<font color=red>成功" + zhs.ToString() + "条记录!!</font>";
                     for (int ok = delok.Length - 1; ok >= 0; ok--)
                     {
                         try
@@ -653,104 +751,91 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
             }
 
 #region (4)隐藏不需要提示的列,绑定gridview呈现错误数据
-
-            try
+            
+            for (int re = 0; re < removeok.Split(',').Length; re++)
             {
-                x.Columns.Remove("班级名称");
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message == "列“班级名称”不属于表 。")
+                try
                 {
-                    this.ztxx.Text += "<font color=red>你上传的数据中的“班级名称”列取名不正确，请检查!</font>";
+                    x.Columns.Remove(removeok.Split(',')[re].ToString());
+                    //clok.Columns.Remove(removeok.Split(',')[re].ToString());
                 }
-                else
+                catch (Exception ex)
                 {
-                    this.ztxx.Text += "<font color=red>" + ex.Message + "!</font>";
+                    //if (ex.Message == "列“" + removeok.Split(',')[re].ToString() + "”不属于表 。")
+                    //{
+                    //    this.ztxx.Text += "<font color=red>x你上传的数据中的“" + removeok.Split(',')[re].ToString() + "”列取名不正确，请检查!</font>";
+                    //}
+                    //else
+                    //{
+                    //    this.ztxx.Text += "<font color=red>" + ex.Message + "!</font>";
+                    //}
                 }
             }
+            
 
-            GridView1.DataSource = clok;
+            GridView1.DataSource = x;
+            //GridView2.DataSource = clok;
             //GridView1.
+            //隐藏错误提示列，仅显示自定义错误提示列
+            //GridView1.Columns[1].Visible = false;
             GridView1.DataBind();
+            //GridView2.DataBind();
+            
+            #endregion
+            #region 跳到第三步，显示导入结果
+            setp2.Attributes.Add("class", "active");
+            setp3.Attributes.Add("class", "active");
+            setpdown.Style.Add("display", "none");
+            setpup.Style.Add("display", "");
+            setpup.HRef = "?setp=2&mb=" + Request["mb"].ToString();
+
+            setp1cz.Style.Add("display", "none");
+            setp2cz.Style.Add("display", "none");
+            setp3cz.Style.Add("display", "");
+
+            
+
+
             #endregion
         }
        
     }
-    public DataTable ReadXLSByExcel(string fileFullPath, string zd)
+    protected void GridView1_RowCreated(object sender, GridViewRowEventArgs e)
     {
-
-        #region 使用EXCEL控件转为DATATABLE
-        string err="";
-        toexcel todatatable = new toexcel();
-        DataTable ok=todatatable.ExcelfileToDatatalbe(fileFullPath, true);
-        
-            
-        #endregion
-        GridView1.DataSource = ok;
-        GridView1.DataBind();
-        
-        return ok;
-        //#region 使用原生EXCEL操作方法
-        //string strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Jet OLEDB:Database Password=;Data Source=" + fileFullPath + ";Extended Properties=\"Excel 8.0;HDR=YES;IMEX=1;\"";//只适合xls后缀
-        //// "Provider=Microsoft.Jet.OLEDB.4.0;Jet OLEDB:Database Password=;Extended properties=Excel 5.0;Data Source="&Server.MapPath("/zsgl/upload/"+request("filename"))
-        //// string  strConn = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileFullPath + ";Extended Properties='Excel 12.0;HDR=YES;IMEX=1;'";
-        //// Response.Write(strConn);
-        ////    参数HDR的值：HDR=Yes，这代表第一行是标题，不做为数据使用 ，如果用HDR=NO，则表示第一行不是标题，做为数据来使用。系统默认的是YES  。
-        ////参数IMEX值：具体什么意思我也不清楚哈，不过如果没有设置=1的话，在单元格里面的中文有时不能正确读取到，会读到null。
-        //// 官方的解释：
-        //// IMEX ( IMport EXport mode )设置
-        ////当 IMEX=0 时为“汇出模式”，这个模式开启的 Excel 档案只能用来做“写入”用途。
-        ////当 IMEX=1 时为“汇入模式”，这个模式开启的 Excel 档案只能用来做“读取”用途。
-        ////当 IMEX=2 时为“连結模式”，这个模式开启的 Excel 档案可同时支援“读取”与“写入”用途。
-        //string tableName = "";
-
-        //using (OleDbConnection oleConn = new OleDbConnection(strConn))
-        //{
-        //    try
-        //    {
-        //        oleConn.Open();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        this.ztxx.Text = "<font color=red>文件格式不对，请把需上传的文件另存为2003版XLS</font>" + ex.Message;
-        //    }
-
-        //    try
-        //    {
-        //        DataTable sheetNames = oleConn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
-        //        //DataTable sheetNames = oleConn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, null);
-
-        //        tableName = sheetNames.Rows[0][2].ToString().Trim();//获取 Excel 的表名，默认值是sheet1
-                
-        //        if (tableName.Length <= 0)
-        //        {
-        //            this.ztxx.Text = "<font color=red>EXCEL中的表不正确</font>";
-        //            return new DataTable();
-                    
-        //        }
-
-
-        //        string sql = "select " + zd + " from [" + tableName + "] ";
-
-
-        //        DataSet ds = new DataSet();
-        //        OleDbCommand objCmd = new OleDbCommand(sql, oleConn);
-        //        OleDbDataAdapter myData = new OleDbDataAdapter(sql, oleConn);
-        //        myData.Fill(ds, tableName);//填充数据
-
-        //        return ds.Tables[0];
-
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        this.ztxx.Text = "<font color=red>文件格式不对，请下载模版重新准备数据，不要改变列的名字和排列顺序【" + zd + "】<br>" + ex.Message + "</font>";
-        //        return new DataTable();
-
-        //    }
-        //}
-        //#endregion
-
+        if (e.Row.RowType != DataControlRowType.Pager)//如果不是分页列
+        {
+            //将GRIDVIEW的第一列隐藏
+            e.Row.Cells[6].Attributes.Add("style", "display:none;");
+            e.Row.Cells[0].Attributes.Add("style", "text-align:left;width:40%;text-indent:-30px;padding-left:40px");
+            e.Row.Cells[1].Attributes.Add("style", "width:50px;");
+            //e.Row.Cells[2].Attributes.Add("style", "width:60px;");
+            //e.Row.Cells[3].Attributes.Add("style", "width:40px;");
+            //e.Row.Cells[4].Attributes.Add("style", "width:60px;");
+            //e.Row.Cells[5].Attributes.Add("style", "width:100px;");
+        }
+    }
+    protected string cwts(string ts)
+    {
+        if (ts.Contains("导入成功"))
+        {
+            return "<font color=green>"+ts+"</font>";
+        }
+        else
+        {
+            return "<font color=red><b>" + ts + "</b></font>";
+        }
+    }
+    protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
+    {
+        if (CheckBox1.Checked)
+        {
+            GridView1.Visible = false;
+            GridView2.Visible = true;
+        }
+        else
+        {
+            GridView2.Visible = false;
+            GridView1.Visible = true;
+        }
     }
 }
