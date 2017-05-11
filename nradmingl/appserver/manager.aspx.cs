@@ -2138,6 +2138,38 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                     }
                 }
                 #endregion
+
+                #region 根据班主任编号获取他班级对应的当前有效迎新批次
+                if (cs.Trim().Equals("get_batch_counseller"))
+                {
+                    string pk_staff_no = Request.QueryString.Get("pk_staff_no");
+                    if (pk_staff_no != null && pk_staff_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_counseller( pk_staff_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 获取某批次某班级所有学生事务状态
+                if (cs.Trim().Equals("get_classstudentaffairlog"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_class_no = Request.QueryString.Get("pk_class_no");
+                    if (pk_class_no != null && pk_class_no.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_classstudentaffairlog(pk_batch_no, pk_class_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
             }
         }
         catch (Exception ex)

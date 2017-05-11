@@ -3198,7 +3198,12 @@ public class batch
         {
             string sqlstr = null;
             sqlstr = "select [year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
-                    +" case when d.Tuition is null then '' else d.Tuition end as TuitionType"
+                    +" case when d.Tuition is null then '' else d.Tuition end as TuitionType, "
+                    +" case when a.Phone is null and a.Phone_dr is null then '' else "
+                    +" ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
+                    +" ( case when a.Phone is null and a.Phone_dr is not null then a.Phone_dr else a.Phone+','+a.Phone_dr  end )"
+                    +" end )"
+                    +" end as phone"
                     +" from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO"
                     +" ,Fresh_Class b,Base_Code_Item c"
                     +" where a.FK_Class_NO=b.PK_Class_NO and a.Gender_Code=c.Item_NO and c.FK_Code='002'"
@@ -3260,7 +3265,7 @@ public class batch
         {
             try
             {
-                new c_log().logAdd("batch.cs", "get_classstudent", ex.Message, "2", "huyuan");//记录错误日志
+                new c_log().logAdd("batch.cs", "get_classstudentandaffairstatus", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;
@@ -3268,4 +3273,92 @@ public class batch
         return result;
     }
 
+    //根据班主任编号获取他班级对应的当前有效迎新批次
+    public System.Data.DataTable get_batch_counseller(string PK_STAFF_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select distinct d.PK_Batch_NO,d.Batch_Name"
+                    +" from Fresh_Counseller a,Fresh_Class b,Fresh_SPE c,Fresh_Batch d"
+                    +" where a.FK_Class_NO=b.PK_Class_NO and b.FK_SPE_NO=c.PK_SPE and c.[Year]=d.[Year] and" 
+                    +" d.Welcome_Begin<=getdate() and d.Welcome_End>=getdate() and d.Enabled='run' and a.fk_staff_no=@cs1"
+                    +" order by d.Batch_Name DESC";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_STAFF_NO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_batch_counseller", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //获取某批次某班级所有学生事务状态
+    public System.Data.DataTable get_classstudentaffairlog(string PK_Batch_NO,string PK_CLASS_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            System.Data.DataTable dt_affair = get_batch_affairlist(PK_Batch_NO);//某批次事务列表
+            System.Data.DataTable dt_student = get_classstudent(PK_CLASS_NO);//某班级学生列表
+            if (dt_student != null)
+            {
+                dt_student.Columns.Remove("year");
+                dt_student.Columns.Remove("collage");
+                dt_student.Columns.Remove("spe_name");
+                dt_student.Columns.Remove("Status_Code");
+                dt_student.Columns.Remove("TuitionType");
+
+                dt_student.AcceptChanges();
+                if (dt_affair != null && dt_affair.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt_affair.Rows.Count; i++)
+                    {
+                        string PK_Affair_NO = dt_affair.Rows[i]["PK_Affair_NO"].ToString().Trim();
+                        string affair_name = dt_affair.Rows[i]["affair_name"].ToString().Trim();
+                        System.Data.DataTable dt_log = get_classstudentandaffairstatus(PK_CLASS_NO, PK_Affair_NO);//某班级学生的某事务状态列表
+                        if (dt_log != null && dt_log.Rows.Count > 0)
+                        {
+                            dt_student.Columns.Add(affair_name, typeof(string));
+                            for (int j = 0; j < dt_student.Rows.Count; j++)
+                            {
+                                string pk_sno = dt_student.Rows[j]["pk_sno"].ToString().Trim();
+                                for (int k = 0; k < dt_log.Rows.Count; k++)
+                                {
+                                    if (dt_log.Rows[k]["pk_sno"].ToString().Trim().Equals(pk_sno.Trim()))
+                                    {
+                                        dt_student.Rows[j][affair_name] = dt_log.Rows[k]["affairstatus"].ToString().Trim();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                dt_student.Columns["name"].ColumnName = "姓名";
+                dt_student.Columns["gender"].ColumnName = "性别";
+                dt_student.Columns["pk_sno"].ColumnName = "学号";
+                dt_student.Columns["test_no"].ColumnName = "高考报名号";
+                dt_student.Columns["id_no"].ColumnName = "身份证号";
+                dt_student.AcceptChanges();
+                result = dt_student;
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_classstudentaffairlog", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 }
