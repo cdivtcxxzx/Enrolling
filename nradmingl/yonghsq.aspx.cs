@@ -146,7 +146,7 @@ public partial class admin_yonghsq : System.Web.UI.Page
         YHZ.DataBind();
         if (dt.Select(dt_ex).Count() > 0)
         {
-            DataTable yhzl = dt.Select(dt_ex).CopyToDataTable();
+            DataTable yhzl = dt.Select(dt_ex).ParseToDataTable();
             if (yhzl.Rows.Count > 0)
             {
                 for (int i = 0; i < YHZ.Controls.Count; i++)
@@ -171,7 +171,7 @@ public partial class admin_yonghsq : System.Web.UI.Page
         {
 
 
-            DataTable glyxhs = yxmc.Select(new Power().GetFilterExpression("yxdm")).CopyToDataTable();
+            DataTable glyxhs = yxmc.Select(new Power().GetFilterExpression("yxdm")).ParseToDataTable();
             for (int i = 0; i < glyx.Controls.Count; i++)
             {
                 CheckBox lszCB = glyx.Items[i].FindControl("yx") as CheckBox;
@@ -194,7 +194,7 @@ public partial class admin_yonghsq : System.Web.UI.Page
 
         if (yxmcjx.Select(new Power().GetFilterExpression("yxdm")).Count() > 0)
         {
-            DataTable czyxmcjx = yxmcjx.Select(new Power().GetFilterExpression("yxdm")).CopyToDataTable();
+            DataTable czyxmcjx = yxmcjx.Select(new Power().GetFilterExpression("yxdm")).ParseToDataTable();
             
                 for (int i = 0; i < jxxbz.Controls.Count; i++)
                 {

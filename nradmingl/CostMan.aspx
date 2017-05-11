@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ClassMan.aspx.cs" Inherits="nradmingl_ClassMan" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CostMan.aspx.cs" Inherits="nradmingl_CostMan" %>
 
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>宿舍管理</title>
     <!--引用ＬＡＹＵＩ前端必须ＣＳＳ-->
 
         <link rel="stylesheet" href="plugins/layui/css/layui.css" media="all" />
@@ -15,90 +15,117 @@
 		<link rel="stylesheet" href="plugins/table.css" />
     
      <!--引用ＬＡＹＵＩ前端必须ＣＳＳ OVER-->
+    
 
 </head>
-<body style="background:#fff">
-    <form id="form1" runat="server">
-    
-    <!--页面开始-->
-     	<div class="admin-main">
+<body>
+    <style>
+        .layui-form-select dl dd.layui-this {
+            background-color: #196BAB;
+            color: #fff;
+        }
+        select
+        {
+            height: 37px;
+        }
 
-			<blockquote class="layui-elem-quote">
-          <a href="" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#x1002;</i>
+    </style>
+    <form id="form1"  runat="server">
+    <div class="admin-main">
+      <blockquote class="layui-elem-quote">
+          <i class="layui-icon">&#xe602;</i>费用标准管理
+           <span style="float:right">
+
+            <!--调用C#原生按钮设置样式举例OVER-->
+ <%--               <a href="#" class="layui-btn layui-btn-small hidden-xs">
+					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-            <%--<div class="layui-input-inline hidden-xs"><asp:TextBox ID="TextBox1" CssClass="layui-input" runat="server"></asp:TextBox></div>
-            <a href="javascript:;" class="layui-btn layui-btn-small hidden-xs" id="search">
-					<i class="layui-icon">&#xe615;</i> 搜索
-				</a>--%>
-                <div class="layui-input-inline hidden-xs"></div>
-                <span style="float:right">
-				<%--<a href="javascript:" id="test1" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe608;</i> 新增
+             --%>
+                 <asp:LinkButton CssClass="layui-btn layui-btn-small"  onclick="ClearData" OnClientClick="return confirm('此操作会删除当前批次下所有收费标准，是否继续')"  txttop="txttop" ToolTip="清空预分配数据" ID="LinkButton12" runat="server"    Text='' ><i class="layui-icon">&#xe630;</i>清空数据</asp:LinkButton>
+                  
+                 <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '收费标准数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'CostImport.aspx?setp=1',btn:'完成'});" class="layui-btn layui-btn-small">
+					<i class="layui-icon">&#xe62f;</i>导入数据
 				</a>
-                <a href="#" class="layui-btn layui-btn-small  hidden-xs">
-					<i class="layui-icon">&#xe60a;</i> 修改
-				</a>
-                <!--调用C#原生按钮设置样式举例(含批量操作)-->
-                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="btnDelete" onclick="Button3_Click"  txttop="txttop" ToolTip="先选择后，再批量删除！" ID="btnDelete" runat="server"   OnClientClick="return batchAudit('btnDelete');"   Text='' ><i class="layui-icon">&#xe640;</i> 删除</asp:LinkButton>
-                <!--调用C#原生按钮设置样式举例OVER-->
-                <a href="#" class="layui-btn layui-btn-small hidden-xs">
-					<i class="layui-icon">&#xe630;</i> 审核
-				</a>
-                <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '项目任务导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'kfrwdr.aspx?setp=1&mb=kfgl',btn:'完成'});" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe62f;</i> 导入
-				</a>--%>
-                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="syncclass"   txttop="txttop" ToolTip="从教务系统同步班级信息" ID="bt_syncclass" runat="server"    Text='' OnClick="bt_syncclass_Click" ><i class="layui-icon">&#xe61e;</i> 班级同步</asp:LinkButton>
-                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="exportexcel1" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i> 导出</asp:LinkButton>
+               
+                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出数据</asp:LinkButton>
+
+		  </span>       
+      </blockquote>
+
+                    <asp:ScriptManager ID="ScriptManager1" runat="server">
+                </asp:ScriptManager>
+        
+        <div>
+            <div class="layui-form-item">
+                       <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                  <ContentTemplate>
                 
-				<%--<a href="#" class="layui-btn layui-btn-small hidden-xs">
-					<i class="layui-icon">&#xe62a;</i> 详情
-				</a>
-                 --%>
-                <a href="javascript:" onclick="parent.layer.open({  id:1,type: 2,  title: '当前页二维码',  shadeClose: true,  shade: 0.8,  area: ['285px', '318px'],time: 60000,  content: '2weima.aspx?url='+window.location.href.replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|').replace('&','|')});"><img src="images/2weima.png" titop="images/2weima.png" alt="images/2weima.png" style="height:28px;width:28px" /></a>
-				
-				</span>
-			</blockquote>
-			
-				
+                    费用批次：<asp:DropDownList ID="DDL_cost" runat="server" AutoPostBack="True" 
+                        DataSourceID="ObjectDataSource2" DataTextField="Name" 
+                        DataValueField="PK_Fee" 
+                        Font-Size="Medium">
+                    </asp:DropDownList>
+                      
+                      <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" SelectMethod="GetFee" TypeName="CostMan" OldValuesParameterFormatString="original_{0}" >
+                      </asp:ObjectDataSource>
+                    
+                    
+                    &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
+                    </ContentTemplate></asp:UpdatePanel>
 
-
-
-<asp:HiddenField ID="hdfWPBH" runat="server" />
-      
-    <asp:GridView  OnRowCommand="GridView1_RowCommand"  ID="GridView1"  OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="False" 
-            DataSourceID="ObjectDataSource1" CssClass="site-table table-hover"
+            </div>
+        </div>    
+  <div>   
+                       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                  <ContentTemplate>
+  <asp:HiddenField ID="hdfWPBH" runat="server" />
+  <asp:GridView  OnRowCommand="GridView1_RowCommand"  ID="GridView1"  
+          OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="false" 
+            DataSourceID="ObjectDataSource3" CssClass="site-table table-hover" OnRowDataBound="GridView1_RowDataBound"
             EmptyDataText="未获取到数据!" 
             AllowPaging="False" AllowSorting="True">
     <Columns>
     <asp:TemplateField>
                 <HeaderTemplate>
-                      <input type="checkbox"  id="selected-all" name="selected-all" onclick="onclicksel();" />  
+                      <input type="checkbox"  id="selected-all" class="noshow" name="selected-all" onclick="onclicksel();" />  
                 </HeaderTemplate>
                 <ItemTemplate>
-                     <input id="BoxId" name="BoxId"  class="icheck" value='<%#(Convert.ToString(Eval("PK_Class_NO")))%>' type="checkbox" /> 
+                     <input id="BoxId" name="BoxId"  class="icheck noshow" value='<%#(Convert.ToString(Eval("PK_Fee_Item")))%>' type="checkbox" /> 
                 </ItemTemplate>
                 <ItemStyle HorizontalAlign="Center" />
                 <HeaderStyle Width="2%"  HorizontalAlign="Center" />
             </asp:TemplateField>
-    <asp:BoundField DataField="PK_Class_NO" HeaderText="班号" SortExpression="PK_Class_NO"/>
-    <asp:BoundField DataField="name" HeaderText="班级名称"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="name"/>
-    <asp:BoundField DataField="yhid" HeaderText="辅导员帐号"   SortExpression="yhid" />
-    <asp:BoundField DataField="xm" HeaderText="姓名"   SortExpression="xm" />
-        <asp:BoundField DataField="phone" HeaderText="电话"   SortExpression="phone" />
-        <asp:BoundField DataField="qq" HeaderText="QQ"   SortExpression="qq" />
-        <asp:TemplateField HeaderText="" >
-                 
-                <HeaderTemplate>管理操作
+    <asp:BoundField DataField="PK_Fee_Item" HeaderText="编号" SortExpression="PK_Fee_Item"/>
+    <asp:BoundField DataField="SPE_Code" HeaderText="专业代码"  SortExpression="SPE_Code"/>
+    <asp:BoundField DataField="Fee_Name" HeaderText="费用名称"  SortExpression="Fee_Name"/>
+    <asp:BoundField DataField="Fee_Amount" HeaderText="金额"  SortExpression="Fee_Amount"/>
+        <asp:BoundField DataField="Fee_Code" HeaderText="收费项目代码"  SortExpression="Fee_Code"/>
+        <asp:BoundField DataField="Fee_Code_Name" HeaderText="收费项目名称"  SortExpression="Fee_Code_Name"/>
+        <asp:BoundField DataField="FK_Fee_Type" HeaderText="收费类型"  SortExpression="FK_Fee_Type"/>
+        <asp:BoundField DataField="Is_Must" HeaderText="是否必收"  SortExpression="Is_Must"/>
+        <asp:BoundField DataField="Is_Online_Order" HeaderText="是否生成网上订单"  SortExpression="Is_Online_Order"/>
+<%--    
+     <asp:TemplateField HeaderText="学生"  SortExpression="title">
+        
+            <ItemTemplate>
+           <%# imagestu(Eval("床位主键").ToString())%>
+            </ItemTemplate>
 
-                <%--<a onclick="return batchAudit(this.id);" id="btnDelete" href="javascript:__doPostBack('btnDelete','')"><span id="plcz" runat="server">点此批量发放毕业证</span></a>--%>
-                </HeaderTemplate>
+            <ItemStyle  />
+            </asp:TemplateField>--%>
+            <%-- <asp:TemplateField HeaderText="班级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="title">
+        
+            <ItemTemplate>
+            <a href="#" class="hidden-xs"><%# fpcw(Eval("房间编号").ToString())%></a>
+            </ItemTemplate>
+
+            <ItemStyle  />
+            </asp:TemplateField>--%>  
+        <asp:TemplateField HeaderText="管理操作" >
+
                 <ItemTemplate>
-             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '辅导员设置－<%# Eval("name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'Class_Counseller.aspx?id=<%# Eval("PK_Class_NO").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="辅导员设置">辅导员设置</a>
-              <%-- &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
-              </asp:LinkButton>--%>
-                   <%-- <a href="javascript: " onclick="layer.open({ type: 1,  title: '辅导员设置－<%# Eval("name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content:layui.jquery('#div_layer')});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="辅导员设置">辅导员设置测试</a>
-             --%>
+             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－<%# Eval("PK_Fee_Item").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?id=<%# Eval("PK_Fee_Item").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">编辑</a> &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("PK_Fee_Item")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
+              </asp:LinkButton>
             </ItemTemplate>
                 
                 </asp:TemplateField>
@@ -151,23 +178,20 @@
                 Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">尾页</asp:LinkButton>
             &nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox ID="txt_go" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>
 
-            <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;每页显示<asp:TextBox ID="PageSize_Set" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>条<asp:LinkButton ID="buttion2" runat="server"  class="layui-btn layui-btn-mini" Text="设置"   OnClick="PageSize_Go" /></span><span style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;</b></font></span>
+            <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;每页显示<asp:TextBox ID="PageSize_Set" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>条<asp:LinkButton ID="buttion2" runat="server"  class="layui-btn layui-btn-mini" Text="设置"   OnClick="PageSize_Go" /></span><span style="float:right;padding-bottom: 8px;padding-top: 8px;"><b>总记录:<%#ViewState["count"].ToString()%>条</b>&nbsp;</b></font></span>
         </PagerTemplate>
     </asp:GridView>
-            <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetFilterClassDT" TypeName="GZJW" ></asp:ObjectDataSource>
-        <asp:SqlDataSource onselected="SqlDataSource1_Selected"   ID="SqlDataSource1" runat="server" 
-            ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-            SelectCommand="SELECT row_number() over (order by  xw_neirong.fabutime desc)  AS 序号,xw_lanm.lmmc, xw_neirong.title, xw_neirong.author, xw_neirong.fabutime, xw_neirong.images,xw_neirong.isyn,xw_neirong.id,xw_lanm.glqx FROM xw_neirong INNER JOIN xw_lanm ON xw_neirong.LMID = xw_lanm.lmid">
-        </asp:SqlDataSource>
-   
+        <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" SelectMethod="GetCostStandard" TypeName="CostMan" OldValuesParameterFormatString="original_{0}" >
+                          <SelectParameters>
+                              <asp:ControlParameter ControlID="DDL_cost" Name="pk_fee" PropertyName="SelectedValue" Type="String" />
+                          </SelectParameters>
+                      </asp:ObjectDataSource>
+       
+   </ContentTemplate></asp:UpdatePanel>
    
 
       
-
-
-
-
-
+             
 
 
 
@@ -186,24 +210,25 @@
 				</div>
 			</div>
 		</div>
+     
 		<!--引发ＬＡＹＵＩ前端必须ＪＳ-->
     <script type="text/javascript" src="plugins/layui/layui.js"></script>
   
     <!--引发ＬＡＹＵＩ前端必须ＪＳ　ＯＶＥＲ-->
    
-        
+
 
 
 	<script>
-	   // $('#code').qrcode(window.location.href);
-        //鼠标滑过图片及文字提示时显示titop样式
-//	    $(document).tooltip({
-//	        items: "img, [titop], [title]", content: function () {
-//	            var element = $(this);
-//	            if (element.is("[titop]")) {	                var text = element.attr("alt");	                return "<img class='map'  src='" + text + "'>";	            }
-//	            if (element.is("[txttop]")) {return element.attr("title");             }
+	    // $('#code').qrcode(window.location.href);
+	    //鼠标滑过图片及文字提示时显示titop样式
+	    //	    $(document).tooltip({
+	    //	        items: "img, [titop], [title]", content: function () {
+	    //	            var element = $(this);
+	    //	            if (element.is("[titop]")) {	                var text = element.attr("alt");	                return "<img class='map'  src='" + text + "'>";	            }
+	    //	            if (element.is("[txttop]")) {return element.attr("title");             }
 
-//	        }  });
+	    //	        }  });
 	    //一般直接写在一个js文件中
 	    layui.use(['layer', 'form'], function () {
 	        var layer = layui.layer
@@ -280,11 +305,11 @@
                  }
                  //tsxx纯为提示,tsbox 需点关闭或延时1分钟关闭
                  if (document.all("tsbox").value != "") {
-                  parent.layer.open({ content: document.all("tsbox").value ,title:'提示信息',btn: ['关闭'],time:60000});
+                     parent.layer.open({ content: document.all("tsbox").value, title: '提示信息', btn: ['关闭'], time: 60000 });
                      document.all("tsbox").value = "";
                  }
-             //批量操作
-                 
+                 //批量操作
+
                  function batchAudit(id) {
                      var AuditVal = "";
                      var bid = document.getElementsByName("BoxId");
@@ -295,35 +320,34 @@
                      }
                      if (AuditVal.length <= 0) {
                          parent.layer.msg("请先选择一条记录,在记录前打勾!");
-                         
+
                          return false;
                      }
                      else {
                          if (id == "btnDelete") {
                              document.getElementById("hdfWPBH").value = AuditVal;
                              return true;
-//                             layer.open({ content: '您确认要批量删除这' + String(AuditVal.length / 4) + '条记录吗？'
-//                                      , btn: ['确认', '取消']
-//                                      , yes: function (index, layero) {
-//                                          document.getElementById("hdfWPBH").value = AuditVal;
-//                                          //此处写传给删除页面的参数
-//                                          return true;
-//                                          //使用AJAX回调删除
-//                                          layer.close(index);
+                             //                             layer.open({ content: '您确认要批量删除这' + String(AuditVal.length / 4) + '条记录吗？'
+                             //                                      , btn: ['确认', '取消']
+                             //                                      , yes: function (index, layero) {
+                             //                                          document.getElementById("hdfWPBH").value = AuditVal;
+                             //                                          //此处写传给删除页面的参数
+                             //                                          return true;
+                             //                                          //使用AJAX回调删除
+                             //                                          layer.close(index);
 
-//                                      }, btn2: function (index, layero) {
-//                                          return false;
-//                                      }
-//                                      , cancel: function () {
-//                                          return false;
-//                                      }
-//                             });
+                             //                                      }, btn2: function (index, layero) {
+                             //                                          return false;
+                             //                                      }
+                             //                                      , cancel: function () {
+                             //                                          return false;
+                             //                                      }
+                             //                             });
                              return false;
                          }
                      }
                  }  
     </script>
     </form>
-    <div id="div_layer" style="display:none">xxx</div>
 </body>
 </html>

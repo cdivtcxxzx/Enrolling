@@ -8,17 +8,25 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.OleDb;
 using Web;
-using model;//单文件上传类
 
-public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
+public partial class nradmingl_CostImport : System.Web.UI.Page
 {
+    #region 功能模块说明及页面基本信息说明
+    //所属模块：费用标准管理
+    //任务名称：费用标准导入
+    //完成功能描述：费用标准数据导入
+    //编写人：黄磊
+    //创建日期：2017年5月8日
+    //更新日期：2017年5月8日
+    //版本记录：v1.0.0
+    #endregion
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "学生分班管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
-    private string upfile = "xsxx_upload";//导入上传的临时文件名称
+    private string pagelm1 = "费用标准管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
+    private string upfile = "费用标准导入";//导入上传的临时文件名称
     //导入模板的字段
-    private string zd = "高考报名号,姓名,性别,身份证号,民族,专业代码,学制,年级,联系电话";
+    private string zd = "费用批次编号,专业代码,费用名称,金额,收费项目代码,收费项目名称,收费类型,是否必收,是否生成网上订单";
 
     private string pageqx1 = "导入";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";
@@ -28,6 +36,7 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
     private string webpage = "";//当前页面值，在加载时会自动获取
     private string btitle = "";//附属标题
     #endregion
+
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -118,10 +127,32 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
                     setp3cz.Style.Add("display", "");
 
                 }
-
-            }
             #endregion
+                #region 根据参数提供第一步的模板下载(mb=auto:使用配置的数据库语句自动生成EXCEL,mb=文件名路径)
+                if (Request["mb"] != null)
+                {
+                    if (Request["mb"].ToString() == "auto")
+                    {
+                        //自定义生产模板文件，请参考“导出”项生成一个Excel下载地址，本项不需要
 
+                    }
+                    else
+                    {
+                        mbfile.HRef = "mb/CostImportmb.xls";
+                    }
+                }
+                else
+                {
+                    setp1cz.Style.Add("display", "");
+                    setp2cz.Style.Add("display", "none");
+                    setp3cz.Style.Add("display", "none");
+                    setp1ts.Text = "<font color=red>程序员很懒,该页的导入模板参数未提供,请上报错误![出错地址:" + webpage + "]</font>";
+                    this.setpdown.Style.Add("display", "none");
+
+                }
+                #endregion
+                //Response.Write("第" + Request["setp"].ToString() + "步");
+            }
         }
         catch (Exception err)
         {
@@ -136,23 +167,13 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
             }
             #endregion
         }
+
     }
     protected void batch_import_Click(object sender, EventArgs e)
     {
         //导入逻辑
+
         #region 文件上传,初始数据准备
-
-        //民族|性别
-        List<Base_Code_Item> mz = organizationService.getCodesItem("003");
-        List<Base_Code_Item> xb = organizationService.getCodesItem("002");
-        //批次检查
-        if (Session["batch"] == null || Session["batch"] == "" || Session["batch"] == "-1")
-        {
-            //如果上传出错，显示错误提示
-            ztxx.Text = "<font color=red>请在第上一步中选择批次！</font>";
-            return;
-        }
-
         //初始变量，总记录数(成功记录数)
         int zs = 0;
         //用于后期删除行的记录信息变量
@@ -165,7 +186,6 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
 
         var Upload = new UploadFile();
         Upload.Save("FileUpload1", this.upfile, Session["Name"].ToString());
-
         //上传的控件名，存储名，谁上传的
         #endregion
         if (Upload.Error)
@@ -192,12 +212,7 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
                 //获取总记录数
                 zs = x.Rows.Count;
                 //添加错误提示
-                x.Columns.Add("学号");
                 x.Columns.Add("错误提示");
-
-
-
-
                 //循环读取并判断所有字段
                 for (int ii = 0; ii < x.Rows.Count; ii++)
                 {
@@ -207,50 +222,21 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
                     try
                     {
                         #region (1)判断当前行数据有效性
-
-                        //1专业代码和年份
-                        Fresh_SPE ASPE = organizationService.getSpe(x.Rows[ii]["年级"].ToString().Trim().Replace("'", ""), x.Rows[ii]["专业代码"].ToString().Trim().Replace("'", ""));
-                        if (ASPE == null)
+                        //每列数据判断，第一列
+                        if (x.Rows[ii]["序号"].ToString().Replace("'", "").Length > 0)
                         {
-                            x.Rows[ii]["错误提示"] += " 专业代码和年级有误或者不匹配";
+                            //条件满足，可进一步判断
+
+
+
+
                         }
                         else
                         {
-                            //替换成专业主键
-                            x.Rows[ii]["专业代码"] = ASPE.PK_SPE;
-                            //生成学号
-                            string new_xz = ASPE.Xznx.Length == 1 ? "0" + ASPE.Xznx : ASPE.Xznx;
-                            x.Rows[ii]["学号"] = organizationService.createNum(x.Rows[ii]["年级"].ToString().Trim().Replace("'", ""), ASPE.PK_SPE, new_xz);
-                        }
+                            //不满足，抛出错误提示
+                            x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + "序号不能为空！";
 
-
-
-                        //2身份证查重
-                        if (organizationService.getStuBySFZ(x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", "")))
-                        {
-                            x.Rows[ii]["错误提示"] = "身份证号码重复";
                         }
-                        //3民族代码
-                        Base_Code_Item AMz = mz.Where(m => m.Item_Name == x.Rows[ii]["民族"].ToString().Trim()).SingleOrDefault();
-                        if (AMz == null)
-                        {
-                            x.Rows[ii]["错误提示"] += " 民族有误";
-                        }
-                        else
-                        {
-                            x.Rows[ii]["民族"] = AMz.Item_NO;
-                        }
-                        //4性别代码
-                        Base_Code_Item AXB = xb.Where(axb => axb.Item_Name == x.Rows[ii]["性别"].ToString().Trim()).SingleOrDefault();
-                        if (AXB == null)
-                        {
-                            x.Rows[ii]["错误提示"] += " 性别有误";
-                        }
-                        else
-                        {
-                            x.Rows[ii]["性别"] = AXB.Item_NO;
-                        }
-
                         #endregion
 
                         //删除正确的行数据，并向数据库提交记录
@@ -261,34 +247,16 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
                             int cgjj = 0;
                             try
                             {
-                                //cgjj = Sqlhelper.ExcuteNonQuery("");
-
-                                Base_STU createStu = new Base_STU
-                                {
-                                    PK_SNO = x.Rows[ii]["学号"].ToString(),
-                                    FK_SPE_Code = x.Rows[ii]["专业代码"].ToString(),
-                                    Year = x.Rows[ii]["年级"].ToString(),
-                                    Test_NO = x.Rows[ii]["高考报名号"].ToString(),
-                                    ID_NO = x.Rows[ii]["身份证号"].ToString(),
-                                    Name = x.Rows[ii]["姓名"].ToString(),
-                                    Gender_Code = x.Rows[ii]["性别"].ToString(),
-                                    DT_Initial = DateTime.Now,
-                                    Nation_Code = x.Rows[ii]["民族"].ToString(),
-                                    Phone_dr = x.Rows[ii]["联系电话"].ToString().Trim().Replace("'", "")
-                                };
-                                if (Session["batch"] != null && Session["batch"].ToString() != "" && organizationService.addStu(createStu, Session["batch"].ToString()))
-                                {
-                                    cgjj = 1;
-                                }
-                                else
-                                {
-                                    x.Rows[ii]["错误提示"] += " 添加学生失败";
-                                }
+                                cgjj = Sqlhelper.ExcuteNonQuery("");
                             }
                             catch (Exception ex)
                             {
                                 x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + ex.Message + "";
                             }
+
+
+
+
 
                             #region 删除号逻辑，不用更改
                             if (cgjj > 0)
@@ -318,7 +286,7 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
                     catch (Exception ex)
                     {
                         //某行数据出错
-                        x.Rows[ii]["错误提示"] = " 该学生数据有误请检查:" + ex.Message;
+                        x.Rows[ii]["错误提示"] = "该条数据有误请检查" + ex.Message;
                     }
 
                     //精细化错误提示
@@ -331,10 +299,10 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
                 #region (3)删除已经提交成功的行，仅显示错误提示,此逻辑不用修改
 
                 string[] delok = delrow.Split(',');
-                if (delok.Length > 0 && delrow != "")
+                if (delok.Length > 0)
                 {//删除指定行
 
-                    this.ztxx.Text = "<font color=red>总共" + x.Rows.Count + "条记录，已导入" + delok.Length.ToString() + "条记录，有" + (x.Rows.Count - delok.Length) + "条错误记录在下表显示!!</font>";
+                    this.ztxx.Text = "<font color=red>成功" + delok.Length.ToString() + "条记录!!</font>";
                     for (int ok = delok.Length - 1; ok >= 0; ok--)
                     {
                         try
@@ -355,36 +323,33 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
                 }
                 else
                 {
-                    this.ztxx.Text = "<font color=red>总共" + x.Rows.Count + "条记录，已导入0条记录，错误记录在下表显示!!</font>";
+                    this.ztxx.Text = "<font color=red>上传失败!失败的记录列在下面,请修改后,重新上传!</font>";
                 }
                 #endregion
             }
 
             #region (4)隐藏不需要提示的列,绑定gridview呈现错误数据
 
-            //try
-            //{
-            //    x.Columns.Remove("身份证号");
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (ex.Message == "列“身份证号”不属于表 。")
-            //    {
-            //        this.ztxx.Text += "<font color=red>你上传的数据中的“身份证号”列取名不正确，请检查!</font>";
-            //    }
-            //    else
-            //    {
-            //        this.ztxx.Text += "<font color=red>" + ex.Message + "!</font>";
-            //    }
-            //}
+            try
+            {
+                x.Columns.Remove("身份证号");
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "列“身份证号”不属于表 。")
+                {
+                    this.ztxx.Text += "<font color=red>你上传的数据中的“身份证号”列取名不正确，请检查!</font>";
+                }
+                else
+                {
+                    this.ztxx.Text += "<font color=red>" + ex.Message + "!</font>";
+                }
+            }
 
             GridView1.DataSource = x;
+            //GridView1.
             GridView1.DataBind();
-
             #endregion
-            //完成后清空批次信息
-            Session["batch"] = "";
-
         }
 
     }
@@ -450,120 +415,4 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
         }
 
     }
-    //批次选择事件，记录于session中
-    protected void DropDownListBatch_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        int batch_index = DropDownListBatch.SelectedIndex;
-        string batch = DropDownListBatch.SelectedValue.ToString();
-        if (batch_index > 0)
-        {
-            Session["batch"] = batch;
-        }
-        else
-        {
-            Session["batch"] = "-1";
-        }
-    }
-    #region 设置页面显示条数事件
-    protected void PageSize_Go(object sender, EventArgs e)
-    {
-
-        TextBox ps = (TextBox)this.GridView1.BottomPagerRow.FindControl("PageSize_Set");
-        if (!string.IsNullOrEmpty(ps.Text))
-        {
-
-            int _PageSize = 0;
-
-            if ((Int32.TryParse(ps.Text, out _PageSize) == true) && _PageSize > 0)
-            {
-                GridView1.PageSize = _PageSize;
-            }
-
-        }
-    }
-    #endregion
-
-    #region 分页事件总页数
-
-
-    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
-    {
-        GridView1.PageIndex = e.NewPageIndex;
-    }
-
-    #endregion
-    #region 定向转到
-
-    protected void LinkButtonGo_Click(object sender, EventArgs e)
-    {
-
-        LinkButton lbtn_go = (LinkButton)this.GridView1.BottomPagerRow.FindControl("LinkButtonGo");
-
-        TextBox txt_go = (TextBox)this.GridView1.BottomPagerRow.FindControl("txt_go");
-
-        if (!string.IsNullOrEmpty(txt_go.Text))
-        {
-
-            int PageToGo = 0;
-
-            if ((Int32.TryParse(txt_go.Text, out PageToGo) == true) && PageToGo > 0)
-            {
-
-                lbtn_go.CommandName = "Page";
-
-                lbtn_go.CommandArgument = PageToGo.ToString();
-
-            }
-
-        }
-
-    }
-
-    #endregion
-    #region 始终显示下部控制区
-    protected void GridView1_DataBound(object sender, EventArgs e)
-    {
-        if (this.GridView1.Rows.Count != 0)
-        {
-            Control table = this.GridView1.Controls[0];
-            int count = table.Controls.Count;
-            table.Controls[count - 1].Visible = true;
-        }
-    }
-    #endregion
-    //民族列处理
-    public string show_mz(string mzdm)
-    {
-        if (mzdm != "-1" && mzdm != "")
-        {
-            Base_Code_Item item = organizationService.getCodeItem("003", mzdm);
-            if (item != null)
-            {
-                return item.Item_Name;
-            }
-            else
-            {
-                return "";
-            }
-        }
-        return "";
-    }
-    //学院列处理
-    public string show_xy(string colleage)
-    {
-        if (colleage != "-1" && colleage != "")
-        {
-            Base_College c = organizationService.getColleageByCode(colleage);
-            if (c != null)
-            {
-                return c.Name;
-            }
-            else
-            {
-                return "";
-            }
-        }
-        return "";
-    }
-
 }

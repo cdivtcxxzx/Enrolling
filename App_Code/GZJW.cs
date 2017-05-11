@@ -65,11 +65,16 @@ public class GZJW
     {
         DataTable dt = GetClassDT();
         string filter = new Power().GetFilterExpressionYX("College_Name");
-        DataRow[] drs = dt.Select(filter);
-        if (drs.Count() > 0)
-        { return drs.CopyToDataTable(); }
+        if (dt.Rows.Count > 0)
+        {
+            DataRow[] drs = dt.Select(filter);
+            if (drs.Count() > 0)
+            { return drs.CopyToDataTable(); }
+            return null;
+        }
         return null;
     }
+
     /// <summary>
     /// 获取班级信息，包括班主任信息
     /// </summary>
@@ -84,7 +89,7 @@ public class GZJW
     {
         string year = DateTime.Today.Year.ToString();
         year = "2016";
-        return Sqlhelper.ConSerach(Sqlhelper.conStrzsgl, "select cl.bh 班号,cl.bjmc 班级名称,yh.yhid 班主任帐号,yh.xm 班主任姓名 from gzjw.[PantoSchoolGJ].[dbo].[JX_Class] cl left join enrollment.yxxt_data.dbo.Base_SPE_ZYDM zy on cl.zydm=zy.zydm left join enrollment.yxxt_data.dbo.Fresh_SPE spe on zy.spe_code=spe.spe_code left join enrollment.yxxt_data.dbo.Fresh_Counseller coun on cl.bh=coun.fk_class_no left join yonghqx yh on coun.fk_staff_no=yh.yhid where cl.njdm=@njdm", new SqlParameter("njdm", year));
+        return Sqlhelper.Serach("select cl.PK_Class_NO 班号,cl.name 班级名称,yh.yhid 辅导员帐号,yh.xm 辅导员姓名,coun.Phone 辅导员电话,coun.QQ 辅导员QQ号 from [Fresh_Class] cl left join Fresh_SPE spe on cl.FK_SPE_NO=spe.PK_SPE left join Base_College col on spe.FK_College_Code=col.PK_College left join Fresh_Counseller coun on cl.PK_Class_NO=coun.fk_class_no left join yonghqx yh on coun.fk_staff_no=yh.yhid where spe.[year]=@njdm", new SqlParameter("njdm", year));
     }
     public bool SetCounseller(string PK_Class_NO,string yhid,string phone,string qq)
     {
@@ -97,14 +102,18 @@ public class GZJW
         if(dt.Rows.Count>0)
         {
             if (Sqlhelper.ExcuteNonQuery("update Fresh_Counseller set FK_Staff_NO=@FK_Staff_NO,Phone=@Phone,QQ=@QQ where FK_Class_NO=@FK_Class_NO", new SqlParameter("FK_Class_NO", PK_Class_NO), new SqlParameter("FK_Staff_NO", yhid), new SqlParameter("Phone", phone), new SqlParameter("QQ", qq)) == 1)
-            { return true; }
+            {
+                
+                return true; }
             return false;
         }
         else 
         {
             string guid = Guid.NewGuid().ToString();
             if (Sqlhelper.ExcuteNonQuery("insert into Fresh_Counseller (PK_Counseller_NO,FK_Class_NO,FK_Staff_NO,Phone,QQ) values (@PK_Counseller_NO,@FK_Class_NO,@FK_Staff_NO,@Phone,@QQ)", new SqlParameter("PK_Counseller_NO", guid), new SqlParameter("FK_Class_NO", PK_Class_NO), new SqlParameter("FK_Staff_NO", yhid), new SqlParameter("Phone", phone), new SqlParameter("QQ", qq)) == 1)
-            { return true; }
+            {
+                new Power().AddLsz(yhid, "25");
+                return true; }
             return false;
         }
         return false;
