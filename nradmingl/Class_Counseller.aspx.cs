@@ -201,13 +201,11 @@ public partial class nradmingl_Class_Counseller : System.Web.UI.Page
         string qq = TB_qq.Text.Trim();
         if(new GZJW().SetCounseller(PK_Class_NO, yhid, phone, qq))
         {
-            LB_tips.ForeColor = System.Drawing.Color.Green;
-            LB_tips.Text = "设置成功";
+            this.tsbox.Value = "<span style=\"font-size:Large;\"> <font color=green>设置成功</font></span>";
         }
         else
         {
-            LB_tips.ForeColor = System.Drawing.Color.Red;
-            LB_tips.Text = "设置失败，请重试";
+            this.tsbox.Value = "<span style=\"font-size:Large;\"> <font color=green>设置失败，请联系管理员</font></span>";
         }
     }
 }

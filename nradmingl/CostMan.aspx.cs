@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class nradmingl_ClassMan : System.Web.UI.Page
+public partial class nradmingl_CostMan : System.Web.UI.Page
 {
     #region 功能模块说明及页面基本信息说明
-    //所属模块：班主任管理
-    //任务名称：设置班主任
-    //完成功能描述：
+    //所属模块：收费标准管理
     //编写人：黄磊
-    //创建日期：2017年04月24日
-    //更新日期：
-    //版本记录：v1.0
+    //创建日期：2017年5月7日
+    //更新日期：2017年5月7日
+    //版本记录：v1.0.0
     #endregion
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "班级及辅导员管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
+    private string pagelm1 = "收费标准管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
 
     private string pageqx1 = "浏览";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";
@@ -105,6 +105,10 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
 
             #endregion
             #region 数据筛选及ＳＱＬ数据源设置
+            if (!IsPostBack)
+            {
+                
+            }
 
             try
             {
@@ -116,14 +120,15 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
 
                 if (!IsPostBack)
                 {
-                    ViewState["gridsql"] = SqlDataSource1.SelectCommand;//绑定数据源的查询语句
+                    //ViewState["gridsql"] = SqlDataSource1.SelectCommand;//绑定数据源的查询语句
                     //根据屏幕高度设置ＧＲＩＤＶＩＥＷ的ＰＡＧＥ显示条数
                     if (Convert.ToInt32(xheight) <= 728) this.GridView1.PageSize = 10;
+
                 }
                 else
                 {
 
-                    SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
+                    //SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
                 }
             }
             catch
@@ -176,6 +181,7 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
     protected void SqlDataSource1_Selected(object sender, SqlDataSourceStatusEventArgs e)
     {
         ViewState["count"] = e.AffectedRows;
+
         //ViewState["countbd"] = getbds();
         //int s=GridView1.Rows
     }
@@ -227,7 +233,18 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
         }
     }
     #endregion
-
+    //行选择事件回调
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        //string id = e.Row.ID.ToString();
+        //try
+        //{
+        //    this.g_ts.Text = "你选择了第" + (Convert.ToInt32(id) + 1).ToString() + "行1，要操作的事，和提示写在这qt！";
+        //}
+        //catch { 
+        //}
+        //e.Row.Attributes.Add("onclick", "javascript:__doPostBack('GridView1','Select$" + e.Row.RowIndex + "')");
+    }
     protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         //gridview行操作举例
@@ -235,6 +252,7 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
         string id, sql;
 
         id = e.CommandArgument.ToString();
+
 
 
         try
@@ -256,57 +274,9 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
             }
         }
         catch (Exception err1) { this.tsxx.Value = "出错了:" + err1.Message; }
-        ViewState["gridsql"] = SqlDataSource1.SelectCommand;
-        SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
-        _gridView.DataBind();
-    }
-    protected void Button3_Click(object sender, EventArgs e)
-    {
-        //批量操作举例
-        string[] chkIds = null;
-
-        string xtje = Request["hdfWPBH"].ToString();
-        string batchRegroup = xtje.TrimEnd(',');//通过这种方式来获得前台隐藏域的内容  
-        if (batchRegroup.Length != 0)
-        {
-            chkIds = batchRegroup.Split(',');
-        }
-        //string sql = "";
-        try
-        {
-            int cg = 0;
-            int sb = 0;
-            string sbjl = "";
-
-            for (int i = 0; i < chkIds.Length; i++)
-            {
-                string xm1 = "";
-                string zt1 = "";
-                //将传过来的ID记录状态改为删除
-                //sql = "UPDATE T_WPXX_CK SET SPR='" + userrealName + "' WHERE ID='" + chkIds[i] + "'";
-                // wpck.auditOrDelete(sql);//传入SQL语句并执行  
-                // DataTable xm = Sqlhelper.Serach("select 姓名,领取状态 from byz where id=" + chkIds[i] + "");
-                if (Sqlhelper.ExcuteNonQuery("DELETE FROM xw_neirong  where id=" + chkIds[i] + " ") > 0)
-                {
-                    // this.Label1.Text = "<font color=green>新闻删除成功!</font>";
-                    cg = cg + 1;
-                }
-                else
-                {
-                    sb = sb + 1;
-                    sbjl = " &nbsp;&nbsp;&nbsp;&nbsp;有" + sb + "条新闻删除失败";
-                }
-                //Response.Write("<script>alert('" + chkIds[i] + "');</script>");
-
-            }
-            this.tsxx.Value = "<font color=yellow> &nbsp;&nbsp;&nbsp;&nbsp;共删除" + cg + "条新闻!</font><font color=red>" + sbjl + "</font>";
-        }
-        catch (Exception err2)
-        {
-            this.tsxx.Value = "<font color=red> 批量删除出错！" + err2.Message + "</font>";
-        }
-
-
+        //ViewState["gridsql"] = SqlDataSource1.SelectCommand;
+        //SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
+        //_gridView.DataBind();
     }
 
 
@@ -347,33 +317,8 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
         //    GridView1.DataBind();
         //}
     }
-    protected string imagestu(string images)
-    {
-        if (images.Length > 0)
-        {
-            return "[图]";
-        }
-        return "";
-    }
-
-    protected string xwzt(string isyn)
-    {
-        //自定义页面状态举例
-        if (isyn == "0")
-        {
-            return "<font color=red>未审核</font>";
-        }
-        if (isyn == "1")
-        {
-            return "<font color=green>已审核</font>";
-        }
-        if (isyn == "2")
-        {
-            return "<font color=red>被打回</font>";
-        }
-        return "未审核";
-    }
-
+   
+    
 
     protected void DropDownList2_DataBound(object sender, EventArgs e)
     {
@@ -391,16 +336,15 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
         //}
         //catch (Exception ex) {  }
     }
-    
     protected void exportexcel(object sender, EventArgs e)
     {
         //准备导出的DATATABLE,为了输出时列名为中文,请在写SQL语句时重定义一下列名
         //例:SELECT [int] 序号  FROM [taskmanager] order by [int] desc 
-        System.Data.DataTable dt = new GZJW().GetClassOutDT();
+        System.Data.DataTable dt = null;
         #region 导出
         //引用EXCEL导出类
         toexcel xzfile = new toexcel();
-        string filen = xzfile.DatatableToExcel(dt, "班级信息");
+        string filen = xzfile.DatatableToExcel(dt, "寝室预分配数据");
         //Response.Write("文件名" + filen);
         if (filen.Length > 4)
         {
@@ -415,9 +359,22 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
         }
         #endregion
     }
-    protected void bt_syncclass_Click(object sender, EventArgs e)
+    protected void ClearData(object sender, EventArgs e)
     {
-        new GZJW().SyncClass();
-        GridView1.DataBind();
+        string pk_fee = DDL_cost.SelectedValue;
+        int result= Sqlhelper.ConExcuteNonQuery(Sqlhelper.conStr_cost, "delete from Fee_Item where FK_Fee=@pk_fee", new SqlParameter("pk_fee", pk_fee));
+        if (result > 0)
+        {
+            this.tsbox.Value = "<span style=\"font-size:Large;\"> <font color=green>已删除"+result+"条数据</font></span>";
+            //this.Label1.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
+
+        }
+        else
+        {
+            this.tsbox.Value = "<span style=\"font-size:Large;\"><font color=red>删除<b>失败</b>,请重试!</font></span>";
+
+        }
     }
+
+    
 }

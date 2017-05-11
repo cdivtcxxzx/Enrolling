@@ -223,7 +223,7 @@ public class WebService : System.Web.Services.WebService {
             financial logic_fee = new financial();
             fee_list data1 = logic_fee.get_fee_ismust(pk_batch_no, PK_SNO);
             if (data1 == null || data1.orderid==null || data1.orderid.Trim().Length==0) {
-                result = "请选择必交费用";
+                result = "未选择必交费用";
             }
             else
             {
@@ -257,7 +257,7 @@ public class WebService : System.Web.Services.WebService {
                 }
                 else
                 {
-                    result = "已选择但未缴纳必交费用";
+                    result = "已选择必交费用";
                 }
             }
         }

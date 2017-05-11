@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ssgl_dr.aspx.cs" Inherits="nradmingl_ssgl_dr" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CostImport.aspx.cs" Inherits="nradmingl_CostImport" %>
 
 <!DOCTYPE html>
 <html lang="zh-cn">
@@ -175,7 +175,7 @@ ul, menu, dir {
     </div>  
 				
 	</blockquote>
-    <asp:Label ID="ztxx" CssClass="checkok" Font-Size="Large" runat="server"></asp:Label>
+    <asp:Label ID="ztxx" Font-Size="Medium" runat="server" Text=""></asp:Label>
 
      <!--步骤1-->
     <div  id="setp1cz" runat="server">
@@ -195,59 +195,22 @@ ul, menu, dir {
      <div   id="setp2cz" runat="server">
        <blockquote class="layui-elem-quote">
 
-       <asp:FileUpload ID="FileUpload1" runat="server" Font-Size="Medium" />
+       <asp:FileUpload ID="FileUpload1" runat="server" />
            <asp:Button 
                 ID="batch_import" runat="server" Text="点击上传" txttop="txttop" 
-                ToolTip="点此上传已经做好的新生excel表!"  
-                CssClass="layui-btn layui-btn-small" onclick="batch_import_Click"  />
-    	
-	&nbsp;&nbsp;&nbsp;
-           <asp:CheckBox ID="updateroom_c" runat="server" Font-Size="Medium" 
-               Text="同时更新寝室床位等信息（第一次导入请勾选）" />
+                ToolTip="点此上传已经做好的新生excel表!" OnClientClick="this.value='正在上传..';" 
+                CssClass="layui-btn layui-btn-small" onclick="batch_import_Click" Enabled="False" />
     	
 	</blockquote>
     <br />
-          
+         
     </div>
-   
-   <style>.checkok input{font-size:16px!important;height: 20px;width:20px;}
-       .checkok label{font-size:16px!important;}
-       .checkok font{font-size:16px!important;}
-   
-   
-   
-   </style>
+
+
      <!--步骤3-->
     <div   id="setp3cz" runat="server">
-    <blockquote class="layui-elem-quote">
-
-           <asp:CheckBox ID="CheckBox1" runat="server" CssClass="checkok" AutoPostBack="true" Font-Size="Medium" 
-               Text="显示全部记录（默认仅显示了错误记录）" oncheckedchanged="CheckBox1_CheckedChanged" />
-    	
-	</blockquote>
-        <asp:GridView ID="GridView1"  OnRowCreated="GridView1_RowCreated"  CssClass="site-table table-hover"  runat="server">
-           <Columns>
-            <asp:TemplateField HeaderText="错误提示"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="错误提示">
-        
-            <ItemTemplate>
-            <%#cwts(Eval("错误提示").ToString())%>
-            </ItemTemplate>
-
-            <ItemStyle  />
-            </asp:TemplateField>
-            </Columns>
-        </asp:GridView>
-        <asp:GridView ID="GridView2" Visible="false"  OnRowCreated="GridView1_RowCreated"  CssClass="site-table table-hover"  runat="server">
-           <Columns>
-            <asp:TemplateField HeaderText="操作提示"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="错误提示">
-        
-            <ItemTemplate>
-            <%#cwts(Eval("错误提示").ToString())%>
-            </ItemTemplate>
-
-            <ItemStyle  />
-            </asp:TemplateField>
-            </Columns>
+    显示导入结果
+        <asp:GridView ID="GridView1" runat="server">
         </asp:GridView>
     </div>
        </div>
