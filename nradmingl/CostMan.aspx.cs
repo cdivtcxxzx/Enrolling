@@ -10,18 +10,16 @@ using System.Web.UI.WebControls;
 public partial class nradmingl_CostMan : System.Web.UI.Page
 {
     #region 功能模块说明及页面基本信息说明
-    //所属模块：开发演示
-    //任务名称：layui前端列表\导入导出功能演示及后台编写标准
-    //完成功能描述：演示前端后台功能编写规范参考
-    //编写人：张明
-    //创建日期：2016年11月26日
-    //更新日期：2016年11月28日
-    //版本记录：第一版,编写后台页面编写规范
+    //所属模块：收费标准管理
+    //编写人：黄磊
+    //创建日期：2017年5月7日
+    //更新日期：2017年5月7日
+    //版本记录：v1.0.0
     #endregion
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "项目开发管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
+    private string pagelm1 = "收费标准管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
 
     private string pageqx1 = "浏览";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";

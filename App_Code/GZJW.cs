@@ -102,14 +102,18 @@ public class GZJW
         if(dt.Rows.Count>0)
         {
             if (Sqlhelper.ExcuteNonQuery("update Fresh_Counseller set FK_Staff_NO=@FK_Staff_NO,Phone=@Phone,QQ=@QQ where FK_Class_NO=@FK_Class_NO", new SqlParameter("FK_Class_NO", PK_Class_NO), new SqlParameter("FK_Staff_NO", yhid), new SqlParameter("Phone", phone), new SqlParameter("QQ", qq)) == 1)
-            { return true; }
+            {
+                
+                return true; }
             return false;
         }
         else 
         {
             string guid = Guid.NewGuid().ToString();
             if (Sqlhelper.ExcuteNonQuery("insert into Fresh_Counseller (PK_Counseller_NO,FK_Class_NO,FK_Staff_NO,Phone,QQ) values (@PK_Counseller_NO,@FK_Class_NO,@FK_Staff_NO,@Phone,@QQ)", new SqlParameter("PK_Counseller_NO", guid), new SqlParameter("FK_Class_NO", PK_Class_NO), new SqlParameter("FK_Staff_NO", yhid), new SqlParameter("Phone", phone), new SqlParameter("QQ", qq)) == 1)
-            { return true; }
+            {
+                new Power().AddLsz(yhid, "25");
+                return true; }
             return false;
         }
         return false;
