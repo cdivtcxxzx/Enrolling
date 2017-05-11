@@ -238,6 +238,55 @@ public class toexcel
     }
 
 
+    /// <summary>
+    ///通过EXCEL文件地址,将第一张表返回一个DATATABLE
+    /// </summary>
+    /// <param name="fileurl">已上传EXCELl文件地址</param>
+    /// <param name="col">是否将第一行做为列名</param>
+    /// <returns>返回datatable</returns>
+    public DataTable ExcelfileToDatatalbe(string fileurl, bool col)//导入
+    {
+        string path=fileurl;
+        DataTable datab=new DataTable();
+        int errjs = 0;
+        if (System.IO.File.Exists(path))
+        {
+            try
+            {
+                Workbook book = new Workbook();
+                book.Open(path);
+                Worksheet sheet = book.Worksheets[0];
+                Cells cells = sheet.Cells;
+                //获取excel中的数据保存到一个datatable中
+                DataTable dt_Import = cells.ExportDataTableAsString(0, 0, cells.MaxDataRow + 1, cells.MaxDataColumn + 1, col);
+                // dt_Import.
+                return dt_Import;
+            }
+            catch (Exception e1)
+            {
+                errjs++;
+                datab.Columns.Add("序号");
+                datab.Columns.Add("错误提示");
+                datab.Rows.Add(errjs.ToString(), "<font color=red>处理表格出错：" + e1.Message + "</font>");
+                return datab;
+            }
+        }
+        else
+        {
+            errjs++;
+            datab.Columns.Add("序号");
+            datab.Columns.Add("错误提示");
+            datab.Rows.Add(errjs.ToString(), "上传文件失败，请重新上传:未找到上传的文件！");
+            return datab;
+        }
+       
+
+    }
+
+
+
+
+
 
     /// <summary>  /// 导出到EXCEL表  /// </summary>        
     public void toExcel(string FileName, string SheetName, System.Data.DataTable dt)

@@ -18,7 +18,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     private string pagelm1 = "学生数据导入管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
     private string upfile = "xsxx_upload";//导入上传的临时文件名称
     //导入模板的字段
-    private string zd = "高考报名号,姓名,性别,身份证号,民族,专业代码,学制,年级";
+    private string zd = "高考报名号,姓名,性别,身份证号,民族,专业代码,学制,年级,联系电话";
 
     private string pageqx1 = "导入";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";
@@ -273,7 +273,8 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
                                     Name = x.Rows[ii]["姓名"].ToString(),
                                     Gender_Code = x.Rows[ii]["性别"].ToString(),
                                     DT_Initial = DateTime.Now,
-                                    Nation_Code = x.Rows[ii]["民族"].ToString()
+                                    Nation_Code = x.Rows[ii]["民族"].ToString(),
+                                    Phone_dr = x.Rows[ii]["联系电话"].ToString().Trim().Replace("'","")
                                 };
                                 if (Session["batch"]!=null && Session["batch"].ToString()!="" && organizationService.addStu(createStu,Session["batch"].ToString()))
                                 {

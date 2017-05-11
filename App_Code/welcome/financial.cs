@@ -605,7 +605,7 @@ public class financial
     }
 
 
-    //获取学生必交费最新的订单
+    //获取学生含有必交费的最新订单
     public fee_list get_fee_ismust_order(string pk_sno)
     {
         fee_list result = new fee_list();
@@ -617,24 +617,30 @@ public class financial
             //获取学生是否已生成订单
             List<fresh_fee> freshfee = get_fresh_fee(pk_sno);
             if (freshfee != null && freshfee.Count > 0)
-            {
+            {                
                 for (int i = 0; i < freshfee.Count; i++)
                 {
-                    if (freshfee[i].SYSNAME.ToUpper().Trim().Equals("必交费"))
+                    List<Financial.Fee_Item> data = get_feeitem_byorder(freshfee[i].FEE_ORDERID);
+                    for (int j = 0; data != null && j < data.Count; j++)
                     {
-                        if (fee_orderid == null)
+                        if (data[j].Is_Must.Trim().Equals("1"))//"1"表示必交费用
                         {
-                            fee_orderid = freshfee[i].FEE_ORDERID;
-                            fee_orderid_url = freshfee[i].FEE_ORDERID_URL;
-                            updatetime = freshfee[i].UPDATETIME;
-                        }
-                        else
-                        {
-                            if (updatetime < freshfee[i].UPDATETIME)
+                            if (fee_orderid == null)
                             {
                                 fee_orderid = freshfee[i].FEE_ORDERID;
                                 fee_orderid_url = freshfee[i].FEE_ORDERID_URL;
                                 updatetime = freshfee[i].UPDATETIME;
+                                break;
+                            }
+                            else
+                            {
+                                if (updatetime < freshfee[i].UPDATETIME)
+                                {
+                                    fee_orderid = freshfee[i].FEE_ORDERID;
+                                    fee_orderid_url = freshfee[i].FEE_ORDERID_URL;
+                                    updatetime = freshfee[i].UPDATETIME;
+                                    break;
+                                }
                             }
                         }
                     }
