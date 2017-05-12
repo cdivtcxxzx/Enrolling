@@ -314,6 +314,11 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
             }
             catch { }
             //Response.Write(qx);
+            if(qx.Length>0)
+            { 
+            this.ztts.Text = "你能管理：" + qx;
+            }
+            else { this.ztts.Text = "您暂时没有能管理的数据，请联系迎新管理员"; }
             #endregion
             if (qx.Split(',').Length > 0)
             {
