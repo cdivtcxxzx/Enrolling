@@ -50,7 +50,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
                 }
                 else
                 {
-                    GridView1.PageSize = 15;
+                    GridView1.PageSize = 12;
                 }
 
 
@@ -106,20 +106,8 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
             //new c_login().powerYanzheng(Session["username"].ToString(), pagelm1, pageqx2, "2");//验证当前栏目关键字中的权限２,通常在按钮中需验证权限时使用
 
             #endregion
+       
             #region 数据筛选及ＳＱＬ数据源设置
-            if (!IsPostBack)
-            {
-                DataTable count = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
-                if (count.Rows.Count > 0)
-                {
-                    ViewState["count"] = count.Rows.Count.ToString();
-                }
-                else
-                {
-                    ViewState["count"] = "0";
-                }
-                GridView1.DataBind();
-            }
 
             try
             {
@@ -127,19 +115,30 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
 
 
                 //管理筛选
+
                 //this.SqlDataSource1.FilterExpression = new Power().Getlanm("glqx");//glqx对应院系代码当前查询中的字段名
 
                 if (!IsPostBack)
                 {
-                    //ViewState["gridsql"] = SqlDataSource1.SelectCommand;//绑定数据源的查询语句
+                    //string sqlok = "SELECT     TOP (1000) Fresh_SPE.Year AS 年度, Fresh_Room.Room_NO AS 房间编号,Fresh_Bed_Class_Log.FK_Bed_NO AS 床位编号, Base_College.Name AS 学院名称, Fresh_Class.Name AS 班级名称,                        Fresh_Room.Gender AS 性别 FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN                      Fresh_Room RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO LEFT OUTER JOIN                      Base_College RIGHT OUTER JOIN                      Fresh_SPE ON Base_College.PK_College = Fresh_SPE.FK_College_Code ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE WHERE     (Fresh_SPE.FK_College_Code = '03') AND (Fresh_SPE.Year = '2017') order by 房间编号";
+
+                    string sqlok = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "");
+                    //Response.Write(sqlok);
+                    //Response.End();
+                    
+                    
+                   
+                    ViewState["gridsql"] = sqlok;//绑定数据源的查询语句
+                    this.SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
+                    GridView1.DataBind();
                     //根据屏幕高度设置ＧＲＩＤＶＩＥＷ的ＰＡＧＥ显示条数
                     if (Convert.ToInt32(xheight) <= 728) this.GridView1.PageSize = 10;
-
                 }
                 else
                 {
+                    //ViewState["gridsql"] = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "");
+                    SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
 
-                    //SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
                 }
             }
             catch
@@ -163,7 +162,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         }
 
     }
-        
+
     #region 设置页面显示条数事件
     protected void PageSize_Go(object sender, EventArgs e)
     {
@@ -192,7 +191,6 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     protected void SqlDataSource1_Selected(object sender, SqlDataSourceStatusEventArgs e)
     {
         ViewState["count"] = e.AffectedRows;
-
         //ViewState["countbd"] = getbds();
         //int s=GridView1.Rows
     }
@@ -467,6 +465,10 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     }
     protected void gzt()
     {
+        ViewState["gridsql"] = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "");
+        //this.Label1.Text= ViewState["gridsql"].ToString();
+        
+        SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
         GridView1.DataBind();
     }
     protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)

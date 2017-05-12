@@ -42,10 +42,10 @@
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
              --%>
-               <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据清除',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'ssgl_clear.aspx',btn:'完成'});" class="layui-btn layui-btn-small">
+               <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据清除',  shadeClose: true,  shade: 0.8,  area: ['80%', '98%'],  content: 'ssgl_clear.aspx',btn:'完成'});" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe630;</i>清空预分配数据
 				</a>
-                  <a href="mb/ssfypdr.xls" class="layui-btn layui-btn-small hidden-xs">
+                  <a href="mb/ssyfpdr.xls" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe62a;</i> 模板下载
 				</a>
                  <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'ssgl_dr.aspx?setp=1&mb=mb/ssyfpdr.xls',btn:'完成'});" class="layui-btn layui-btn-small">
@@ -122,10 +122,11 @@
   <div>   
                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                   <ContentTemplate>
+                      
   <asp:HiddenField ID="hdfWPBH" runat="server" />
   <asp:GridView  OnRowCommand="GridView1_RowCommand"  ID="GridView1"  
-          OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="false" 
-            DataSourceID="ObjectDataSource1" CssClass="site-table table-hover" OnRowDataBound="GridView1_RowDataBound"
+          OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="False" 
+            DataSourceID="SqlDataSource1" CssClass="site-table table-hover" OnRowDataBound="GridView1_RowDataBound"
             EmptyDataText="未获取到数据!" 
             AllowPaging="True" AllowSorting="True">
     <Columns>
@@ -240,6 +241,10 @@
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;每页显示<asp:TextBox ID="PageSize_Set" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>条<asp:LinkButton ID="buttion2" runat="server"  class="layui-btn layui-btn-mini" Text="设置"   OnClick="PageSize_Go" /></span><span style="float:right;padding-bottom: 8px;padding-top: 8px;"><b>总记录:<%#ViewState["count"].ToString()%>条</b>&nbsp;</b></font></span>
         </PagerTemplate>
     </asp:GridView>
+                      <asp:SqlDataSource ID="SqlDataSource1"  onselected="SqlDataSource1_Selected"  runat="server" 
+                          ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                          SelectCommand="">
+                      </asp:SqlDataSource>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
           SelectMethod="serch_yfpgl" TypeName="dormitory">
             <SelectParameters>

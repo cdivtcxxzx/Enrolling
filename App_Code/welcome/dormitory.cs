@@ -2214,6 +2214,53 @@ public class dormitory
 
 
     #region 宿舍管理显示相关类
+    //获取房间详细信息,仅提供SQL语句
+    public static string serch_yfpgl(string xq,string dorm,string floor ,string bjbh,string sql)
+    {
+       
+        try
+        {
+            sql = "select row_number() over (order by  房间编号)  AS 序号,* from (SELECT   DISTINCT   TOP (500)  Fresh_Room.Room_NO AS 房间编号, Fresh_Room.PK_Room_NO AS id, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别,            Fresh_Class.Name AS 班级名称 FROM         Fresh_Dorm FULL OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO FULL OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                  Fresh_Class INNER JOIN                   Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON     Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO where 1=1 ";
+            if (xq.Trim().Length > 0)
+            {
+                sql += " and  Base_Campus.Campus_NO='" + xq + "'";
+
+            }
+            if (dorm.Trim().Length > 0)
+            {
+                sql += " and  Fresh_Dorm.PK_Dorm_NO='" + dorm + "' ";
+
+            }
+            if (floor.Trim().Length > 0 && floor.Trim()!="全部楼层")
+            {
+                sql += " and Fresh_Room.Floor='" + floor + "' ";
+
+            }
+            if (bjbh.Trim().Length > 0)
+            {
+                sql += " and Fresh_Class.PK_Class_NO='" + bjbh + "' ";
+
+            }
+            sql += "   ) t order by  房间编号";
+
+        }
+        catch (Exception err)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "serch_yfpglsql", err.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+
+
+        }
+        return sql;
+    }
+    
+
+
+
     //获取房间详细信息
     //SELECT     TOP (500) Fresh_Room.PK_Room_NO AS id, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room.Room_NO AS 房间编号, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别 FROM         Base_Campus RIGHT OUTER JOIN      Fresh_Dorm ON Base_Campus.Campus_NO = Fresh_Dorm.Campus_NO RIGHT OUTER JOIN      Fresh_Room ON Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO LEFT OUTER JOIN    Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type
     /// <summary>
@@ -2232,7 +2279,7 @@ public class dormitory
         DataTable bjcx = new DataTable();
         try
         {
-            string sql = "select row_number() over (order by  房间编号)  AS 序号,* from (SELECT   DISTINCT   TOP (500)  Fresh_Room.Room_NO AS 房间编号, Fresh_Room.PK_Room_NO AS id, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别,            Fresh_Class.Name AS 班级名称 FROM         Fresh_Dorm FULL OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO FULL OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                  Fresh_Class INNER JOIN                   Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON     Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO where 1=1 ";
+            string sql = "select row_number() over (order by  房间编号)  AS 序号,* from (SELECT   DISTINCT   TOP (500)  Fresh_Room.Room_NO AS 房间编号,  Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别,            Fresh_Class.Name AS 班级名称 FROM         Fresh_Dorm FULL OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO FULL OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                  Fresh_Class INNER JOIN                   Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON     Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO where 1=1 ";
             if (xq.Trim().Length > 0)
             {
                 sql += " and  Base_Campus.Campus_NO='" + xq + "'";
@@ -2243,7 +2290,7 @@ public class dormitory
                 sql += " and  Fresh_Dorm.PK_Dorm_NO='" + dorm + "' ";
 
             }
-            if (floor.Trim().Length > 0)
+            if (floor.Trim().Length > 0 && floor.Trim() != "全部楼层")
             {
                 sql += " and Fresh_Room.Floor='" + floor + "' ";
 

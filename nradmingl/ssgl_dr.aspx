@@ -226,10 +226,9 @@ ul, menu, dir {
                Text="显示全部记录（默认仅显示了错误记录）" oncheckedchanged="CheckBox1_CheckedChanged" />
     	
 	&nbsp;&nbsp;
-          <asp:Button 
-                ID="dcerr" runat="server" Text="导出出错数据" txttop="txttop" 
-                ToolTip="导出出错数据，直接修改后导入!"  
-                CssClass="layui-btn layui-btn-small" onclick="Button1_Click"  /> 
+          <a href="#" class="layui-btn layui-btn-small" id="errfile" runat="server">
+					<i class="layui-icon">&#xe61e;</i>下载出错数据
+				</a>
     	
 	</blockquote>
         <asp:GridView ID="GridView1"  OnRowCreated="GridView1_RowCreated"  CssClass="site-table table-hover"  runat="server">
@@ -256,9 +255,7 @@ ul, menu, dir {
             </asp:TemplateField>
             </Columns>
         </asp:GridView>
-        <asp:GridView ID="GridView3"  OnRowCreated="GridView1_RowCreated"  CssClass="site-table table-hover noshow"  runat="server">
-           
-        </asp:GridView>
+        
     </div>
        </div>
 

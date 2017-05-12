@@ -52,25 +52,32 @@
                 </asp:ScriptManager>
         
         <div>
-           年度选择： <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource1" DataTextField="Year" DataValueField="Year"></asp:DropDownList>
-            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT DISTINCT [Year] FROM [Fresh_Room_Type] ORDER BY [Year]"></asp:SqlDataSource>
-            <asp:CheckBox ID="c_roomtype" runat="server" Text="清空房间类型信息" />
-            <asp:CheckBox ID="c_dorm" runat="server" Text="清空公寓宿舍信息" />
-            <asp:CheckBox ID="c_room" runat="server" Text="清空房间信息" />
-            <asp:CheckBox ID="c_bed" runat="server" Text="清空床位信息" />
-            <asp:CheckBox ID="c_bedyfp" runat="server" Text="清空预分配信息" />
-      
+           年度选择： <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource1" DataTextField="Year" DataValueField="Year"></asp:DropDownList><br />
+           &nbsp;&nbsp;&nbsp;&nbsp; <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT DISTINCT [Year] FROM [Fresh_Room_Type] ORDER BY [Year]"></asp:SqlDataSource>
+            <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_roomtype" runat="server" Text="清空房间类型信息" />
+           &nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_dorm" runat="server" Text="清空公寓宿舍信息" />
+          <br />  <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_room" runat="server" Text="清空房间信息" />
+           &nbsp;&nbsp;&nbsp;&nbsp; <asp:CheckBox ID="c_bed" runat="server" Text="清空床位信息" />
+           <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfp" Checked="true" runat="server" Text="清空预分配信息" />
+       <br /> <br /> <br />
         </div>    
   <div>   
                    
    
 
       
-              <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="clearyfp"  txttop="txttop" ToolTip="确认清空" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>确认清空</asp:LinkButton>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="clearyfp"  txttop="txttop" ToolTip="确认清空" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>确认清空</asp:LinkButton>
 
 
 
-      <asp:GridView ID="GridView1"  OnRowCreated="GridView1_RowCreated"  CssClass="site-table table-hover"  runat="server">
+              <br />
+              <br />
+              <asp:Label ID="ztts" runat="server" Font-Size="Medium" 
+                  Text="请谨慎操作，该操作会清空你所能管理的所有预分配数据"></asp:Label>
+
+
+
+      <asp:GridView ID="GridView1"   CssClass="site-table table-hover"  runat="server">
            
         </asp:GridView>
 
