@@ -68,7 +68,7 @@
             <span style="float:right"  id="btnback">
             
 				
-                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
+                 <a href="xszz-index.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
                </span>
@@ -178,7 +178,7 @@
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrqq" runat="server" Text=""></asp:Label></div></div>
         </div>
         <div class="layui-form-item" style="text-align:center">
-          <button class="layui-btn" id="backmain" onclick="javascript:history.go(-1);">返回操作首页</button>
+          <a class="layui-btn" id="backmain" onclick="window.location.href='/view/xszz-index.aspx';">返回操作首页</a>
         </div>
 
      </div>
