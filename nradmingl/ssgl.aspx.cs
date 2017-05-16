@@ -387,8 +387,8 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     {
         //剩余床位获取
 
-        //return dormitory.serch_sycw(isyn.Trim()).ToString();
-        return "";
+        return dormitory.serch_sycw(isyn.Trim()).ToString();
+        //return "";
     }
     protected string fpcw(string isyn)
     {
