@@ -2495,8 +2495,8 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
-                        +"c.PK_Class_NO,c.Name as ClassName "
+                sqlstr = "select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
+                        +"c.Name as ClassName ,c.PK_Class_NO"
                         +" from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
                         +" where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
                         +" and FK_Fresh_Batch=@cs1"
@@ -2506,8 +2506,8 @@ public class batch
             }
             else
             {
-                sqlstr = "select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
-                        + "c.PK_Class_NO,c.Name as ClassName "
+                sqlstr = "select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
+                        + "c.Name as ClassName ,c.PK_Class_NO"
                         + " from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
                         + " where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
                         + " and FK_Fresh_Batch=@cs1 and College_NO=@cs2"
@@ -2537,7 +2537,7 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select * from "
+                sqlstr = "select fk_fresh_batch,year,collage,college_no,spe_name,spe_code from "
                         +" (select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name"
                         +" from vw_fresh_student_base a,Fresh_spe b"
                         +" where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] "
@@ -2556,7 +2556,7 @@ public class batch
             }
             else
             {
-                sqlstr = "select * from "
+                sqlstr = "select fk_fresh_batch,year,collage,college_no,spe_name,spe_code from "
                         + " (select a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name"
                         + " from vw_fresh_student_base a,Fresh_spe b"
                         + " where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] "
@@ -3400,7 +3400,43 @@ public class batch
         return result;
     }
 
+    //修改学生口令
+    public string modifystupwd(string PK_SNO,string Old_PWD,string New_PWD)
+    {
+        string result = "修改密码失败";
+        try
+        {
+            if (PK_SNO == null || PK_SNO.Trim().Length == 0 || Old_PWD == null || Old_PWD.Trim().Length == 0 || New_PWD == null || New_PWD.Trim().Length == 0)
+            {
+                return result;
+            }
 
-
+            string sqlstr = "select * from Base_STU where PK_SNO=@cs1 and Password=@cs2";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", Old_PWD));
+            if (dt != null && dt.Rows.Count == 1)
+            {
+                sqlstr = "update Base_STU set Password=@cs3 where PK_SNO=@cs1 and Password=@cs2";
+                int jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", Old_PWD), new SqlParameter("cs3", New_PWD));
+                if (jg == 1)
+                {
+                    result ="成功";
+                }
+            }
+            else
+            {
+                result = "输入的是错误的旧密码";
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "modifystupwd", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 
 }

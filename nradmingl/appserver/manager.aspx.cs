@@ -1282,6 +1282,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         }
                         if (jg != null)
                         {
+                            jg.Columns.Remove("学院编码");
                             jg.AcceptChanges();
                         }
                         result.code = "success";
@@ -1324,6 +1325,9 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         }
                         if (jg != null)
                         {
+                            jg.Columns.Remove("学院编码");
+                            jg.Columns.Remove("专业编码");
+
                             jg.AcceptChanges();
                         }
                         result.code = "success";
@@ -1390,6 +1394,11 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         }
                         if (jg != null)
                         {
+                            jg.Columns.Remove("学院编码");
+                            jg.Columns.Remove("专业编码");
+                            jg.Columns.Remove("校区编码");
+                            jg.Columns.Remove("批次编码");
+
                             jg.AcceptChanges();
                         }
                         result.code = "success";
@@ -1413,7 +1422,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         for (int i = 0; jg != null && i < jg.Columns.Count; i++)
                         {
                             string colname = jg.Columns[i].ColumnName;
-                            if (colname.Trim().Equals("FK_Fresh_Batch"))
+                            if (colname.Trim().Equals("fk_fresh_batch"))
                             {
                                 jg.Columns[i].ColumnName = "批次编码";
                             }
@@ -1421,25 +1430,29 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                             {
                                 jg.Columns[i].ColumnName = "年级";
                             }
-                            if (colname.Trim().Equals("Collage"))
+                            if (colname.Trim().Equals("collage"))
                             {
                                 jg.Columns[i].ColumnName = "学院名称";
                             }
-                            if (colname.Trim().Equals("College_NO"))
+                            if (colname.Trim().Equals("college_no"))
                             {
                                 jg.Columns[i].ColumnName = "学院编码";
                             }
-                            if (colname.Trim().Equals("SPE_Code"))
+                            if (colname.Trim().Equals("spe_code"))
                             {
                                 jg.Columns[i].ColumnName = "专业编码";
                             }
-                            if (colname.Trim().Equals("SPE_Name"))
+                            if (colname.Trim().Equals("spe_name"))
                             {
                                 jg.Columns[i].ColumnName = "专业名称";
                             }
                         }
                         if (jg != null)
                         {
+                            jg.Columns.Remove("批次编码");
+                            jg.Columns.Remove("专业编码");
+                            jg.Columns.Remove("学院编码");
+
                             jg.AcceptChanges();
                         }
                         result.code = "success";
@@ -1607,6 +1620,9 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         }
                         if (jg != null)
                         {
+                            jg.Columns.Remove("学生所属专业编码");
+                            jg.Columns.Remove("班级所属专业编码");
+
                             jg.AcceptChanges();
                         }
                         result.code = "success";
@@ -2181,6 +2197,32 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         result.code = "success";
                         result.message = "成功";
                         result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 修改学生密码
+                if (cs.Trim().Equals("modifystupwd"))
+                {
+                    string pk_sno = null;
+                    if (Session["pk_sno"] != null)
+                    {
+                        pk_sno = Session["pk_sno"].ToString();
+                    }
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        string old_pwd = Request.Form.Get("old_pwd");
+                        string new_pwd = Request.Form.Get("new_pwd");
+                        batch batch_logic = new batch();
+                        string jg = batch_logic.modifystupwd(pk_sno,old_pwd,new_pwd);
+                        result.code = "success";
+                        result.message = jg;
+                        result.data = jg;
+                    }
+                    else
+                    {
+                        result.message = "未登陆";
                     }
                 }
                 #endregion
