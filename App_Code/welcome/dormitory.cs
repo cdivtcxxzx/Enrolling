@@ -2083,7 +2083,7 @@ public class dormitory
         DataTable bjbh = new DataTable();
         try
         {
-            bjbh = Sqlhelper.Serach("SELECT     TOP (50) PK_Bed_NO id, Bed_NO name, Bed_Name bz  FROM         Fresh_Bed WHERE     (FK_Room_NO = '"+roomid+"') order by Bed_NO");
+            bjbh = Sqlhelper.Serach("SELECT     TOP (50) PK_Bed_NO id, Bed_NO name, Bed_Name bz  FROM         Fresh_Bed t1  WHERE  not exists (select * from [Fresh_Bed_Log] where [FK_Bed_NO]=t1.PK_Bed_NO) and    (FK_Room_NO = '"+roomid+"') order by Bed_NO");
 
         }
         catch (Exception err)
