@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xsjbxx.aspx.cs" Inherits="view_xsjbxx" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="bzr_xsjbxx.aspx.cs" Inherits="view_bzr_xsjbxx" %>
 
 
 <!DOCTYPE html>
@@ -64,13 +64,13 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>学生网上自助报到>>学生基本信息
+            <i class="layui-icon">&#xe602;</i>
             <span style="float:right"  id="btnback">
             
 				
-                 <a href="xszz-index.aspx" class="layui-btn layui-btn-small">
+<%--                 <a href="xszz-index.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
-				</a>
+				</a>--%>
                </span>
 				
 			</blockquote>
@@ -147,7 +147,8 @@
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xy" runat="server" Text=""></asp:Label></div></div>
         </div></div>
-     <div  class="xsxx3"  >         <div class="layui-form-item" pane="">
+     <div  class="xsxx3"  >         
+         <div class="layui-form-item" pane="">
           <label class="layui-form-label">专业：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zy" runat="server" Text=""></asp:Label></div></div>
@@ -163,27 +164,58 @@
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bjmc" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任：</label>
+          <label class="layui-form-label">手机号：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_dhhm" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任电话：</label>
+          <label class="layui-form-label">QQ号：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_qq" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任QQ：</label>
+          <label class="layui-form-label">家庭住址：</label>
           <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrqq" runat="server" Text=""></asp:Label></div></div>
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_jtzz" runat="server" Text=""></asp:Label></div></div>
         </div>
         <div class="layui-form-item" style="text-align:center">
-          <a class="layui-btn" id="backmain" onclick="window.location.href='/view/xszz-index.aspx';">返回操作首页</a>
+<%--          <a class="layui-btn" id="backmain" onclick="window.location.href='/view/xszz-index.aspx';">返回操作首页</a>--%>
         </div>
 
      </div>
         
-     
+       <div  class="xsxx3"  >         
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">政治面貌：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zzmm" runat="server" Text=""></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">民族：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_mz" runat="server" Text=""></asp:Label></div></div>
+        </div>
+     <div class="layui-form-item" pane="">
+          <label class="layui-form-label">身高：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_sg" runat="server" Text=""></asp:Label></div></div>
+        </div>
+
+     </div>
+
+         <div  class="xsxx3"  >         
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">体重：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_tz" runat="server" Text=""></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">籍贯：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_jg" runat="server" Text=""></asp:Label></div></div>
+        </div>
+
+     </div>
 
       </form>
 </div>        
@@ -195,7 +227,7 @@
 
 
     <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
-    <script src="../b_js/app/xsjbxx.js"></script>
+    <script src="../b_js/app/bzr_xsjbxx.js"></script>
 
 
 

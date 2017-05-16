@@ -117,7 +117,7 @@ function getstudent() {
                     str=str+'<td>'+item.Status_Code+'</td>';
                     str=str+'<td>'+item.TuitionType+'</td>';
                     str=str+'<td>';
-                    str=str+'<a href="#" onclick="studentdetail()" class="layui-btn layui-btn-mini" title="学生信息">学生详情</a>';
+                    str=str+'<a href="#" onclick="studentdetail('+item.pk_sno+')" class="layui-btn layui-btn-mini" title="学生信息">学生详情</a>';
                     str=str+'</td>';
                     str=str+'</tr>';
                     $('#studentlist').append(str);
@@ -133,8 +133,9 @@ function getstudent() {
 }
 
 
-function studentdetail(){
-    parent.layer.open({  type: 2,  title: '详细信息',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: '/view/czzt_detail.aspx',btn:'关闭'})
+function studentdetail(pk_sno){
+    console.log('hi');
+    parent.layer.open({  type: 2,  title: '详细信息',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: '/view/bzr_xsjbxx.aspx?pk_sno='+pk_sno,btn:'关闭'})
 
 }
 

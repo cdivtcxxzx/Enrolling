@@ -3361,4 +3361,46 @@ public class batch
         }
         return result;
     }
+
+
+    //某学生信息(班级管理模块)
+    public System.Data.DataTable get_student(string PK_SNO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select [year],collage,spe_name,g.Item_Name as EDU_Level,b.Name as class_name,a.name,c.Item_Name as gender,"
+                     + "a.Photo,a.pk_sno,test_no,id_no,Status_Code,QQ,Height,Weight,"
+			         +" Nation_Code,e.item_name as Nation,census,Politics_Code,f.item_name as Politics,Home_add,"
+                     +" case when d.Tuition is null then '' else d.Tuition end as TuitionType, "
+                     +" case when a.Phone is null and a.Phone_dr is null then '' else "
+                     +" ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
+                     +" ( case when a.Phone is null and a.Phone_dr is not null then a.Phone_dr else a.Phone+','+a.Phone_dr  end )"
+                     +"end )"
+                     +" end as phone"
+                     +" from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO "
+				     +" LEFT JOIN (select * from Base_Code_Item where fk_code='003') as e on a.Nation_Code=e.Item_NO"
+					 +" LEFT JOIN (select * from Base_Code_Item where fk_code='004') as f on a.Politics_Code=f.Item_NO"
+                     + " LEFT JOIN Fresh_Class as b on a.FK_Class_NO=b.PK_Class_NO"
+                     + ",Base_Code_Item c,Base_Code_Item g"
+                     + " where a.Gender_Code=c.Item_NO and c.FK_Code='002' and a.EDU_Level_Code=g.Item_NO and g.FK_Code='001'"
+					 +" AND a.PK_SNO=@cs1";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_student", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+
+
+
 }
