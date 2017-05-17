@@ -329,7 +329,7 @@ ul, menu, dir {
     </asp:GridView>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService">
             <SelectParameters>
-                <asp:SessionParameter DefaultValue="-1" Name="batch" SessionField="batch" Type="String" />
+                <asp:SessionParameter DefaultValue="0" Name="batch" SessionField="batch" Type="String" />
             </SelectParameters>
         </asp:ObjectDataSource>
     </div>

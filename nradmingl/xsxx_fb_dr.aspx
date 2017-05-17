@@ -179,18 +179,18 @@ ul, menu, dir {
      <!--步骤1-->
     <div  id="setp1cz" runat="server">
      <blockquote class="layui-elem-quote">
-     <a href="#" class="layui-btn layui-btn-small" id="mbfile" runat="server">
+     <a href="#" class="layui-btn layui-btn-small" id="mbfile" runat="server" style="display:none" >
 					<i class="layui-icon">&#xe61e;</i>下载模板
 				</a>&nbsp;&nbsp;&nbsp;&nbsp;<asp:DropDownList ID="DropDownListBatch" runat="server" AutoPostBack="True" 
                         DataSourceID="LinqDataSource1" DataTextField="Batch_Name" 
                         DataValueField="PK_Batch_NO" 
-                        Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="DropDownListBatch_SelectedIndexChanged">
+                        Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="DropDownListBatch_SelectedIndexChanged" OnDataBound="DropDownListBatch_DataBound">
                         <asp:ListItem  Value="-1">请选择批次</asp:ListItem>
                     </asp:DropDownList>
          <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" Select="new (PK_Batch_NO, Batch_Name)" TableName="Fresh_Batches" OrderBy="PK_Batch_NO">
                       </asp:LinqDataSource>&nbsp;&nbsp;
       <asp:Label ID="setp1ts" runat="server"
-         Text="请先下载EXCLE模板按模板准备导入数据,数据准备完成后选择相应批次,否则无法完成导入,选择好后请点击＂下一步＂!" 
+         Text="请先准备导入数据,选择和检查导入批次,否则无法完成导入,选择好后请点击＂下一步＂!" 
              Font-Size="Medium"></asp:Label>
 				
 	</blockquote>
@@ -216,7 +216,7 @@ ul, menu, dir {
 
      <!--步骤3-->
     <div   id="setp3cz" runat="server">
-    显示当前批次、年级已导入的学生数据
+    显示当前批次、学院学生分班数据
         
      
         <asp:GridView  ID="GridView2"  
@@ -240,11 +240,6 @@ ul, menu, dir {
         <HeaderStyle CssClass="hidden-xs" />
         <ItemStyle CssClass="hidden-xs" />
         </asp:BoundField>
-    <asp:BoundField DataField="Test_NO" HeaderText="报名号"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="Test_NO">
-        <ControlStyle CssClass="hidden-xs" />
-        <HeaderStyle CssClass="hidden-xs" />
-        <ItemStyle CssClass="hidden-xs" />
-        </asp:BoundField>
     <asp:BoundField DataField="Name" HeaderText="姓名" SortExpression="GenderName"/>
     <asp:BoundField DataField="Gender" HeaderText="性别"   SortExpression="Gender"/>
     <asp:BoundField DataField="ID_NO" HeaderText="身份证"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="ID_NO">
@@ -254,17 +249,27 @@ ul, menu, dir {
         <ItemStyle CssClass="hidden-xs" />
         </asp:BoundField>
 
-
-        <asp:TemplateField HeaderText="民族"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="Nation_code">
+        <asp:TemplateField HeaderText="学院"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="Colleage">
         
             <ItemTemplate>
-            <%# show_mz(Eval("Nation_code").ToString()) %>
+            <%# show_xy(Eval("Colleage").ToString()) %>
+            </ItemTemplate>
+
+            <ItemStyle  />
+            </asp:TemplateField>
+                
+
+    <asp:BoundField DataField="SPE_Name" HeaderText="专业"   SortExpression="SPE_Name"/>
+
+    <asp:TemplateField HeaderText="班级名称"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="Class_Name">
+        
+            <ItemTemplate>
+            <span style="color:red"><%#  Eval("Class_Name").ToString() %></span>
             </ItemTemplate>
 
             <ItemStyle  />
             </asp:TemplateField>
 
-    <asp:BoundField DataField="SPE_Name" HeaderText="专业"   SortExpression="SPE_Name"/>
    <asp:BoundField DataField="Xz" HeaderText="学制"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="Xz">
         
         <ControlStyle CssClass="hidden-xs" />
@@ -316,8 +321,7 @@ ul, menu, dir {
                 <asp:LinkButton ID="LinkButton10" runat="server" CommandArgument="<%#((GridView)Container.NamingContainer).PageIndex+3 %>" CommandName="Page"> <%#  ((GridView)Container.NamingContainer).PageIndex+3 %></asp:LinkButton>
                   <asp:LinkButton ID="LinkButton11" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+4 %>"
                 CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+4 %></asp:LinkButton>
-                    <%}%>
-
+                    <%}%>            
             <asp:LinkButton ID="LinkButtonNextPage" runat="server" CommandArgument="Next" CommandName="Page"
                 Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">下一页</asp:LinkButton>
             <asp:LinkButton ID="LinkButtonLastPage" runat="server" CommandArgument="Last" CommandName="Page"
@@ -327,9 +331,10 @@ ul, menu, dir {
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;
         </PagerTemplate>
     </asp:GridView>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService">
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatchCol" TypeName="organizationService" OldValuesParameterFormatString="original_{0}">
             <SelectParameters>
-                <asp:SessionParameter DefaultValue="-1" Name="batch" SessionField="batch" Type="String" />
+                <asp:SessionParameter DefaultValue="0" Name="batch" SessionField="batch_fb" Type="String" />
+                <asp:SessionParameter DefaultValue="0" Name="colleage_sno" SessionField="colleage_fb" Type="String" />
             </SelectParameters>
         </asp:ObjectDataSource>
     </div>
