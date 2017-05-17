@@ -42,7 +42,7 @@
 						
 						<li class="layui-nav-item">
 							<a href="javascript:;" class="admin-header-user">
-								<img src="../img/user2-160x160.jpg" style="width: 40px; height: 40px; border-radius: 100%;" />
+								<img src="../images/xstp/test.jpg" style="width: 40px; height: 40px; border-radius: 100%;" />
                                 
 								<span  id="username" runat="server">用户名</span>
                                
@@ -79,7 +79,7 @@
 					<ul style="display:none;" class="layui-tab-title">
 						<li class="layui-this">
 							<i class="fa fa-dashboard" aria-hidden="true"></i>
-							<cite>演示首页</cite>
+							<cite>学生自助首页</cite>
 						</li>
             
 					</ul>
@@ -87,7 +87,7 @@
                   
 					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
 						<div class="layui-tab-item layui-show">
-							<iframe src="/view/xszz-index.aspx?pk_sno=<%=Session["username"].ToString() %>"></iframe>
+							<iframe src="../view/xxzz_xsindex.aspx?pk_sno=<%=Session["username"].ToString() %>"></iframe>
 						</div>
 					</div>
 				</div>

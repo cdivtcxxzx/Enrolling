@@ -43,7 +43,8 @@
 				</a>
              --%><a href="ssgl.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#x1002;</i> 刷新
-				</a>
+				</a>
+
                <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据清除',  shadeClose: true,  shade: 0.8,  area: ['80%', '98%'],  content: 'ssgl_clear.aspx',btn:'完成'});" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe630;</i>清空<span class=" hidden-xs">预分配数据</span>
 				</a>
