@@ -186,6 +186,20 @@ public partial class nradmingl_xsxx_fb : System.Web.UI.Page
         }
     }
     #endregion
+    # region 显示总记录数
+    protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+        DataTable dt = (DataTable)e.ReturnValue;
+        if (dt == null)
+        {
+            Session["fb_rowsCount"] = "0";
+        }
+        else
+        {
+            Session["fb_rowsCount"] = dt.Rows.Count.ToString();
+        }
+    }
+    #endregion
     //学院列处理
     public string show_xy(string colleage)
     {

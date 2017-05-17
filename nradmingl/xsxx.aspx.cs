@@ -185,6 +185,22 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
         }
     }
     #endregion
+    # region 显示总记录数
+    protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+        DataTable dt = (DataTable)e.ReturnValue;
+        if (dt == null)
+        {
+            Session["rowsCount"] = "0";
+        }
+        else
+        {
+            Session["rowsCount"] = dt.Rows.Count.ToString();
+        }
+    }
+    #endregion
+
+
     //民族列处理
     public string show_mz(string mzdm)
     {
@@ -239,5 +255,18 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
         }
         #endregion
     }
-    
+
+    //批次事件
+    protected void batch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string batch_xs = batch.SelectedValue.ToString();
+        if (batch_xs != "" && batch_xs != "-1")
+        {
+            Session["batch"] = batch_xs;
+        }
+        else
+        {
+            Session["batch"] = "-1";
+        }
+    }
 }

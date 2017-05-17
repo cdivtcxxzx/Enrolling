@@ -424,11 +424,11 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
         string batch = DropDownListBatch.SelectedValue.ToString();
         if (batch_index > 0)
         {
-            Session["batch"] = batch;
+            Session["batch_fb"] = batch;
         }
         else
         {
-            Session["batch"] = "-1";
+            Session["batch_fb"] = "-1";
         }
     }
     #region 设置页面显示条数事件
@@ -498,7 +498,20 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
         }
     }
     #endregion
-
+    # region 显示总记录数
+    protected void ObjectDataSource2_Selected(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+        DataTable dt = (DataTable)e.ReturnValue;
+        if (dt == null)
+        {
+            Session["fbDrRowsCount"] = "0";
+        }
+        else
+        {
+            Session["fbDrRowsCount"] = dt.Rows.Count.ToString();
+        }
+    }
+    #endregion
     //学院列处理
     public string show_xy(string colleage)
     {

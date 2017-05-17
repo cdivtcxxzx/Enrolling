@@ -64,7 +64,7 @@
                         <asp:ListItem Selected="True" Value="0">显示所有批次</asp:ListItem>
                     </asp:DropDownList>
                       &nbsp;&nbsp;学院：
-                      <asp:DropDownList ID="xueyuan" runat="server" AutoPostBack="True" DataSourceID="LinqDataSource2" DataTextField="Name" DataValueField="College_NO" Font-Size="Medium" AppendDataBoundItems="True">
+                      <asp:DropDownList ID="xueyuan" runat="server" AutoPostBack="True" DataSourceID="LinqDataSource2" DataTextField="Name" DataValueField="College_NO" Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="xueyuan_SelectedIndexChanged">
                           <asp:ListItem Selected="True" Value="0">所有院系</asp:ListItem>
                       </asp:DropDownList>
                       &nbsp;&nbsp;
@@ -154,7 +154,11 @@
 
                 </HeaderTemplate>
                 <ItemTemplate>                    
-             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '学生分班详情－<%# Eval("Name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'xsxx_detail.aspx?pk_sno=<%# Eval("PK_SNO").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情</a> <%--&nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
+             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '学生分班详情－<%# Eval("Name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'xsxx_detail.aspx?pk_sno=<%# Eval("PK_SNO").ToString() %>',btn:'关闭'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情</a>&nbsp;&nbsp; 
+             <a href="javascript:" onclick="parent.layer.open({ type: 2,title:'分班设置－<%# Eval("Name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['28%', '58%'],  content: 'xsxx_fb_manual.aspx?pk_sno=<%# Eval("PK_SNO").ToString() %>&&spe=<%# Eval("SPE_PK").ToString() %>',btn:'关闭'});"  class="layui-btn layui-btn-mini" title="手动分班">分班</a>       
+
+                    
+                    <%--&nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
               </asp:LinkButton>--%>
             </ItemTemplate>
                 
@@ -164,7 +168,7 @@
     </Columns>
     <PagerTemplate>
 <span style="float:left;padding-bottom: 8px;padding-top: 8px;" class="hidden-xs" >
-
+    &nbsp;&nbsp;总共：<%# Session["fb_rowsCount"] %>&nbsp;行&nbsp;&nbsp;&nbsp;&nbsp;
 
             每页<asp:Label ID="LabelPageSize" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageSize %>"></asp:Label>
             条 &nbsp;&nbsp;</span><span style="float:left;padding-bottom: 8px;padding-top: 8px;"  >当前<asp:Label ID="LabelCurrentPage" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>
@@ -211,7 +215,7 @@
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;
         </PagerTemplate>
     </asp:GridView>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatchCol" TypeName="organizationService" OldValuesParameterFormatString="original_{0}" >
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatchCol" TypeName="organizationService" OldValuesParameterFormatString="original_{0}" OnSelected="ObjectDataSource1_Selected" >
             <SelectParameters>
                 <asp:ControlParameter ControlID="batch" Name="batch" PropertyName="SelectedValue" 
                     Type="String" DefaultValue="0" />

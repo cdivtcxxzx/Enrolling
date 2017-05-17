@@ -170,6 +170,22 @@ public static class organizationService
         return oDC.Fresh_Classes.ToList();
     }
     #endregion
+    #region 获取某专业下的班级信息 getClasses
+    /// <summary>
+    /// 根据“专业主键”返回对应专业下的所有班级。
+    /// 编写人：陈智秋
+    /// 创建：2017.5.16
+    /// 更新：无
+    /// 版本：v0.0.1
+    /// </summary>
+    /// <param name="sepCode">专业主键</param>
+    /// <returns>返回班级集合</returns>
+    public static List<Fresh_Class> getClasses(string PK_SPE)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        return oDC.Fresh_Classes.Where(cls => cls.FK_SPE_NO == PK_SPE).ToList();
+    }
+    #endregion
     #region 学生身份是否有效 stuVerify
     /// <summary>
     /// 功能描述：根据“学号”查询所在批次中“禁止操作标志”为false，并且被授权“迎新事务”的“事务性质”为“交互性”，“事务列席”为“学生自治”或“两者”的数据。否则返回null。
@@ -289,7 +305,7 @@ public static class organizationService
         organizationModelDataContext oDC = new organizationModelDataContext();
         return oDC.Fresh_SPEs.Where(s => s.PK_SPE == PK_SPE).SingleOrDefault();
     }
-    #endregion
+    #endregion    
     #region 验证学生基本信息是否确认 isStuConfrim
     /// <summary>
     /// 对比学生学号验证学生是否进行基本信息的确认(有数据则已确认)
@@ -488,6 +504,7 @@ public static class organizationService
                       Name = s.Name,
                       Gender = s.Gender_Code == "" ? "" : s.Gender_Code == "01" ? "男" : "女",
                       ID_NO = s.ID_NO,
+                      SPE_PK = zy.PK_SPE,
                       SPE_Name = zy.SPE_Name,
                       Xz = zy.Xznx,
                       Year = s.Year,

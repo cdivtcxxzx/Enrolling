@@ -264,7 +264,7 @@ ul, menu, dir {
     <asp:TemplateField HeaderText="班级名称"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="Class_Name">
         
             <ItemTemplate>
-            <span style="color:red"><%#  Eval("Class_Name").ToString() %></span>
+            <span style="color:blue"><%#  Eval("Class_Name").ToString() %></span>
             </ItemTemplate>
 
             <ItemStyle  />
@@ -285,7 +285,7 @@ ul, menu, dir {
     </Columns>
     <PagerTemplate>
 <span style="float:left;padding-bottom: 8px;padding-top: 8px;" class="hidden-xs" >
-
+    &nbsp;&nbsp;总共：<%# Session["fbDrRowsCount"] %>&nbsp;行&nbsp;&nbsp;&nbsp;&nbsp;
 
             每页<asp:Label ID="LabelPageSize" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageSize %>"></asp:Label>
             条 &nbsp;&nbsp;</span><span style="float:left;padding-bottom: 8px;padding-top: 8px;"  >当前<asp:Label ID="LabelCurrentPage" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>
@@ -331,7 +331,7 @@ ul, menu, dir {
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;
         </PagerTemplate>
     </asp:GridView>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatchCol" TypeName="organizationService" OldValuesParameterFormatString="original_{0}">
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatchCol" TypeName="organizationService" OldValuesParameterFormatString="original_{0}" OnSelected="ObjectDataSource2_Selected">
             <SelectParameters>
                 <asp:SessionParameter DefaultValue="0" Name="batch" SessionField="batch_fb" Type="String" />
                 <asp:SessionParameter DefaultValue="0" Name="colleage_sno" SessionField="colleage_fb" Type="String" />
