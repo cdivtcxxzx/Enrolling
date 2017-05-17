@@ -61,7 +61,7 @@ public partial class view_xsxx_extend : System.Web.UI.Page
         ////设置政治面貌
         xsxx_zzmm.DataSource = organizationService.getCodesItem("004");
         xsxx_zzmm.DataTextField = "Item_Name";
-        xsxx_zzmm.DataValueField = "PK_Item";
+        xsxx_zzmm.DataValueField = "Item_NO";
         xsxx_zzmm.DataBind();
         xsxx_zzmm.Items.Insert(0, new ListItem("请选择", "-1"));
 

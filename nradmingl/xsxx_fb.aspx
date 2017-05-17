@@ -60,7 +60,7 @@
                     <asp:DropDownList ID="batch" runat="server" AutoPostBack="True" 
                         DataSourceID="LinqDataSource1" DataTextField="Batch_Name" 
                         DataValueField="PK_Batch_NO" 
-                        Font-Size="Medium" AppendDataBoundItems="True">
+                        Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="batch_SelectedIndexChanged">
                         <asp:ListItem Selected="True" Value="0">显示所有批次</asp:ListItem>
                     </asp:DropDownList>
                       &nbsp;&nbsp;学院：

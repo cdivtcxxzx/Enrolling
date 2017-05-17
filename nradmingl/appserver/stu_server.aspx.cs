@@ -161,7 +161,18 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                     //1代表无误 非1代表信息有错误
                     bool boolState = confirmState == "1" ? true : false;
                     //todo:操作事务修改
-                    bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system:" + DateTime.Now.ToShortDateString());
+                    string create_name = null;
+                    if (Session["pk_sno"] != null)
+                    {
+                        create_name = session_pk_sno.Trim() + ":" + Session["Name"].ToString().Trim();
+                    }
+                    if (Session["pk_staff_no"] != null)
+                    {
+                        create_name = session_pk_staff_no.Trim() + ":" + Session["Name"].ToString().Trim();
+                    }
+                    bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", create_name);
+
+                    //bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system:" + DateTime.Now.ToShortDateString());
                     if (!isWrite)
                     {
                         throw new Exception("事务修改失败");
@@ -239,7 +250,17 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                         stu.Home_add = xsxx_addr.Trim();
                     }
                     //todo:操作事务修改
-                    bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system:" + DateTime.Now.ToShortDateString());
+                    string create_name = null;
+                    if (Session["pk_sno"] != null)
+                    {
+                        create_name = session_pk_sno.Trim() + ":" + Session["Name"].ToString().Trim();
+                    }
+                    if (Session["pk_staff_no"] != null)
+                    {
+                        create_name = session_pk_staff_no.Trim() + ":" + Session["Name"].ToString().Trim();
+                    }
+                    bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", create_name);
+                    //bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system:" + DateTime.Now.ToShortDateString());
                     if (!isWrite)
                     {
                         throw new Exception("事务修改失败");

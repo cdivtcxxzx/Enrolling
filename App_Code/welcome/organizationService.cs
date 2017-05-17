@@ -155,6 +155,21 @@ public static class organizationService
         return oDC.Fresh_Classes.Where(b => b.PK_Class_NO == classNo).SingleOrDefault();
     }
     #endregion
+    #region  获取某班级数据 getAllClass
+    /// <summary>
+    /// 查找数据库中班级表中的所有数据
+    /// 编写人：陈智秋
+    /// 创建：2017.5.16
+    /// 更新：无
+    /// 版本：v0.0.1
+    /// </summary>
+    /// <returns>返回所有班级</returns>
+    public static List<Fresh_Class> getAllClass()
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        return oDC.Fresh_Classes.ToList();
+    }
+    #endregion
     #region 学生身份是否有效 stuVerify
     /// <summary>
     /// 功能描述：根据“学号”查询所在批次中“禁止操作标志”为false，并且被授权“迎新事务”的“事务性质”为“交互性”，“事务列席”为“学生自治”或“两者”的数据。否则返回null。
