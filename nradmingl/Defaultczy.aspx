@@ -74,7 +74,7 @@
                         
 
                     </ul>
-                    <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div>
+                    <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="xszpxx"  runat="server" /></div>
 				</div>
 			</div>
         <style> .xszp img{
@@ -92,7 +92,7 @@
                     </blockquote>
                     <br />
                     <fieldset class="layui-elem-field">
-  <legend>操作员状态</legend>
+  <legend>当前操作：<b><asp:Label ID="affair_name" runat="server" Text="" style="color:red;"></asp:Label></b></legend>
   <div class="layui-field-box">
       <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
       <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
@@ -101,7 +101,7 @@
           <tr><td style="width:50%;"></td><td></td></tr>
            <tr><td colspan="2" style="width:50%;">迎新服务时间：<asp:Label ID="batch_service_time" runat="server" Text="2017年7月1日~2017年9月2日"></asp:Label></td></tr>
            <tr><td style="width:50%;">操作员姓名：<asp:Label ID="staff_name" runat="server" Text="张明"></asp:Label></td><td>登陆时间：<asp:Label ID="login_time" runat="server" Text="2017年3月15日"></asp:Label></td></tr>
-           <tr><td  colspan="2" style="width:50%;">当前事务操作：<asp:Label ID="affair_name" runat="server" Text="迎新系统首页"></asp:Label></td></tr>
+           <tr><td  colspan="2" style="width:50%;"></td></tr>
           <tr><td style="width:50%;">预操作总人数：<asp:Label ID="affair_willcount" runat="server" Text="100"></asp:Label></td><td>已操作总人数：<asp:Label ID="affair_havecount" runat="server" Text="100"></asp:Label></td></tr>
       </table>
     

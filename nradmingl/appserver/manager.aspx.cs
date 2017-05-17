@@ -1153,7 +1153,19 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         #endregion
 
                         batch_logic.set_freshstudent_register(pk_sno);
-                        batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system");
+
+                        string create_name = null;
+                        if (Session["pk_sno"] != null)
+                        {
+                            create_name = session_pk_sno.Trim() + ":" + Session["Name"].ToString().Trim();
+                        }
+                        if (Session["pk_staff_no"] != null)
+                        {
+                            create_name = session_pk_staff_no.Trim() + ":" + Session["Name"].ToString().Trim();
+                        }
+
+                        batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", create_name);
+                        //batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system");
                         result.code = "success";
                         result.message = "成功";
                         result.data = null;
@@ -2187,13 +2199,13 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 #endregion
 
                 #region 某学生信息(班级管理模块)
-                if (cs.Trim().Equals("get_student"))
+                if (cs.Trim().Equals("get_student_detail"))
                 {
                     string pk_sno = Request.QueryString.Get("pk_sno");
                     if (pk_sno != null && pk_sno.Trim().Length != 0)
                     {
                         batch batch_logic = new batch();
-                        System.Data.DataTable jg = batch_logic.get_student(pk_sno);
+                        System.Data.DataTable jg = batch_logic.get_student_detail(pk_sno);
                         result.code = "success";
                         result.message = "成功";
                         result.data = jg;

@@ -139,8 +139,8 @@ public partial class nradmingl_Defaultczy : System.Web.UI.Page
 
         this.pk_batch_no.Value = Session["pk_batch_no"].ToString().Trim();//其值应由会话中来，在管理员登陆成功后被赋予初值
         this.pk_staff_no.Value = Session["pk_staff_no"].ToString().Trim();//其值应由会话中来，在管理员登陆成功后被赋予初值
-
-        
+        this.staff_name.Text = Session["Name"].ToString().Trim();
+        this.login_time.Text = DateTime.Now.ToString();
         #endregion
 
     }

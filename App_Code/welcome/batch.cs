@@ -3364,7 +3364,7 @@ public class batch
 
 
     //某学生信息(班级管理模块)
-    public System.Data.DataTable get_student(string PK_SNO)
+    public System.Data.DataTable get_student_detail(string PK_SNO)
     {
         System.Data.DataTable result = null;
         try
