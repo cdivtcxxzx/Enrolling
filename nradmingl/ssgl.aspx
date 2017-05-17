@@ -33,24 +33,28 @@
     </style>
     <form id="form1"  runat="server">
     <div class="admin-main">
-      <blockquote class="layui-elem-quote">
-          <i class="layui-icon">&#xe602;</i>学生宿舍管理<i class="layui-icon">&#xe602;</i>宿舍信息
+      <blockquote class="layui-elem-quote">&nbsp;<span class=" hidden-xs">
+          <i class="layui-icon">&#xe602;</i>学生寝室预分配<i class="layui-icon">&#xe602;</i>宿舍信息</span>
            <span style="float:right">
 
             <!--调用C#原生按钮设置样式举例OVER-->
  <%--               <a href="#" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-             --%>
-                 <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="清空预分配数据" ID="LinkButton12" runat="server"    Text='' ><i class="layui-icon">&#xe630;</i>清空预分配数据</asp:LinkButton>
-                  <a href="mb/ssfypdr.xls" class="layui-btn layui-btn-small hidden-xs">
-					<i class="layui-icon">&#xe62a;</i> 模板下载
+             --%><a href="ssgl.aspx" class="layui-btn layui-btn-small">
+					<i class="layui-icon">&#x1002;</i> 刷新
+				</a>
+               <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据清除',  shadeClose: true,  shade: 0.8,  area: ['80%', '98%'],  content: 'ssgl_clear.aspx',btn:'完成'});" class="layui-btn layui-btn-small">
+					<i class="layui-icon">&#xe630;</i>清空<span class=" hidden-xs">预分配数据</span>
+				</a>
+                  <a href="mb/ssyfpdr.xls" class="layui-btn layui-btn-small hidden-xs">
+					<i class="layui-icon">&#xe62a;</i> 模板<span class=" hidden-xs">下载</span>
 				</a>
                  <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'ssgl_dr.aspx?setp=1&mb=mb/ssyfpdr.xls',btn:'完成'});" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe62f;</i>导入预分配数据
+					<i class="layui-icon">&#xe62f;</i>导入<span class=" hidden-xs">预分配数据</span>
 				</a>
                
-                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出所选数据</asp:LinkButton>
+                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出<span class=" hidden-xs">所选数据</span></asp:LinkButton>
 
 		  </span>       
       </blockquote>
@@ -120,10 +124,11 @@
   <div>   
                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                   <ContentTemplate>
+                      
   <asp:HiddenField ID="hdfWPBH" runat="server" />
   <asp:GridView  OnRowCommand="GridView1_RowCommand"  ID="GridView1"  
-          OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="false" 
-            DataSourceID="ObjectDataSource1" CssClass="site-table table-hover" OnRowDataBound="GridView1_RowDataBound"
+          OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="False" 
+            DataSourceID="SqlDataSource1" CssClass="site-table table-hover" OnRowDataBound="GridView1_RowDataBound"
             EmptyDataText="未获取到数据!" 
             AllowPaging="True" AllowSorting="True">
     <Columns>
@@ -181,7 +186,7 @@
                 <%--<a onclick="return batchAudit(this.id);" id="btnDelete" href="javascript:__doPostBack('btnDelete','')"><span id="plcz" runat="server">点此批量发放毕业证</span></a>--%>
                 </HeaderTemplate>
                 <ItemTemplate>
-             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－<%# Eval("公寓楼名称").ToString() %><%# Eval("房间编号").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?id=<%# Eval("id").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情</a> &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
+             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－<%# Eval("公寓楼名称").ToString() %><%# Eval("房间编号").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?roomno=<%# Eval("房间编号").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情</a> &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
               </asp:LinkButton>
             </ItemTemplate>
                 
@@ -238,6 +243,10 @@
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;每页显示<asp:TextBox ID="PageSize_Set" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>条<asp:LinkButton ID="buttion2" runat="server"  class="layui-btn layui-btn-mini" Text="设置"   OnClick="PageSize_Go" /></span><span style="float:right;padding-bottom: 8px;padding-top: 8px;"><b>总记录:<%#ViewState["count"].ToString()%>条</b>&nbsp;</b></font></span>
         </PagerTemplate>
     </asp:GridView>
+                      <asp:SqlDataSource ID="SqlDataSource1"  onselected="SqlDataSource1_Selected"  runat="server" 
+                          ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                          SelectCommand="">
+                      </asp:SqlDataSource>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
           SelectMethod="serch_yfpgl" TypeName="dormitory">
             <SelectParameters>

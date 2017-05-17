@@ -7,9 +7,9 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 
-public partial class nradmingl_Default2 : System.Web.UI.Page
+public partial class nradmingl_ssgl_clear : System.Web.UI.Page
 {
-   #region 功能模块说明及页面基本信息说明
+    #region 功能模块说明及页面基本信息说明
     //所属模块：开发演示
     //任务名称：layui前端列表\导入导出功能演示及后台编写标准
     //完成功能描述：演示前端后台功能编写规范参考
@@ -21,7 +21,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "宿舍预分配管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
+    private string pagelm1 = "宿舍预分配清空";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
 
     private string pageqx1 = "浏览";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";
@@ -44,14 +44,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
                 HttpCookie cookiesh = Request.Cookies["xheight"];
                 xwdith = cookiesw.Value.ToString();
                 xheight = cookiesh.Value.ToString();
-                if (Convert.ToInt32(xheight) < 860)
-                {
-                    GridView1.PageSize = 10;
-                }
-                else
-                {
-                    GridView1.PageSize = 12;
-                }
+               
 
 
             }
@@ -106,45 +99,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
             //new c_login().powerYanzheng(Session["username"].ToString(), pagelm1, pageqx2, "2");//验证当前栏目关键字中的权限２,通常在按钮中需验证权限时使用
 
             #endregion
-       
-            #region 数据筛选及ＳＱＬ数据源设置
-
-            try
-            {
-
-
-
-                //管理筛选
-
-                //this.SqlDataSource1.FilterExpression = new Power().Getlanm("glqx");//glqx对应院系代码当前查询中的字段名
-
-                if (!IsPostBack)
-                {
-                    //string sqlok = "SELECT     TOP (1000) Fresh_SPE.Year AS 年度, Fresh_Room.Room_NO AS 房间编号,Fresh_Bed_Class_Log.FK_Bed_NO AS 床位编号, Base_College.Name AS 学院名称, Fresh_Class.Name AS 班级名称,                        Fresh_Room.Gender AS 性别 FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN                      Fresh_Room RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO LEFT OUTER JOIN                      Base_College RIGHT OUTER JOIN                      Fresh_SPE ON Base_College.PK_College = Fresh_SPE.FK_College_Code ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE WHERE     (Fresh_SPE.FK_College_Code = '03') AND (Fresh_SPE.Year = '2017') order by 房间编号";
-
-                    string sqlok = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "");
-                    //Response.Write(sqlok);
-                    //Response.End();
-                    
-                    
-                   
-                    ViewState["gridsql"] = sqlok;//绑定数据源的查询语句
-                    this.SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
-                    GridView1.DataBind();
-                    //根据屏幕高度设置ＧＲＩＤＶＩＥＷ的ＰＡＧＥ显示条数
-                    if (Convert.ToInt32(xheight) <= 728) this.GridView1.PageSize = 10;
-                }
-                else
-                {
-                    //ViewState["gridsql"] = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "");
-                    SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
-
-                }
-            }
-            catch
-            {
-            }
-            #endregion
+      
         }
         catch (Exception err)
         {
@@ -152,7 +107,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
             if (Session["username"] != null)
             {
                 new c_log().logAdd(pagelm1, pageqx1, err.Message, "2", Session["username"].ToString());//记录错误日志
-                
+
             }
             else
             {
@@ -191,6 +146,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     protected void SqlDataSource1_Selected(object sender, SqlDataSourceStatusEventArgs e)
     {
         ViewState["count"] = e.AffectedRows;
+
         //ViewState["countbd"] = getbds();
         //int s=GridView1.Rows
     }
@@ -261,8 +217,8 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         string id, sql;
 
         id = e.CommandArgument.ToString();
-        
-            
+
+
 
         try
         {
@@ -282,7 +238,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
                 }
             }
         }
-        catch(Exception err1) { this.tsxx.Value = "出错了:"+err1.Message; }
+        catch (Exception err1) { this.tsxx.Value = "出错了:" + err1.Message; }
         //ViewState["gridsql"] = SqlDataSource1.SelectCommand;
         //SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
         //_gridView.DataBind();
@@ -312,10 +268,10 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
                 //将传过来的ID记录状态改为删除
                 //sql = "UPDATE T_WPXX_CK SET SPR='" + userrealName + "' WHERE ID='" + chkIds[i] + "'";
                 // wpck.auditOrDelete(sql);//传入SQL语句并执行  
-               // DataTable xm = Sqlhelper.Serach("select 姓名,领取状态 from byz where id=" + chkIds[i] + "");
+                // DataTable xm = Sqlhelper.Serach("select 姓名,领取状态 from byz where id=" + chkIds[i] + "");
                 if (Sqlhelper.ExcuteNonQuery("DELETE FROM xw_neirong  where id=" + chkIds[i] + " ") > 0)
                 {
-                   // this.Label1.Text = "<font color=green>新闻删除成功!</font>";
+                    // this.Label1.Text = "<font color=green>新闻删除成功!</font>";
                     cg = cg + 1;
                 }
                 else
@@ -328,157 +284,63 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
             }
             this.tsxx.Value = "<font color=yellow> &nbsp;&nbsp;&nbsp;&nbsp;共删除" + cg + "条新闻!</font><font color=red>" + sbjl + "</font>";
         }
-        catch(Exception err2)
+        catch (Exception err2)
         {
-            this.tsxx.Value = "<font color=red> 批量删除出错！"+err2.Message+"</font>";
+            this.tsxx.Value = "<font color=red> 批量删除出错！" + err2.Message + "</font>";
         }
 
 
     }
 
-
-    protected void Search_Onclick(object sender, ImageClickEventArgs e)
-    {
-        //搜索按钮举例
-        //if (this.DropDownList2.SelectedValue.Length > 0)
-        //{
-        //    //有子栏目
-        //    this.LB_top.Text = "新闻管理&gt;&gt;&nbsp;" + this.DropDownList1.SelectedItem.Text + "&gt;&gt;&nbsp;" + this.DropDownList2.SelectedItem.Text;
-        //    if (CheckBox1.Checked)
-        //    {
-        //        this.SqlDataSource1.SelectCommand = "SELECT row_number() over (order by  xw_neirong.fabutime desc)  AS 序号,xw_lanm.lmmc, xw_neirong.isyn,xw_neirong.title, xw_neirong.author, xw_neirong.fabutime, xw_neirong.images,xw_neirong.id,xw_lanm.glqx FROM xw_neirong INNER JOIN xw_lanm ON xw_neirong.LMID = xw_lanm.lmid where  xw_neirong.title like '%" + this.searchtext.Text + "%'";
-        //    }
-        //    else
-        //    {
-        //        this.SqlDataSource1.SelectCommand = "SELECT row_number() over (order by  xw_neirong.fabutime desc)  AS 序号,xw_lanm.lmmc, xw_neirong.isyn,xw_neirong.title, xw_neirong.author, xw_neirong.fabutime, xw_neirong.images,xw_neirong.id,xw_lanm.glqx FROM xw_neirong INNER JOIN xw_lanm ON xw_neirong.LMID = xw_lanm.lmid where xw_neirong.lmid='" + this.DropDownList2.SelectedValue + "' and xw_neirong.title like '%" + this.searchtext.Text + "%'";
-        //    }
-        //    ViewState["gridsql"] = SqlDataSource1.SelectCommand;
-        //    SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
-        //    GridView1.DataBind();
-        //}
-        //else
-        //{
-        //    //无子栏目
-        //    this.LB_top.Text = "新闻管理&gt;&gt;&nbsp;" + this.DropDownList1.SelectedItem.Text;
-        //    if (CheckBox1.Checked)
-        //    {
-        //        this.SqlDataSource1.SelectCommand = "SELECT row_number() over (order by  xw_neirong.fabutime desc)  AS 序号,xw_lanm.lmmc,xw_neirong.isyn, xw_neirong.title, xw_neirong.author, xw_neirong.fabutime, xw_neirong.images,xw_neirong.id,xw_lanm.glqx FROM xw_neirong INNER JOIN xw_lanm ON xw_neirong.LMID = xw_lanm.lmid where  xw_neirong.title like '%" + this.searchtext.Text + "%'";
-          
-        //    }
-        //    else
-        //    {
-        //        this.SqlDataSource1.SelectCommand = "SELECT row_number() over (order by  xw_neirong.fabutime desc)  AS 序号,xw_lanm.lmmc,xw_neirong.isyn, xw_neirong.title, xw_neirong.author, xw_neirong.fabutime, xw_neirong.images,xw_neirong.id,xw_lanm.glqx FROM xw_neirong INNER JOIN xw_lanm ON xw_neirong.LMID = xw_lanm.lmid where xw_neirong.lmid='" + this.DropDownList1.SelectedValue + "' and xw_neirong.title like '%" + this.searchtext.Text + "%'";
-        //    }
-        //        ViewState["gridsql"] = SqlDataSource1.SelectCommand;
-        //    SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
-        //    GridView1.DataBind();
-        //}
-    }
-    protected string imagestu(string images)
-    {
-        if (images.Length > 0)
-        {
-            return "[图]";
-        }
-        return "";
-    }
-
-    protected string sycw(string isyn)
-    {
-        //剩余床位获取
-
-        return dormitory.serch_sycw(isyn.Trim()).ToString();
-        //return "";
-    }
-    protected string fpcw(string isyn)
-    {
-        //分配床位统计
-        if (isyn == "0")
-        {
-            return "<font color=red>未审核</font>";
-        }
-        if (isyn == "1")
-        {
-            return "<font color=green>已审核</font>";
-        }
-        if (isyn == "2")
-        {
-            return "<font color=red>被打回</font>";
-        }
-        return "未审核";
-    }
-
-    protected void DropDownList2_DataBound(object sender, EventArgs e)
-    {
-      //通过下拉列表加载判断值隐藏二级下拉举例
-       //try
-       //{
-       //    if (DropDownList2.Items.Count > 0)
-       //    {
-       //        this.DropDownList2.Style.Add("display","");
-       //    }
-       //    else
-       //    {
-       //        this.DropDownList2.Style.Add("display", "none");
-       //    }
-       //}
-       //catch (Exception ex) {  }
-    }
-    protected void exportexcel(object sender, EventArgs e)
-    {
-        //准备导出的DATATABLE,为了输出时列名为中文,请在写SQL语句时重定义一下列名
-        //例:SELECT [int] 序号  FROM [taskmanager] order by [int] desc 
-        System.Data.DataTable dt = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
-        #region 导出
-        //引用EXCEL导出类
-        toexcel xzfile = new toexcel();
-        string filen = xzfile.DatatableToExcel(dt, "寝室预分配数据");
-        //Response.Write("文件名" + filen);
-        if (filen.Length > 4)
-        {
-            this.tsbox.Value = "<span style=\"font-size:Large;\"> <font color=green>导出成功,请<a href=" + filen + " target=_blank >点此下载</a></font></span>";
-            //this.Label1.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
-
-        }
-        else
-        {
-            this.tsbox.Value = "<span style=\"font-size:Large;\"><font color=red>导出<b>失败</b>,请重试!</font></span>";
-
-        }
-        #endregion
-    }
-    protected void xq_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        gzt();
-    }
-    protected void dorm_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        gzt();
-    }
-    protected void floor_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        gzt();
-    }
-    protected void bj_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        gzt();
-    }
-    protected void gzt()
-    {
-        ViewState["gridsql"] = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "");
-        //this.Label1.Text= ViewState["gridsql"].ToString();
-        
-        SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
-        GridView1.DataBind();
-    }
-    protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
-    {
-
-    }
-    protected void clearyfp(object sender, EventArgs e)
-    {
-        //清空预分配数据
-    }
-}
 
    
+
+
+   
+
+    
+    protected void clearyfp(object sender, EventArgs e)
+    {
+        string qx = "";
+        string sqlyfp = "";
+        try
+        {
+            #region 获取该操作员能操作的系数据
+            Power qxhq = new Power();
+            qx = qxhq.Getonebmdm("Fresh_SPE.FK_College_Code");
+            try
+            {
+                qx = qx.Substring(0, qx.Length - 1);
+            }
+            catch { }
+            //Response.Write(qx);
+            if(qx.Length>0)
+            { 
+            this.ztts.Text = "你能管理：" + qx;
+            }
+            else { this.ztts.Text = "您暂时没有能管理的数据，请联系迎新管理员"; }
+            #endregion
+            if (qx.Split(',').Length > 0)
+            {
+                for (int i = 0; i < qx.Split(',').Length; i++)
+                {
+                    #region 清除本年度预分配数据
+
+
+                    if (c_bedyfp.Checked)
+                    {
+                         sqlyfp = "delete Fresh_Bed_Class_Log FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE WHERE     (Fresh_SPE.FK_College_Code = '" + qx.Split(',')[i].ToString() + "') and Fresh_SPE.Year='" + this.DropDownList1.SelectedValue + "'";
+                        //查询出该操作员能够操作的预分配数据
+
+                    }
+                    #endregion
+                }
+            }
+        }
+        catch (Exception e1)
+        {
+            ztts.Text = "<font color=red>操作出错:" + e1.Message + "你能操作的数据有："+qx+",查询语句："+sqlyfp;
+        }
+    }
+   
+}

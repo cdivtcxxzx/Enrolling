@@ -1,4 +1,15 @@
-﻿function load(){
+﻿function fillstr(str){
+    if ($.trim(str).length >=18 ) {
+        return str;
+    }
+    var jg=str;
+    for (var i=$.trim(str).length;i<=18;i++){
+        jg=jg+'&nbsp';
+    }
+    return jg;
+}
+
+function load(){
     //迎新批次数据
     $.ajax({
         url: "/nradmingl/appserver/manager.aspx",
@@ -243,7 +254,7 @@ function finduser(){
                 for(i=0;json_data.data!=null && i<json_data.data.length;i++){
                     var item=json_data.data[i];
                     var str='';
-                    str=str+'<option value="'+item.yhid+'">'+item.xm+'</option>';
+                    str=str+'<option value="'+item.yhid+'">'+fillstr($.trim(item.yhid))+ $.trim(item.xm)+'</option>';
                     $('#namelist').append(str);
                 }
             } else {

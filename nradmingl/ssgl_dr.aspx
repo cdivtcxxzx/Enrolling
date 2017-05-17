@@ -198,7 +198,7 @@ ul, menu, dir {
        <asp:FileUpload ID="FileUpload1" runat="server" Font-Size="Medium" />
            <asp:Button 
                 ID="batch_import" runat="server" Text="点击上传" txttop="txttop" 
-                ToolTip="点此上传已经做好的新生excel表!"  
+                ToolTip="点此上传已经做好的寝室预分配excel表!"  
                 CssClass="layui-btn layui-btn-small" onclick="batch_import_Click"  />
     	
 	&nbsp;&nbsp;&nbsp;
@@ -213,6 +213,7 @@ ul, menu, dir {
    <style>.checkok input{font-size:16px!important;height: 20px;width:20px;}
        .checkok label{font-size:16px!important;}
        .checkok font{font-size:16px!important;}
+       .noshow{display:none}
    
    
    
@@ -223,6 +224,11 @@ ul, menu, dir {
 
            <asp:CheckBox ID="CheckBox1" runat="server" CssClass="checkok" AutoPostBack="true" Font-Size="Medium" 
                Text="显示全部记录（默认仅显示了错误记录）" oncheckedchanged="CheckBox1_CheckedChanged" />
+    	
+	&nbsp;&nbsp;
+          <a href="#" class="layui-btn layui-btn-small" id="errfile" runat="server">
+					<i class="layui-icon">&#xe61e;</i>下载出错数据
+				</a>
     	
 	</blockquote>
         <asp:GridView ID="GridView1"  OnRowCreated="GridView1_RowCreated"  CssClass="site-table table-hover"  runat="server">
@@ -249,6 +255,7 @@ ul, menu, dir {
             </asp:TemplateField>
             </Columns>
         </asp:GridView>
+        
     </div>
        </div>
 

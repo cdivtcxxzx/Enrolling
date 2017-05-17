@@ -107,7 +107,7 @@ function getstudentstatus() {
                 }
                 for(i=0;json_data.data!=null && i<json_data.data.length;i++){
                     var item=json_data.data[i];
-                    console.log(item);
+                    //console.log(item);
                     var str='<tr>';
                     for(var key in item){
                         str=str+'<td>'+item[key]+'</td>';

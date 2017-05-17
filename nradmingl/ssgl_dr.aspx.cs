@@ -30,7 +30,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
     private string zd = "序号,年度,校区,公寓名称,楼层,房间编号,房间类型,性别,房间人数,床位编号,床位位置说明,班级名称";
     //错误提示时，要隐藏的字段
     private  string removeok = "年度,校区,公寓名称,楼层,房间类型,房间人数,床位位置说明";
-
+    
     private string pageqx1 = "导入";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";
     private string pageqx3 = "";
@@ -208,8 +208,9 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
             //将EXCEL表中所有数据存入x表格中,clok用于后面存所有记录，x记录错误记录
             toexcel todatatable = new toexcel();
             x = todatatable.ExcelfileToDatatalbe(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), true);
-            DataTable clok = new DataTable();          
-            //读取所有行
+            DataTable clok = new DataTable();//读取所有行  
+            DataTable errdata = todatatable.ExcelfileToDatatalbe(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), true);//记录所有错误表
+            
             //判断各列名是否正确
             string err = "";
             int colzs = zd.Split(',').Length;
@@ -250,6 +251,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                 zs = x.Rows.Count;
                 //添加错误提示
                 x.Columns.Add("错误提示");
+                errdata.Columns.Add("错误提示_做为模板时请删除此列");
                 //循环读取并判断所有字段
                 int updatetype = 0;//类型更新只写一次
                 int updatedorm = 0;//宿舍更新只写一次e
@@ -660,7 +662,9 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                     //精细化错误提示
                     if (x.Rows[ii]["错误提示"].ToString().Length > 1)
                     {
+                        errdata.Rows[ii]["错误提示_做为模板时请删除此列"] = x.Rows[ii]["错误提示"].ToString();
                         x.Rows[ii]["错误提示"] = "第" + (ii + 1).ToString() + "行:" + x.Rows[ii]["错误提示"].ToString();
+                        
                     }
                     else
                     {
@@ -671,6 +675,8 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                 #region (3)删除已经提交成功的行，仅显示错误提示,此逻辑不用修改
                 //记录全部错误和正确记录
                 clok = x;
+                //错误导出记录
+                
                 if (clok.Rows.Count > 0)
                 {
                     //Response.Write(clok.Rows.Count.ToString());
@@ -719,6 +725,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         GridView2.Visible = true;
                         GridView1.Visible = false;
                         CheckBox1.Checked = true;
+                        errfile.Visible = false;
                     }
                     this.ztxx.Text = "<font color=red>成功" + zhs.ToString() + "条记录!!</font>";
                     for (int ok = delok.Length - 1; ok >= 0; ok--)
@@ -726,6 +733,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         try
                         {
                             x.Rows.RemoveAt(Convert.ToInt32(delok[ok]));
+                            errdata.Rows.RemoveAt(Convert.ToInt32(delok[ok]));
                         }
                         catch (Exception ex)
                         {
@@ -751,33 +759,33 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
             }
 
 #region (4)隐藏不需要提示的列,绑定gridview呈现错误数据
+
+            #region 生成错误模板
+            string str = "寝室预分配出错数据" + DateTime.Now.ToString("yyyyMMddHHmmss");
+           
             
-            for (int re = 0; re < removeok.Split(',').Length; re++)
+            //引用EXCEL导出类
+            toexcel xzfile = new toexcel();
+            string filen = xzfile.DatatableToExcel(errdata, str);
+            //Response.Write("文件名" + filen);
+            if (filen.Length > 4)
             {
-                try
-                {
-                    x.Columns.Remove(removeok.Split(',')[re].ToString());
-                    //clok.Columns.Remove(removeok.Split(',')[re].ToString());
-                }
-                catch (Exception ex)
-                {
-                    //if (ex.Message == "列“" + removeok.Split(',')[re].ToString() + "”不属于表 。")
-                    //{
-                    //    this.ztxx.Text += "<font color=red>x你上传的数据中的“" + removeok.Split(',')[re].ToString() + "”列取名不正确，请检查!</font>";
-                    //}
-                    //else
-                    //{
-                    //    this.ztxx.Text += "<font color=red>" + ex.Message + "!</font>";
-                    //}
-                }
+                errfile.Visible = true;
+                errfile.HRef = filen;
+               //this.Label1.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
+
             }
+            else
+            {
+                errfile.Visible = false;
+            }
+            #endregion
+
+           
             
 
             GridView1.DataSource = x;
-            //GridView2.DataSource = clok;
-            //GridView1.
-            //隐藏错误提示列，仅显示自定义错误提示列
-            //GridView1.Columns[1].Visible = false;
+            
             GridView1.DataBind();
             //GridView2.DataBind();
             
@@ -802,16 +810,23 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
     }
     protected void GridView1_RowCreated(object sender, GridViewRowEventArgs e)
     {
-        if (e.Row.RowType != DataControlRowType.Pager)//如果不是分页列
+        try
         {
-            //将GRIDVIEW的第一列隐藏
-            e.Row.Cells[6].Attributes.Add("style", "display:none;");
-            e.Row.Cells[0].Attributes.Add("style", "text-align:left;width:40%;text-indent:-30px;padding-left:40px");
-            e.Row.Cells[1].Attributes.Add("style", "width:50px;");
-            //e.Row.Cells[2].Attributes.Add("style", "width:60px;");
-            //e.Row.Cells[3].Attributes.Add("style", "width:40px;");
-            //e.Row.Cells[4].Attributes.Add("style", "width:60px;");
-            //e.Row.Cells[5].Attributes.Add("style", "width:100px;");
+            if (e.Row.RowType != DataControlRowType.Pager)//如果不是分页列
+            {
+                //将GRIDVIEW的第一列隐藏
+                e.Row.Cells[6].Attributes.Add("style", "display:none;");
+                e.Row.Cells[0].Attributes.Add("style", "text-align:left;width:40%;text-indent:-30px;padding-left:40px");
+                e.Row.Cells[1].Attributes.Add("style", "width:50px;");
+                //e.Row.Cells[2].Attributes.Add("style", "width:60px;");
+                //e.Row.Cells[3].Attributes.Add("style", "width:40px;");
+                //e.Row.Cells[4].Attributes.Add("style", "width:60px;");
+                //e.Row.Cells[5].Attributes.Add("style", "width:100px;");
+            }
+        }
+        catch(Exception e3)
+        {
+            ztxx.Text += "模板准备有误：" + e3.Message;
         }
     }
     protected string cwts(string ts)
@@ -834,8 +849,15 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
         }
         else
         {
+            errfile.Visible = false;
             GridView2.Visible = false;
             GridView1.Visible = true;
         }
     }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+       
+      
+    }
+   
 }

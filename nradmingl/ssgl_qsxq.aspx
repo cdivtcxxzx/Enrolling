@@ -68,8 +68,31 @@
     <form id="form1" class="layui-form layui-form-pane" runat="server">
         <div class="admin-main">
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 5px;">
-                <legend style="font-size: 14px;">基础信息</legend>
-                <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="GridView1" style="border-collapse: collapse;">
+                <legend style="font-size: 14px;">寝室基础信息及预分配信息</legend>
+
+                <asp:GridView  CssClass="site-table table-hover"  ID="GridView2" runat="server" AutoGenerateColumns="true" 
+                    DataSourceID="SqlDataSource1">
+                   
+                </asp:GridView>
+
+
+
+
+
+                <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+                    ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                    SelectCommand="select row_number() over (order by  房间编号)  AS 序号,* from (SELECT   DISTINCT   TOP (500)   Base_Campus.Campus_Name AS 校区,Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room.Room_NO AS 房间编号,   Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别,            Fresh_Class.Name AS 已分配班级 FROM         Fresh_Dorm FULL OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO FULL OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                  Fresh_Class INNER JOIN                   Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON     Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO where 1=1 AND Fresh_Room.Room_NO= @Room_NO  ) t order by  房间编号">
+                    <SelectParameters>
+                        <asp:QueryStringParameter Name="Room_NO" QueryStringField="roomno" 
+                            Type="String" />
+                    </SelectParameters>
+                </asp:SqlDataSource>
+
+
+
+
+
+              <%--  <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="GridView1" style="border-collapse: collapse;">
                     <tbody>
                         <tr align="center">
                             <th scope="col">校区名称</th>
@@ -92,17 +115,43 @@
                             <td>2</td>
                         </tr>
                     </tbody>
-                </table>
+                </table>--%>
             </fieldset>
             <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
                 <ul class="layui-tab-title">
-                    <li class="layui-this">入住学生信息</li>
+                    <li class="layui-this">床位及入住学生信息</li>
                     <li>寝室缩影</li>
                 </ul>
                 <div class="layui-tab-content" style="height: 100%;">
                     <div class="layui-tab-item layui-show">
 
-                        <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="GridView1" style="border-collapse: collapse;">
+                     <asp:GridView  CssClass="site-table table-hover"  ID="GridView3" runat="server" AutoGenerateColumns="true" 
+                    DataSourceID="SqlDataSource2">
+                   
+                </asp:GridView>
+
+
+
+
+
+                <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+                    ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                    SelectCommand="SELECT     TOP (20) Fresh_Bed.Bed_NO AS 床位编号, Fresh_Bed.Bed_Name AS 床位描述, Fresh_Room.Room_NO AS 房间编号, Fresh_Bed_Log.FK_SNO AS 学号, 
+                      Base_STU.Name AS 姓名, Fresh_Class.Name AS 班级名称, Base_College.Name AS 学院名称, Fresh_SPE.SPE_Name AS 专业名称
+FROM         Fresh_Room RIGHT OUTER JOIN
+                      Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO LEFT OUTER JOIN
+                      Base_STU LEFT OUTER JOIN
+                      Fresh_SPE LEFT OUTER JOIN
+                      Base_College ON Fresh_SPE.FK_College_Code = Base_College.PK_College ON Base_STU.FK_SPE_Code = Fresh_SPE.PK_SPE LEFT OUTER JOIN
+                      Fresh_Class ON Base_STU.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN
+                      Fresh_Bed_Log ON Base_STU.PK_SNO = Fresh_Bed_Log.FK_SNO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Log.FK_Bed_NO where Fresh_Room.Room_NO=@Room_NO
+ORDER BY 床位编号">
+                    <SelectParameters>
+                        <asp:QueryStringParameter Name="Room_NO" QueryStringField="roomno" 
+                            Type="String" />
+                    </SelectParameters>
+                </asp:SqlDataSource>
+                       <%-- <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="GridView1" style="border-collapse: collapse;">
                             <tbody>
                                 <tr align="center">
                                     <th scope="col">序号</th>
@@ -155,7 +204,7 @@
                                     <td class="hidden-xs">上铺靠门</td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table>--%>
                     </div>
                     <div class="layui-tab-item">
 
@@ -173,9 +222,9 @@
             <div>
                 <div style="text-align: center">
                     <span style="padding: 8px;">
-                        <a href="" class="layui-btn layui-btn-small" id="">
+                       <%-- <a href="" class="layui-btn layui-btn-small" id="">
                             <i class="layui-icon">&#x1006;</i> 关闭
-                        </a>
+                        </a>--%>
                     </span>
                 </div>
             </div>

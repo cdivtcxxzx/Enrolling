@@ -35,7 +35,7 @@
             <span style="float:right" id="btnback">
             
 				
-                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
+                 <a href="xszz-index.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
                </span>
