@@ -203,6 +203,8 @@ function clear_student_status(){
     $('#xs_bzr').html('');
     $('#xs_bzrdhhm').html('');
     $('#affair_list').html('');
+    $('#xszpxx').attr('src', '');
+
 }
 
 //装入某迎新事务操作界面
@@ -296,6 +298,7 @@ function find(){
             dataType: "text",
             data: { "cs": "get_student","pk_sno": pk_sno},
             success: function (data) {
+                //console.log(data);
                 var json_data = JSON.parse(data);
                 if (json_data.code == 'success') {
                     if(json_data.data!=null && json_data.data.length>0){
@@ -305,6 +308,7 @@ function find(){
                                 $('#xs_xm').html(json_data.data[i].data.Name);
                                 $('#xs_sb').html(json_data.data[i].data.Gender_Code);
                                 $('#xs_sfz').html(json_data.data[i].data.ID_NO);
+                                $('#xszpxx').attr('src', '../' + json_data.data[i].data.Photo);
                             }
                             if(json_data.data[i].name=='spe'){
                                 $('#xs_xl').html(json_data.data[i].data.EDU_Level_Code);
@@ -359,7 +363,11 @@ function find(){
                                                                         for(var i=0;i<log.length;i++){
                                                                             var Affair_Name=detail[i].Affair_Name;
                                                                             var Log_Status=log[i].Log_Status;
-                                                                            status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
+                                                                            if(Affair_Name==$('#affair_name').html()){
+                                                                                status=status+'<br /><label style="color:red;">'+Affair_Name+'：'+Log_Status+'</label>';
+                                                                            }else{
+                                                                                status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
+                                                                            }
                                                                             console.log(detail[i].PK_Affair_NO);
                                                                             if(detail[i].PK_Affair_NO==pk_affair_no){
                                                                                 affair_oldstatus=Log_Status;
@@ -500,7 +508,7 @@ function find(){
 function freshstatus(pk_affair_no,pk_sno,affair_oldstatus)
 {
     if(freshstatusflag){
-        console.log(pk_affair_no+'  '+pk_sno);
+        console.log(pk_affair_no+'  '+pk_sno+' id='+timeid);
         //NO:17 获取某学生现场迎新事务列表
         $.ajax({
             url: "appserver/manager.aspx",
@@ -522,7 +530,13 @@ function freshstatus(pk_affair_no,pk_sno,affair_oldstatus)
                             }
                             var Affair_Name=detail[i].Affair_Name;
                             var Log_Status=log[i].Log_Status;
-                            status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
+                            if(Affair_Name==$('#affair_name').html()){
+                                status=status+'<br /><label style="color:red;">'+Affair_Name+'：'+Log_Status+'</label>';
+                            }else{
+                                status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
+                            }
+
+                            //status=status+'<br />'+Affair_Name+'：<label>'+Log_Status+'</label>';
                         }
                         $('#affair_list').html(status);//学生事务状态列表
                     }
@@ -537,7 +551,10 @@ function freshstatus(pk_affair_no,pk_sno,affair_oldstatus)
                 }else{
                     //alert('已进行过此操作');
                     freshstatusflag=false;
-                    timeid=null;
+                    if(timeid!=null){
+                        clearTimeout(timeid);
+                        timeid=null;
+                    }
                 }
             },
             error: function (data) {
@@ -549,5 +566,7 @@ function freshstatus(pk_affair_no,pk_sno,affair_oldstatus)
                 timeid=setTimeout("freshstatus('"+pk_affair_no+"','"+pk_sno+"')", 800);
             }
         });
+    }else{
+
     }
 }

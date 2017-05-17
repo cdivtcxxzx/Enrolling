@@ -15,7 +15,7 @@
             url: "../../nradmingl/appserver/manager.aspx",
             type: "get",
             datType: "text",
-            data: { "cs": "get_student", "pk_sno": pk_sno },
+            data: { "cs": "get_student_detail", "pk_sno": pk_sno },
             success: function (data) {
                 //console.log(data);
                 var json_data = JSON.parse(data);

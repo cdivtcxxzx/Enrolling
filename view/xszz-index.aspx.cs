@@ -16,7 +16,6 @@ public partial class view_xszz_index : System.Web.UI.Page
         #region 控制业务代码
         //Session["pk_sno"] = pk_sno;
         this.pk_sno.Value = Session["pk_sno"].ToString().Trim();//其值应由会话中来，在学生登陆成功后被赋予初值
-
         #endregion
     }
 }

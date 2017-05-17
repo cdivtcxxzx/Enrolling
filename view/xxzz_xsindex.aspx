@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xszz-index.aspx.cs" Inherits="view_xszz_index" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xxzz_xsindex.aspx.cs" Inherits="view_xxzz_xsindex" %>
 
 
 
@@ -68,12 +68,12 @@
     <!--页面开始全范围框架-->
     <div class="admin-main">
         <!--顶部提示及导航-->
-        <blockquote class="layui-elem-quote">
+        <blockquote class="layui-elem-quote" style="border-left: 0px solid #005CA3;border-radius: 5px 5px 5px 5px;">
 
-            <i class="layui-icon">&#xe602;</i>学生网上自助报到&gt;&gt;学生网上报到首页
+           <span class="hidden-xs"><i class="layui-icon">&#xe613;</i>班级：装备制造1班&nbsp;&nbsp;&nbsp;&nbsp;</span> <i class="layui-icon">&#xe612;</i>班主任：胡元&nbsp;&nbsp;&nbsp;&nbsp; <span class="hidden-xs"><i class="layui-icon">&#xe63a;</i>联系电话：13438487878</span>
             <span style="float: right">
-                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
-                    <i class="layui-icon">&#xe603;</i>
+                 <a href=#" class="layui-btn layui-btn-small">
+                    <i class="layui-icon">&#xe63c;</i>查看详细
                 </a>
             </span>
 
@@ -112,21 +112,21 @@
             }
 
             .xsxx2 {
-                width: 48%;
+                width: 96%;
             }
 
             .xsxx3 {
-                width: 48%;
+                width: 96%;
             }
 
             @media (max-width: 550px) {
                 .xsxx2 {
-                    width: 100%;
+                    width: 96%;
                     float: none;
                 }
 
                 .xsxx3 {
-                    width: 100%;
+                    width: 96%;
                     float: none;
                 }
             }
@@ -137,17 +137,48 @@
 
             <form class="layui-form layui-form-pane" action="" runat="server">
                 <asp:HiddenField ID="pk_sno" Value="" runat="server" />
-                <div class="xsxx2">
-                </div>
+
+               <div class="xsxx2">
+                  <br />
+
+                   <table style="width:100%;">
+                       
+                         <tr><td style="vertical-align:bottom;width:60px;padding-bottom:5px;"><img width="50px" src="../images/xszt/1.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+                    
+                    <label class="layui-form-label" style="width: 110px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" onclick="action(&quot;2&quot;,&quot;2&quot;)">报到须知</a></label>
+                    <div class="layui-input-block" style="margin-left: 150px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xsxx_xh"><font color="green"><b>已阅读</b></font></span></div></div></div></td></tr>
+
+                   
+
+                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img width="50px" src="../images/xszt/2.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+                    
+                    <label class="layui-form-label" style="width: 110px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" onclick="action(&quot;2&quot;,&quot;2&quot;)">网上缴费</a></label>
+                    <div class="layui-input-block" style="margin-left: 150px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xsxx_xh"><font color="green"><b>已缴费</b></font></span> <span class="hidden-xs">，共缴费：<b>3100</b>元</span></div></div></div></td></tr>
+
+                       
+
+                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img width="50px" src="../images/xszt/3-3.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+                    
+                    <label class="layui-form-label" style="width: 110px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" onclick="action(&quot;2&quot;,&quot;2&quot;)">选择寝室</a></label>
+                    <div class="layui-input-block" style="margin-left: 150px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xsxx_xh"><font color="red"><b>未完成</b></font></span></div></div></div></td></tr>
+
+
+                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img width="50px" src="../images/xszt/w4-4.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+                    
+                    <label class="layui-form-label" style="width: 110px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" onclick="action(&quot;2&quot;,&quot;2&quot;)">信息完善</a></label>
+                    <div class="layui-input-block" style="margin-left: 150px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xsxx_xh"><font color="red"><b>未完成</b></font></span></div></div></div></td></tr>
+
+                      
+
+
+                   </table>
+
+
+
+
+
                 <div class="xsxx3">
-<%--                    <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" onclick="javascript:location.href='index2.aspx';">消息提醒</a></label>
-                        <div class="layui-input-block" style="margin-left: 150px;">
-                            <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
-                                <span id="xsxx_xh">有<font color="red"><b>3</b></font>条消息未读</span>
-                            </div>
-                        </div>
-                    </div>--%>
+
                 </div>
                 <!--
         <div class="layui-form-item" style="text-align:center">
@@ -165,76 +196,9 @@
 
     </div>
   
-        		<script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
-    <script>
-		    layui.use('element', function () {
-    var $ = layui.jquery,
-        element = layui.element(); //Tab的切换功能，切换事件监听等，需要依赖element模块
+        		
 
-    //触发事件
-    var active = {
-        tabAdd: function () {
-            //新增一个Tab项
-            element.tabAdd('demo', {
-                title: '新选项' + (Math.random() * 1000 | 0) //用于演示
-                    ,
-                content: '内容' + (Math.random() * 1000 | 0)
-            })
-        },
-        tabDelete: function () {
-            //删除指定Tab项
-            element.tabDelete('demo', 2); //删除第3项（注意序号是从0开始计算）
-        },
-        tabChange: function () {
-            //切换到指定Tab项
-            element.tabChange('demo', 1); //切换到第2项（注意序号是从0开始计算）
-        }
-    };
 
-    $('.site-demo-active').on('click', function () {
-        var type = $(this).data('type');
-        active[type] ? active[type].call(this) : '';
-    });
-});
-                </script>
-    <script>
-        	    layui.use(['form', 'layedit', 'laydate'], function () {
-  	        var form = layui.form(),
-            layer = layui.layer,
-            layedit = layui.layedit,
-            laydate = layui.laydate;
-
-  	        //创建一个编辑器
-  	        var editIndex = layedit.build('LAY_demo_editor');
-  	        //自定义验证规则
-  	        form.verify({
-  	            title: function (value) {
-  	                if (value.length < 5) {
-  	                    return '标题至少得5个字符啊';
-  	                }
-  	            },
-  	            pass: [/(.+){6,12}$/, '密码必须6到12位'],
-  	            content: function (value) {
-  	                layedit.sync(editIndex);
-  	            }
-  	        });
-
-  	        //监听提交
-  	        form.on('submit(demo1)', function (data) {
-  	            layer.alert(JSON.stringify(data.field), {
-  	                title: '最终的提交信息'
-  	            })
-  	            return false;
-  	        });
-        	       
-  	    });
-                </script>
-
-    <script src="../b_js/jquery.min2.js"></script>
-    <script src="../bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="../b_js/app/xszz-index.js"></script>
-    <script>load();</script>
 
 </body>
 </html>
-

@@ -27,7 +27,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">旧密码：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="username" lay-verify="oldpass" placeholder="请输入旧密码" autocomplete="off" class="layui-input">
+                        <input type="password" id="oldpwd" name="username" lay-verify="oldpass" placeholder="请输入旧密码" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -44,7 +44,7 @@
                 </div>
                 <div style="text-align: center; float: left; margin-top: 10px; margin-left: 150px">
                     <span>
-                        <a href="" class="layui-btn layui-btn-small" lay-submit="" lay-filter="demo1" id="">
+                        <a href="#" onclick="pwd();" class="layui-btn layui-btn-small" lay-submit="" lay-filter="demo1" id="">
                             <i class="layui-icon">&#xe605;</i> 提交
                         </a>
                     </span>
@@ -52,51 +52,57 @@
                 <div style="text-align: center; float: left; margin-top: 10px; margin-left: 5px">
                 <span>
                     <a href="" class="layui-btn layui-btn-small">
-                        <i class="layui-icon">&#x1006;</i> 关闭
+                        <i class="layui-icon">&#x1006;</i> 重置
                     </a>
                 </span>
             </div>
             </div>
         </div>
     </form>
+            <script type="text/javascript" src="../b_js/jquery.min2.js"></script>
+        <script type="text/javascript" src="../b_js/app/change_password.js"></script>
+
     <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
     <script>
 
 
-        layui.use(['form', 'layedit', 'laydate'], function () {
-            var form = layui.form()
-            , layer = layui.layer
-            , layedit = layui.layedit
-            , laydate = layui.laydate;
-            //创建一个编辑器
-            var editIndex = layedit.build('LAY_demo_editor');
-            //自定义验证规则
-            form.verify({
-                oldpass: function (value) {
-                    if (value.length==0) {
-                        return '必须填写旧密码';
-                    }
-                },
-                same: function(){
-                    var pwd1 = document.getElementById("pwd1").value;
-                    var pwd2 = document.getElementById("pwd2").value;
-                    if (pwd1!= pwd2) {
-                        return '两次密码输入不一致';
-                    }
-                },
-                pass: [/^[0-9A-Za-z]{6,10}$/, '密码必须为字母或数字6到10位']
-              , content: function (value) {
-                  layedit.sync(editIndex);
-              }
-            }); 
-            //监听提交
-            form.on('submit(demo1)', function (data) {
-                layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
-                })
-                return false;
-            });
-        });
+        //layui.use(['form', 'layedit', 'laydate'], function () {
+        //    var form = layui.form()
+        //    , layer = layui.layer
+        //    , layedit = layui.layedit
+        //    , laydate = layui.laydate;
+        //    //创建一个编辑器
+        //    var editIndex = layedit.build('LAY_demo_editor');
+        //    //自定义验证规则
+        //    form.verify({
+        //        oldpass: function (value) {
+        //            if (value.length==0) {
+        //                return '必须填写旧密码';
+        //            }
+        //        },
+        //        same: function(){
+        //            var pwd1 = document.getElementById("pwd1").value;
+        //            var pwd2 = document.getElementById("pwd2").value;
+        //            if (pwd1!= pwd2) {
+        //                return '两次密码输入不一致';
+        //            }
+        //        },
+        //        pass: [/^[0-9A-Za-z]{6,10}$/, '密码必须为字母或数字6到10位']
+        //      , content: function (value) {
+        //          layedit.sync(editIndex);
+        //      }
+        //    }); 
+        //    监听提交
+        //    form.on('submit(demo1)', function (data) {
+        //        layer.alert(JSON.stringify(data.field), {
+        //            title: '最终的提交信息'
+        //        })
+        //        return false;
+        //    });
+
+        //});
+
+
     </script>
 </body>
 </html>
