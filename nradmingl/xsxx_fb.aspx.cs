@@ -212,6 +212,7 @@ public partial class nradmingl_xsxx_fb : System.Web.UI.Page
         DataTable dt = organizationService.getStuByBatchCol(sel_batch, sel_colleage);
         if (dt == null || dt.Rows.Count <= 0) { return; }
         dt.Columns.Remove("Fresh_bath");
+        dt.Columns.Remove("Colleage");
         dt.Columns["PK_SNO"].ColumnName = "学号";
         dt.Columns["Name"].ColumnName = "姓名";
         dt.Columns["Gender"].ColumnName = "性别";
@@ -220,7 +221,6 @@ public partial class nradmingl_xsxx_fb : System.Web.UI.Page
         dt.Columns["Xz"].ColumnName = "学制";
         dt.Columns["Year"].ColumnName = "年级";
         dt.Columns["Class_Name"].ColumnName = "班级名称";
-        dt.Columns["Colleage"].ColumnName = "学院";
         #region 导出
         //引用EXCEL导出类
         toexcel xzfile = new toexcel();
@@ -240,5 +240,31 @@ public partial class nradmingl_xsxx_fb : System.Web.UI.Page
         }
         #endregion
     }
-  
+
+    //批次选择，记录session
+    protected void batch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string batch_fb = batch.SelectedValue.ToString();
+        if (batch_fb != "" && batch_fb != "-1")
+        {
+            Session["batch_fb"] = batch_fb;
+        }
+        else
+        {
+            Session["batch_fb"] = "-1";
+        }
+    }
+    //学院选择，记录session
+    protected void xueyuan_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string colleage_fb = xueyuan.SelectedValue.ToString();
+        if (colleage_fb != "" && colleage_fb != "-1")
+        {
+            Session["colleage_fb"] = colleage_fb;
+        }
+        else
+        {
+            Session["colleage_fb"] = "-1";
+        }
+    }
 }

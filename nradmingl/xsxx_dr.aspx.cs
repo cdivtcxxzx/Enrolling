@@ -223,7 +223,11 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
                             x.Rows[ii]["学号"] = organizationService.createNum(x.Rows[ii]["年级"].ToString().Trim().Replace("'", ""), ASPE.PK_SPE, new_xz);
                         }
 
-
+                        //1.5 高考报名号、姓名、身份证号                        
+                        if (x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", "").Length != 18 || x.Rows[ii]["姓名"].ToString().Trim().Replace("'", "") == "" || x.Rows[ii]["高考报名号"].ToString().Trim().Replace("'", "") == "")
+                        {
+                            x.Rows[ii]["错误提示"] = " 信息不完整，或身份证有误";
+                        }
 
                         //2身份证查重
                         if (organizationService.getStuBySFZ(x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", "")))
@@ -468,7 +472,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     protected void PageSize_Go(object sender, EventArgs e)
     {
 
-        TextBox ps = (TextBox)this.GridView1.BottomPagerRow.FindControl("PageSize_Set");
+        TextBox ps = (TextBox)this.GridView2.BottomPagerRow.FindControl("PageSize_Set");
         if (!string.IsNullOrEmpty(ps.Text))
         {
 
@@ -488,7 +492,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
 
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-        GridView1.PageIndex = e.NewPageIndex;
+        GridView2.PageIndex = e.NewPageIndex;
     }
 
     #endregion
@@ -497,9 +501,9 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     protected void LinkButtonGo_Click(object sender, EventArgs e)
     {
 
-        LinkButton lbtn_go = (LinkButton)this.GridView1.BottomPagerRow.FindControl("LinkButtonGo");
+        LinkButton lbtn_go = (LinkButton)this.GridView2.BottomPagerRow.FindControl("LinkButtonGo");
 
-        TextBox txt_go = (TextBox)this.GridView1.BottomPagerRow.FindControl("txt_go");
+        TextBox txt_go = (TextBox)this.GridView2.BottomPagerRow.FindControl("txt_go");
 
         if (!string.IsNullOrEmpty(txt_go.Text))
         {
@@ -523,7 +527,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     #region 始终显示下部控制区
     protected void GridView1_DataBound(object sender, EventArgs e)
     {
-        if (this.GridView1.Rows.Count != 0)
+        if (this.GridView2.Rows.Count != 0)
         {
             Control table = this.GridView1.Controls[0];
             int count = table.Controls.Count;
