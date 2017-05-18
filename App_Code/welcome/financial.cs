@@ -516,7 +516,7 @@ public class financial
                 //string md5 = MD5Encrypt32("yxxtgf$RET54s");
 
                 user_fee user = make_user_fee(PK_SNO);
-                //调试信息
+                //调试信息,正式运行时删除
                 user.bjdm = "lsdz201701";
                 user.bjmc = "2017单招临时班";
                 user.lxnd = "2017";
@@ -526,6 +526,7 @@ public class financial
                 user.yxmc = "招办";
                 user.zydm = "ls001";
                 user.zymc = "单招专业";
+                //调试信息结束
 
                 string md5 ="9017dc9c2d3f2532ed6834c207ea6c86";
                 string user_json = null;
