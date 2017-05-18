@@ -527,7 +527,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     #region 始终显示下部控制区
     protected void GridView1_DataBound(object sender, EventArgs e)
     {
-        if (this.GridView2.Rows.Count != 0)
+        if (this.GridView1.Rows.Count != 0)
         {
             Control table = this.GridView1.Controls[0];
             int count = table.Controls.Count;
@@ -535,6 +535,21 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
         }
     }
     #endregion
+    # region 显示总记录数
+    protected void ObjectDataSource2_Selected(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+        DataTable dt = (DataTable)e.ReturnValue;
+        if (dt == null)
+        {
+            Session["xsDrRowsCount"] = "0";
+        }
+        else
+        {
+            Session["xsDrRowsCount"] = dt.Rows.Count.ToString();
+        }
+    }
+    #endregion
+
     //民族列处理
     public string show_mz(string mzdm)
     {
@@ -554,4 +569,12 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     }
 
 
+    protected void DropDownListBatch_DataBound(object sender, EventArgs e)
+    {
+        //初次下拉加载数据后设置批次选中
+        if (Session["batch"] != null && Session["batch"] != "")
+        {
+            DropDownListBatch.Items.FindByValue(Session["batch"].ToString()).Selected = true;
+        }
+    }
 }
