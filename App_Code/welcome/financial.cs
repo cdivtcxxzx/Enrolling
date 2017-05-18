@@ -169,6 +169,14 @@ public class financial
                             }
                         }
                     }
+
+                    System.Data.DataTable dt = this.get_base_spe_zydm(result.zydm);//将招办的专业号替换为教务的专业号
+                    if (dt != null && dt.Rows.Count == 1)
+                    {
+                        result.zydm = dt.Rows[0]["ZYDM"].ToString().Trim();//专业编号
+                        result.zymc = dt.Rows[0]["ZYMC"].ToString().Trim(); //专业名称
+                    }
+
                 }
             }
 
@@ -1195,6 +1203,29 @@ public class financial
             try
             {
                 new c_log().logAdd("financial.cs", "get_fee_no_order", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //根据招办专业代码获取对应的教务专业代码
+    private  System.Data.DataTable get_base_spe_zydm(string SPE_Code)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+
+            sqlstr = "select * from base_spe_zydm where SPE_Code=@cs1";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", SPE_Code.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_base_spe_zydm", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;
