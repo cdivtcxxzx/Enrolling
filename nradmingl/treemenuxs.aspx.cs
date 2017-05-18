@@ -61,129 +61,132 @@ public partial class nradmingl_treemenuxs : System.Web.UI.Page
         ////new c_login().powerYanzheng(Session["username"].ToString(), pagelm1, pageqx2, "2");//验证当前栏目关键字中的权限２,通常在按钮中需验证权限时使用
         //#endregion
         //左部菜单
-        string sc = "";
-        string sqlSerachByDhcdh = "SELECT * FROM lanm WHERE (sfdhxs=1) and lmid='255' order by px asc";
-        DataTable dt = Sqlhelper.Serach(sqlSerachByDhcdh);
-        string url = "";
-        if (dt.Rows.Count > 0)
+        if (Session["username"] != null)
         {
-            //{"title": "基本元素","icon": "fa-cubes","spread": true,"children": [{"title": "按钮","icon": "&#xe641;","href": "button.html"}
-            sc = "[";
-            string isone = "0";
-            for (int i = 0; i < dt.Rows.Count; i++)
+            string sc = "";
+            string sqlSerachByDhcdh = "SELECT * FROM lanm WHERE (sfdhxs=1) and lmid='255' order by px asc";
+            DataTable dt = Sqlhelper.Serach(sqlSerachByDhcdh);
+            string url = "";
+            if (dt.Rows.Count > 0)
             {
-                //判断是否有权限
-                string qxok = "1";
-                //if (Session["UserName"] != null)
-                //{
-                //    if (new c_login().powerYanzheng(Session["UserName"].ToString(), dt.Rows[i]["gjz"].ToString(), "浏览", "2"))
-                //    {
-                //        qxok = "1";
-                //        //Response.Write(Session["UserName"].ToString() + dt.Rows[i]["gjz"].ToString() + "有权限");
-                //    }
-                //}
-
-              
-                url = dt.Rows[i]["url"].ToString().Replace("pk_sno=", "pk_sno="+Session["username"].ToString());
-                string sqlSerachByDhcdh2 = "SELECT * FROM lanm WHERE (sfdhxs=1) and fid='" + dt.Rows[i]["lmid"].ToString() + "' order by px asc";
-                //Response.Write(sqlSerachByDhcdh2);
-                DataTable dt2 = Sqlhelper.Serach(sqlSerachByDhcdh2);
-
-                if (dt2.Rows.Count > 0)
+                //{"title": "基本元素","icon": "fa-cubes","spread": true,"children": [{"title": "按钮","icon": "&#xe641;","href": "button.html"}
+                sc = "[";
+                string isone = "0";
+                for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    #region 二级栏目
+                    //判断是否有权限
+                    string qxok = "1";
+                    //if (Session["UserName"] != null)
+                    //{
+                    //    if (new c_login().powerYanzheng(Session["UserName"].ToString(), dt.Rows[i]["gjz"].ToString(), "浏览", "2"))
+                    //    {
+                    //        qxok = "1";
+                    //        //Response.Write(Session["UserName"].ToString() + dt.Rows[i]["gjz"].ToString() + "有权限");
+                    //    }
+                    //}
+
+
+                    url = dt.Rows[i]["url"].ToString().Replace("pk_sno=", "pk_sno=" + Session["username"].ToString());
+                    string sqlSerachByDhcdh2 = "SELECT * FROM lanm WHERE (sfdhxs=1) and fid='" + dt.Rows[i]["lmid"].ToString() + "' order by px asc";
                     //Response.Write(sqlSerachByDhcdh2);
-                    //展示二级栏目　
+                    DataTable dt2 = Sqlhelper.Serach(sqlSerachByDhcdh2);
 
-                    if (isone == "0")
+                    if (dt2.Rows.Count > 0)
                     {
-                        if (qxok == "1")
-                        {
-                            sc += "{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": true,\"children\": [";
-                            isone = "1";
-                        }
-                    }
-                    else
-                    {
-                        if (qxok == "1")
-                        {
-                            sc += ",{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"children\": [";
-                        }
-                    }
-                   
-                    string isone2 = "0";
-                    for (int c = 0; c < dt2.Rows.Count; c++)
-                    {
-                        //展示第三级
-                        url = dt2.Rows[c]["url"].ToString().Replace("pk_sno=", "pk_sno=" + Session["username"].ToString()); ;
+                        #region 二级栏目
+                        //Response.Write(sqlSerachByDhcdh2);
+                        //展示二级栏目　
 
-                        if (isone2 == "0")
+                        if (isone == "0")
                         {
                             if (qxok == "1")
                             {
-                                sc += "{\"title\": \"" + dt2.Rows[c]["lmmc"].ToString() + "\",\"icon\": \"" + dt2.Rows[c]["lmfont"].ToString() + "\",\"href\": \"" + url + "\" }";
-                                isone2 = "1";
+                                sc += "{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": true,\"children\": [";
+                                isone = "1";
                             }
-                            // Response.Write("<br>" + isone2 + "$");
                         }
                         else
                         {
                             if (qxok == "1")
                             {
-                                sc += ",{\"title\": \"" + dt2.Rows[c]["lmmc"].ToString() + "\",\"icon\": \"" + dt2.Rows[c]["lmfont"].ToString() + "\",\"href\": \"" + url + "\" }";
+                                sc += ",{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"children\": [";
                             }
-                            //Response.Write("<br>" + isone2 + "@");
+                        }
+
+                        string isone2 = "0";
+                        for (int c = 0; c < dt2.Rows.Count; c++)
+                        {
+                            //展示第三级
+                            url = dt2.Rows[c]["url"].ToString().Replace("pk_sno=", "pk_sno=" + Session["username"].ToString()); ;
+
+                            if (isone2 == "0")
+                            {
+                                if (qxok == "1")
+                                {
+                                    sc += "{\"title\": \"" + dt2.Rows[c]["lmmc"].ToString() + "\",\"icon\": \"" + dt2.Rows[c]["lmfont"].ToString() + "\",\"href\": \"" + url + "\" }";
+                                    isone2 = "1";
+                                }
+                                // Response.Write("<br>" + isone2 + "$");
+                            }
+                            else
+                            {
+                                if (qxok == "1")
+                                {
+                                    sc += ",{\"title\": \"" + dt2.Rows[c]["lmmc"].ToString() + "\",\"icon\": \"" + dt2.Rows[c]["lmfont"].ToString() + "\",\"href\": \"" + url + "\" }";
+                                }
+                                //Response.Write("<br>" + isone2 + "@");
+
+                            }
+
+
 
                         }
 
-                       
-
-                    }
-
-                    #endregion
-                    sc += "]}";
-                }
-                else
-                {
-                    //无二级栏目
-
-                    if (i == 0)
-                    {
-                        sc += "{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"href\": \"" + url + "\" }";
+                        #endregion
+                        sc += "]}";
                     }
                     else
                     {
-                        sc += ",{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\":false,\"href\": \"" + url + "\" }";
+                        //无二级栏目
+
+                        if (i == 0)
+                        {
+                            sc += "{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\": false,\"href\": \"" + url + "\" }";
+                        }
+                        else
+                        {
+                            sc += ",{\"title\": \"" + dt.Rows[i]["lmmc"].ToString() + "\",\"icon\": \"" + dt.Rows[i]["lmfont"].ToString() + "\",\"spread\":false,\"href\": \"" + url + "\" }";
+                        }
+
+
                     }
+                    // Response.Write("{\"title\": \"基本元素\",\"icon\": \"fa-cubes\",\"spread\": true,\"children\": ");
 
 
                 }
-                // Response.Write("{\"title\": \"基本元素\",\"icon\": \"fa-cubes\",\"spread\": true,\"children\": ");
 
 
+                sc += "]";
             }
+            else
+            {
+                sc = "[]";
+            }
+            //sc=sc.Replace("[,","[").Replace("]}]},","").Replace("]}]}]}",",").Replace(",]}]}","");
+            //if (sc.Contains("@"))
+            //{
 
+            //    sc = sc.Replace(" ", "").Replace("}{", "}@");
+            //    sc = sc.Split('@')[0] + "]}]";
+            //}
+            //if (sc.Contains("mymd5.aspx"))
+            //{
+            //    sc=sc.Replace("mymd5.aspx","@");
 
-            sc += "]";
+            //    sc = sc.Split('@')[0] + "\" }]}]";
+            //}
+
+            Response.Write(sc);
         }
-        else
-        {
-            sc = "[]";
-        }
-        //sc=sc.Replace("[,","[").Replace("]}]},","").Replace("]}]}]}",",").Replace(",]}]}","");
-        //if (sc.Contains("@"))
-        //{
-
-        //    sc = sc.Replace(" ", "").Replace("}{", "}@");
-        //    sc = sc.Split('@')[0] + "]}]";
-        //}
-        //if (sc.Contains("mymd5.aspx"))
-        //{
-        //    sc=sc.Replace("mymd5.aspx","@");
-
-        //    sc = sc.Split('@')[0] + "\" }]}]";
-        //}
-
-        Response.Write(sc);
     }
 }

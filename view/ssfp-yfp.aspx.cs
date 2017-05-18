@@ -302,7 +302,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
     protected void qsxz_Click2(object sender, EventArgs e)
     {
         //Response.Redirect("/view/xszz-index.aspx?pk_sno="+xsxx_xh.Text);
-        Response.Redirect("/view/xszz-index.aspx");
+        Response.Redirect("/view/xxzz_xsindex.aspx");
 
     }
 }

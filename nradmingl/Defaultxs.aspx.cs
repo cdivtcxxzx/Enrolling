@@ -42,8 +42,15 @@ public partial class nradmingl_Defaultxs : System.Web.UI.Page
         {
             if (Request.Cookies["xurl"] != null)
             {
-                HttpCookie cookiesurl = Request.Cookies["xurl"];
-                webpage = cookiesurl.Value.ToString().Replace("%3A", ":").Replace("%3F", "?").Replace("%3D", "=").Replace("%26", "&");
+                if (Request.Cookies["xurl"].ToString().Length > 1)
+                {
+                    HttpCookie cookiesurl = Request.Cookies["xurl"];
+                    webpage = cookiesurl.Value.ToString().Replace("%3A", ":").Replace("%3F", "?").Replace("%3D", "=").Replace("%26", "&");
+                }
+                else
+                {
+                    webpage = Request.Url.GetLeftPart(UriPartial.Query).ToString().Replace(Request.Url.Port.ToString(), Sqlhelper.serverport);
+                }
             }
             else
             {
