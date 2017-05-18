@@ -31,11 +31,11 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>学生网上自助报到>>预分配宿舍
+            <i class="layui-icon">&#xe602;</i>自助报到>>预分配宿舍
             <span style="float:right" id="btnback">
             
 				
-                 <a href="xszz-index.aspx" class="layui-btn layui-btn-small">
+                 <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
                </span>

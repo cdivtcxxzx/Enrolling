@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xxzz_xsindex.aspx.cs" Inherits="view_xxzz_xsindex" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xswsjf.aspx.cs" Inherits="view_xswsjf" %>
 
 
 
@@ -68,12 +68,12 @@
     <!--页面开始全范围框架-->
     <div class="admin-main">
         <!--顶部提示及导航-->
-        <blockquote class="layui-elem-quote" style="border-left: 0px solid #005CA3;border-radius: 5px 5px 5px 5px;">
+        <blockquote class="layui-elem-quote">
 
-           <span class="hidden-xs"><i class="layui-icon">&#xe613;</i><asp:Label ID="xsxx_bj" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp;</span> <i class="layui-icon">&#xe612;</i><asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp; <span class="hidden-xs"><i class="layui-icon">&#xe63a;</i><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></span>
+           <span ><i class="layui-icon">&#xe602;</i>自助报到>>网上缴费</span>
             <span style="float: right">
-                 <a id="xsxxurl" runat="server" href="xsjbxx.aspx" class="layui-btn layui-btn-small">
-                    <i class="layui-icon">&#xe63c;</i>查看详细
+                 <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
+                    <i class="layui-icon">&#xe603;</i>
                 </a>
             </span>
 
@@ -141,40 +141,22 @@
                <div class="xsxx2">
                   <br />
 
-                   <table style="width:100%;">
-                       
-                         <tr><td style="vertical-align:bottom;width:60px;padding-bottom:5px;"><img width="50px" src="../images/xszt/1.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+  <div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" id="xscz_bdxz" runat="server" onclick="action(&quot;2&quot;,&quot;2&quot;)">报到须知</a></label>
-                    <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_bdxz" runat="server"><font color="green"><b>已阅读</b></font></span> <span  id="xsztxq_bdxz" runat="server" class="hidden-xs"></span></div></div></div></td></tr>
+                    <label class="layui-form-label" style="width: 120px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" id="xscz_jf1" runat="server" onclick="action(&quot;2&quot;,&quot;2&quot;)">缴费项目选择</a></label>
+                    <div class="layui-input-block" style="margin-left: 120px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_jf1" runat="server"><font color="green"><b>已选择</b></font></span> <span  id="xsztxq_jf1" runat="server" class="hidden-xs"></span></div></div></div>
 
                    
 
-                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img width="50px" src="../images/xszt/2.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+                      <div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="xswsjf.aspx"  id="xscz_wsjf" runat="server" onclick="action(&quot;2&quot;,&quot;2&quot;)">网上缴费</a></label>
-                    <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span  id="xszt_wsjf" runat="server"><font color="green"><b>已缴费</b></font></span> <span  id="xsztxq_wsjh" runat="server" class="hidden-xs"></span></div></div></div></td></tr>
+                    <label class="layui-form-label" style="width: 120px;"><a class="layui-btn" style="width:100%;" href="xswsjf.aspx"  id="xscz_jf2" runat="server" onclick="action(&quot;2&quot;,&quot;2&quot;)">确认网上缴费</a></label>
+                    <div class="layui-input-block" style="margin-left: 120px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span  id="xszt_jf2" runat="server"><font color="green"><b>已缴费</b></font></span> <span  id="xsztxq_jf2" runat="server" class="hidden-xs"></span></div></div></div>
 
                        
 
-                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img width="50px" src="../images/xszt/3-3.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
-                    
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)"  id="xscz_xzqs" runat="server" onclick="action(&quot;2&quot;,&quot;2&quot;)">选择寝室</a></label>
-                    <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span  id="xszt_czqs" runat="server"><font color="red"><b>未完成</b></font></span> <span  id="xsztxq_xzqs" runat="server" class="hidden-xs"></span></div></div></div></td></tr>
 
-
-                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img width="50px" src="../images/xszt/w4-4.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
-                    
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)"  id="xscz_xxws" runat="server" onclick="action(&quot;2&quot;,&quot;2&quot;)">信息完善</a></label>
-                    <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_xxws" runat="server"><font color="red"><b>未完成</b></font></span> <span  id="xsztxq_xxws" runat="server" class="hidden-xs"></span></div></div></div></td></tr>
-
-                      
-
-
-                   </table>
-
-
-
+                   </div>
 
 
                 <div class="xsxx3">

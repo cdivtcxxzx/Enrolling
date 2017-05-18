@@ -27,7 +27,7 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>迎新管理>>预分配宿舍>>宿舍照片
+            <i class="layui-icon">&#xe602;</i>预分配宿舍>>宿舍照片
             <span style="float:right">
             
 				

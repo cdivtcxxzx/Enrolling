@@ -30,8 +30,28 @@ public partial class admin_LoginOut : System.Web.UI.Page
                 Response.Expires = 0;
                 Response.CacheControl = "no-cache";
                 Response.Cache.SetNoStore();
+
             }
-            Response.Redirect("~/Default.aspx");
+            Session.Abandon();//清除全部Session
+
+            //清空cookie
+            HttpCookie aCookie;
+            string cookieName;
+                cookieName = "xurl";
+                aCookie = new HttpCookie(cookieName);
+                aCookie.Value = "x";
+                aCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(aCookie);
+                //Response.Write(aCookie.Value);
+                if (Request.Cookies["xurl"] != null)
+                {
+                    //Response.Write("获取:"+Request.Cookies["xurl"].Value.ToString());
+                    //Response.End();
+                }
+               // Response.End();
+            
+
+            Response.Redirect("~/");
         }
     }
 }
