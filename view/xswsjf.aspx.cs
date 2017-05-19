@@ -29,16 +29,30 @@ public partial class view_xswsjf : System.Web.UI.Page
             //<font color=red>未完成</font>  
             //写法已完成
             //<font color=green>已完成</font>
-
-            this.xszt_jf1.InnerText = "";//缴费项目选择  
-            this.xszt_jf2.InnerText = "";//确认网上缴费
+            this.xszt_jf1.InnerHtml = "<font color=red>未完成</font>";//缴费项目确认  
+            this.xszt_jf2.InnerHtml = "<font color=red>未完成</font>";//网上缴费
            
 
             //详细情况
+            this.xsztxq_jf1.InnerHtml = "";//缴费项目确认  
+            this.xsztxq_jf2.InnerHtml = "";//网上缴费
 
-            this.xsztxq_jf1.InnerText = "";//缴费项目选择  
-            this.xsztxq_jf2.InnerText = "";//确认网上缴费
-           
+            batch batch_logic = new batch();
+            List<fresh_affair_log> affairlog_list = batch_logic.get_studentaffairlog_list(xh);//事务日志列表
+            if (affairlog_list != null)
+            {
+                for (int j = 0; affairlog_list != null && j < affairlog_list.Count; j++)
+                {
+                    if (affairlog_list[j].FK_Affair_NO.Trim().Equals("7"))//缴费项目确认
+                    {
+                        this.xszt_jf1.InnerHtml = affairlog_list[j].Log_Status.Trim();//网上缴费
+                    }
+                    if (affairlog_list[j].FK_Affair_NO.Trim().Equals("10"))//网上缴费
+                    {
+                        this.xszt_jf2.InnerHtml = affairlog_list[j].Log_Status.Trim();//网上缴费
+                    }
+                }
+            }            
 
 
             #endregion

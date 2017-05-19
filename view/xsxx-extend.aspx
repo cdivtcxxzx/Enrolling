@@ -25,7 +25,7 @@
         <blockquote class="layui-elem-quote">
             <i class="layui-icon">&#xe602;</i>自助报到<i class="layui-icon">&#xe602;</i>完善个人信息
             <span style="float: right" id="btnback">
-                 <a href="xszz-index.aspx" class="layui-btn layui-btn-small">
+                 <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe603;</i>
                 </a>
             </span>

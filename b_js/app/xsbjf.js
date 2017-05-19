@@ -339,5 +339,5 @@ function sure(){
 }
 
 function cancel(){
-    window.location.href="xszz-index.aspx";
+    window.location.href="xswsjf.aspx";
 }
