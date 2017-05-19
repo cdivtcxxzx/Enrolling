@@ -43,24 +43,93 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             //<font color=red>未完成</font>  
             //写法已完成
             //<font color=green>已完成</font>
-
-            this.xszt_bdxz.InnerText = "";//报到须知  
-            this.xszt_wsjf.InnerText = "";//网上缴费
-            this.xszt_czqs.InnerText = "";//选择寝室
-            this.xszt_xxws.InnerText = "";//信息完善
+            this.xszt_bdxz.InnerHtml = "<font color=red>未完成</font>";//报到须知  
+            this.xszt_wsjf.InnerHtml = "<font color=red>未完成</font>";//网上缴费
+            this.xszt_czqs.InnerHtml = "<font color=red>未完成</font>";//选择寝室
+            this.xszt_xxws.InnerHtml = "<font color=red>未完成</font>";//信息完善
 
             //详细情况
-
-            this.xsztxq_bdxz.InnerText = "";//报到须知
-            this.xsztxq_wsjh.InnerText = "";//网上缴费
-            this.xsztxq_xzqs.InnerText = "";//选择寝室
-            this.xsztxq_xxws.InnerText = "";//信息完善
+            this.xsztxq_bdxz.InnerHtml = "";//报到须知
+            this.xsztxq_wsjh.InnerHtml = "";//网上缴费
+            this.xsztxq_xzqs.InnerHtml = "";//选择寝室
+            this.xsztxq_xxws.InnerHtml = "";//信息完善
 
             //图片状态更改说明
-            zttp1.Src = "../images/xszt/1.png";//状态已完成：1.png 未完成1-1.png
-            zttp2.Src = "../images/xszt/2.png";//状态已完成：2.png 未完成2-2.png
+            zttp1.Src = "../images/xszt/1-1.png";//状态已完成：1.png 未完成1-1.png
+            zttp2.Src = "../images/xszt/2-2.png";//状态已完成：2.png 未完成2-2.png
             zttp3.Src = "../images/xszt/3-3.png";//状态已完成：3.png 未完成3-3.png
             zttp4.Src = "../images/xszt/w4-4.png";//状态已完成：w4.png 未完成w4-4.png
+
+            batch batch_logic = new batch();
+            List<fresh_affair_log> affairlog_list = batch_logic.get_studentaffairlog_list(xh);//事务日志列表
+            if (affairlog_list != null)
+            {
+                bool has_must = false;//有必交费用项目
+                string has_must_log = null;
+                bool has_order = false;//有未提交的订单
+                string has_order_log = null;
+
+                for (int j = 0; affairlog_list != null && j < affairlog_list.Count; j++)
+                {
+                    if (affairlog_list[j].FK_Affair_NO.Trim().Equals("9"))//报到须知
+                    {
+                        if (!affairlog_list[j].Log_Status.Trim().Equals("未确认"))
+                        {
+                            this.xszt_bdxz.InnerHtml = "<font color=green>已完成</font>";
+                            zttp1.Src = "../images/xszt/1.png";//状态已完成：1.png 未完成1-1.png
+                        }
+                    }
+                    if (affairlog_list[j].FK_Affair_NO.Trim().Equals("7"))//缴费项目确认
+                    {
+                        if (!affairlog_list[j].Log_Status.Trim().Equals("未选择必交费用"))
+                        {
+                            has_must = true;//有必交费用项目
+                        }
+                        has_must_log = affairlog_list[j].Log_Status.Trim();
+
+                    }
+                    if (affairlog_list[j].FK_Affair_NO.Trim().Equals("10"))//网上缴费
+                    {
+                        if (!affairlog_list[j].Log_Status.Trim().Equals("待缴订单数量:0"))
+                        {
+                            has_order = true;//还有没有交费的订单
+                        }
+                        has_order_log = affairlog_list[j].Log_Status.Trim();
+                    }
+                    if (affairlog_list[j].FK_Affair_NO.Trim().Equals("3"))//选择寝室
+                    {
+                        if (!affairlog_list[j].Log_Status.Trim().Equals("未选择"))
+                        {
+                            this.xszt_czqs.InnerHtml = "<font color=green>已完成</font>";
+                            zttp3.Src = "../images/xszt/3.png";//状态已完成：3.png 未完成3-3.png
+                        }
+                    }
+                    if (affairlog_list[j].FK_Affair_NO.Trim().Equals("12"))//信息完善
+                    {
+                        if (!affairlog_list[j].Log_Status.Trim().Equals("未完善"))
+                        {
+                            this.xszt_xxws.InnerHtml = "<font color=green>已完成</font>";
+                            zttp4.Src = "../images/xszt/w4.png";//状态已完成：w4.png 未完成w4-4.png
+                        }
+                    }
+                }
+                if (has_must && !has_order)
+                {
+                    this.xszt_wsjf.InnerHtml = "<font color=green>已完成</font>";
+                    zttp2.Src = "../images/xszt/2.png";//状态已完成：2.png 未完成2-2.png
+                }
+                else
+                {
+                    if (!has_must)
+                    {
+                        this.xsztxq_wsjh.InnerHtml = has_must_log;//网上缴费
+                    }
+                    else
+                    {
+                        this.xsztxq_wsjh.InnerHtml = has_order_log;//网上缴费
+                    }
+                }
+            }         
             #endregion
 
 #region 链接跳转

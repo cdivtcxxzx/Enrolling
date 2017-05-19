@@ -2181,7 +2181,12 @@ public class dormitory
         bjbh = Sqlhelper.Serach("SELECT     TOP (10) Fresh_Bed.Bed_Name AS 床位, Fresh_Dorm.Name AS 楼栋名称, Fresh_Room.Room_NO AS 房间名称,Fresh_Bed.Bed_NO AS 床位, Fresh_Bed_Log.FK_SNO FROM         Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO RIGHT OUTER JOIN                     Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO RIGHT OUTER JOIN                       Fresh_Bed_Log ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Log.FK_Bed_NO where Fresh_Bed_Log.FK_SNO='" + xh + "'");
 
         if (bjbh.Rows.Count > 0) return "0,选寝失败，该生已经选择过寝室了，【"+bjbh.Rows[0][1].ToString()+bjbh.Rows[0][2].ToString()+"，"+bjbh.Rows[0][3].ToString()+"床位】";
-        //更新寝室数据
+        //检查该寝室是否已经被选择
+        DataTable isxz = Sqlhelper.Serach("SELECT TOP 1 *  FROM [Fresh_Bed_Log] where FK_SNO='"+xh+"'");
+        if (isxz.Rows.Count > 0) return "0,选寝失败，该寝室已被其它学生选择！请重新选择！";
+            //更新寝室数据
+
+
 
         if (Sqlhelper.ExcuteNonQuery("INSERT INTO [Fresh_Bed_Log]([PK_Bed_Log],[FK_Bed_NO],[FK_SNO],[Updater],[Update_DT])VALUES('" + guid + "','" + bedid + "','" + xh + "','" + czy + "','" + DateTime.Now.ToString() + "')") > 0)
         {

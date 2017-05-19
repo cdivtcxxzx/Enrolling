@@ -202,7 +202,7 @@ public class WebService : System.Web.Services.WebService {
     [WebMethod]
     public string get_fee_ismust(string PK_SNO)
     {
-        string result = "未完成";
+        string result = "未选择必交费用";
         try {
             if (PK_SNO == null || PK_SNO.Trim().Length == 0)
             {
