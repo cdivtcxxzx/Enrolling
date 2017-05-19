@@ -14,8 +14,6 @@
          <!--引用ＬＡＹＵＩ前端表格ＣＳＳ,使用表格时才引用-->
 		<link rel="stylesheet" href="plugins/table.css" />
      <!--引用ＬＡＹＵＩ前端必须ＣＳＳ OVER-->
-    
-
 </head>
 <body>
     <style>

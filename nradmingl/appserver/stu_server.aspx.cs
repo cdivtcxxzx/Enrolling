@@ -131,52 +131,52 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
             if (type.Trim().Equals("xsxx_confirm"))
             {
                 string confirmState = Request.QueryString["confirmState"];//获取确认状态
-                string pk_batch_no = Request["pk_batch_no"];
-                string pk_affair_no = Request["pk_affair_no"];
-                string pk_staff_no = Request["pk_staff_no"];
+                //string pk_batch_no = Request["pk_batch_no"];
+                //string pk_affair_no = Request["pk_affair_no"];
+                //string pk_staff_no = Request["pk_staff_no"];
 
-                #region 检查操作权限
-                string session_pk_sno = null;
-                string session_pk_staff_no = null;
-                if (Session["pk_sno"] != null)
-                {
-                    session_pk_sno = Session["pk_sno"].ToString();
-                }
-                if (Session["pk_staff_no"] != null)
-                {
-                    session_pk_staff_no = Session["pk_staff_no"].ToString();
-                }
-                //权限验证
+                //#region 检查操作权限
+                //string session_pk_sno = null;
+                //string session_pk_staff_no = null;
+                //if (Session["pk_sno"] != null)
+                //{
+                //    session_pk_sno = Session["pk_sno"].ToString();
+                //}
+                //if (Session["pk_staff_no"] != null)
+                //{
+                //    session_pk_staff_no = Session["pk_staff_no"].ToString();
+                //}
+                ////权限验证
 
-                batch batch_logic = new batch();
-                affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsxxqr_xabh");
-                if (!jg.isauth)
-                {
-                    throw new Exception(jg.msg);
-                }
-                #endregion
+                //batch batch_logic = new batch();
+                //affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsxxqr_xabh");
+                //if (!jg.isauth)
+                //{
+                //    throw new Exception(jg.msg);
+                //}
+                //#endregion
 
                 if (pk_sno != null && pk_sno.Trim().Length != 0 && confirmState != null)
                 {
                     //1代表无误 非1代表信息有错误
                     bool boolState = confirmState == "1" ? true : false;
                     //todo:操作事务修改
-                    string create_name = null;
-                    if (Session["pk_sno"] != null)
-                    {
-                        create_name = session_pk_sno.Trim() + ":" + Session["Name"].ToString().Trim();
-                    }
-                    if (Session["pk_staff_no"] != null)
-                    {
-                        create_name = session_pk_staff_no.Trim() + ":" + Session["Name"].ToString().Trim();
-                    }
-                    bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", create_name);
+                    //string create_name = null;
+                    //if (Session["pk_sno"] != null)
+                    //{
+                    //    create_name = session_pk_sno.Trim() + ":" + Session["Name"].ToString().Trim();
+                    //}
+                    //if (Session["pk_staff_no"] != null)
+                    //{
+                    //    create_name = session_pk_staff_no.Trim() + ":" + Session["Name"].ToString().Trim();
+                    //}
+                    //bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", create_name);
 
                     //bool isWrite = batch_logic.set_affairlog(pk_sno, pk_affair_no, "已完成", "system:" + DateTime.Now.ToShortDateString());
-                    if (!isWrite)
-                    {
-                        throw new Exception("事务修改失败");
-                    }
+                    //if (!isWrite)
+                    //{
+                    //    throw new Exception("事务修改失败");
+                    //}
                     if (organizationService.addStuConfirm(pk_sno, boolState))
                     {
                         result.code = "success";
