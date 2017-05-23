@@ -269,18 +269,18 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
 
                                 Base_STU createStu = new Base_STU
                                 {
-                                    PK_SNO = x.Rows[ii]["学号"].ToString(),
-                                    FK_SPE_Code = x.Rows[ii]["专业代码"].ToString(),
-                                    Year = x.Rows[ii]["年级"].ToString(),
-                                    Test_NO = x.Rows[ii]["高考报名号"].ToString(),
-                                    ID_NO = x.Rows[ii]["身份证号"].ToString(),
-                                    Phone = "images/xstp/"+x.Rows[ii]["高考报名号"].ToString()+".jpg",
+                                    PK_SNO = x.Rows[ii]["学号"].ToString().Trim().Replace("'", ""),
+                                    FK_SPE_Code = x.Rows[ii]["专业代码"].ToString().Trim().Replace("'", ""),
+                                    Year = x.Rows[ii]["年级"].ToString().Trim().Replace("'", ""),
+                                    Test_NO = x.Rows[ii]["高考报名号"].ToString().Trim().Replace("'", ""),
+                                    ID_NO = x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", ""),
+                                    Phone = "images/xstp/" + x.Rows[ii]["高考报名号"].ToString().Trim().Replace("'", "") + ".jpg",
                                     Status_Code = "未报到",
-                                    Password = x.Rows[ii]["身份证号"].ToString().Substring(12,6),
-                                    Name = x.Rows[ii]["姓名"].ToString(),
-                                    Gender_Code = x.Rows[ii]["性别"].ToString(),
+                                    Password = x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", "").Substring(12, 6),
+                                    Name = x.Rows[ii]["姓名"].ToString().Trim().Replace("'", ""),
+                                    Gender_Code = x.Rows[ii]["性别"].ToString().Trim().Replace("'", ""),
                                     DT_Initial = DateTime.Now,
-                                    Nation_Code = x.Rows[ii]["民族"].ToString(),
+                                    Nation_Code = x.Rows[ii]["民族"].ToString().Trim().Replace("'", ""),
                                     Phone_dr = x.Rows[ii]["联系电话"].ToString().Trim().Replace("'","")
                                 };
                                 if (Session["batch"]!=null && Session["batch"].ToString()!="" && organizationService.addStu(createStu,Session["batch"].ToString()))

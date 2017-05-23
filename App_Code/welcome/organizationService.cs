@@ -484,7 +484,7 @@ public static class organizationService
     #endregion
     #region 根据批次和学院返回学生信息 getStuByBatchCol
     /// <summary>
-    /// 根据批次和学院返回学生信息（学号(PK_SNO)|高考报名号(Test_NO)|姓名(Name)|性别(Gender)|身份证号(ID_NO)|民族代码(Nation_code)|专业名称(SPE_Name)|学制(Xz)|年度(Year)|批次（Fresh_bath|学院代码(Colleage)））
+    /// 根据批次和学院返回学生信息（学号(PK_SNO)|高考报名号(Test_NO)|姓名(Name)|性别(Gender)|身份证号(ID_NO)|专业主键（SPE_PK）|民族代码(Nation_code)|专业名称(SPE_Name)|学制(Xz)|年度(Year)|批次（Fresh_bath|学院代码(Colleage)））
     /// </summary>
     /// <param name="batch">批次代码,"0"返回所有批次</param>
     /// <param name="colleage_sno">学院代码，"0"返回所有学院</param>
