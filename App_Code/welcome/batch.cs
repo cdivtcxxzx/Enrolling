@@ -2931,25 +2931,42 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
+                //sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
+                //        +" from vw_class a,"
+                //        +" (select distinct(fk_class_no)"
+                //        +" from vw_fresh_student_base"
+                //        +" where FK_Fresh_Batch=@cs1"
+                //        +" and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
+                //        +" where a.PK_Class_NO=b.fk_class_no "
+                //        +" order by collagename,SPE_Name,classname,campus_name";
+
                 sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
-                        +" from vw_class a,"
-                        +" (select distinct(fk_class_no)"
-                        +" from vw_fresh_student_base"
-                        +" where FK_Fresh_Batch=@cs1"
-                        +" and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
-                        +" where a.PK_Class_NO=b.fk_class_no "
-                        +" order by collagename,SPE_Name,classname,campus_name";
+                        + " from vw_class a left join "
+                        + " (select distinct(fk_class_no)"
+                        + " from vw_fresh_student_base"
+                        + " where FK_Fresh_Batch=@cs1"
+                        + " and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
+                        + " on a.PK_Class_NO=b.fk_class_no "
+                        + " order by collagename,SPE_Name,classname,campus_name";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
             }
             else
             {
+                //sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
+                //        + " from vw_class a,"
+                //        + " (select distinct(fk_class_no)"
+                //        + " from vw_fresh_student_base"
+                //        + " where FK_Fresh_Batch=@cs1 and College_NO=@cs2 "
+                //        + " and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
+                //        + " where a.PK_Class_NO=b.fk_class_no "
+                //        + " order by collagename,SPE_Name,classname,campus_name";
                 sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
-                        + " from vw_class a,"
+                        + " from vw_class a left join "
                         + " (select distinct(fk_class_no)"
                         + " from vw_fresh_student_base"
                         + " where FK_Fresh_Batch=@cs1 and College_NO=@cs2 "
                         + " and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
-                        + " where a.PK_Class_NO=b.fk_class_no "
+                        + " on a.PK_Class_NO=b.fk_class_no "
                         + " order by collagename,SPE_Name,classname,campus_name";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
             }
@@ -3090,7 +3107,14 @@ public class batch
                 for (int i = 0; i < data.Rows.Count; i++)
                 {
                     System.Data.DataRow newrow = null;
-                    string spe_code=data.Rows[i]["SPE_Code"].ToString().Trim();
+                    string spe_code=data.Rows[i]["SPE_Code"].ToString().Trim();//招办专业码
+                    //System.Data.DataTable dt1=financial_logic.get_base_spe_zydm(spe_code);//教务处专业码
+                    //if (dt1 == null || dt1.Rows.Count == 0)
+                    //{
+                    //    throw new Exception("无效的教务专业码");
+                    //}
+                    //spe_code = dt1.Rows[0]["ZYDM"].ToString().Trim();//教务处专业码
+
                     List<Financial.Fee_Item> fin_data = financial_logic.get_feeitem(PK_BATCH_NO, spe_code);
                     if (fin_data != null)
                     {
@@ -3125,6 +3149,8 @@ public class batch
                     newrow["Fee_Code"] = "";
                     result.Rows.Add(newrow);
                 }
+                //result.DefaultView.Sort = "Collage,SPE_Name,Fee_Code_Name ASC";
+                //result = result.DefaultView.ToTable();
                 result.AcceptChanges();
             }
 

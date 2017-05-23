@@ -264,8 +264,16 @@ public class financial
         try {
             if (PK_Fee != null && PK_Fee.Trim().Length > 0 && SPE_Code != null && SPE_Code.Trim().Length > 0)
             {
+                System.Data.DataTable dt1 = get_base_spe_zydm(SPE_Code);//教务处专业码
+                if (dt1 == null || dt1.Rows.Count == 0)
+                {
+                    throw new Exception("无效的教务专业码");
+                }
+                string ZYDM= dt1.Rows[0]["ZYDM"].ToString().Trim();//教务处专业码
+
                 Financial.FinancialWSSoapClient ws = new Financial.FinancialWSSoapClient();
-                Financial.Fee_Item[] data = ws.GetFeeItem(PK_Fee, SPE_Code);
+                Financial.Fee_Item[] data = ws.GetFeeItem(PK_Fee, ZYDM);
+                //Financial.Fee_Item[] data = ws.GetFeeItem(PK_Fee, SPE_Code);
                 if (data != null && data.Length > 0)
                 {
                     result = data.ToList();
@@ -1211,7 +1219,7 @@ public class financial
     }
 
     //根据招办专业代码获取对应的教务专业代码
-    private  System.Data.DataTable get_base_spe_zydm(string SPE_Code)
+    public  System.Data.DataTable get_base_spe_zydm(string SPE_Code)
     {
         System.Data.DataTable result = null;
         try
