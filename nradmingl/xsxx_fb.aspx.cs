@@ -227,6 +227,7 @@ public partial class nradmingl_xsxx_fb : System.Web.UI.Page
         if (dt == null || dt.Rows.Count <= 0) { return; }
         dt.Columns.Remove("Fresh_bath");
         dt.Columns.Remove("Colleage");
+        dt.Columns.Remove("SPE_PK");
         dt.Columns["PK_SNO"].ColumnName = "学号";
         dt.Columns["Name"].ColumnName = "姓名";
         dt.Columns["Gender"].ColumnName = "性别";

@@ -207,6 +207,13 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
                     try
                     {
                         #region (1)判断当前行数据有效性
+                        //0 学号查重
+                        //string query_str = "'学号' = '" +  x.Rows[ii]["学号"].ToString() + "'";
+                        //var query = x.Select(query_str);
+                        //if (query.Count() > 1)
+                        //{
+                        //    x.Rows[ii]["错误提示"] += "Excel中学号重复";
+                        //}
 
                         //1 学号验证
                         Base_STU stu = organizationService.getStu(x.Rows[ii]["学号"].ToString().Trim().Replace("'", ""));
@@ -218,43 +225,42 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
                         else
                         {
                             //2.1 身份证验证
-                            if (stu.ID_NO != x.Rows[ii]["身份证"].ToString().Trim().Replace("'", ""))
+                            if (stu.ID_NO.Trim().Replace("'", "") != x.Rows[ii]["身份证"].ToString().Trim().Replace("'", ""))
                             {
-                                x.Rows[ii]["错误提示"] += " 身份证有误";
+                                x.Rows[ii]["错误提示"] += " 身份证与学号不匹配";
                             }
                             //2.2 姓名验证
-                            if (stu.Name != x.Rows[ii]["姓名"].ToString().Trim().Replace("'", ""))
+                            if (stu.Name.Trim().Replace("'", "") != x.Rows[ii]["姓名"].ToString().Trim().Replace("'", ""))
                             {
-                                x.Rows[ii]["错误提示"] += " 姓名有误";
+                                x.Rows[ii]["错误提示"] += " 姓名与学号不匹配";
                             }
-                        }
-                           
-                        
-
-
-
-                        //3 班级代码 
-                        Fresh_Class sel_class = classes.Where(c => c.Name == x.Rows[ii]["班级名称"].ToString().Trim()).SingleOrDefault();
-                        if (sel_class == null)
-                        {
-                            x.Rows[ii]["错误提示"] += " 班级名称有误";
-                        }
-                        else
-                        {
-                            //4 专业和班级是否匹配
-                            if (sel_class.FK_SPE_NO != stu.FK_SPE_Code)
+                            //3 班级代码 
+                            Fresh_Class sel_class = classes.Where(c => c.Name == x.Rows[ii]["班级名称"].ToString().Trim()).SingleOrDefault();
+                            if (sel_class == null)
                             {
-                                x.Rows[ii]["错误提示"] += " 当前专业和班级不匹配";
+                                x.Rows[ii]["错误提示"] += " 班级名称有误";
                             }
                             else
                             {
-                                x.Rows[ii]["班级代码"] = sel_class.PK_Class_NO;
+                                //4 专业和班级是否匹配
+                                if (sel_class.FK_SPE_NO != stu.FK_SPE_Code)
+                                {
+                                    x.Rows[ii]["错误提示"] += " 当前专业和班级不匹配";
+                                }
+                                else
+                                {
+                                    x.Rows[ii]["班级代码"] = sel_class.PK_Class_NO;
+                                }
                             }
-                            
-                        }
-                        
-                        
 
+                            //5 年级判断
+                            if (x.Rows[ii]["年级"].ToString().Trim() != stu.Year)
+                            {
+                                x.Rows[ii]["错误提示"] += " 年级错误！";
+                            }
+                        }
+                          
+                        
                         #endregion
 
                         //删除正确的行数据，并向数据库提交记录 
@@ -536,6 +542,10 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
         if (Session["batch_fb"] != null && Session["batch_fb"] != "")
         {
             DropDownListBatch.Items.FindByValue(Session["batch_fb"].ToString()).Selected = true;
+        }else
+        {
+            Session["batch_fb"] = DropDownListBatch.SelectedValue.ToString();
+
         }
     }
 }
