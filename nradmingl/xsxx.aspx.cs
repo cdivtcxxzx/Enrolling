@@ -26,7 +26,6 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
     #endregion
     protected void Page_Load(object sender, EventArgs e)
     {
-
         try
         {
 
