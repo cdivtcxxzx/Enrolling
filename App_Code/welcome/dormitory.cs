@@ -2225,7 +2225,7 @@ public class dormitory
        
         try
         {
-            sql = "select row_number() over (order by  房间编号)  AS 序号,* from (SELECT   DISTINCT   TOP (500)  Fresh_Room.Room_NO AS 房间编号, Fresh_Room.PK_Room_NO AS id, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别,            Fresh_Class.Name AS 班级名称 FROM         Fresh_Dorm FULL OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO FULL OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                  Fresh_Class INNER JOIN                   Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON     Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO where 1=1 ";
+            sql = "select row_number() over (order by  房间编号)  AS 序号,* from (SELECT DISTINCT    TOP (500) Fresh_Room.Room_NO AS 房间编号, Fresh_Room.PK_Room_NO AS id, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称,     Fresh_Room.Floor AS 楼层, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别 FROM         Fresh_Dorm RIGHT OUTER JOIN            Fresh_Room_Type RIGHT OUTER JOIN                      Fresh_Bed_Class_Log RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON                       Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO LEFT OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO WHERE     (1 = 1)";
             if (xq.Trim().Length > 0)
             {
                 sql += " and  Base_Campus.Campus_NO='" + xq + "'";
@@ -2331,18 +2331,63 @@ public class dormitory
     /// </summary>
     /// <param name="room">房间编号</param>
    
-    /// <returns>int 数量</returns>
+    /// <returns>共有多少床位，已选床位数量</returns>
 
 
 
-    public static int serch_sycw(string room)
+    public static string serch_sycw(string room)
     {
-        int sycw = 0;
+        string  sycw = "";
         
         //获取该房间已经选了多少个床位
+        DataTable ycw = Sqlhelper.Serach("SELECT     Fresh_Bed.Bed_NO AS 床位编号, Fresh_Bed.Bed_Name AS 床位描述, Fresh_Room.Room_NO AS 房间编号 FROM         Fresh_Room RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO WHERE     (Fresh_Room.Room_NO = '" + room + "')");
+        if(ycw.Rows.Count>0)
+        {
+            sycw = "预分配(" + ycw.Rows.Count.ToString()+")";
+            DataTable cw = Sqlhelper.Serach("SELECT     Fresh_Bed_Log.FK_Bed_NO AS 床位主键, Fresh_Bed.Bed_NO AS 床位编号, Fresh_Bed.Bed_Name AS 床位描述, Fresh_Room.Room_NO AS 房间编号, Fresh_Bed_Log.FK_SNO AS 学号, Base_STU.Name AS 姓名 FROM         Fresh_Bed_Log LEFT OUTER JOIN                      Base_STU ON Fresh_Bed_Log.FK_SNO = Base_STU.PK_SNO LEFT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO WHERE     (Fresh_Room.Room_NO = '" + room + "')");
+            if (cw.Rows.Count > 0)
+            {
+                sycw += ",被选(" + ycw.Rows.Count.ToString()+")";
+            }
 
-       DataTable cw=Sqlhelper.Serach("SELECT     Fresh_Bed_Log.FK_Bed_NO AS 床位主键, Fresh_Bed.Bed_NO AS 床位编号, Fresh_Bed.Bed_Name AS 床位描述, Fresh_Room.Room_NO AS 房间编号, Fresh_Bed_Log.FK_SNO AS 学号, Base_STU.Name AS 姓名 FROM         Fresh_Bed_Log LEFT OUTER JOIN                      Base_STU ON Fresh_Bed_Log.FK_SNO = Base_STU.PK_SNO LEFT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO WHERE     (Fresh_Room.Room_NO = '"+room+"')");
-       if (cw.Rows.Count > 0) sycw = cw.Rows.Count;
+        }
+      
+       
+        return sycw;
+
+    }
+
+
+    /// <summary>
+    /// 传入房间编号,获取预分配班级
+    /// </summary>
+    /// <param name="room">房间编号</param>
+
+    /// <returns>班级名称列表</returns>
+
+
+
+    public static string serch_yfpbj(string room)
+    {
+        string sycw ="未分配";
+
+        //获取该房间已经选了多少个床位
+
+        DataTable cw = Sqlhelper.Serach("SELECT DISTINCT TOP (500) Fresh_Room.Room_NO AS 房间编号, Fresh_Class.Name AS 班级名称 FROM         Fresh_Room_Type RIGHT OUTER JOIN                   Fresh_Room LEFT OUTER JOIN                      Fresh_Bed LEFT OUTER JOIN                    Fresh_Class RIGHT OUTER JOIN       Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO LEFT OUTER JOIN             Base_Campus RIGHT OUTER JOIN      Fresh_Dorm ON Base_Campus.Campus_NO = Fresh_Dorm.Campus_NO ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO ON      Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type  WHERE    Fresh_Room.Room_NO='"+room+"'");
+        if (cw.Rows.Count > 0)
+        {
+            for(int i=0;i<cw.Rows.Count;i++)
+            {
+                if(i==0)
+                {
+                    sycw = cw.Rows[0][1].ToString();
+                }
+                else
+                {
+                    sycw += "," + cw.Rows[i][1].ToString();
+                }
+            }
+        }
         return sycw;
 
     }

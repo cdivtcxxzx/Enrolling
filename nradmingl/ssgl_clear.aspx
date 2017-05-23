@@ -59,7 +59,16 @@
           <br />  <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_room" runat="server" Text="清空房间信息" />
            &nbsp;&nbsp;&nbsp;&nbsp; <asp:CheckBox ID="c_bed" runat="server" Text="清空床位信息" />
            <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfp" Checked="true" runat="server" Text="清空预分配信息" />
-       <br /> <br /> <br />
+       <br /> 
+            <br />
+            <br /> 
+              <asp:Label ID="ztts" runat="server" Font-Size="Medium" 
+                  Text="请谨慎操作，该操作会清空你所能管理的所有预分配数据"></asp:Label>
+
+
+
+            <br />
+            <br />
         </div>    
   <div>   
                    
@@ -72,8 +81,6 @@
 
               <br />
               <br />
-              <asp:Label ID="ztts" runat="server" Font-Size="Medium" 
-                  Text="请谨慎操作，该操作会清空你所能管理的所有预分配数据"></asp:Label>
 
 
 

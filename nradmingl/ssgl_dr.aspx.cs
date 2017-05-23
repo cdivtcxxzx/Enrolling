@@ -261,19 +261,13 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                 {
                     //设置默认错误提示为空
                     x.Rows[ii]["错误提示"] = "";
-                    //判断逻辑为：（1)先判断每一列数据是否有误，无误后，(2)提交数据，提交成功的记录行号，(3)后面进行删除记录显示
-                    try
-                    {
-                        #region (1)判断当前行数据有效性
-                        //每列数据判断，第一列,验证举例
-                        //"序号,年度,校区,公寓名称,楼层,房间编号,房间类型,房间人数,床位编号,床位位置说明,班级名称";
-
-                        //校区,公寓名称,楼层,房间编号,房间类型,房间人数,床位编号,床位位置说明,班级名称";
+                    //校区,公寓名称,楼层,房间编号,房间类型,房间人数,床位编号,床位位置说明,班级名称";
                         string nd = x.Rows[ii]["年度"].ToString().Replace("'", "");
                         string xq = x.Rows[ii]["校区"].ToString().Replace("'", "");
                         string dormname = x.Rows[ii]["公寓名称"].ToString().Replace("'", "");
                         string floor=x.Rows[ii]["楼层"].ToString().Replace("'", "");
                         string roomid = x.Rows[ii]["房间编号"].ToString().Replace("'", "");
+                        string roomzj = "";
                         string roomtype = x.Rows[ii]["房间类型"].ToString().Replace("'", "");
                         string xb = x.Rows[ii]["性别"].ToString().Replace("'", "");
                         string roomrs = x.Rows[ii]["房间人数"].ToString().Replace("'", "");
@@ -281,6 +275,14 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         string cwms = x.Rows[ii]["床位位置说明"].ToString().Replace("'", "");
                         string bjmc = x.Rows[ii]["班级名称"].ToString().Replace("'", "");
                         int nuber;
+                    //判断逻辑为：（1)先判断每一列数据是否有误，无误后，(2)提交数据，提交成功的记录行号，(3)后面进行删除记录显示
+                    try
+                    {
+                        #region (1)判断当前行数据有效性
+                        //每列数据判断，第一列,验证举例
+                        //"序号,年度,校区,公寓名称,楼层,房间编号,房间类型,房间人数,床位编号,床位位置说明,班级名称";
+
+                        
                         #region 验证年度
 
 
@@ -378,21 +380,39 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         #region 验证公寓名称
 
                         //验证是否有该公寓
-                        DataTable dormsql = Sqlhelper.Serach("SELECT TOP 10 [PK_Dorm_NO],[Dorm_NO],[Year],[Name] 公寓名称,[Campus_NO]  FROM [Fresh_Dorm] where Name='" + dormname + "' order by dorm_NO ");
+                        DataTable dormsql = Sqlhelper.Serach("SELECT TOP 10 [PK_Dorm_NO],[Dorm_NO],[Year],[Name] 公寓名称,[Campus_NO]  FROM [Fresh_Dorm] where Name='" + dormname + "' and [Year]='"+nd+"' order by dorm_NO ");
                         if (dormsql.Rows.Count > 0)
                         {
                             dormyz = dormsql.Rows.Count;
                         }
                         if (dormyz > 1)
                         {
-                            x.Rows[ii]["错误提示"] += dormname + "公寓名有重复！";
+                            x.Rows[ii]["错误提示"] += "在"+nd+"年,"+dormname + "公寓名有重复！";
                         }
                         #endregion
                         int roomyz = 0;//记录是否已经有该房间了
                         #region 验证房间编号
-                        DataTable roomsql = Sqlhelper.Serach("SELECT TOP 10 [Room_NO]  FROM [Fresh_Room] where Room_NO='" + roomid + "'");
+                        DataTable roomsql = Sqlhelper.Serach("SELECT     TOP (10)  Fresh_Room.FK_Dorm_NO,Fresh_Room.Room_NO AS 房间编号, Fresh_Dorm.Name AS 公寓名称, Fresh_Room.Floor AS 楼层, Fresh_Room.Gender AS 性别,             Fresh_Room_Type.Type_Name AS 类型名称 FROM         Fresh_Room LEFT OUTER JOIN                   Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type where Fresh_Room.Room_NO='" + roomid + "'");
                         if (roomsql.Rows.Count > 0)
                         {
+                            //验证房间的类型、公寓、楼层、男女
+                            if (xb != roomsql.Rows[0]["性别"].ToString())
+                            {
+                                x.Rows[ii]["错误提示"] += "该房间编号的性别信息与系统中的信息不符，系统中为【" + roomsql.Rows[0]["性别"].ToString() + "】该信息以第一次导入为准，若有误请清除所有数据后重新操作！";
+                            }
+                            if(floor!=roomsql.Rows[0]["楼层"].ToString())
+                            {
+                                x.Rows[ii]["错误提示"] += "该房间编号的楼层与系统中的楼层信息不符，系统中为【" + roomsql.Rows[0]["楼层"].ToString() + "】该信息以第一次导入为准，若有误请清除所有数据后重新操作！";
+                            }
+                            if (roomtype != roomsql.Rows[0]["类型名称"].ToString())
+                            {
+                                x.Rows[ii]["错误提示"] += "该房间编号的房间类型与系统中的信息不符，系统中为【" + roomsql.Rows[0]["类型名称"].ToString() + "】该信息以第一次导入为准，若有误请清除所有数据后重新操作！";
+                            }
+                            if (dormname != roomsql.Rows[0]["公寓名称"].ToString())
+                            {
+                                x.Rows[ii]["错误提示"] += "该房间编号的公寓名称与系统中的信息不符，系统中为【" + roomsql.Rows[0]["公寓名称"].ToString() + "】该信息以第一次导入为准，若有误请清除所有数据后重新操作！";
+                            }
+                            roomzj = roomsql.Rows[0]["FK_Dorm_NO"].ToString();
                             roomyz = roomsql.Rows.Count;
                         }
                         if (roomyz > 1)
@@ -440,7 +460,11 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         #endregion
                         int bedyz = 0;//记录是否已经有该床位了
                         #region 床位编号验证
-                        DataTable bedsql = Sqlhelper.Serach("SELECT TOP 10 [PK_Bed_NO],[Bed_NO],[Bed_Name]  FROM [Fresh_Bed] where bed_No='" + cwbh + "' and FK_Room_NO='" + roomid + "'");
+                       string bedsqlcx = "SELECT TOP 10 [PK_Bed_NO],[Bed_NO],[Bed_Name]  FROM [Fresh_Bed] where bed_No='" + cwbh + "' and FK_Room_NO='" + roomzj + "'";
+                        DataTable bedsql = Sqlhelper.Serach(bedsqlcx);
+                        Response.Write(bedsqlcx);
+                        
+                        
                         if (bedsql.Rows.Count > 0)
                         {
                             bedyz = bedsql.Rows.Count;
@@ -453,18 +477,22 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         int bjmcyz = 0;//验证班级数量
                         #region 班级名称验证
                         //SELECT TOP 10 [PK_Class_NO],[FK_Campus_NO],[FK_SPE_NO],[Name]  FROM [Fresh_Class] where name=''
-                        DataTable bjmcsql = Sqlhelper.Serach("SELECT TOP 10 [PK_Class_NO],[FK_Campus_NO],[FK_SPE_NO],[Name]  FROM [Fresh_Class] where name='" + bjmc + "'");
-                        if (bjmcsql.Rows.Count > 0)
+                        if (bjmc.Length > 0)
                         {
-                            bjmcyz = bjmcsql.Rows.Count;
-                        }
-                        else
-                        {
-                            x.Rows[ii]["错误提示"] += bjmc + "系统中无该班级名称，请确认教务是否创建了班级或已从教务同步班级！";
-                        }
-                        if (bjmcyz > 1)
-                        {
-                            x.Rows[ii]["错误提示"] += bjmc + "班级有重复名称，请联系相关管理员处理！";
+
+                            DataTable bjmcsql = Sqlhelper.Serach("SELECT TOP 10 [PK_Class_NO],[FK_Campus_NO],[FK_SPE_NO],[Name]  FROM [Fresh_Class] where name='" + bjmc + "'");
+                            if (bjmcsql.Rows.Count > 0)
+                            {
+                                bjmcyz = bjmcsql.Rows.Count;
+                            }
+                            else
+                            {
+                                x.Rows[ii]["错误提示"] += bjmc + "系统中无该班级名称，请确认教务是否创建了班级或已从教务同步班级！";
+                            }
+                            if (bjmcyz > 1)
+                            {
+                                x.Rows[ii]["错误提示"] += bjmc + "班级有重复名称，请联系相关管理员处理！";
+                            }
                         }
                         #endregion
 
@@ -604,15 +632,18 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                                 }
                                 //班级预分配床位
                                 #region 班级预分配床位
-                                string sqlupdat = "";
-                                if (bjmcyz > 0)
+                                if (bjmc.Length > 0)
                                 {
-                                    sqlupdat = dormitory.update_Fresh_bedyfp(cwbh,roomid,bjmc,Session["username"].ToString()) ;
-                                }
-                                cgjj = sqlupdat.Split('@')[0].ToString();
-                                if (cgjj != "1")
-                                {
-                                   x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdat.Split('@')[1].ToString() + "";
+                                    string sqlupdat = "";
+                                    if (bjmcyz > 0)
+                                    {
+                                        sqlupdat = dormitory.update_Fresh_bedyfp(cwbh, roomid, bjmc, Session["username"].ToString());
+                                    }
+                                    cgjj = sqlupdat.Split('@')[0].ToString();
+                                    if (cgjj != "1")
+                                    {
+                                        x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + sqlupdat.Split('@')[1].ToString() + "";
+                                    }
                                 }
                                 #endregion
 
@@ -668,7 +699,21 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                     }
                     else
                     {
-                        x.Rows[ii]["错误提示"] = "导入成功";
+                        if (bjmc.Length > 0)
+                        {
+                            x.Rows[ii]["错误提示"] = "导入成功";
+                        }
+                        else
+                        {
+                            if (  this.updateroom_c.Checked)
+                            {
+                                x.Rows[ii]["错误提示"] =  "第" + (ii + 1).ToString() + "行:更新寝室床位等信息成功！由于班级为空未预分配班级！";
+                            }
+                            else
+                            {
+                                x.Rows[ii]["错误提示"] =  "第" + (ii + 1).ToString() + "行:预分配床位失败，班级名称为空！";
+                            }
+                        }
                     }
 
                 }

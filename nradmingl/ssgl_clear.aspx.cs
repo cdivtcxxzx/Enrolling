@@ -99,6 +99,50 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
             //new c_login().powerYanzheng(Session["username"].ToString(), pagelm1, pageqx2, "2");//验证当前栏目关键字中的权限２,通常在按钮中需验证权限时使用
 
             #endregion
+
+            string qx = "";
+            #region 获取该操作员能操作的系数据
+            Power qxhq = new Power();
+            qx = qxhq.Getonebmdm("Fresh_SPE.FK_College_Code");
+            try
+            {
+                qx = qx.Substring(0, qx.Length - 1);
+            }
+            catch { }
+            //Response.Write(qx);
+            if (qx.Length > 0)
+            {
+                this.ztts.Text = "你能管理的数据有：";
+            }
+            else { this.ztts.Text = "您暂时没有能管理的数据，请联系迎新管理员"; }
+            #endregion
+            if (qx.Split(',').Length > 0)
+            {
+
+                for (int i = 0; i < qx.Split(',').Length; i++)
+                {
+                    #region 清除本年度预分配数据
+                    string sqlcx = "SELECT TOP 1 [YXMC] FROM  [DM_YUANXI] where yxdm='" + qx.Split(',')[i].ToString() + "'";
+                    DataTable qxd = Sqlhelper.Serach(sqlcx);
+                    //this.ztts.Text +=sqlcx;
+                    if (qxd.Rows.Count > 0)
+                    {
+                        //查询有多少条预分配数据
+
+
+
+
+                        this.ztts.Text += qxd.Rows[0][0].ToString() + ",";
+                    }
+                   
+                    #endregion
+                }
+            }
+
+
+
+
+
       
         }
         catch (Exception err)
@@ -316,17 +360,20 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
             //Response.Write(qx);
             if(qx.Length>0)
             { 
-            this.ztts.Text = "你能管理：" + qx;
+            this.ztts.Text = "你能管理：";
             }
             else { this.ztts.Text = "您暂时没有能管理的数据，请联系迎新管理员"; }
             #endregion
             if (qx.Split(',').Length > 0)
             {
+                
                 for (int i = 0; i < qx.Split(',').Length; i++)
                 {
                     #region 清除本年度预分配数据
-
-
+                    string sqlcx = "SELECT TOP 1 [YXMC] FROM  [DM_YUANXI] where yxdm='" + qx.Split(',')[i].ToString() + "'";
+                    DataTable qxd = Sqlhelper.Serach(sqlcx);
+                    //this.ztts.Text +=sqlcx;
+                    if (qxd.Rows.Count > 0) this.ztts.Text += qxd.Rows[0][0].ToString()+",";
                     if (c_bedyfp.Checked)
                     {
                          sqlyfp = "delete Fresh_Bed_Class_Log FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE WHERE     (Fresh_SPE.FK_College_Code = '" + qx.Split(',')[i].ToString() + "') and Fresh_SPE.Year='" + this.DropDownList1.SelectedValue + "'";
