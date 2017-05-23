@@ -382,7 +382,10 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         }
         return "";
     }
-
+    protected string yfpbj(string isyn)
+    {
+        return dormitory.serch_yfpbj(isyn.Trim()).ToString();
+    }
     protected string sycw(string isyn)
     {
         //剩余床位获取
