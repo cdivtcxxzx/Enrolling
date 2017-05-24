@@ -52,7 +52,15 @@
                 </asp:ScriptManager>
         
         <div>
-           年度选择： <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource1" DataTextField="Year" DataValueField="Year"></asp:DropDownList><br />
+           年度选择： <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource1" DataTextField="Year" DataValueField="Year"></asp:DropDownList>
+            <asp:DropDownList ID="yxdm" runat="server" DataSourceID="SqlDataSource2" DataTextField="Name" DataValueField="PK_College">
+            </asp:DropDownList>
+            <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [PK_College], [Name] FROM [Base_College] WHERE ([Enabled] = @Enabled) ORDER BY [College_NO]">
+                <SelectParameters>
+                    <asp:Parameter DefaultValue="true" Name="Enabled" Type="String" />
+                </SelectParameters>
+            </asp:SqlDataSource>
+            <br />
            &nbsp;&nbsp;&nbsp;&nbsp; <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT DISTINCT [Year] FROM [Fresh_Room_Type] ORDER BY [Year]"></asp:SqlDataSource>
             <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_roomtype" runat="server" Text="清空房间类型信息" />
            &nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_dorm" runat="server" Text="清空公寓宿舍信息" />
