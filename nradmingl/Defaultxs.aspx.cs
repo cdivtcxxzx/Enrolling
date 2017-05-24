@@ -137,5 +137,8 @@ public partial class nradmingl_Defaultxs : System.Web.UI.Page
 
         }
         #endregion
+
+        this.xsxxurl.HRef = "xsjbxx.aspx?pk_affair_no=11&pk_sno=" + Session["username"].ToString() + "";
+           
     }
 }

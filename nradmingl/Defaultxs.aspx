@@ -49,7 +49,7 @@
 							</a>
 							<dl class="layui-nav-child dda">
 								<dd>
-									<a href="/zyzx/grset.aspx"><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
+									<a id="xsxxurl" runat="server" href="xsjbxx.aspx" ><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
 								</dd>
 								<dd>
 									<a href="/view/change_password.aspx"><i class="fa fa-gear" aria-hidden="true"></i> 更改密码</a>
