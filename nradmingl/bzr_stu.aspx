@@ -46,8 +46,7 @@
             <blockquote class="layui-elem-quote">
                 <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>查看学生信息           
             </blockquote>
-            <div>
-                
+            <div>                
                 <div class="layui-form-item">
                     <!--迎新批次下拉列表-->
                     <div class="layui-inline">
@@ -77,16 +76,17 @@
                         <thead>
                             <tr>        
                                 <th scope="col">序号</th>                        
-                                <th scope="col">年级</th>
-                                <th scope="col">学院</th>
-                                <th scope="col" >专业</th>
+<%--                                <th scope="col">年级</th>--%>
+<%--                                <th scope="col">学院</th>
+                                <th scope="col" >专业</th>--%>
                                 <th scope="col">姓名</th>
                                 <th scope="col">性别</th>
                                 <th scope="col">学号</th>
                                 <th scope="col">身份证号</th>
                                 <th scope="col">高考报名号</th>
                                 <th scope="col">联系电话</th>
-                                <th scope="col">现场报到情况</th>
+                                <th scope="col">注册状况</th>
+                                <th scope="col">现场报到确认</th>
                                 <th scope="col">学费情况</th>
                                 <th scope="col"></th>
                             </tr>

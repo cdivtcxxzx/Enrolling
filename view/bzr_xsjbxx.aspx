@@ -146,7 +146,23 @@
           <label class="layui-form-label">学院：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xy" runat="server" Text=""></asp:Label></div></div>
-        </div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">政治面貌：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zzmm" runat="server" Text=""></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">民族：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_mz" runat="server" Text=""></asp:Label></div></div>
+        </div>
+     <div class="layui-form-item" pane="">
+          <label class="layui-form-label">身高：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_sg" runat="server" Text=""></asp:Label></div></div>
+        </div>
+     </div>
      <div  class="xsxx3"  >         
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">专业：</label>
@@ -178,32 +194,6 @@
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_jtzz" runat="server" Text=""></asp:Label></div></div>
         </div>
-        <div class="layui-form-item" style="text-align:center">
-<%--          <a class="layui-btn" id="backmain" onclick="window.location.href='/view/xszz-index.aspx';">返回操作首页</a>--%>
-        </div>
-
-     </div>
-        
-       <div  class="xsxx3"  >         
-         <div class="layui-form-item" pane="">
-          <label class="layui-form-label">政治面貌：</label>
-          <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_zzmm" runat="server" Text=""></asp:Label></div></div>
-        </div>
-         <div class="layui-form-item" pane="">
-          <label class="layui-form-label">民族：</label>
-          <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_mz" runat="server" Text=""></asp:Label></div></div>
-        </div>
-     <div class="layui-form-item" pane="">
-          <label class="layui-form-label">身高：</label>
-          <div class="layui-input-block">
-           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_sg" runat="server" Text=""></asp:Label></div></div>
-        </div>
-
-     </div>
-
-         <div  class="xsxx3"  >         
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">体重：</label>
           <div class="layui-input-block">
@@ -216,6 +206,7 @@
         </div>
 
      </div>
+        
 
       </form>
 </div>        
