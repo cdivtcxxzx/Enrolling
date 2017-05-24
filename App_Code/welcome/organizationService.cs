@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -484,7 +485,7 @@ public static class organizationService
     #endregion
     #region 根据批次和学院返回学生信息 getStuByBatchCol
     /// <summary>
-    /// 根据批次和学院返回学生信息（学号(PK_SNO)|高考报名号(Test_NO)|姓名(Name)|性别(Gender)|身份证号(ID_NO)|民族代码(Nation_code)|专业名称(SPE_Name)|学制(Xz)|年度(Year)|批次（Fresh_bath|学院代码(Colleage)））
+    /// 根据批次和学院返回学生信息（学号(PK_SNO)|高考报名号(Test_NO)|姓名(Name)|性别(Gender)|身份证号(ID_NO)|专业主键（SPE_PK）|民族代码(Nation_code)|专业名称(SPE_Name)|学制(Xz)|年度(Year)|批次（Fresh_bath|学院代码(Colleage)））
     /// </summary>
     /// <param name="batch">批次代码,"0"返回所有批次</param>
     /// <param name="colleage_sno">学院代码，"0"返回所有学院</param>
@@ -539,6 +540,22 @@ public static class organizationService
     }
     #endregion
 
+    #region 根据用户ID返回能管理的学院信息 getYxByYhid
+    public static List<Base_College> getYxByYhid(string yhid)
+    {        
+        List<Base_College> result = new List<Base_College>();
+        if (yhid == "" || yhid == null) return result;
+        ArrayList yxmcList = new Power().GetYxmcsByYhid(yhid);
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        foreach (var item in yxmcList)
+        {
+            Base_College colle = oDC.Base_Colleges.Where(s => s.Name == item && s.Enabled == "true").SingleOrDefault();
+
+            if (colle != null) result.Add(colle);
+        }
+        return result;
+    }
+    #endregion
 
     #region 生成学号 createNum
     /// <summary>

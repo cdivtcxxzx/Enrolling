@@ -36,7 +36,7 @@
 					<i class="layui-icon">&#x1002;</i> 刷新
 				</a>
 
-               <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' OnClick="exportexcel" ><i class="layui-icon">&#xe61e;</i>导出所选模板数据</asp:LinkButton>
+               <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" txttop="txttop" ToolTip="表格中准确填写班级信息即可" ID="LinkButton13" runat="server"     Text='' OnClick="exportexcel" ><i class="layui-icon">&#xe61e;</i>导出所选数据模板</asp:LinkButton>
 
                  <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '学生数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'xsxx_fb_dr.aspx?setp=1&mb=mb/null.xls',btn:'完成'});" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe62f;</i>导入分班数据
@@ -59,18 +59,29 @@
                         DataSourceID="LinqDataSource1" DataTextField="Batch_Name" 
                         DataValueField="PK_Batch_NO" 
                         Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="batch_SelectedIndexChanged">
-                        <asp:ListItem Selected="True" Value="0">显示所有批次</asp:ListItem>
+                        <%--<asp:ListItem Selected="True" Value="0">选择所有批次</asp:ListItem>--%>
                     </asp:DropDownList>
                       &nbsp;&nbsp;学院：
-                      <asp:DropDownList ID="xueyuan" runat="server" AutoPostBack="True" DataSourceID="LinqDataSource2" DataTextField="Name" DataValueField="College_NO" Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="xueyuan_SelectedIndexChanged">
-                          <asp:ListItem Selected="True" Value="0">所有院系</asp:ListItem>
+                      <asp:DropDownList ID="xueyuan" runat="server" AutoPostBack="True" DataSourceID="ObjectDataSource2" DataTextField="Name" DataValueField="College_NO" Font-Size="Medium" OnSelectedIndexChanged="xueyuan_SelectedIndexChanged" AppendDataBoundItems="True">
+                          <asp:ListItem Value="-1">请选择学院</asp:ListItem>
                       </asp:DropDownList>
                       &nbsp;&nbsp;
                       <asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
-                      <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" Select="new (PK_Batch_NO, Batch_Name)" TableName="Fresh_Batches" OrderBy="PK_Batch_NO">
+                      <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" Select="new (PK_Batch_NO, Batch_Name, Enabled)" TableName="Fresh_Batches" OrderBy="PK_Batch_NO" Where="Enabled == @Enabled">
+                          <WhereParameters>
+                              <asp:Parameter DefaultValue="run" Name="Enabled" Type="String" />
+                          </WhereParameters>
                       </asp:LinqDataSource>
-                      <asp:LinqDataSource ID="LinqDataSource2" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" TableName="Base_Colleges">
+                      <asp:LinqDataSource ID="LinqDataSource2" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" TableName="Base_Colleges" Where="Enabled == @Enabled">
+                          <WhereParameters>
+                              <asp:Parameter DefaultValue="true" Name="Enabled" Type="String" />
+                          </WhereParameters>
                       </asp:LinqDataSource>
+                      <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" SelectMethod="getYxByYhid" TypeName="organizationService">
+                          <SelectParameters>
+                              <asp:SessionParameter DefaultValue="" Name="yhid" SessionField="UserName" Type="String" />
+                          </SelectParameters>
+                      </asp:ObjectDataSource>
                     </ContentTemplate></asp:UpdatePanel>
             </div>
         </div>    
@@ -81,7 +92,7 @@
   <asp:GridView  ID="GridView1"  
           runat="server" AutoGenerateColumns="False" 
             DataSourceID="ObjectDataSource1" CssClass="site-table table-hover" 
-            EmptyDataText="未查找相应批次的相关数据!" 
+            EmptyDataText="未查找到相关数据!" 
             AllowPaging="True" AllowSorting="True" OnDataBound="GridView1_DataBound" OnPageIndexChanging="GridView1_PageIndexChanging">
     <Columns>
     <asp:TemplateField>
@@ -216,8 +227,8 @@
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatchCol" TypeName="organizationService" OldValuesParameterFormatString="original_{0}" OnSelected="ObjectDataSource1_Selected" >
             <SelectParameters>
                 <asp:ControlParameter ControlID="batch" Name="batch" PropertyName="SelectedValue" 
-                    Type="String" DefaultValue="0" />
-                <asp:ControlParameter ControlID="xueyuan" Name="colleage_sno" PropertyName="SelectedValue" Type="String" DefaultValue="0" />
+                    Type="String" DefaultValue="" />
+                <asp:ControlParameter ControlID="xueyuan" Name="colleage_sno" PropertyName="SelectedValue" Type="String" DefaultValue="-1" />
             </SelectParameters>
       </asp:ObjectDataSource>
        

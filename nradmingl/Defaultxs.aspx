@@ -35,8 +35,8 @@
 					<ul class="layui-nav">
                     <li class="layui-nav-item" id="tsxx" runat="server"> </li>
 						
-						<li class="layui-nav-item  hidden-xs">
-							<a href="/default.aspx"><i class="fa fa fa-home" aria-hidden="true"  style="margin-right:2px;"></i>返回首页</a>
+						<li>
+							<a href="defaultxs.aspx"><i class="fa fa fa-home" aria-hidden="true"  style="margin-right:2px;"></i><span  class="layui-nav-item  hidden-xs">返回操作首页</span></a>
 						</li>
                         
 						
@@ -49,10 +49,10 @@
 							</a>
 							<dl class="layui-nav-child dda">
 								<dd>
-									<a href="/zyzx/grset.aspx"><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
+									<a id="xsxxurl" runat="server" href="xsjbxx.aspx" ><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
 								</dd>
 								<dd>
-									<a href="/zyzx/grset.aspx"><i class="fa fa-gear" aria-hidden="true"></i> 个人设置</a>
+									<a href="/view/change_password.aspx"><i class="fa fa-gear" aria-hidden="true"></i> 更改密码</a>
 								</dd>
 								<dd>
 									<a href="/logout.aspx"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销退出</a>

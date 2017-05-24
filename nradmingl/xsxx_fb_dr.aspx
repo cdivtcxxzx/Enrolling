@@ -185,12 +185,14 @@ ul, menu, dir {
                         DataSourceID="LinqDataSource1" DataTextField="Batch_Name" 
                         DataValueField="PK_Batch_NO" 
                         Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="DropDownListBatch_SelectedIndexChanged" OnDataBound="DropDownListBatch_DataBound">
-                        <asp:ListItem  Value="-1">请选择批次</asp:ListItem>
                     </asp:DropDownList>
-         <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" Select="new (PK_Batch_NO, Batch_Name)" TableName="Fresh_Batches" OrderBy="PK_Batch_NO">
+         <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" Select="new (PK_Batch_NO, Batch_Name, Enabled)" TableName="Fresh_Batches" OrderBy="PK_Batch_NO" Where="Enabled == @Enabled">
+             <WhereParameters>
+                 <asp:Parameter DefaultValue="run" Name="Enabled" Type="String" />
+             </WhereParameters>
                       </asp:LinqDataSource>&nbsp;&nbsp;
       <asp:Label ID="setp1ts" runat="server"
-         Text="请先准备导入数据,选择和检查导入批次,否则无法完成导入,选择好后请点击＂下一步＂!" 
+         Text="请先准备导入数据，准备好后请点击＂下一步＂!" 
              Font-Size="Medium"></asp:Label>
 				
 	</blockquote>

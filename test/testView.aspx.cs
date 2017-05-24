@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -104,6 +105,13 @@ public partial class test_testView : System.Web.UI.Page
         //生成学号 createNum
         //Response.Write(organizationService.createNum("2017","1","03"));
         
+        //测试权限获取
+        List<Base_College> yx = organizationService.getYxByYhid("");
+        foreach (var item in yx)
+        {
+            Response.Write(item.Name);
+            Response.Write("<br/>");
+        }
     }
     //测试导出
     protected void Button1_Click(object sender, EventArgs e)
