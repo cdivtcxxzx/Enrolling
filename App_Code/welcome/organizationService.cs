@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -539,6 +540,22 @@ public static class organizationService
     }
     #endregion
 
+    #region 根据用户ID返回能管理的学院信息 getYxByYhid
+    public static List<Base_College> getYxByYhid(string yhid)
+    {        
+        List<Base_College> result = new List<Base_College>();
+        if (yhid == "" || yhid == null) return result;
+        ArrayList yxmcList = new Power().GetYxmcsByYhid(yhid);
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        foreach (var item in yxmcList)
+        {
+            Base_College colle = oDC.Base_Colleges.Where(s => s.Name == item && s.Enabled == "true").SingleOrDefault();
+
+            if (colle != null) result.Add(colle);
+        }
+        return result;
+    }
+    #endregion
 
     #region 生成学号 createNum
     /// <summary>
