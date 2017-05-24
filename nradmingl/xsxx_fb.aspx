@@ -62,8 +62,8 @@
                         <%--<asp:ListItem Selected="True" Value="0">选择所有批次</asp:ListItem>--%>
                     </asp:DropDownList>
                       &nbsp;&nbsp;学院：
-                      <asp:DropDownList ID="xueyuan" runat="server" AutoPostBack="True" DataSourceID="LinqDataSource2" DataTextField="Name" DataValueField="College_NO" Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="xueyuan_SelectedIndexChanged">
-                          <asp:ListItem Selected="True" Value="0">所有院系</asp:ListItem>
+                      <asp:DropDownList ID="xueyuan" runat="server" AutoPostBack="True" DataSourceID="ObjectDataSource2" DataTextField="Name" DataValueField="College_NO" Font-Size="Medium" OnSelectedIndexChanged="xueyuan_SelectedIndexChanged" AppendDataBoundItems="True">
+                          <asp:ListItem Value="-1">请选择学院</asp:ListItem>
                       </asp:DropDownList>
                       &nbsp;&nbsp;
                       <asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
@@ -72,8 +72,16 @@
                               <asp:Parameter DefaultValue="run" Name="Enabled" Type="String" />
                           </WhereParameters>
                       </asp:LinqDataSource>
-                      <asp:LinqDataSource ID="LinqDataSource2" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" TableName="Base_Colleges">
+                      <asp:LinqDataSource ID="LinqDataSource2" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" TableName="Base_Colleges" Where="Enabled == @Enabled">
+                          <WhereParameters>
+                              <asp:Parameter DefaultValue="true" Name="Enabled" Type="String" />
+                          </WhereParameters>
                       </asp:LinqDataSource>
+                      <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" SelectMethod="getYxByYhid" TypeName="organizationService">
+                          <SelectParameters>
+                              <asp:SessionParameter DefaultValue="" Name="yhid" SessionField="UserName" Type="String" />
+                          </SelectParameters>
+                      </asp:ObjectDataSource>
                     </ContentTemplate></asp:UpdatePanel>
             </div>
         </div>    
@@ -84,7 +92,7 @@
   <asp:GridView  ID="GridView1"  
           runat="server" AutoGenerateColumns="False" 
             DataSourceID="ObjectDataSource1" CssClass="site-table table-hover" 
-            EmptyDataText="未查找相应批次的相关数据!" 
+            EmptyDataText="未查找到相关数据!" 
             AllowPaging="True" AllowSorting="True" OnDataBound="GridView1_DataBound" OnPageIndexChanging="GridView1_PageIndexChanging">
     <Columns>
     <asp:TemplateField>
@@ -220,7 +228,7 @@
             <SelectParameters>
                 <asp:ControlParameter ControlID="batch" Name="batch" PropertyName="SelectedValue" 
                     Type="String" DefaultValue="" />
-                <asp:ControlParameter ControlID="xueyuan" Name="colleage_sno" PropertyName="SelectedValue" Type="String" DefaultValue="0" />
+                <asp:ControlParameter ControlID="xueyuan" Name="colleage_sno" PropertyName="SelectedValue" Type="String" DefaultValue="-1" />
             </SelectParameters>
       </asp:ObjectDataSource>
        
