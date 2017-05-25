@@ -137,8 +137,14 @@ public partial class nradmingl_Defaultxs : System.Web.UI.Page
 
         }
         #endregion
-
-        this.xsxxurl.HRef = "xsjbxx.aspx?pk_affair_no=11&pk_sno=" + Session["username"].ToString() + "";
+        if (Session["username"] != null)
+        {
+            this.xsxxurl.HRef = "xsjbxx.aspx?pk_affair_no=11&pk_sno=" + Session["username"].ToString() + "";
+        }
+        else
+        {
+            Response.Redirect("/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs");
+        }
            
     }
 }

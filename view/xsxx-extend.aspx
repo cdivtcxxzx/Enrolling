@@ -156,14 +156,14 @@
                     </div>
                 </div>
             </div>
-            <div style="text-align: center; float: right; margin-top: 10px; margin-left: 5px">
+            <div style="text-align: center; float: left; margin-top: 10px; margin-left: 115px">
                 <span>
                     <a href="" class="layui-btn layui-btn-small" lay-submit="" lay-filter="demo1" id="">
                         <i class="layui-icon">&#xe605;</i> 提交
                     </a>
                 </span>
             </div>
-            <div style="text-align: center; float: right;margin-top:10px;margin-left:5px">
+            <div style="text-align: center; float: left;margin-top:10px;margin-left:5px">
                 <span>
                     <a href="" type="reset" class="layui-btn layui-btn-small" id="">
                         <i class="layui-icon">ဂ</i> 重置

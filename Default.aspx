@@ -449,9 +449,9 @@ img {
                   <article id="70" class="post">
                     
                     <div class="featured-media"><!-- 轮播处理 -->
-			<div id="demo1" class="slideBox"  style="width: 690px; height: 370px;border:1px solid #ccc">
+			<div id="demo1" class="slideBox"  style="width: 680px; height: 370px;border:1px solid #ccc">
   <ul class="items" id="tpshow" runat="server">
-    <li  style="width: 690px; height: 370px;"><a href="/view/xszz-index.aspx?pk_sno=5" title="数据库连接失败,请联系管理员"><img  style="width: 714px; height: 370px;" src="img/1.PNG"></a></li>
+    <li  style="width: 680px; height: 370px;"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="学生自助报到"><img  style="width: 680px; height: 370px;" src="img/1.PNG"></a></li>
    
    
   </ul>

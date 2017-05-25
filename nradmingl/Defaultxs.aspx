@@ -50,7 +50,7 @@
 									<a id="xsxxurl" runat="server" href="xsjbxx.aspx" ><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
 								</dd>
 								<dd>
-									<a href="/view/change_password.aspx"><i class="fa fa-gear" aria-hidden="true"></i> 更改密码</a>
+									<a href="/view/change_password.aspx" target="main"><i class="fa fa-gear" aria-hidden="true"></i> 更改密码</a>
 								</dd>
 								<dd>
 									<a href="/logout.aspx"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销退出</a>
@@ -88,7 +88,7 @@
                   
 					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
 						<div class="layui-tab-item layui-show">
-							<iframe id="main" src="../view/xxzz_xsindex.aspx?pk_sno=<%=Session["username"].ToString() %>"></iframe>
+							<iframe id="main" name="main" src="../view/xxzz_xsindex.aspx?pk_sno=<%=Session["username"].ToString() %>"></iframe>
 						</div>
 					</div>
 				</div>
