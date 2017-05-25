@@ -101,9 +101,9 @@ function getstudent() {
                     var item=json_data.data[i];
                     var str='<tr>';
                     str=str+'<td>'+(i+1)+'</td>';
-                    str=str+'<td>'+item.year+'</td>';
-                    str=str+'<td>'+item.collage+'</td>';
-                    str=str+'<td>'+item.spe_name+'</td>';
+                    //str=str+'<td>'+item.year+'</td>';
+                    //str=str+'<td>'+item.collage+'</td>';
+                    //str=str+'<td>'+item.spe_name+'</td>';
                     str=str+'<td>'+item.name+'</td>';
                     str=str+'<td>'+item.gender+'</td>';
                     str=str+'<td>'+item.pk_sno+'</td>';
@@ -114,6 +114,7 @@ function getstudent() {
                     }else{
                         str=str+'<td>'+item.phone+'</td>';
                     }
+                    str=str+'<td>'+item.register+'</td>';
                     str=str+'<td>'+item.Status_Code+'</td>';
                     str=str+'<td>'+item.TuitionType+'</td>';
                     str=str+'<td>';

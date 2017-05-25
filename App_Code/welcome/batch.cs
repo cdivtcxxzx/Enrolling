@@ -1132,6 +1132,101 @@ public class batch
         return result;
     }
 
+    public List<fresh_affair_log> get_school_affair_affairlog_list(string PK_SNO, string PK_Affair_NO)
+    {
+        List<fresh_affair_log> result = null;
+        try
+        {
+            if (PK_SNO == null || PK_SNO.Trim().Length == 0 || PK_Affair_NO == null || PK_Affair_NO.Trim().Length == 0)
+            {
+                return null;
+            }
+
+            //string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+            //                "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
+            //                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+            //                " from vw_fresh_student_base a,Fresh_Batch b," +
+            //                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+            //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
+            //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='SCHOOL' or upper(c.Affair_Type)='BOTH')";
+            string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+                            "(case when d.Log_Status is null then c.InitStatus else d.Log_Status end) as Log_Status," +
+                            "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+                            " from vw_fresh_student_base a,Fresh_Batch b," +
+                            "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+                            " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO  and c.PK_Affair_NO=@cs2" +
+                            " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='SCHOOL' or upper(c.Affair_Type)='BOTH')";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", PK_Affair_NO.Trim()));
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = new List<fresh_affair_log>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    fresh_affair_log row = new fresh_affair_log();
+                    row.PK_Affair_Log = dt.Rows[i]["PK_Affair_Log"].ToString().Trim();//学生迎新事务主键
+                    row.FK_SNO = dt.Rows[i]["FK_SNO"].ToString().Trim();//学号
+                    row.FK_Affair_NO = dt.Rows[i]["FK_Affair_NO"].ToString().Trim();//迎新事务编号 
+                    row.Log_Status = dt.Rows[i]["Log_Status"].ToString().Trim();//事务状态
+                    row.Creater = dt.Rows[i]["Creater"].ToString().Trim();//创建者
+                    row.Create_DT = dt.Rows[i]["Create_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Create_DT"].ToString());//创建时间
+                    row.Updater = dt.Rows[i]["Updater"].ToString().Trim();//更新者
+                    row.Update_DT = dt.Rows[i]["Update_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Update_DT"].ToString());//更新时间
+
+                    //if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    if (dt.Rows[i]["Log_Status"].ToString().Trim() != "已完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    {
+                        /*Call_Function格式，web服务器url地址?方法名称，例如：http://localhost:3893/test/WebService.asmx?test_Log_Status*/
+                        try
+                        {
+                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string[] parts = url.Split('?');
+                            if (parts.Length != 2)
+                            {
+                                throw new Exception("函数格式错误");
+                            }
+
+                            url = parts[0];
+                            string method = parts[1];
+                            string[] args = new string[1];
+                            args[0] = row.FK_SNO;
+                            object data = WSHelper.InvokeWebService(url, method, args);
+                            string jg = data.ToString().Trim();
+                            row.Log_Status = jg.Trim();
+
+                            if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0)
+                            {
+                                sqlstr = "update Fresh_Affair_Log set Log_Status=@cs3,Updater='system',Update_DT=getdate() where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
+                                Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()), new SqlParameter("cs3", row.Log_Status.Trim()));
+                            }
+                            else
+                                if ((row.PK_Affair_Log == null || row.PK_Affair_Log.Trim().Length == 0))
+                                {
+                                    sqlstr = "insert into Fresh_Affair_Log (PK_Affair_Log,FK_SNO,FK_Affair_NO,Log_Status,Creater,Create_DT,Updater,Update_DT) values (" +
+                                            "  newid(),@cs1,@cs2,@cs3,'system',getdate(),'system',getdate())";
+                                    Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()), new SqlParameter("cs3", row.Log_Status.Trim()));
+                                }
+                        }
+                        catch (Exception ex1)
+                        {
+                            row.Log_Status = "状态回调函数错误：" + ex1.Message;
+                        }
+                    }
+                    result.Add(row);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_schoolaffairlog_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
     public List<fresh_affair_log> get_schoolaffairlog_list_old(string PK_SNO)
     {
         List<fresh_affair_log> result = null;
@@ -1331,6 +1426,98 @@ public class batch
         return result;
     }
 
+    public List<fresh_affair_log> get_student_affair_affairlog_list(string PK_SNO,string AFFAIR_NO)
+    {
+        List<fresh_affair_log> result = null;
+        try
+        {
+            if (PK_SNO == null || PK_SNO.Trim().Length == 0 || AFFAIR_NO == null || AFFAIR_NO.Trim().Length == 0)
+            {
+                return null;
+            }
+
+            //string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+            //                "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
+            //                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+            //                " from vw_fresh_student_base a,Fresh_Batch b," +
+            //                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+            //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
+            //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
+            string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
+                "(case when d.Log_Status is null then c.InitStatus else d.Log_Status end) as Log_Status," +
+                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
+                " from vw_fresh_student_base a,Fresh_Batch b," +
+                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
+                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO and c.PK_Affair_NO=@cs2 " +
+                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
+            System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", AFFAIR_NO.Trim()));
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                result = new List<fresh_affair_log>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    fresh_affair_log row = new fresh_affair_log();
+                    row.PK_Affair_Log = dt.Rows[i]["PK_Affair_Log"].ToString().Trim();//学生迎新事务主键
+                    row.FK_SNO = dt.Rows[i]["FK_SNO"].ToString().Trim();//学号
+                    row.FK_Affair_NO = dt.Rows[i]["FK_Affair_NO"].ToString().Trim();//迎新事务编号 
+                    row.Log_Status = dt.Rows[i]["Log_Status"].ToString().Trim();//事务状态
+                    row.Creater = dt.Rows[i]["Creater"].ToString().Trim();//创建者
+                    row.Create_DT = dt.Rows[i]["Create_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Create_DT"].ToString());//创建时间
+                    row.Updater = dt.Rows[i]["Updater"].ToString().Trim();//更新者
+                    row.Update_DT = dt.Rows[i]["Update_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Update_DT"].ToString());//更新时间
+
+                    //if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    if (dt.Rows[i]["Log_Status"].ToString().Trim() != "已完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
+                    {
+                        try
+                        {
+                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string[] parts = url.Split('?');
+                            if (parts.Length != 2)
+                            {
+                                throw new Exception("函数格式错误");
+                            }
+                            url = parts[0];
+                            string method = parts[1];
+                            string[] args = new string[1];
+                            args[0] = row.FK_SNO;
+                            object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
+                            string jg = data.ToString().Trim();
+                            row.Log_Status = jg.Trim();
+
+                            if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0)
+                            {
+                                sqlstr = "update Fresh_Affair_Log set Log_Status=@cs3,Updater='system',Update_DT=getdate() where FK_SNO=@cs1 and FK_Affair_NO=@cs2";
+                                Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()), new SqlParameter("cs3", row.Log_Status.Trim()));
+                            }
+                            else
+                                if ((row.PK_Affair_Log == null || row.PK_Affair_Log.Trim().Length == 0))
+                                {
+                                    sqlstr = "insert into Fresh_Affair_Log (PK_Affair_Log,FK_SNO,FK_Affair_NO,Log_Status,Creater,Create_DT,Updater,Update_DT) values (" +
+                                            "  newid(),@cs1,@cs2,@cs3,'system',getdate(),'system',getdate())";
+                                    Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()), new SqlParameter("cs2", row.FK_Affair_NO.Trim()), new SqlParameter("cs3", row.Log_Status.Trim()));
+                                }
+                        }
+                        catch (Exception ex1)
+                        {
+                            row.Log_Status = "状态回调函数错误：" + ex1.Message;
+                        }
+                    }
+                    result.Add(row);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_studentaffairlog_list", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
     public List<fresh_affair_log> get_studentaffairlog_list_old(string PK_SNO)
     {
         List<fresh_affair_log> result = null;
@@ -2495,24 +2682,26 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
+                sqlstr = "select ClassName,PK_Class_NO,FK_Fresh_Batch,year,Campus_Name,Campus_NO,Collage,College_NO,SPE_Name,SPE_Code from "
+                        +" (select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
                         +"c.Name as ClassName ,c.PK_Class_NO"
                         +" from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
                         +" where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
                         +" and FK_Fresh_Batch=@cs1"
                         +" GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
-                        +" c.PK_Class_NO,c.Name";
+                        +" c.PK_Class_NO,c.Name ) as tb";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
             }
             else
             {
-                sqlstr = "select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
+                sqlstr = "select ClassName,PK_Class_NO,FK_Fresh_Batch,year,Campus_Name,Campus_NO,Collage,College_NO,SPE_Name,SPE_Code from "
+                        + " (select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
                         + "c.Name as ClassName ,c.PK_Class_NO"
                         + " from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
                         + " where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
                         + " and FK_Fresh_Batch=@cs1 and College_NO=@cs2"
                         + " GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
-                        + " c.PK_Class_NO,c.Name";
+                        + " c.PK_Class_NO,c.Name) as tb";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
             }
         }
@@ -2595,18 +2784,20 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
+                sqlstr = "select classname,PK_Class_NO,studentcount,year,Collage,SPE_Name from ("
+                        +" select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
                         +" from vw_fresh_student_base a,Fresh_Class b"
                         +" where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Class_NO=b.PK_Class_NO and a.FK_Fresh_Batch=@cs1"
-                        +" GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO";
+                        +" GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO) as tb";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
             }
             else
             {
-                sqlstr = "select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
+                sqlstr = "select classname,PK_Class_NO,studentcount,year,Collage,SPE_Name from ("
+                        +" select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
                         + " from vw_fresh_student_base a,Fresh_Class b"
                         + " where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Class_NO=b.PK_Class_NO and a.FK_Fresh_Batch=@cs1 and a.College_NO=@cs2"
-                        + " GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO";
+                        + " GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO) as tb";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
             }
         }
@@ -2667,7 +2858,7 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.[year],a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,b.Name as ClassName,a.FK_Class_NO,"
+                sqlstr = "select a.[year],b.Name as ClassName,a.FK_Class_NO,a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,"
                         +" d.Name as Class_Collage,c.SPE_Code as Class_SPE_Code,c.SPE_Name as Class_SPE_Name"
                         +" from vw_fresh_student_base a,Fresh_Class b,Fresh_SPE c,Base_College d"
                         +" where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Fresh_Batch=@cs1"
@@ -2677,7 +2868,7 @@ public class batch
             }
             else
             {
-                sqlstr = "select a.[year],a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,b.Name as ClassName,a.FK_Class_NO,"
+                sqlstr = "select a.[year],b.Name as ClassName,a.FK_Class_NO,a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,"
                         + " d.Name as Class_Collage,c.SPE_Code as Class_SPE_Code,c.SPE_Name as Class_SPE_Name"
                         + " from vw_fresh_student_base a,Fresh_Class b,Fresh_SPE c,Base_College d"
                         + " where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Fresh_Batch=@cs1 and a.College_NO=@cs2"
@@ -2887,7 +3078,7 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name,d.name,c.phone,c.qq "
+                sqlstr = "select a.Campus_Name,a.ClassName,a.PK_Class_NO,d.name,c.phone,c.qq,a.name as collagename,a.SPE_Name"
                         +" from vw_class a,"
                         +" (select distinct(fk_class_no)"
                         +" from vw_fresh_student_base"
@@ -2899,7 +3090,7 @@ public class batch
             }
             else
             {
-                sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name,d.name,c.phone,c.qq "
+                sqlstr = "select a.Campus_Name,a.ClassName,a.PK_Class_NO,d.name,c.phone,c.qq,a.name as collagename,a.SPE_Name"
                         + " from vw_class a,"
                         + " (select distinct(fk_class_no)"
                         + " from vw_fresh_student_base"
@@ -2931,43 +3122,43 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                //sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
-                //        +" from vw_class a,"
-                //        +" (select distinct(fk_class_no)"
-                //        +" from vw_fresh_student_base"
-                //        +" where FK_Fresh_Batch=@cs1"
-                //        +" and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
-                //        +" where a.PK_Class_NO=b.fk_class_no "
-                //        +" order by collagename,SPE_Name,classname,campus_name";
-
-                sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
-                        + " from vw_class a left join "
+                sqlstr = "select a.Campus_Name,a.ClassName,a.PK_Class_NO,a.name as collagename,a.SPE_Name"
+                        + " from vw_class a,"
                         + " (select distinct(fk_class_no)"
                         + " from vw_fresh_student_base"
                         + " where FK_Fresh_Batch=@cs1"
                         + " and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
-                        + " on a.PK_Class_NO=b.fk_class_no "
+                        + " where a.PK_Class_NO=b.fk_class_no "
                         + " order by collagename,SPE_Name,classname,campus_name";
+
+                //sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
+                //        + " from vw_class a left join "
+                //        + " (select distinct(fk_class_no)"
+                //        + " from vw_fresh_student_base"
+                //        + " where FK_Fresh_Batch=@cs1"
+                //        + " and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
+                //        + " on a.PK_Class_NO=b.fk_class_no "
+                //        + " order by collagename,SPE_Name,classname,campus_name";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
             }
             else
             {
-                //sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
-                //        + " from vw_class a,"
-                //        + " (select distinct(fk_class_no)"
-                //        + " from vw_fresh_student_base"
-                //        + " where FK_Fresh_Batch=@cs1 and College_NO=@cs2 "
-                //        + " and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
-                //        + " where a.PK_Class_NO=b.fk_class_no "
-                //        + " order by collagename,SPE_Name,classname,campus_name";
-                sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
-                        + " from vw_class a left join "
+                sqlstr = "select a.Campus_Name,a.ClassName,a.PK_Class_NO,a.name as collagename,a.SPE_Name"
+                        + " from vw_class a,"
                         + " (select distinct(fk_class_no)"
                         + " from vw_fresh_student_base"
                         + " where FK_Fresh_Batch=@cs1 and College_NO=@cs2 "
                         + " and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
-                        + " on a.PK_Class_NO=b.fk_class_no "
+                        + " where a.PK_Class_NO=b.fk_class_no "
                         + " order by collagename,SPE_Name,classname,campus_name";
+                //sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
+                //        + " from vw_class a left join "
+                //        + " (select distinct(fk_class_no)"
+                //        + " from vw_fresh_student_base"
+                //        + " where FK_Fresh_Batch=@cs1 and College_NO=@cs2 "
+                //        + " and FK_Class_NO not in (select FK_Class_NO from Fresh_Counseller)) as b"
+                //        + " on a.PK_Class_NO=b.fk_class_no "
+                //        + " order by collagename,SPE_Name,classname,campus_name";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
             }
         }
@@ -3223,16 +3414,29 @@ public class batch
         try
         {
             string sqlstr = null;
+            //sqlstr = "select [year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
+            //        +" case when d.Tuition is null then '' else d.Tuition end as TuitionType, "
+            //        +" case when a.Phone is null and a.Phone_dr is null then '' else "
+            //        +" ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
+            //        +" ( case when a.Phone is null and a.Phone_dr is not null then a.Phone_dr else a.Phone+','+a.Phone_dr  end )"
+            //        +" end )"
+            //        +" end as phone"
+            //        +" from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO"
+            //        +" ,Fresh_Class b,Base_Code_Item c"
+            //        +" where a.FK_Class_NO=b.PK_Class_NO and a.Gender_Code=c.Item_NO and c.FK_Code='002'"
+            //        + " and a.FK_Class_NO=@cs1 order by name ";
             sqlstr = "select [year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
-                    +" case when d.Tuition is null then '' else d.Tuition end as TuitionType, "
-                    +" case when a.Phone is null and a.Phone_dr is null then '' else "
-                    +" ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
-                    +" ( case when a.Phone is null and a.Phone_dr is not null then a.Phone_dr else a.Phone+','+a.Phone_dr  end )"
-                    +" end )"
-                    +" end as phone"
-                    +" from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO"
-                    +" ,Fresh_Class b,Base_Code_Item c"
-                    +" where a.FK_Class_NO=b.PK_Class_NO and a.Gender_Code=c.Item_NO and c.FK_Code='002'"
+                    + " case when d.Tuition is null then '' else d.Tuition end as TuitionType, "
+                    + " case when a.Phone is null and a.Phone_dr is null then '' else "
+                    + " ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
+                    + " ( case when a.Phone is null and a.Phone_dr is not null then a.Phone_dr else a.Phone+','+a.Phone_dr  end )"
+                    + " end )"
+                    + " end as phone,"
+                    + " case when e.Confirm_state is null then '未注册' else (case when e.Confirm_state='0' then '注册【有误】' else '注册' end ) END as register"
+                    + " from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO"
+                    + " left join Fresh_Confirm e on a.PK_SNO=e.FK_SNO"
+                    + " ,Fresh_Class b,Base_Code_Item c"
+                    + " where a.FK_Class_NO=b.PK_Class_NO and a.Gender_Code=c.Item_NO and c.FK_Code='002'"
                     + " and a.FK_Class_NO=@cs1 order by name ";
             result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_CLASS_NO.Trim()));
         }
@@ -3267,22 +3471,34 @@ public class batch
                 for (int i = 0; i < result.Rows.Count; i++)
                 {
                     string pk_sno = result.Rows[i]["pk_sno"].ToString().Trim();
-                    List<fresh_affair_log> stu_loglist=this.get_studentaffairlog_list(pk_sno);
-                    List<fresh_affair_log> school_loglist=this.get_schoolaffairlog_list(pk_sno);
-                    for (int j = 0; stu_loglist != null && j < stu_loglist.Count; j++)
+                    //List<fresh_affair_log> stu_loglist=this.get_studentaffairlog_list(pk_sno);
+                    List<fresh_affair_log> stu_loglist = this.get_student_affair_affairlog_list(pk_sno, PK_AFFAIR_NO);
+                    if (stu_loglist != null && stu_loglist.Count > 0)
                     {
-                        if (stu_loglist[j].FK_Affair_NO.Trim().Equals(PK_AFFAIR_NO.Trim()))
-                        {
-                            result.Rows[i]["affairstatus"] = stu_loglist[j].Log_Status.Trim();
-                        }
+                        result.Rows[i]["affairstatus"] = stu_loglist[0].Log_Status.Trim();
                     }
-                    for (int j = 0; school_loglist != null && j < school_loglist.Count; j++)
+                    //List<fresh_affair_log> school_loglist=this.get_schoolaffairlog_list(pk_sno);
+                    List<fresh_affair_log> school_loglist = this.get_school_affair_affairlog_list(pk_sno, PK_AFFAIR_NO);
+                    if (school_loglist != null && school_loglist.Count > 0)
                     {
-                        if (school_loglist[j].FK_Affair_NO.Trim().Equals(PK_AFFAIR_NO.Trim()))
-                        {
-                            result.Rows[i]["affairstatus"] = school_loglist[j].Log_Status.Trim();
-                        }
+                        result.Rows[i]["affairstatus"] = school_loglist[0].Log_Status.Trim();
                     }
+
+                    //for (int j = 0; stu_loglist != null && j < stu_loglist.Count; j++)
+                    //{
+                    //    if (stu_loglist[j].FK_Affair_NO.Trim().Equals(PK_AFFAIR_NO.Trim()))
+                    //    {
+                    //        result.Rows[i]["affairstatus"] = stu_loglist[j].Log_Status.Trim();
+                    //    }
+                    //}
+                    //for (int j = 0; school_loglist != null && j < school_loglist.Count; j++)
+                    //{
+                    //    if (school_loglist[j].FK_Affair_NO.Trim().Equals(PK_AFFAIR_NO.Trim()))
+                    //    {
+                    //        result.Rows[i]["affairstatus"] = school_loglist[j].Log_Status.Trim();
+                    //    }
+                    //}
+
                 }
                 result.AcceptChanges();
             }
@@ -3340,6 +3556,7 @@ public class batch
                 dt_student.Columns.Remove("spe_name");
                 dt_student.Columns.Remove("Status_Code");
                 dt_student.Columns.Remove("TuitionType");
+                dt_student.Columns.Remove("test_no");
 
                 dt_student.AcceptChanges();
                 if (dt_affair != null && dt_affair.Rows.Count > 0)
@@ -3370,8 +3587,10 @@ public class batch
                 dt_student.Columns["name"].ColumnName = "姓名";
                 dt_student.Columns["gender"].ColumnName = "性别";
                 dt_student.Columns["pk_sno"].ColumnName = "学号";
-                dt_student.Columns["test_no"].ColumnName = "高考报名号";
+                //dt_student.Columns["test_no"].ColumnName = "高考报名号";
                 dt_student.Columns["id_no"].ColumnName = "身份证号";
+                dt_student.Columns["phone"].ColumnName = "联系电话";
+                dt_student.Columns["register"].ColumnName = "注册状况";
                 dt_student.AcceptChanges();
                 result = dt_student;
             }
@@ -3396,7 +3615,7 @@ public class batch
         try
         {
             string sqlstr = null;
-            sqlstr = "select [year],collage,spe_name,g.Item_Name as EDU_Level,b.Name as class_name,a.name,c.Item_Name as gender,"
+            sqlstr = "select a.[year],collage,spe_name,g.Item_Name as EDU_Level,b.Name as class_name,a.name,c.Item_Name as gender,"
                      + "a.Photo,a.pk_sno,test_no,id_no,Status_Code,QQ,Height,Weight,"
 			         +" Nation_Code,e.item_name as Nation,census,Politics_Code,f.item_name as Politics,Home_add,"
                      +" case when d.Tuition is null then '' else d.Tuition end as TuitionType, "
@@ -3404,11 +3623,13 @@ public class batch
                      +" ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
                      +" ( case when a.Phone is null and a.Phone_dr is not null then a.Phone_dr else a.Phone+','+a.Phone_dr  end )"
                      +"end )"
-                     +" end as phone"
+                     +" end as phone,"
+                     + " j.Campus_Name+','+j.Room_NO as dorm"
                      +" from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO "
 				     +" LEFT JOIN (select * from Base_Code_Item where fk_code='003') as e on a.Nation_Code=e.Item_NO"
 					 +" LEFT JOIN (select * from Base_Code_Item where fk_code='004') as f on a.Politics_Code=f.Item_NO"
                      + " LEFT JOIN Fresh_Class as b on a.FK_Class_NO=b.PK_Class_NO"
+                     +" LEFT JOIN ( select * from Fresh_Bed_Log h,vw_beds i where h.FK_Bed_NO=i.PK_Bed_NO) as j on a.PK_SNO=j.FK_SNO"
                      + ",Base_Code_Item c,Base_Code_Item g"
                      + " where a.Gender_Code=c.Item_NO and c.FK_Code='002' and a.EDU_Level_Code=g.Item_NO and g.FK_Code='001'"
 					 +" AND a.PK_SNO=@cs1";

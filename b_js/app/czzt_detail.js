@@ -20,12 +20,13 @@
                     var str='';
                     for (var key in item)
                     {
-                        str=str+'<td>'+key+'</td>';
+                        str=str+'<th>'+key+'</th>';
                         //console.log('key='+key+' data='+item[key]);
                     }
-                    str='<tr>'+str+'</tr>';
+                    str='<thead><tr>'+str+'</tr></thead>';
                     $('#detaildata').append(str);
                 }
+                $('#detaildata').append('<tbody>');
                 for (i = 0; json_data.data != null && i < json_data.data.length; i++) {
                     var item = json_data.data[i];
                     var str='';
@@ -37,6 +38,7 @@
                     str='<tr>'+str+'</tr>';
                     $('#detaildata').append(str);
                 }
+                $('#detaildata').append('</tbody>');
             } else {
                 alert(json_data.message);
             }
