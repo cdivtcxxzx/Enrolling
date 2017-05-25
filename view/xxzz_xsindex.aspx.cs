@@ -81,7 +81,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
                     }
                     if (affairlog_list[j].FK_Affair_NO.Trim().Equals("7"))//缴费项目确认
                     {
-                        if (!affairlog_list[j].Log_Status.Trim().Equals("未选择必交费用"))
+                        if (!affairlog_list[j].Log_Status.Trim().Equals("未选必交费"))
                         {
                             has_must = true;//有必交费用项目
                         }
