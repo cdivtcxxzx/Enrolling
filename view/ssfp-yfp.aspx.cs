@@ -29,7 +29,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 
             if (pk_sno == null || pk_sno.Trim().Length == 0)
             {
-                Response.Write("<script>alert('参数错误');history.go(-1);</script>");
+                Response.Write("<script>alert('参数错误');location.href='xxzz_xsindex.aspx';</script>");
                 Response.End();
                 return;
             }
@@ -37,7 +37,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 
             if (pk_affair_no == null || pk_affair_no.Trim().Length == 0)
             {
-                Response.Write("<script>alert('参数错误');history.go(-1);</script>");
+                Response.Write("<script>alert('参数错误');location.href='xxzz_xsindex.aspx';</script>");
                 Response.End();
                 return;
             }
@@ -58,7 +58,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xzss_01a");
             if (!jg.isauth)
             {
-                Response.Write("<script>alert('" + jg.msg + "');history.go(-1);</script>");
+                Response.Write("<script>alert('" + jg.msg + "');location.href='xxzz_xsindex.aspx';</script>");
                 Response.End();
                 return;
 
