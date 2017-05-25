@@ -2682,24 +2682,26 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
+                sqlstr = "select ClassName,PK_Class_NO,FK_Fresh_Batch,year,Campus_Name,Campus_NO,Collage,College_NO,SPE_Name,SPE_Code from "
+                        +" (select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
                         +"c.Name as ClassName ,c.PK_Class_NO"
                         +" from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
                         +" where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
                         +" and FK_Fresh_Batch=@cs1"
                         +" GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
-                        +" c.PK_Class_NO,c.Name";
+                        +" c.PK_Class_NO,c.Name ) as tb";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
             }
             else
             {
-                sqlstr = "select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
+                sqlstr = "select ClassName,PK_Class_NO,FK_Fresh_Batch,year,Campus_Name,Campus_NO,Collage,College_NO,SPE_Name,SPE_Code from "
+                        + " (select a.FK_Fresh_Batch,a.[year], d.Campus_Name,d.Campus_NO,a.Collage,a.College_NO ,a.SPE_Name,a.SPE_Code,"
                         + "c.Name as ClassName ,c.PK_Class_NO"
                         + " from vw_fresh_student_base a,Fresh_spe b,Fresh_Class c,Base_Campus d"
                         + " where a.SPE_Code=b.SPE_Code and a.[year]=b.[Year] and c.FK_SPE_NO=b.PK_SPE and c.FK_Campus_NO=d.PK_Campus"
                         + " and FK_Fresh_Batch=@cs1 and College_NO=@cs2"
                         + " GROUP BY a.FK_Fresh_Batch, a.Collage,a.College_NO,a.[year] ,a.SPE_Code,a.SPE_Name,d.Campus_NO,d.Campus_Name,"
-                        + " c.PK_Class_NO,c.Name";
+                        + " c.PK_Class_NO,c.Name) as tb";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
             }
         }
@@ -2782,18 +2784,20 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
+                sqlstr = "select classname,PK_Class_NO,studentcount,year,Collage,SPE_Name from ("
+                        +" select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
                         +" from vw_fresh_student_base a,Fresh_Class b"
                         +" where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Class_NO=b.PK_Class_NO and a.FK_Fresh_Batch=@cs1"
-                        +" GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO";
+                        +" GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO) as tb";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
             }
             else
             {
-                sqlstr = "select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
+                sqlstr = "select classname,PK_Class_NO,studentcount,year,Collage,SPE_Name from ("
+                        +" select a.[year],a.Collage,a.SPE_Name,b.Name as classname,b.PK_Class_NO,count(*) as studentcount"
                         + " from vw_fresh_student_base a,Fresh_Class b"
                         + " where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Class_NO=b.PK_Class_NO and a.FK_Fresh_Batch=@cs1 and a.College_NO=@cs2"
-                        + " GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO";
+                        + " GROUP BY a.[year],a.Collage,a.SPE_Name,b.Name,b.PK_Class_NO) as tb";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));
             }
         }
@@ -2854,7 +2858,7 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.[year],a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,b.Name as ClassName,a.FK_Class_NO,"
+                sqlstr = "select a.[year],b.Name as ClassName,a.FK_Class_NO,a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,"
                         +" d.Name as Class_Collage,c.SPE_Code as Class_SPE_Code,c.SPE_Name as Class_SPE_Name"
                         +" from vw_fresh_student_base a,Fresh_Class b,Fresh_SPE c,Base_College d"
                         +" where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Fresh_Batch=@cs1"
@@ -2864,7 +2868,7 @@ public class batch
             }
             else
             {
-                sqlstr = "select a.[year],a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,b.Name as ClassName,a.FK_Class_NO,"
+                sqlstr = "select a.[year],b.Name as ClassName,a.FK_Class_NO,a.Collage,a.SPE_Code,a.SPE_Name,a.Name,a.PK_SNO,a.Test_NO,"
                         + " d.Name as Class_Collage,c.SPE_Code as Class_SPE_Code,c.SPE_Name as Class_SPE_Name"
                         + " from vw_fresh_student_base a,Fresh_Class b,Fresh_SPE c,Base_College d"
                         + " where (a.FK_Class_NO is not null or len(rtrim(ltrim(a.FK_Class_NO)))>0) and a.FK_Fresh_Batch=@cs1 and a.College_NO=@cs2"
@@ -3074,7 +3078,7 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name,d.name,c.phone,c.qq "
+                sqlstr = "select a.Campus_Name,a.ClassName,a.PK_Class_NO,d.name,c.phone,c.qq,a.name as collagename,a.SPE_Name"
                         +" from vw_class a,"
                         +" (select distinct(fk_class_no)"
                         +" from vw_fresh_student_base"
@@ -3086,7 +3090,7 @@ public class batch
             }
             else
             {
-                sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name,d.name,c.phone,c.qq "
+                sqlstr = "select a.Campus_Name,a.ClassName,a.PK_Class_NO,d.name,c.phone,c.qq,a.name as collagename,a.SPE_Name"
                         + " from vw_class a,"
                         + " (select distinct(fk_class_no)"
                         + " from vw_fresh_student_base"
@@ -3118,7 +3122,7 @@ public class batch
             string sqlstr = null;
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
+                sqlstr = "select a.Campus_Name,a.ClassName,a.PK_Class_NO,a.name as collagename,a.SPE_Name"
                         + " from vw_class a,"
                         + " (select distinct(fk_class_no)"
                         + " from vw_fresh_student_base"
@@ -3139,7 +3143,7 @@ public class batch
             }
             else
             {
-                sqlstr = "select a.name as collagename,a.SPE_Name,a.ClassName,a.PK_Class_NO,a.Campus_Name"
+                sqlstr = "select a.Campus_Name,a.ClassName,a.PK_Class_NO,a.name as collagename,a.SPE_Name"
                         + " from vw_class a,"
                         + " (select distinct(fk_class_no)"
                         + " from vw_fresh_student_base"
@@ -3611,7 +3615,7 @@ public class batch
         try
         {
             string sqlstr = null;
-            sqlstr = "select [year],collage,spe_name,g.Item_Name as EDU_Level,b.Name as class_name,a.name,c.Item_Name as gender,"
+            sqlstr = "select a.[year],collage,spe_name,g.Item_Name as EDU_Level,b.Name as class_name,a.name,c.Item_Name as gender,"
                      + "a.Photo,a.pk_sno,test_no,id_no,Status_Code,QQ,Height,Weight,"
 			         +" Nation_Code,e.item_name as Nation,census,Politics_Code,f.item_name as Politics,Home_add,"
                      +" case when d.Tuition is null then '' else d.Tuition end as TuitionType, "
@@ -3619,11 +3623,13 @@ public class batch
                      +" ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
                      +" ( case when a.Phone is null and a.Phone_dr is not null then a.Phone_dr else a.Phone+','+a.Phone_dr  end )"
                      +"end )"
-                     +" end as phone"
+                     +" end as phone,"
+                     + " j.Campus_Name+','+j.Room_NO as dorm"
                      +" from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO "
 				     +" LEFT JOIN (select * from Base_Code_Item where fk_code='003') as e on a.Nation_Code=e.Item_NO"
 					 +" LEFT JOIN (select * from Base_Code_Item where fk_code='004') as f on a.Politics_Code=f.Item_NO"
                      + " LEFT JOIN Fresh_Class as b on a.FK_Class_NO=b.PK_Class_NO"
+                     +" LEFT JOIN ( select * from Fresh_Bed_Log h,vw_beds i where h.FK_Bed_NO=i.PK_Bed_NO) as j on a.PK_SNO=j.FK_SNO"
                      + ",Base_Code_Item c,Base_Code_Item g"
                      + " where a.Gender_Code=c.Item_NO and c.FK_Code='002' and a.EDU_Level_Code=g.Item_NO and g.FK_Code='001'"
 					 +" AND a.PK_SNO=@cs1";

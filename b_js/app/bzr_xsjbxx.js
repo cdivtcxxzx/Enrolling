@@ -33,14 +33,16 @@
                             $('#xsxx_xy').text(json_data.data[i].collage);
                             $('#xsxx_bjmc').text(json_data.data[i].class_name);
 
-                            $('#xsxx_dhhm').text(json_data.data[i].phone);
-                            $('#xsxx_qq').text(json_data.data[i].QQ);
-                            $('#xsxx_jtzz').text(json_data.data[i].Home_add);
-                            $('#xsxx_zzmm').text(json_data.data[i].Politics);
-                            $('#xsxx_mz').text(json_data.data[i].Nation);
-                            $('#xsxx_sg').text(json_data.data[i].Height);
-                            $('#xsxx_tz').text(json_data.data[i].Weight);
-                            $('#xsxx_jg').text(json_data.data[i].census);
+                            $('#xsxx_dhhm').text(json_data.data[i].phone==null?'':json_data.data[i].phone);
+                            $('#xsxx_qq').text(json_data.data[i].QQ==null?'':json_data.data[i].QQ);
+                            $('#xsxx_jtzz').text(json_data.data[i].Home_add==null?'':json_data.data[i].Home_add);
+                            $('#xsxx_zzmm').text(json_data.data[i].Politics==null?'':json_data.data[i].Politics);
+                            $('#xsxx_mz').text(json_data.data[i].Nation==null?'':json_data.data[i].Nation);
+                            $('#xsxx_sg').text(json_data.data[i].Height==null?'':json_data.data[i].Height);
+                            $('#xsxx_tz').text(json_data.data[i].Weight==null?'':json_data.data[i].Weight);
+                            $('#xsxx_jg').text(json_data.data[i].census==null?'':json_data.data[i].census);
+                            $('#xsxx_dorm').text(json_data.data[i].dorm==null?'':json_data.data[i].dorm);
+
                         }//end for
                     }//end if length > 0
                 }//end code=success
