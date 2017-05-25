@@ -40,8 +40,8 @@ public partial class nradmingl_Defaultgl : System.Web.UI.Page
         #region 页面基本配置及标题标识
         try
         {
-  
-                webpage = Request.Url.GetLeftPart(UriPartial.Query).ToString();
+
+            webpage = Request.Url.GetLeftPart(UriPartial.Query).ToString().Replace(Request.Url.Port.ToString(), Sqlhelper.serverport); 
                // Response.Write(webpage);
                // Response.End();
          

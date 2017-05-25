@@ -21,7 +21,7 @@
    
 </head>
 <body>
-    <div class="admin-main">
+    <div class="admin-main" style="    margin: 5px 15px 10px 15px;">
         <blockquote class="layui-elem-quote">
             <i class="layui-icon">&#xe602;</i>自助报到<i class="layui-icon">&#xe602;</i>完善个人信息
             <span style="float: right" id="btnback">
