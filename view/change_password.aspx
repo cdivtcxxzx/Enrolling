@@ -20,9 +20,19 @@
 <body>
     <form id="form1" runat="server" class="layui-form">
         <div class="admin-main">
-            <blockquote class="layui-elem-quote">
+<%--            <blockquote class="layui-elem-quote">
                 <i class="layui-icon">&#xe602;</i>修改密码           
-            </blockquote>
+            </blockquote>--%>
+
+           <blockquote class="layui-elem-quote">
+            <i class="layui-icon">&#xe602;</i>自助报到<i class="layui-icon">&#xe602;</i>修改密码
+            <span style="float: right" id="btnback">
+                 <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
+                    <i class="layui-icon">&#xe603;</i>
+                </a>
+            </span>
+        </blockquote>
+
             <div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">旧密码：</label>

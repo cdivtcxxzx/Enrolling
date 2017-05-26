@@ -43,7 +43,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             //<font color=red>未完成</font>  
             //写法已完成
             //<font color=green>已完成</font>
-            this.xszt_bdxz.InnerHtml = "<font color=red>未完成</font>";//报到须知  
+            this.xszt_bdxz.InnerHtml = "<font color=green>已完成</font>";//报到须知  
             this.xszt_wsjf.InnerHtml = "<font color=red>未完成</font>";//网上缴费
             this.xszt_czqs.InnerHtml = "<font color=red>未完成</font>";//选择寝室
             this.xszt_xxws.InnerHtml = "<font color=red>未完成</font>";//信息完善
@@ -55,7 +55,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             this.xsztxq_xxws.InnerHtml = "";//信息完善
 
             //图片状态更改说明
-            zttp1.Src = "../images/xszt/1-1.png";//状态已完成：1.png 未完成1-1.png
+            zttp1.Src = "../images/xszt/1.png";//状态已完成：1.png 未完成1-1.png
             zttp2.Src = "../images/xszt/2-2.png";//状态已完成：2.png 未完成2-2.png
             zttp3.Src = "../images/xszt/3-3.png";//状态已完成：3.png 未完成3-3.png
             zttp4.Src = "../images/xszt/w4-4.png";//状态已完成：w4.png 未完成w4-4.png
@@ -81,7 +81,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
                     }
                     if (affairlog_list[j].FK_Affair_NO.Trim().Equals("7"))//缴费项目确认
                     {
-                        if (!affairlog_list[j].Log_Status.Trim().Equals("未选择必交费用"))
+                        if (!affairlog_list[j].Log_Status.Trim().Equals("未选必交费"))
                         {
                             has_must = true;//有必交费用项目
                         }
@@ -135,7 +135,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
 #region 链接跳转
             //顶部学生信息详情
             this.xsxxurl.HRef = "xsjbxx.aspx?pk_affair_no=11&pk_sno=" + Session["username"].ToString() + "";
-            this.xscz_bdxz.HRef = "";//报到须知  
+            this.xscz_bdxz.HRef = "guide.html";//报到须知  
             this.xscz_wsjf.HRef = "xswsjf.aspx";//网上缴费
             this.xscz_xzqs.HRef = "ssfp-yfp.aspx?pk_affair_no=3&pk_sno="+Session["username"].ToString();//选择寝室
             this.xscz_xxws.HRef = "xsxx-extend.aspx?pk_affair_no=12&pk_sno=" + Session["username"].ToString();//信息完善

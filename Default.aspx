@@ -247,6 +247,18 @@
     display: inline-block;
     margin: 0 15px;
 }
+
+
+    @media (max-width: 500px)
+    {
+        #demo1{width:500px!important;width:288px!important;}
+        #demo1 img{width:500px!important;width:288px!important;}
+        #demo1 li{width:500px!important;width:288px!important;}
+
+
+    }
+
+    
 @media (max-width: 1080px)
 .main {
     padding: 0 20px;
@@ -449,9 +461,9 @@ img {
                   <article id="70" class="post">
                     
                     <div class="featured-media"><!-- 轮播处理 -->
-			<div id="demo1" class="slideBox"  style="width: 690px; height: 370px;border:1px solid #ccc">
+			<div id="demo1" class="slideBox"  style="width: 680px; height: 370px;border:1px solid #ccc">
   <ul class="items" id="tpshow" runat="server">
-    <li  style="width: 690px; height: 370px;"><a href="/view/xszz-index.aspx?pk_sno=5" title="数据库连接失败,请联系管理员"><img  style="width: 714px; height: 370px;" src="img/1.PNG"></a></li>
+    <li  style="width: 680px; height: 370px;background:url('img/1.PNG')" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="学生自助报到"></a></li>
    
    
   </ul>

@@ -1053,6 +1053,17 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                 string orderid = data[i].FEE_ORDERID;
                                 string orderurl = data[i].FEE_ORDERID_URL;
                                 List<Financial.Fee_Item> data1 = logic_fee.get_feeitem_byorder(orderid);//根据订单获取学生收费款项列表
+                                if (data1 != null && data.Count > 0)
+                                {
+                                    for (int j = 0; j < data1.Count; j++)
+                                    {
+                                        if (data1[j].Fee_Name.Trim().Equals("绿色通道") || data1[j].Fee_Name.Trim().Equals("助学贷款"))
+                                        {
+                                            data1.RemoveAt(j);
+                                            break;
+                                        }
+                                    }
+                                }
                                 jg.Add(new {order_id=orderid,order_url=orderurl,items=data1 });
                             }
                             result.code = "success";
@@ -1333,6 +1344,10 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                             if (colname.Trim().Equals("spe_name"))
                             {
                                 jg.Columns[i].ColumnName = "专业名称";
+                            }
+                            if (colname.Trim().Equals("stotal"))
+                            {
+                                jg.Columns[i].ColumnName = "学生人数";
                             }
                         }
                         if (jg != null)
@@ -1676,7 +1691,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                             }
                             if (colname.Trim().Equals("spe_name"))
                             {
-                                jg.Columns[i].ColumnName = "学生所属专业名称";
+                                jg.Columns[i].ColumnName = "专业名称";
                             }
                             if (colname.Trim().Equals("gender"))
                             {
@@ -2096,6 +2111,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         }
                         if (jg != null)
                         {
+                            jg.Columns.Remove("学院编码");
                             jg.AcceptChanges();
                         }
                         result.code = "success";
