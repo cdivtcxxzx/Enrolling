@@ -18,7 +18,7 @@ public class CostMan
 	}
     public DataTable GetCostStandard(string pk_fee)
     {
-        DataTable dt = Sqlhelper.ConSerach(Sqlhelper.conStr_cost, "SELECT PK_Fee_Item,FK_Fee,Fee_Code,Fee_Code_Name,Fee_Name,Fee_Amount,FK_Fee_Type,Is_Must,SPE_Code,Is_Online_Order FROM [dbo].[Fee_Item] where FK_Fee=@pk_fee", new SqlParameter("pk_fee", pk_fee));
+        DataTable dt = Sqlhelper.ConSerach(Sqlhelper.conStr_cost, "SELECT PK_Fee_Item,FK_Fee,Fee_Code,Fee_Code_Name,Fee_Name,Fee_Amount,FK_Fee_Type,Type_Name,case when Is_Must=0 then '否' else '是' end Is_Must,SPE_Code,case when Is_Online_Order=0 then '否' else '是' end Is_Online_Order FROM [dbo].[Fee_Item] left join Fee_Type on Fee_Item.FK_Fee_Type=Fee_Type.PK_Fee_Type where FK_Fee=@pk_fee", new SqlParameter("pk_fee", pk_fee));
         if(dt.Rows.Count>0)
         {
             return dt;

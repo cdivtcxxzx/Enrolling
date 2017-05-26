@@ -41,11 +41,11 @@
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
              --%>
-                 <asp:LinkButton CssClass="layui-btn layui-btn-small"  onclick="ClearData" OnClientClick="return confirm('此操作会删除当前批次下所有收费标准，是否继续')"  txttop="txttop" ToolTip="清空预分配数据" ID="LinkButton12" runat="server"    Text='' ><i class="layui-icon">&#xe630;</i>清空数据</asp:LinkButton>
-                  
-                 <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '收费标准数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'CostImport.aspx?setp=1',btn:'完成'});" class="layui-btn layui-btn-small">
+                 <%--<asp:LinkButton CssClass="layui-btn layui-btn-small"  onclick="ClearData" OnClientClick="return confirm('此操作会删除当前批次下所有收费标准，是否继续')"  txttop="txttop" ToolTip="清空预分配数据" ID="LinkButton12" runat="server"    Text='' ><i class="layui-icon">&#xe630;</i>清空数据</asp:LinkButton>
+                  --%>
+                 <%--<a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '收费标准数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'CostImport.aspx?setp=1&mb=1',btn:'完成'});" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe62f;</i>导入数据
-				</a>
+				</a>--%>
                
                 <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出数据</asp:LinkButton>
 
@@ -101,7 +101,7 @@
     <asp:BoundField DataField="Fee_Amount" HeaderText="金额"  SortExpression="Fee_Amount"/>
         <asp:BoundField DataField="Fee_Code" HeaderText="收费项目代码"  SortExpression="Fee_Code"/>
         <asp:BoundField DataField="Fee_Code_Name" HeaderText="收费项目名称"  SortExpression="Fee_Code_Name"/>
-        <asp:BoundField DataField="FK_Fee_Type" HeaderText="收费类型"  SortExpression="FK_Fee_Type"/>
+        <asp:BoundField DataField="Type_Name" HeaderText="费用类型"  SortExpression="Type_Name"/>
         <asp:BoundField DataField="Is_Must" HeaderText="是否必收"  SortExpression="Is_Must"/>
         <asp:BoundField DataField="Is_Online_Order" HeaderText="是否生成网上订单"  SortExpression="Is_Online_Order"/>
 <%--    
@@ -121,14 +121,14 @@
 
             <ItemStyle  />
             </asp:TemplateField>--%>  
-        <asp:TemplateField HeaderText="管理操作" >
+       <%-- <asp:TemplateField HeaderText="管理操作" >
 
                 <ItemTemplate>
              <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－<%# Eval("PK_Fee_Item").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?id=<%# Eval("PK_Fee_Item").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">编辑</a> &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("PK_Fee_Item")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
               </asp:LinkButton>
             </ItemTemplate>
                 
-                </asp:TemplateField>
+                </asp:TemplateField>--%>
 
 
     </Columns>
