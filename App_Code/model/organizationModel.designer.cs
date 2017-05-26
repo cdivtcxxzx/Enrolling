@@ -2029,6 +2029,14 @@ namespace model
 		
 		private string _Phone_dr;
 		
+		private string _Phone_fa;
+		
+		private string _Phone_ma;
+		
+		private string _Huji_add;
+		
+		private string _Note;
+		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -2075,6 +2083,14 @@ namespace model
     partial void OnHome_addChanged();
     partial void OnPhone_drChanging(string value);
     partial void OnPhone_drChanged();
+    partial void OnPhone_faChanging(string value);
+    partial void OnPhone_faChanged();
+    partial void OnPhone_maChanging(string value);
+    partial void OnPhone_maChanged();
+    partial void OnHuji_addChanging(string value);
+    partial void OnHuji_addChanged();
+    partial void OnNoteChanging(string value);
+    partial void OnNoteChanged();
     #endregion
 		
 		public Base_STU()
@@ -2262,7 +2278,7 @@ namespace model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_Initial", DbType="DateTime")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DT_Initial", DbType="DateTime2")]
 		public System.Nullable<System.DateTime> DT_Initial
 		{
 			get
@@ -2482,7 +2498,7 @@ namespace model
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone_dr", DbType="VarChar(20)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone_dr", DbType="NVarChar(20)")]
 		public string Phone_dr
 		{
 			get
@@ -2498,6 +2514,86 @@ namespace model
 					this._Phone_dr = value;
 					this.SendPropertyChanged("Phone_dr");
 					this.OnPhone_drChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone_fa", DbType="NVarChar(20)")]
+		public string Phone_fa
+		{
+			get
+			{
+				return this._Phone_fa;
+			}
+			set
+			{
+				if ((this._Phone_fa != value))
+				{
+					this.OnPhone_faChanging(value);
+					this.SendPropertyChanging();
+					this._Phone_fa = value;
+					this.SendPropertyChanged("Phone_fa");
+					this.OnPhone_faChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone_ma", DbType="NVarChar(20)")]
+		public string Phone_ma
+		{
+			get
+			{
+				return this._Phone_ma;
+			}
+			set
+			{
+				if ((this._Phone_ma != value))
+				{
+					this.OnPhone_maChanging(value);
+					this.SendPropertyChanging();
+					this._Phone_ma = value;
+					this.SendPropertyChanged("Phone_ma");
+					this.OnPhone_maChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Huji_add", DbType="NVarChar(255)")]
+		public string Huji_add
+		{
+			get
+			{
+				return this._Huji_add;
+			}
+			set
+			{
+				if ((this._Huji_add != value))
+				{
+					this.OnHuji_addChanging(value);
+					this.SendPropertyChanging();
+					this._Huji_add = value;
+					this.SendPropertyChanged("Huji_add");
+					this.OnHuji_addChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Note", DbType="NVarChar(255)")]
+		public string Note
+		{
+			get
+			{
+				return this._Note;
+			}
+			set
+			{
+				if ((this._Note != value))
+				{
+					this.OnNoteChanging(value);
+					this.SendPropertyChanging();
+					this._Note = value;
+					this.SendPropertyChanged("Note");
+					this.OnNoteChanged();
 				}
 			}
 		}
