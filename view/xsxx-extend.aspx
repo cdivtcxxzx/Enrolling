@@ -166,7 +166,7 @@
             <div style="text-align: center; float: left;margin-top:10px;margin-left:5px">
                 <span>
                     <a href="" type="reset" class="layui-btn layui-btn-small" id="">
-                        <i class="layui-icon">ဂ</i> 重置
+                        <i class="layui-icon">ဂ</i> 撤销
                         
                     </a>
                 </span>
