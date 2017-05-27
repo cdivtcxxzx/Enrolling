@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CostImport.aspx.cs" Inherits="nradmingl_CostImport" %>
 
+
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head id="Head1" runat="server">
@@ -166,16 +167,16 @@ ul, menu, dir {
      <blockquote class="layui-elem-quote">
       <div id="wizard" class="wizard" data-target="#wizard-steps" style="border-left: none; border-top: none; border-right: none;">
         <ul class="steps">
-            <li data-target="#step-1" class="active" style="padding-left:0px;"><span class="step">1</span>准备模板<span class="chevron"></span></li>
-            <li data-target="#step-2" id="setp2" runat="server"><span class="step">2</span>上传文件<span class="chevron"></span></li>
-            <li data-target="#step-3" id="setp3" runat="server"><span class="step">3</span>确认上传<span class="chevron"></span></li>
+            <li data-target="#step-1" class="active" style="padding-left:0px;"><span class="step">1</span>数据准备<span class="chevron"></span></li>
+            <li data-target="#step-2" id="setp2" runat="server"><span class="step">2</span>数据上传<span class="chevron"></span></li>
+            <li data-target="#step-3" id="setp3" runat="server"><span class="step">3</span>查看结果<span class="chevron"></span></li>
            
         </ul>
         <span style=" float:right;"><a id="setpup" runat="server" class="layui-btn layui-btn-small" style="margin-right:15px;margin-top:4px;">上一步</a><a  id="setpdown" runat="server"  style="margin-right:15px;margin-top:4px;" class="layui-btn layui-btn-small">下一步</a></span>
     </div>  
 				
 	</blockquote>
-    <asp:Label ID="ztxx" Font-Size="Medium" runat="server" Text=""></asp:Label>
+    <asp:Label ID="ztxx" CssClass="checkok" Font-Size="Large" runat="server"></asp:Label>
 
      <!--步骤1-->
     <div  id="setp1cz" runat="server">
@@ -195,22 +196,59 @@ ul, menu, dir {
      <div   id="setp2cz" runat="server">
        <blockquote class="layui-elem-quote">
 
-       <asp:FileUpload ID="FileUpload1" runat="server" />
+       <asp:FileUpload ID="FileUpload1" runat="server" Font-Size="Medium" />
            <asp:Button 
                 ID="batch_import" runat="server" Text="点击上传" txttop="txttop" 
-                ToolTip="点此上传已经做好的新生excel表!" OnClientClick="this.value='正在上传..';" 
-                CssClass="layui-btn layui-btn-small" onclick="batch_import_Click" Enabled="False" />
+                ToolTip="点此上传已经做好的新生excel表!"  
+                CssClass="layui-btn layui-btn-small" onclick="batch_import_Click"  />
+    	
+	&nbsp;&nbsp;&nbsp;
+           <asp:CheckBox ID="updateroom_c" runat="server" Font-Size="Medium" 
+               Text="同时更新寝室床位等信息（第一次导入请勾选）" />
     	
 	</blockquote>
     <br />
-         
+          
     </div>
-
-
+   
+   <style>.checkok input{font-size:16px!important;height: 20px;width:20px;}
+       .checkok label{font-size:16px!important;}
+       .checkok font{font-size:16px!important;}
+   
+   
+   
+   </style>
      <!--步骤3-->
     <div   id="setp3cz" runat="server">
-    显示导入结果
-        <asp:GridView ID="GridView1" runat="server">
+    <blockquote class="layui-elem-quote">
+
+           <asp:CheckBox ID="CheckBox1" runat="server" CssClass="checkok" AutoPostBack="true" Font-Size="Medium" 
+               Text="显示全部记录（默认仅显示了错误记录）" oncheckedchanged="CheckBox1_CheckedChanged" />
+    	
+	</blockquote>
+        <asp:GridView ID="GridView1"  OnRowCreated="GridView1_RowCreated"  CssClass="site-table table-hover"  runat="server">
+           <Columns>
+            <asp:TemplateField HeaderText="错误提示"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="错误提示">
+        
+            <ItemTemplate>
+            <%#cwts(Eval("错误提示").ToString())%>
+            </ItemTemplate>
+
+            <ItemStyle  />
+            </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
+        <asp:GridView ID="GridView2" Visible="false"  OnRowCreated="GridView1_RowCreated"  CssClass="site-table table-hover"  runat="server">
+           <Columns>
+            <asp:TemplateField HeaderText="操作提示"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="错误提示">
+        
+            <ItemTemplate>
+            <%#cwts(Eval("错误提示").ToString())%>
+            </ItemTemplate>
+
+            <ItemStyle  />
+            </asp:TemplateField>
+            </Columns>
         </asp:GridView>
     </div>
        </div>

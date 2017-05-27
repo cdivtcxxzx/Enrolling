@@ -597,11 +597,12 @@ public static class organizationService
             oDC.SubmitChanges();
             return true;
         }
-        catch
+         catch(Exception e)
         {
             
             return false;
         }
+        
     }
     #endregion
 
