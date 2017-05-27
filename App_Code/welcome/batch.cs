@@ -3011,6 +3011,7 @@ public class batch
         return result;
     }
 
+
     //某迎新批次全校或某学院学生已预分床位，但年或校区错误的数据
     public System.Data.DataTable get_batch_hasbed_buterror(string PK_BATCH_NO, string College_NO)
     {

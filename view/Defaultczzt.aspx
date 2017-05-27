@@ -164,7 +164,7 @@
 
         <div class="xsxx2">
                                 <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn">新生人数</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn">&emsp;新生人数&emsp;</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
                                 <span id="xsxx_xh"><b>合计<span id="studentcount" style="color:red;"></span>人  男<span id="mancount" style="color:red;"></span>人   女<span id="womancount" style="color:red;"></span>人   </b></span>
@@ -173,7 +173,7 @@
                     </div>
 
                     <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn">专业设置</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn">&emsp;专业设置&emsp;</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
                                 <span id="xsxx_xh"><b>
@@ -196,7 +196,7 @@
 
 
                     <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" >班级设置</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" >&emsp;班级设置&emsp;</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
                                 <span id="xsxx_xh">
@@ -253,20 +253,22 @@
                     </div>
 
                     <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" >预分配宿舍数据</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" >宿舍预分配</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
                                 <span id="xsxx_xh">
                                     <b>
-                                    <a href="#" onclick="detailclick('get_batch_hasbed')">已分床位数:<span id="hasbedcount" style="color:red;"></span></a>  
-                                    <a href="#" onclick="detailclick('get_batch_nohasbedclass')">缺少床位数:<span id="nohasbedcount" style="color:red;"></span></a>
-                                    <a href="#" onclick="detailclick('get_batch_hasbed_buterror')">错分床位数:<span id="hasbed_buterrorcount" style="color:red;"></span></a>
+                                    <a href="#" onclick="detailclick('get_batch_hasbed')">已提供床位<span id="hasbedcount" style="color:red;"></span>个</a>  
+<%--                                    <a href="#" onclick="detailclick('get_batch_nohasbedclass')">缺少床位数:<span id="nohasbedcount" style="color:red;"></span></a>
+                                    <a href="#" onclick="detailclick('get_batch_hasbed_buterror')">错分床位数:<span id="hasbed_buterrorcount" style="color:red;"></span></a>--%>
+                                    <a href="#" onclick="detailclick('get_batch_nohasbedclass_boy')">缺少男生床位<span id="nohasbedcount_boy" style="color:red;"></span>个</a>
+                                    <a href="#" onclick="detailclick('get_batch_nohasbedclass_girl')">缺少女生床位<span id="nohasbedcount_girl" style="color:red;"></span>个</a>                                    
                                     </b>
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div class="layui-form-item" pane="" style="min-height: 56px">
+<%--                    <div class="layui-form-item" pane="" style="min-height: 56px">
                         <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" >现场迎新设置数据</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
@@ -278,7 +280,7 @@
                                  </font></span>
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
 
                 </div>
                 <!--
