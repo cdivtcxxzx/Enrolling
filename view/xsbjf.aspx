@@ -64,9 +64,9 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>学生网上自助报到>>选择费用
+            <i class="layui-icon">&#xe602;</i>自助报到>>选择费用
             <span style="float:right;" id="btnback">            				
-                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
+                 <a href="xswsjf.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
            </span>
@@ -173,9 +173,9 @@
      </div>
 
     <div style="clear:both;"></div>
-    <div class="xsxx2" style="text-align:center;">
-        <a href="javascript:void(0);" onclick="sure();" class="layui-btn layui-btn-small" id="sure" style="display:none;">确定</a>
-        <a href="javascript:void(0);" onclick="cancel();" class="layui-btn layui-btn-small" style="margin-left:18px;" id="cancel">返回</a>
+    <div class="xsxx2" style="text-align:center;margin-top:10px;">
+        <a href="javascript:void(0);" onclick="sure();" style="width:100px;" class="layui-btn layui-btn-small" id="sure" style="display:none;">确定</a>
+        <a href="javascript:void(0);" onclick="cancel();" style="width:100px;"  class="layui-btn layui-btn-small" style="margin-left:18px;" id="cancel">返回</a>
     </div>
     </form>
 </div>        

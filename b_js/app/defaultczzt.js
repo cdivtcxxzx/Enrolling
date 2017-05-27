@@ -265,7 +265,7 @@ function collagechange(pk_collage_no, pk_batch_no) {
                     $('#nohascollageaffairacount').html(tmp.length);
                 }
 
-                console.log(json_data.data.collegefinancial);
+                //console.log(json_data.data.collegefinancial);
                 var collegefinancial = json_data.data.collegefinancial;//专业财务交费项目数据
                 if (collegefinancial) {
                     var count=0;

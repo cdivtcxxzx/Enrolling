@@ -184,7 +184,7 @@ ul, menu, dir {
 				</a>&nbsp;&nbsp;&nbsp;&nbsp;<asp:DropDownList ID="DropDownListBatch" runat="server" AutoPostBack="True" 
                         DataSourceID="LinqDataSource1" DataTextField="Batch_Name" 
                         DataValueField="PK_Batch_NO" 
-                        Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="DropDownListBatch_SelectedIndexChanged">
+                        Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="DropDownListBatch_SelectedIndexChanged" OnDataBound="DropDownListBatch_DataBound">
                         <asp:ListItem  Value="-1">请选择批次</asp:ListItem>
                     </asp:DropDownList>
          <asp:LinqDataSource ID="LinqDataSource1" runat="server" ContextTypeName="model.organizationModelDataContext" EntityTypeName="" Select="new (PK_Batch_NO, Batch_Name)" TableName="Fresh_Batches" OrderBy="PK_Batch_NO">
@@ -280,7 +280,7 @@ ul, menu, dir {
     </Columns>
     <PagerTemplate>
 <span style="float:left;padding-bottom: 8px;padding-top: 8px;" class="hidden-xs" >
-
+    &nbsp;&nbsp;总共：<%# Session["xsDrRowsCount"] %>&nbsp;行&nbsp;&nbsp;&nbsp;&nbsp;
 
             每页<asp:Label ID="LabelPageSize" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageSize %>"></asp:Label>
             条 &nbsp;&nbsp;</span><span style="float:left;padding-bottom: 8px;padding-top: 8px;"  >当前<asp:Label ID="LabelCurrentPage" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>
@@ -327,9 +327,9 @@ ul, menu, dir {
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;
         </PagerTemplate>
     </asp:GridView>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService">
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService" OnSelected="ObjectDataSource2_Selected">
             <SelectParameters>
-                <asp:SessionParameter DefaultValue="-1" Name="batch" SessionField="batch" Type="String" />
+                <asp:SessionParameter DefaultValue="0" Name="batch" SessionField="batch" Type="String" />
             </SelectParameters>
         </asp:ObjectDataSource>
     </div>

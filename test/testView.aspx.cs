@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -55,7 +56,7 @@ public partial class test_testView : System.Web.UI.Page
         //PropertyInfo[] propertys = stu_info.GetType().GetProperties();
         //foreach (PropertyInfo property in propertys)
         //{
-        //    Response.Write(property.Name +","+ property.GetValue(stu_info, null) + "<br/> ");
+        //    Response.Write(property.Name + "," + property.GetValue(stu_info, null) + "<br/> ");
         //}
 
         //Response.Write(DateTime.Now.ToShortDateString());
@@ -87,6 +88,7 @@ public partial class test_testView : System.Web.UI.Page
         //GridView1.DataSource = organizationService.getStuByBatch("");
         //GridView1.DataBind();
 
+
         //民族|性别
         //List<Base_Code_Item> mz = organizationService.getCodesItem("003");
         //List<Base_Code_Item> xb = organizationService.getCodesItem("002");
@@ -101,8 +103,15 @@ public partial class test_testView : System.Web.UI.Page
         //测试学生数量查询
         //Response.Write(organizationService.getStuCount("4","2017"));
         //生成学号 createNum
-        Response.Write(organizationService.createNum("2017","1","03"));
+        //Response.Write(organizationService.createNum("2017","1","03"));
         
+        //测试权限获取
+        List<Base_College> yx = organizationService.getYxByYhid("");
+        foreach (var item in yx)
+        {
+            Response.Write(item.Name);
+            Response.Write("<br/>");
+        }
     }
     //测试导出
     protected void Button1_Click(object sender, EventArgs e)

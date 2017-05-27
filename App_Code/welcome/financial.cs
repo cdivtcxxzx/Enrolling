@@ -169,6 +169,14 @@ public class financial
                             }
                         }
                     }
+
+                    System.Data.DataTable dt = this.get_base_spe_zydm(result.zydm);//将招办的专业号替换为教务的专业号
+                    if (dt != null && dt.Rows.Count == 1)
+                    {
+                        result.zydm = dt.Rows[0]["ZYDM"].ToString().Trim();//专业编号
+                        result.zymc = dt.Rows[0]["ZYMC"].ToString().Trim(); //专业名称
+                    }
+
                 }
             }
 
@@ -256,8 +264,16 @@ public class financial
         try {
             if (PK_Fee != null && PK_Fee.Trim().Length > 0 && SPE_Code != null && SPE_Code.Trim().Length > 0)
             {
+                System.Data.DataTable dt1 = get_base_spe_zydm(SPE_Code);//教务处专业码
+                if (dt1 == null || dt1.Rows.Count == 0)
+                {
+                    throw new Exception("无效的教务专业码");
+                }
+                string ZYDM= dt1.Rows[0]["ZYDM"].ToString().Trim();//教务处专业码
+
                 Financial.FinancialWSSoapClient ws = new Financial.FinancialWSSoapClient();
-                Financial.Fee_Item[] data = ws.GetFeeItem(PK_Fee, SPE_Code);
+                Financial.Fee_Item[] data = ws.GetFeeItem(PK_Fee, ZYDM);
+                //Financial.Fee_Item[] data = ws.GetFeeItem(PK_Fee, SPE_Code);
                 if (data != null && data.Length > 0)
                 {
                     result = data.ToList();
@@ -516,7 +532,7 @@ public class financial
                 //string md5 = MD5Encrypt32("yxxtgf$RET54s");
 
                 user_fee user = make_user_fee(PK_SNO);
-                //调试信息
+                //调试信息,正式运行时删除
                 user.bjdm = "lsdz201701";
                 user.bjmc = "2017单招临时班";
                 user.lxnd = "2017";
@@ -526,6 +542,7 @@ public class financial
                 user.yxmc = "招办";
                 user.zydm = "ls001";
                 user.zymc = "单招专业";
+                //调试信息结束
 
                 string md5 ="9017dc9c2d3f2532ed6834c207ea6c86";
                 string user_json = null;
@@ -1194,6 +1211,29 @@ public class financial
             try
             {
                 new c_log().logAdd("financial.cs", "get_fee_no_order", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
+    //根据招办专业代码获取对应的教务专业代码
+    public  System.Data.DataTable get_base_spe_zydm(string SPE_Code)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+
+            sqlstr = "select * from base_spe_zydm where SPE_Code=@cs1";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", SPE_Code.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_base_spe_zydm", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;

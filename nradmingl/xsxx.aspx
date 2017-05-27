@@ -35,7 +35,7 @@
       <blockquote class="layui-elem-quote">
           <i class="layui-icon">&#xe602;</i>后台管理<i class="layui-icon">&#xe602;</i>学生信息
            <span style="float:right">
-               <a href="#<%# DateTime.Now.ToShortTimeString() %>" class="layui-btn layui-btn-small hidden-xs">
+               <a href="xsxx.aspx" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#x1002;</i> 刷新
 				</a>
                   <a href="mb/xsxxdr.xls" class="layui-btn layui-btn-small hidden-xs">
@@ -61,7 +61,7 @@
                     <asp:DropDownList ID="batch" runat="server" AutoPostBack="True" 
                         DataSourceID="LinqDataSource1" DataTextField="Batch_Name" 
                         DataValueField="PK_Batch_NO" 
-                        Font-Size="Medium" AppendDataBoundItems="True">
+                        Font-Size="Medium" AppendDataBoundItems="True" OnSelectedIndexChanged="batch_SelectedIndexChanged">
                         <asp:ListItem Selected="True" Value="0">显示所有批次</asp:ListItem>
                     </asp:DropDownList>
                     &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
@@ -100,7 +100,7 @@
         <HeaderStyle CssClass="hidden-xs" />
         <ItemStyle CssClass="hidden-xs" />
         </asp:BoundField>
-    <asp:BoundField DataField="Name" HeaderText="姓名" SortExpression="GenderName"/>
+    <asp:BoundField DataField="Name" HeaderText="姓名" SortExpression="Name"/>
     <asp:BoundField DataField="Gender" HeaderText="性别"   SortExpression="Gender"/>
     <asp:BoundField DataField="ID_NO" HeaderText="身份证"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="ID_NO">
         
@@ -148,7 +148,7 @@
     </Columns>
     <PagerTemplate>
 <span style="float:left;padding-bottom: 8px;padding-top: 8px;" class="hidden-xs" >
-
+    &nbsp;&nbsp;总共：<%# Session["rowsCount"] %>&nbsp;行&nbsp;&nbsp;&nbsp;&nbsp;
 
             每页<asp:Label ID="LabelPageSize" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageSize %>"></asp:Label>
             条 &nbsp;&nbsp;</span><span style="float:left;padding-bottom: 8px;padding-top: 8px;"  >当前<asp:Label ID="LabelCurrentPage" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>
@@ -195,7 +195,7 @@
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;
         </PagerTemplate>
     </asp:GridView>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService" OldValuesParameterFormatString="original_{0}" >
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService" OldValuesParameterFormatString="original_{0}" OnSelected="ObjectDataSource1_Selected" >
             <SelectParameters>
                 <asp:ControlParameter ControlID="batch" Name="batch" PropertyName="SelectedValue" 
                     Type="String" DefaultValue="0" />

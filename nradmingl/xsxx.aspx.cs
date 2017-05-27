@@ -14,7 +14,7 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "项目开发管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
+    private string pagelm1 = "学生数据管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
 
     private string pageqx1 = "浏览";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";
@@ -26,7 +26,6 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
     #endregion
     protected void Page_Load(object sender, EventArgs e)
     {
-
         try
         {
 
@@ -185,6 +184,22 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
         }
     }
     #endregion
+    # region 显示总记录数
+    protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+        DataTable dt = (DataTable)e.ReturnValue;
+        if (dt == null)
+        {
+            Session["rowsCount"] = "0";
+        }
+        else
+        {
+            Session["rowsCount"] = dt.Rows.Count.ToString();
+        }
+    }
+    #endregion
+
+
     //民族列处理
     public string show_mz(string mzdm)
     {
@@ -239,5 +254,18 @@ public partial class nradmingl_xsxx : System.Web.UI.Page
         }
         #endregion
     }
-    
+
+    //批次事件
+    protected void batch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string batch_xs = batch.SelectedValue.ToString();
+        if (batch_xs != "" && batch_xs != "-1")
+        {
+            Session["batch"] = batch_xs;
+        }
+        else
+        {
+            Session["batch"] = "-1";
+        }
+    }
 }

@@ -42,8 +42,15 @@ public partial class nradmingl_Defaultxs : System.Web.UI.Page
         {
             if (Request.Cookies["xurl"] != null)
             {
-                HttpCookie cookiesurl = Request.Cookies["xurl"];
-                webpage = cookiesurl.Value.ToString().Replace("%3A", ":").Replace("%3F", "?").Replace("%3D", "=").Replace("%26", "&");
+                if (Request.Cookies["xurl"].ToString().Length > 1)
+                {
+                    HttpCookie cookiesurl = Request.Cookies["xurl"];
+                    webpage = cookiesurl.Value.ToString().Replace("%3A", ":").Replace("%3F", "?").Replace("%3D", "=").Replace("%26", "&");
+                }
+                else
+                {
+                    webpage = Request.Url.GetLeftPart(UriPartial.Query).ToString().Replace(Request.Url.Port.ToString(), Sqlhelper.serverport);
+                }
             }
             else
             {
@@ -130,5 +137,14 @@ public partial class nradmingl_Defaultxs : System.Web.UI.Page
 
         }
         #endregion
+        if (Session["username"] != null)
+        {
+            this.xsxxurl.HRef = "xsjbxx.aspx?pk_affair_no=11&pk_sno=" + Session["username"].ToString() + "";
+        }
+        else
+        {
+            Response.Redirect("/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs");
+        }
+           
     }
 }

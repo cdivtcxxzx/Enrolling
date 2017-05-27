@@ -116,19 +116,19 @@
 <body>
     <div class="admin-main">
         <blockquote class="layui-elem-quote">
-            <i class="layui-icon">&#xe602;</i>学生网上自助报到<i class="layui-icon">&#xe602;</i>信息确认
-            <span style="float: right" id="btnback">
-                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
+            <i class="layui-icon">&#xe602;</i>学生网上自助报到<i class="layui-icon">&#xe602;</i>报到确认
+            <%--<span style="float: right" id="btnback">
+                 <a href="xszz-index.aspx" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe603;</i>
                 </a>
-            </span>
+            </span>--%>
 
         </blockquote>
         <form id="form1" class="layui-form layui-form-pane" runat="server">
             <asp:HiddenField ID="hidden_pk_sno" Value="" runat="server" />
-            <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
+            <%--<asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
             <asp:HiddenField ID="pk_affair_no" Value="" runat="server" />
-            <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
+            <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />--%>
             <asp:HiddenField ID="server_msg" Value="" runat="server" />
 
             <%--基本信息--%>
@@ -141,6 +141,9 @@
                         <asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" />
                     </div>
                     <div class="xx-content">
+                        <div class="layui-form-item">
+                            <p>相关信息说明</p>
+                        </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">姓名：</label>
                             <div class="layui-input-block">
@@ -222,7 +225,7 @@
             </div>
             <%--确认按钮--%>
             <div class="btn-confirm">
-                <asp:Button ID="btn_submit" CssClass="layui-btn layui-btn-big" style="display:none;"  runat="server" Text="提  交"/>
+                <asp:Button ID="btn_submit" CssClass="layui-btn layui-btn-big" style=""  runat="server" Text="确  认"/>
                 
             </div>
         </form>

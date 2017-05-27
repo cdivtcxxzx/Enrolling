@@ -15,7 +15,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "学生数据导入管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
+    private string pagelm1 = "学生数据管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
     private string upfile = "xsxx_upload";//导入上传的临时文件名称
     //导入模板的字段
     private string zd = "高考报名号,姓名,性别,身份证号,民族,专业代码,学制,年级,联系电话";
@@ -223,7 +223,11 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
                             x.Rows[ii]["学号"] = organizationService.createNum(x.Rows[ii]["年级"].ToString().Trim().Replace("'", ""), ASPE.PK_SPE, new_xz);
                         }
 
-
+                        //1.5 高考报名号、姓名、身份证号                        
+                        if (x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", "").Length != 18 || x.Rows[ii]["姓名"].ToString().Trim().Replace("'", "") == "" || x.Rows[ii]["高考报名号"].ToString().Trim().Replace("'", "") == "")
+                        {
+                            x.Rows[ii]["错误提示"] = " 信息不完整，或身份证有误";
+                        }
 
                         //2身份证查重
                         if (organizationService.getStuBySFZ(x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", "")))
@@ -265,15 +269,18 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
 
                                 Base_STU createStu = new Base_STU
                                 {
-                                    PK_SNO = x.Rows[ii]["学号"].ToString(),
-                                    FK_SPE_Code = x.Rows[ii]["专业代码"].ToString(),
-                                    Year = x.Rows[ii]["年级"].ToString(),
-                                    Test_NO = x.Rows[ii]["高考报名号"].ToString(),
-                                    ID_NO = x.Rows[ii]["身份证号"].ToString(),
-                                    Name = x.Rows[ii]["姓名"].ToString(),
-                                    Gender_Code = x.Rows[ii]["性别"].ToString(),
+                                    PK_SNO = x.Rows[ii]["学号"].ToString().Trim().Replace("'", ""),
+                                    FK_SPE_Code = x.Rows[ii]["专业代码"].ToString().Trim().Replace("'", ""),
+                                    Year = x.Rows[ii]["年级"].ToString().Trim().Replace("'", ""),
+                                    Test_NO = x.Rows[ii]["高考报名号"].ToString().Trim().Replace("'", ""),
+                                    ID_NO = x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", ""),
+                                    Phone = "images/xstp/" + x.Rows[ii]["高考报名号"].ToString().Trim().Replace("'", "") + ".jpg",
+                                    Status_Code = "未报到",
+                                    Password = x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", "").Substring(12, 6),
+                                    Name = x.Rows[ii]["姓名"].ToString().Trim().Replace("'", ""),
+                                    Gender_Code = x.Rows[ii]["性别"].ToString().Trim().Replace("'", ""),
                                     DT_Initial = DateTime.Now,
-                                    Nation_Code = x.Rows[ii]["民族"].ToString(),
+                                    Nation_Code = x.Rows[ii]["民族"].ToString().Trim().Replace("'", ""),
                                     Phone_dr = x.Rows[ii]["联系电话"].ToString().Trim().Replace("'","")
                                 };
                                 if (Session["batch"]!=null && Session["batch"].ToString()!="" && organizationService.addStu(createStu,Session["batch"].ToString()))
@@ -468,7 +475,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     protected void PageSize_Go(object sender, EventArgs e)
     {
 
-        TextBox ps = (TextBox)this.GridView1.BottomPagerRow.FindControl("PageSize_Set");
+        TextBox ps = (TextBox)this.GridView2.BottomPagerRow.FindControl("PageSize_Set");
         if (!string.IsNullOrEmpty(ps.Text))
         {
 
@@ -488,7 +495,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
 
     protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-        GridView1.PageIndex = e.NewPageIndex;
+        GridView2.PageIndex = e.NewPageIndex;
     }
 
     #endregion
@@ -497,9 +504,9 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     protected void LinkButtonGo_Click(object sender, EventArgs e)
     {
 
-        LinkButton lbtn_go = (LinkButton)this.GridView1.BottomPagerRow.FindControl("LinkButtonGo");
+        LinkButton lbtn_go = (LinkButton)this.GridView2.BottomPagerRow.FindControl("LinkButtonGo");
 
-        TextBox txt_go = (TextBox)this.GridView1.BottomPagerRow.FindControl("txt_go");
+        TextBox txt_go = (TextBox)this.GridView2.BottomPagerRow.FindControl("txt_go");
 
         if (!string.IsNullOrEmpty(txt_go.Text))
         {
@@ -531,6 +538,21 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
         }
     }
     #endregion
+    # region 显示总记录数
+    protected void ObjectDataSource2_Selected(object sender, ObjectDataSourceStatusEventArgs e)
+    {
+        DataTable dt = (DataTable)e.ReturnValue;
+        if (dt == null)
+        {
+            Session["xsDrRowsCount"] = "0";
+        }
+        else
+        {
+            Session["xsDrRowsCount"] = dt.Rows.Count.ToString();
+        }
+    }
+    #endregion
+
     //民族列处理
     public string show_mz(string mzdm)
     {
@@ -550,4 +572,12 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     }
 
 
+    protected void DropDownListBatch_DataBound(object sender, EventArgs e)
+    {
+        //初次下拉加载数据后设置批次选中
+        if (Session["batch"] != null && Session["batch"] != "")
+        {
+            DropDownListBatch.Items.FindByValue(Session["batch"].ToString()).Selected = true;
+        }
+    }
 }

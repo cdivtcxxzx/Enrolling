@@ -22,7 +22,7 @@
    <form id="form1" runat="server">
     <div class="layui-layout layui-layout-admin">
 			<div class="layui-header header header-demo">
-				<div class="layui-main">
+				<div class="layui-main" style="margin: 0 0px;">
 					<div class="admin-login-box">
 						<a class="logo"  href="/">
 							<span style="font-size: 22px;">迎新管理系统</span>
@@ -35,30 +35,31 @@
 					<ul class="layui-nav">
                     <li class="layui-nav-item" id="tsxx" runat="server"> </li>
 						
-						<li class="layui-nav-item  hidden-xs">
-							<a href="/default.aspx"><i class="fa fa fa-home" aria-hidden="true"  style="margin-right:2px;"></i>返回首页</a>
-						</li>
+					
                         
 						
 						<li class="layui-nav-item">
 							<a href="javascript:;" class="admin-header-user">
-								<img src="../img/user2-160x160.jpg" style="width: 40px; height: 40px; border-radius: 100%;" />
+								<img src="../images/xstp/test.jpg" style="width: 40px; height: 40px; border-radius: 100%;" />
                                 
-								<span  id="username" runat="server">用户名</span>
+								<span  id="username" class="  hidden-xs"  runat="server">用户名</span>
                                
 							</a>
 							<dl class="layui-nav-child dda">
 								<dd>
-									<a href="/zyzx/grset.aspx"><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
+									<a id="xsxxurl" runat="server" href="xsjbxx.aspx" ><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
 								</dd>
 								<dd>
-									<a href="/zyzx/grset.aspx"><i class="fa fa-gear" aria-hidden="true"></i> 个人设置</a>
+									<a href="/view/change_password.aspx" target="main"><i class="fa fa-gear" aria-hidden="true"></i> 更改密码</a>
 								</dd>
 								<dd>
 									<a href="/logout.aspx"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销退出</a>
 								</dd>
                                 
 							</dl>
+						</li>
+                        	<li  class="layui-nav-item">
+							<a href="defaultxs.aspx"><i class="fa fa fa-home" aria-hidden="true"  style="margin-right:2px;"></i><span  class="layui-nav-item  hidden-xs">返回操作首页</span></a>
 						</li>
                         <li class="layui-nav-item   hidden-xs"><a href="javascript:" class="admin-side-full" style="margin-right: -10px;margin-left: -10px;" title="全屏"  >
 					<i class="fa fa-arrows-alt" aria-hidden="true"></i>
@@ -79,7 +80,7 @@
 					<ul style="display:none;" class="layui-tab-title">
 						<li class="layui-this">
 							<i class="fa fa-dashboard" aria-hidden="true"></i>
-							<cite>演示首页</cite>
+							<cite>学生自助首页</cite>
 						</li>
             
 					</ul>
@@ -87,7 +88,7 @@
                   
 					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
 						<div class="layui-tab-item layui-show">
-							<iframe src="/view/xszz-index.aspx?pk_sno=<%=Session["username"].ToString() %>"></iframe>
+							<iframe id="main" name="main" src="../view/xxzz_xsindex.aspx?pk_sno=<%=Session["username"].ToString() %>"></iframe>
 						</div>
 					</div>
 				</div>

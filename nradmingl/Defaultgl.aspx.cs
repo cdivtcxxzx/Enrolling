@@ -40,15 +40,11 @@ public partial class nradmingl_Defaultgl : System.Web.UI.Page
         #region 页面基本配置及标题标识
         try
         {
-            if (Request.Cookies["xurl"] != null)
-            {
-                HttpCookie cookiesurl = Request.Cookies["xurl"];
-                webpage = cookiesurl.Value.ToString().Replace("%3A", ":").Replace("%3F", "?").Replace("%3D", "=").Replace("%26", "&");
-            }
-            else
-            {
-                webpage = Request.Url.GetLeftPart(UriPartial.Query).ToString().Replace(Request.Url.Port.ToString(),Sqlhelper.serverport);
-            }
+
+            webpage = Request.Url.GetLeftPart(UriPartial.Query).ToString().Replace(Request.Url.Port.ToString(), Sqlhelper.serverport); 
+               // Response.Write(webpage);
+               // Response.End();
+         
         }
         catch { }
 

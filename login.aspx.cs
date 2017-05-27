@@ -374,7 +374,8 @@ public partial class admin_Default : System.Web.UI.Page
                             }
                         }
                         catch { }
-                        Response.Redirect("/" + Sqlhelper.gldir + "/defaultxs.aspx");
+                        //Response.Redirect("/" + Sqlhelper.gldir + "/defaultxs.aspx");
+                        Response.Redirect("/view/stu-baodao.aspx");
                     }
                     else
                     {

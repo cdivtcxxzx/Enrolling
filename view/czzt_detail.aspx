@@ -22,7 +22,7 @@
      <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
       <asp:HiddenField ID="pk_collage_no" Value="" runat="server" />
     <div>
-          <table class="layui-table" id="detaildata">
+          <table id="detaildata"  class="site-table table-hover" cellspacing="0" rules="all" border="1" style="border-collapse: collapse;">
 
            </table>
     </div>

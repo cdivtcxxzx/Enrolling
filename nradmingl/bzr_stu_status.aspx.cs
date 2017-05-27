@@ -16,10 +16,10 @@ public partial class nradmingl_Default3 : System.Web.UI.Page
         //}
 
         //Session["pk_staff_no"] = pk_staff_no;
-        if (Session["pk_staff_no"] == null)
+        if (Session["username"] == null)
         {
             throw new Exception("没登陆");
         }
-        this.pk_staff_no.Value = Session["pk_staff_no"].ToString().Trim();
+        this.pk_staff_no.Value = Session["username"].ToString().Trim();
     }
 }

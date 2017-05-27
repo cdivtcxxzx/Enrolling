@@ -33,7 +33,7 @@
     <form id="form1"  runat="server">
     <div class="admin-main">
       <blockquote class="layui-elem-quote">
-          <i class="layui-icon">&#xe602;</i>费用标准管理
+          <i class="layui-icon">&#xe602;</i>迎新准备<i class="layui-icon">&#xe602;</i>费用标准查看
            <span style="float:right">
 
             <!--调用C#原生按钮设置样式举例OVER-->

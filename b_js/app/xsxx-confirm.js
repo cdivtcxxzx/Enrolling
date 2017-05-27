@@ -2,30 +2,30 @@
     layui.use(['form', 'layer', 'jquery'], function () {
         var $ = layui.jquery;
 
-        var pk_staff_no= $("#pk_staff_no");
-        if (!pk_staff_no)
-        {
-            //alert("null or undefined or NaN");
-        }else{
-            pk_staff_no= $("#pk_staff_no").val();
-            if ($.trim(pk_staff_no).length > 0 ) {
-                $('#btnback').hide();
-            }
-        }
+        //var pk_staff_no= $("#pk_staff_no");
+        //if (!pk_staff_no)
+        //{
+        //    //alert("null or undefined or NaN");
+        //}else{
+        //    pk_staff_no= $("#pk_staff_no").val();
+        //    if ($.trim(pk_staff_no).length > 0 ) {
+        //        $('#btnback').hide();
+        //    }
+        //}
 
         var server_msg=$("#server_msg").val();
         if ($.trim(server_msg).length > 0 ) {
             alert(server_msg);
-            if(server_msg=='您的信息已经确认,无需再次确认'){
-                if(pk_staff_no && $.trim(pk_staff_no).length > 0){
+            //if(server_msg=='您的信息已经确认,无需再次确认'){
+            //    if(pk_staff_no && $.trim(pk_staff_no).length > 0){
 
-                }else{
-                    //history.go(-1);
-                    $('#xx_confirm_div').hide();
-                    $('#btn_submit').hide();
+            //    }else{
+            //        //history.go(-1);
+            //        $('#xx_confirm_div').hide();
+            //        $('#btn_submit').hide();
 
-                }
-            }
+            //    }
+            //}
             //return;
         }else{
             $('#xx_confirm_div').show();
@@ -36,12 +36,17 @@
         var form = layui.form();
         layer = layui.layer;
         var pk_sno = $("#hidden_pk_sno").val();//初始值由服务器回传网页时生成
-        var pk_batch_no = $("#pk_batch_no").val();
-        var pk_affair_no = $("#pk_affair_no").val();
+        //var pk_batch_no = $("#pk_batch_no").val();
+        //var pk_affair_no = $("#pk_affair_no").val();
 
-        if (pk_sno == null || $.trim(pk_sno).length == 0 || pk_batch_no == null || $.trim(pk_batch_no).length == 0
-            || pk_affair_no == null || $.trim(pk_affair_no).length == 0) {
-            alert("无效的参数");
+        //if (pk_sno == null || $.trim(pk_sno).length == 0 || pk_batch_no == null || $.trim(pk_batch_no).length == 0
+        //    || pk_affair_no == null || $.trim(pk_affair_no).length == 0) {
+        //    alert("无效的参数");
+        //    return;
+        //}
+
+        if(pk_sno == null || $.trim(pk_sno).length == 0){
+            layer.alert("学生学号错误!");
             return;
         }
 
@@ -66,13 +71,16 @@
                 url: "../../nradmingl/appserver/stu_server.aspx",
                 type: "get",
                 dataType: "text",
-                data: { "type": "xsxx_confirm", "pk_sno": pk_sno, "confirmState": confirmState,"pk_batch_no":pk_batch_no,"pk_affair_no":pk_affair_no },
+                data: { "type": "xsxx_confirm", "pk_sno": pk_sno, "confirmState": confirmState },
                 success: function (data) {
                     var json_data = JSON.parse(data);
                     if (json_data.code == 'success') {
-                        layer.msg('确认成功！');
+                        layer.msg('确认成功！3秒后跳转至主界面~');
                         $('#btn_submit').hide();
                         $('#xx_confirm_div').hide();
+                        setTimeout(function () {
+                            window.location.href = "../../nradmingl/defaultxs.aspx";
+                        },3000);
                     } else if(json_data.code='failure'){
                         layer.msg(json_data.message);
                     }   

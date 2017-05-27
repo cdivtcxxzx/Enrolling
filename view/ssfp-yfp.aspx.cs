@@ -29,7 +29,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 
             if (pk_sno == null || pk_sno.Trim().Length == 0)
             {
-                Response.Write("<script>alert('参数错误');history.go(-1);</script>");
+                Response.Write("<script>alert('参数错误');location.href='xxzz_xsindex.aspx';</script>");
                 Response.End();
                 return;
             }
@@ -37,7 +37,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 
             if (pk_affair_no == null || pk_affair_no.Trim().Length == 0)
             {
-                Response.Write("<script>alert('参数错误');history.go(-1);</script>");
+                Response.Write("<script>alert('参数错误');location.href='xxzz_xsindex.aspx';</script>");
                 Response.End();
                 return;
             }
@@ -58,7 +58,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xzss_01a");
             if (!jg.isauth)
             {
-                Response.Write("<script>alert('" + jg.msg + "');history.go(-1);</script>");
+                Response.Write("<script>alert('" + jg.msg + "');location.href='xxzz_xsindex.aspx';</script>");
                 Response.End();
                 return;
 
@@ -264,7 +264,20 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             if (tsxx.Split(',')[0] == "1")
             {
                 batch x = new batch();
-                x.set_affairlog(xsxx_xh.Text, pk_affair_no, tsxx.Split(',')[1], "system");
+
+                string create_name = null;
+                if (Session["pk_sno"] != null)
+                {
+                    string session_pk_sno = Session["pk_sno"].ToString();
+                    create_name = session_pk_sno.Trim() + ":" + Session["Name"].ToString().Trim();
+                }
+                if (Session["pk_staff_no"] != null)
+                {
+                    string session_pk_staff_no = Session["pk_staff_no"].ToString();
+                    create_name = session_pk_staff_no.Trim() + ":" + Session["Name"].ToString().Trim();
+                }
+                x.set_affairlog(xsxx_xh.Text, pk_affair_no, tsxx.Split(',')[1], create_name);
+                //x.set_affairlog(xsxx_xh.Text, pk_affair_no, tsxx.Split(',')[1], "system");
 
                 //写入操作记录
                 string urlok = HttpContext.Current.Request.Url.PathAndQuery;
@@ -288,6 +301,8 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
     }
     protected void qsxz_Click2(object sender, EventArgs e)
     {
-        Response.Redirect("/view/xszz-index.aspx?pk_sno="+xsxx_xh.Text);
+        //Response.Redirect("/view/xszz-index.aspx?pk_sno="+xsxx_xh.Text);
+        Response.Redirect("/view/xxzz_xsindex.aspx");
+
     }
 }

@@ -21,11 +21,11 @@
    
 </head>
 <body>
-    <div class="admin-main">
+    <div class="admin-main" style="    margin: 5px 15px 10px 15px;">
         <blockquote class="layui-elem-quote">
-            <i class="layui-icon">&#xe602;</i>学生网上自助报到<i class="layui-icon">&#xe602;</i>完善个人信息
+            <i class="layui-icon">&#xe602;</i>自助报到<i class="layui-icon">&#xe602;</i>完善个人信息
             <span style="float: right" id="btnback">
-                 <a href="javascript:history.go(-1);" class="layui-btn layui-btn-small">
+                 <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe603;</i>
                 </a>
             </span>
@@ -156,14 +156,14 @@
                     </div>
                 </div>
             </div>
-            <div style="text-align: center; float: right; margin-top: 10px; margin-left: 5px">
+            <div style="text-align: center; float: left; margin-top: 10px; margin-left: 115px">
                 <span>
                     <a href="" class="layui-btn layui-btn-small" lay-submit="" lay-filter="demo1" id="">
                         <i class="layui-icon">&#xe605;</i> 提交
                     </a>
                 </span>
             </div>
-            <div style="text-align: center; float: right;margin-top:10px;margin-left:5px">
+            <div style="text-align: center; float: left;margin-top:10px;margin-left:5px">
                 <span>
                     <a href="" type="reset" class="layui-btn layui-btn-small" id="">
                         <i class="layui-icon">ဂ</i> 重置

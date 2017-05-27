@@ -29,24 +29,24 @@ public partial class view_xsjbxx : System.Web.UI.Page
         }
         string pk_staff_no = Request.QueryString["pk_staff_no"];//获取员工编号
 
-        string session_pk_sno = null;
-        string session_pk_staff_no = null;
-        if (Session["pk_sno"] != null)
-        {
-            session_pk_sno = Session["pk_sno"].ToString();
-        }
-        if (Session["pk_staff_no"] != null)
-        {
-            session_pk_staff_no = Session["pk_staff_no"].ToString();
-        }
+        //string session_pk_sno = null;
+        //string session_pk_staff_no = null;
+        //if (Session["pk_sno"] != null)
+        //{
+        //    session_pk_sno = Session["pk_sno"].ToString();
+        //}
+        //if (Session["pk_staff_no"] != null)
+        //{
+        //    session_pk_staff_no = Session["pk_staff_no"].ToString();
+        //}
 
-        batch batch_logic = new batch();
-        affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsjbxx_9086");
-        if (!jg.isauth)
-        {
-            this.server_msg.Value = jg.msg; ;
-            return;
-        }
+        //batch batch_logic = new batch();
+        //affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xsjbxx_9086");
+        //if (!jg.isauth)
+        //{
+        //    this.server_msg.Value = jg.msg; ;
+        //    return;
+        //}
         #endregion
 
         this.hidden_pk_sno.Value = pk_sno;

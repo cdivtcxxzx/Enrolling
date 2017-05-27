@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,7 +20,7 @@ public static class organizationService
     /// <typeparam name="T">泛型</typeparam>
     /// <param name="array">枚举</param>
     /// <returns></returns>
-    public static DataTable CopyToDataTable<T>(this IEnumerable<T> array)
+    public static DataTable ParseToDataTable<T>(this IEnumerable<T> array)
     {
         var ret = new DataTable();
         foreach (PropertyDescriptor dp in TypeDescriptor.GetProperties(typeof(T)))
@@ -155,6 +156,37 @@ public static class organizationService
         return oDC.Fresh_Classes.Where(b => b.PK_Class_NO == classNo).SingleOrDefault();
     }
     #endregion
+    #region  获取某班级数据 getAllClass
+    /// <summary>
+    /// 查找数据库中班级表中的所有数据
+    /// 编写人：陈智秋
+    /// 创建：2017.5.16
+    /// 更新：无
+    /// 版本：v0.0.1
+    /// </summary>
+    /// <returns>返回所有班级</returns>
+    public static List<Fresh_Class> getAllClass()
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        return oDC.Fresh_Classes.ToList();
+    }
+    #endregion
+    #region 获取某专业下的班级信息 getClasses
+    /// <summary>
+    /// 根据“专业主键”返回对应专业下的所有班级。
+    /// 编写人：陈智秋
+    /// 创建：2017.5.16
+    /// 更新：无
+    /// 版本：v0.0.1
+    /// </summary>
+    /// <param name="sepCode">专业主键</param>
+    /// <returns>返回班级集合</returns>
+    public static List<Fresh_Class> getClasses(string PK_SPE)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        return oDC.Fresh_Classes.Where(cls => cls.FK_SPE_NO == PK_SPE).ToList();
+    }
+    #endregion
     #region 学生身份是否有效 stuVerify
     /// <summary>
     /// 功能描述：根据“学号”查询所在批次中“禁止操作标志”为false，并且被授权“迎新事务”的“事务性质”为“交互性”，“事务列席”为“学生自治”或“两者”的数据。否则返回null。
@@ -193,6 +225,22 @@ public static class organizationService
     {
         organizationModelDataContext oDC = new organizationModelDataContext();
         return oDC.Base_Colleges.Where(c => c.PK_College == colleagePk).SingleOrDefault();
+    }
+    #endregion
+    #region 获取学院数据 getColleageByCode
+    /// <summary>
+    /// 根据学院代码返回学院数据
+    /// 编写人：陈智秋
+    /// 创建：2017.5.9
+    /// 更新：无
+    /// 版本：v0.0.1
+    /// </summary>
+    /// <param name="colleageNo">学院主键编号</param>
+    /// <returns>学院实体</returns>
+    public static Base_College getColleageByCode(string colleage)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        return oDC.Base_Colleges.Where(c => c.College_NO == colleage).SingleOrDefault();
     }
     #endregion
     #region 获取校区数据 getCampus
@@ -258,7 +306,7 @@ public static class organizationService
         organizationModelDataContext oDC = new organizationModelDataContext();
         return oDC.Fresh_SPEs.Where(s => s.PK_SPE == PK_SPE).SingleOrDefault();
     }
-    #endregion
+    #endregion    
     #region 验证学生基本信息是否确认 isStuConfrim
     /// <summary>
     /// 对比学生学号验证学生是否进行基本信息的确认(有数据则已确认)
@@ -424,17 +472,91 @@ public static class organizationService
         {
             //return stu.Where(s => s.Fresh_bath == batch).ToList<object>();
             //return stu.Where(s => s.Fresh_bath == batch).ToArray();
-            return CopyToDataTable(stu.Where(s => s.Fresh_bath == batch));
+            return ParseToDataTable(stu.Where(s => s.Fresh_bath == batch));
         }
         else
         {
             //return stu.ToList<object>();
             //return stu.ToArray();
-            return CopyToDataTable(stu);
+            return ParseToDataTable(stu);
         }
 
     }
     #endregion
+    #region 根据批次和学院返回学生信息 getStuByBatchCol
+    /// <summary>
+    /// 根据批次和学院返回学生信息（学号(PK_SNO)|高考报名号(Test_NO)|姓名(Name)|性别(Gender)|身份证号(ID_NO)|专业主键（SPE_PK）|民族代码(Nation_code)|专业名称(SPE_Name)|学制(Xz)|年度(Year)|批次（Fresh_bath|学院代码(Colleage)））
+    /// </summary>
+    /// <param name="batch">批次代码,"0"返回所有批次</param>
+    /// <param name="colleage_sno">学院代码，"0"返回所有学院</param>
+    /// <returns>学生信息表</returns>
+    public static DataTable getStuByBatchCol(string batch, string colleage_sno)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        var stu = from s in oDC.Base_STUs
+                  join zy in oDC.Fresh_SPEs on s.FK_SPE_Code equals zy.PK_SPE
+                  join f in oDC.Fresh_STUs on s.PK_SNO equals f.PK_SNO
+                  join banji in oDC.Fresh_Classes on s.FK_Class_NO equals banji.PK_Class_NO into gc
+                  orderby zy.PK_SPE
+                  from banji in gc.DefaultIfEmpty()
+                  select new
+                  {
+                      PK_SNO = s.PK_SNO,
+                      Name = s.Name,
+                      Gender = s.Gender_Code == "" ? "" : s.Gender_Code == "01" ? "男" : "女",
+                      ID_NO = s.ID_NO,
+                      SPE_PK = zy.PK_SPE,
+                      SPE_Name = zy.SPE_Name,
+                      Xz = zy.Xznx,
+                      Year = s.Year,
+                      Fresh_bath = f.FK_Fresh_Batch,
+                      Colleage = zy.FK_College_Code,
+                      Class_Name = banji.Name
+                  };
+        if (batch != "0")
+        {
+            if (colleage_sno != "0")
+            {
+                return ParseToDataTable(stu.Where(s => s.Fresh_bath == batch && s.Colleage == colleage_sno));
+            }
+            else
+            {
+                return ParseToDataTable(stu.Where(s => s.Fresh_bath == batch));
+            }
+        }
+        else
+        {
+            if (colleage_sno != "0")
+            {
+                return ParseToDataTable(stu.Where(s => s.Colleage == colleage_sno));
+            }
+            else
+            {
+                return ParseToDataTable(stu);
+            }
+                 
+        }
+    
+    }
+    #endregion
+
+    #region 根据用户ID返回能管理的学院信息 getYxByYhid
+    public static List<Base_College> getYxByYhid(string yhid)
+    {        
+        List<Base_College> result = new List<Base_College>();
+        if (yhid == "" || yhid == null) return result;
+        ArrayList yxmcList = new Power().GetYxmcsByYhid(yhid);
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        foreach (var item in yxmcList)
+        {
+            Base_College colle = oDC.Base_Colleges.Where(s => s.Name == item && s.Enabled == "true").SingleOrDefault();
+
+            if (colle != null) result.Add(colle);
+        }
+        return result;
+    }
+    #endregion
+
     #region 生成学号 createNum
     /// <summary>
     /// 
