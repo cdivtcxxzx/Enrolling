@@ -90,7 +90,7 @@ function getstudentstatus() {
     var index = parent.layer.open({
         type: 1,
         title: '信息提示',
-        content:'查询学生状态时间较长，请赖心等待...', //这里content是一个普通的String
+        content:'查询学生状态时间较长，请耐心等待...', //这里content是一个普通的String
         area: ['300px', '150px'],
         resize:false,
         cancel: function(index, layero){
@@ -114,8 +114,11 @@ function getstudentstatus() {
                     var str='<thead>';
                     str=str+'<tr><th  scope="col">序号</th>';
                     for(var key in item){
-                        str=str+'<th  scope="col">'+key+'</th>';
+                        if(key!='pk_sno'){
+                            str=str+'<th  scope="col">'+key+'</th>';
+                        }
                     }
+                    str=str+'<th></th>';
                     str=str+'</tr></thead>';
                     $('#studentlist').append(str);
                 }
@@ -126,8 +129,13 @@ function getstudentstatus() {
                     var str='<tr>';
                     str=str+'<td>'+(i+1)+'</td>';
                     for(var key in item){
-                        str=str+'<td>'+item[key]+'</td>';
+                        if(key!='pk_sno'){
+                            str=str+'<td>'+item[key]+'</td>';
+                        }
                     }
+                    str=str+'<td>';
+                    str=str+'<a href="#" onclick="studentdetail('+item.pk_sno+')" class="layui-btn layui-btn-mini" title="学生信息">学生详情</a>';
+                    str=str+'</td>';
                     str=str+'</tr>';
                     $('#studentlist').append(str);
                 }
@@ -143,6 +151,10 @@ function getstudentstatus() {
             alert("错误");
         }
     });
+}
+
+function studentdetail(pk_sno){
+    parent.layer.open({  type: 2,  title: '详细信息',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: '/view/bzr_xsjbxx.aspx?pk_sno='+pk_sno,btn:'关闭'})
 }
 
 

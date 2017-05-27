@@ -44,14 +44,14 @@
 <%--              <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />--%>
         <div class="admin-main">
             <blockquote class="layui-elem-quote">
-                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>新生状态查询           
+                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>新生状态总览           
             </blockquote>
             <div>
                 
                 <div class="layui-form-item">
                     <!--迎新批次下拉列表-->
                     <div class="layui-inline">
-                        <label class="layui-form-label">迎新批次：</label>
+                        <label class="layui-form-label">批次：</label>
                         <div class="layui-input-inline">
                             <select name="batchlist" id="batchlist">
 
