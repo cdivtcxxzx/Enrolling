@@ -97,7 +97,6 @@ function getstudentstatus() {
             return false;
         }
     });
-    console.log('ok');
 
     $.ajax({
         url: "/nradmingl/appserver/manager.aspx",

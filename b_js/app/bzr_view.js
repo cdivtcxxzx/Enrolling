@@ -178,9 +178,19 @@ function affairchange(pk_affair_no) {
 
 
 function classoraffairchange() {
-    console.log('hi,class');
     var pk_class_no=$('#classlist').children('option:selected').val();
     var pk_affair_no=$('#affairlist').children('option:selected').val()
+
+    var index = parent.layer.open({
+        type: 1,
+        title: '信息提示',
+        content:'查询学生状态时间较长，请耐心等待...', //这里content是一个普通的String
+        area: ['300px', '150px'],
+        resize:false,
+        cancel: function(index, layero){
+            return false;
+        }
+    });
 
     $.ajax({
         url: "/nradmingl/appserver/manager.aspx",
@@ -217,12 +227,15 @@ function classoraffairchange() {
                     str=str+'</td>';
                     str=str+'</tr>';
                     $('#studentlist').append(str);
+                    parent.layer.close(index);
                 }
             } else {
+                parent.layer.close(index);
                 alert(json_data.message);
             }
         },
         error: function (data) {
+            parent.layer.close(index);
             alert("错误");
         }
     });
