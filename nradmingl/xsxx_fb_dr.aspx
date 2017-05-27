@@ -166,8 +166,8 @@ ul, menu, dir {
      <blockquote class="layui-elem-quote">
       <div id="wizard" class="wizard" data-target="#wizard-steps" style="border-left: none; border-top: none; border-right: none;">
         <ul class="steps">
-            <li data-target="#step-1" class="active" style="padding-left:0px;"><span class="step">1</span>准备模板<span class="chevron"></span></li>
-            <li data-target="#step-2" id="setp2" runat="server"><span class="step">2</span>上传文件<span class="chevron"></span></li>
+            <li data-target="#step-1" class="active" style="padding-left:0px;"><span class="step">1</span>数据准备<span class="chevron"></span></li>
+            <li data-target="#step-2" id="setp2" runat="server"><span class="step">2</span>数据上传<span class="chevron"></span></li>
             <li data-target="#step-3" id="setp3" runat="server"><span class="step">3</span>数据显示<span class="chevron"></span></li>
            
         </ul>

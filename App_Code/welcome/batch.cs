@@ -2616,14 +2616,14 @@ public class batch
 
             if (College_NO == null || College_NO.Trim().Length == 0)
             {
-                sqlstr = "select college_no,collage,spe_code,spe_name  from vw_fresh_student_base"
+                sqlstr = "select college_no,collage,spe_code,spe_name,count(*) as stotal  from vw_fresh_student_base"
                         + " where FK_Fresh_Batch=@cs1"
                         + " GROUP BY college_no,collage,spe_code,spe_name order by SPE_Name";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
             }
             else
             {
-                sqlstr = "select college_no,collage,spe_code,spe_name  from vw_fresh_student_base"
+                sqlstr = "select college_no,collage,spe_code,spe_name,count(*) as stotal  from vw_fresh_student_base "
                         + " where FK_Fresh_Batch=@cs1  and College_NO=@cs2"
                         + " GROUP BY college_no,collage,spe_code,spe_name order by SPE_Name";
                 result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()), new SqlParameter("cs2", College_NO.Trim()));

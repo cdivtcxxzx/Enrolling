@@ -43,7 +43,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             //<font color=red>未完成</font>  
             //写法已完成
             //<font color=green>已完成</font>
-            this.xszt_bdxz.InnerHtml = "";//报到须知  
+            this.xszt_bdxz.InnerHtml = "<font color=green>已完成</font>";//报到须知  
             this.xszt_wsjf.InnerHtml = "<font color=red>未完成</font>";//网上缴费
             this.xszt_czqs.InnerHtml = "<font color=red>未完成</font>";//选择寝室
             this.xszt_xxws.InnerHtml = "<font color=red>未完成</font>";//信息完善

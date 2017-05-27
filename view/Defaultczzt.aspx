@@ -164,55 +164,59 @@
 
         <div class="xsxx2">
                                 <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn">学生数量</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn">新生人数</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
-                                <span id="xsxx_xh"><b>合计:<span id="studentcount" style="color:red;"></span>人  男:<span id="mancount" style="color:red;"></span>人   女:<span id="womancount" style="color:red;"></span>人   </b></span>
+                                <span id="xsxx_xh"><b>合计<span id="studentcount" style="color:red;"></span>人  男<span id="mancount" style="color:red;"></span>人   女<span id="womancount" style="color:red;"></span>人   </b></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn">学院数据</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn">专业设置</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
-                                <span id="xsxx_xh"><a href="#" onclick="detailclick('get_detail_batch_collage')">合计:<span id="collagecount" style="color:red;" ></span>个 </a></span>
+                                <span id="xsxx_xh"><b>
+<%--                                    <a href="#" onclick="detailclick('get_detail_batch_collage')">合计:<span id="collagecount" style="color:red;" ></span>个 </a>--%>
+                                    <a href="#" onclick="detailclick('get_detail_batch_spe')">已导入专业<span id="specount" style="color:red;"></span>个</a>
+                                </span></b>
                             </div>
                         </div>
                     </div>
 
-                    <div class="layui-form-item" pane="" style="min-height: 56px">
+<%--                    <div class="layui-form-item" pane="" style="min-height: 56px">
                         <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" >专业数据</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
                                 <span id="xsxx_xh"><a href="#" onclick="detailclick('get_detail_batch_spe')">合计:<span id="specount" style="color:red;"></span>个</a></span>
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
 
 
 
                     <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" >班级数据</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" >班级设置</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
                                 <span id="xsxx_xh">
                                     <b>
-                                        校区数量:<span id="campuscount" style="color:red;"></span> 
-                                        <a href="#" onclick="detailclick('get_batch_spe_hasclass')">班级数量:<span id="spehasclasscount" style="color:red;"></span></a>  
-                                        <a  href="#" onclick="detailclick('get_batch_spe_nohasclass')">无班级专业数量：<span id="spenohasclasscount" style="color:red;"></span></a>
+<%--                                        校区数量:<span id="campuscount" style="color:red;"></span> --%>
+                                        <a href="#" onclick="detailclick('get_batch_spe_hasclass')">已设置班级<span id="spehasclasscount" style="color:red;"></span>个</a>  
+                                        <a  href="#" onclick="detailclick('get_batch_spe_nohasclass')">未设置班级专业<span id="spenohasclasscount" style="color:red;"></span>个</a>
                                     </b></span>
                             </div>
                         </div>
                     </div>
 
                                 <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" >交费数据</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" >缴费标准设置</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
-                                <span id="xsxx_xh">
-                                    <a href="#" onclick="detailclick('get_batch_college_financial')">交费项目数量:<span id="collegefinancialcount"  style="color:red;"></span></a>  
-                                 </span>
+                                <span id="xsxx_xh"><b>
+                                    <a href="#" onclick="detailclick('get_batch_college_financial')">已设置缴费项目<span id="collegefinancialcount"  style="color:red;"></span>项</a>  
+                                 </b>
+                            </span>
                             </div>
                         </div>
                     </div>
@@ -221,27 +225,27 @@
                 <div class="xsxx3">
 
                     <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" >新生分班数据</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" >新生分班设置</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
                                 <span id="xsxx_xh">
                                     <b>
-                                    <a href="#" onclick="detailclick('get_batch_class_hasstudent')">已分班人数:<span id="classhasstudentcount" style="color:red;"></span></a>  
-                                    <a href="#" onclick="detailclick('get_batch_spe_nohasclassstudent')">未分班人数:<span id="spenohasclassstudentcount" style="color:red;"></span></a>
-                                    <a href="#" onclick="detailclick('get_batch_class_hasstudent_buterror')">错分班人数:<span id="classhasstudent_buterrorcount" style="color:red;"></span></a>  
+                                    <a href="#" onclick="detailclick('get_batch_class_hasstudent')">已分班<span id="classhasstudentcount" style="color:red;"></span>人</a>  
+                                    <a href="#" onclick="detailclick('get_batch_spe_nohasclassstudent')">未分班<span id="spenohasclassstudentcount" style="color:red;"></span>人</a>
+<%--                                    <a href="#" onclick="detailclick('get_batch_class_hasstudent_buterror')">错分班人数:<span id="classhasstudent_buterrorcount" style="color:red;"></span></a>  --%>
                                     </b>
                                     </span>
                             </div>
                         </div>
                     </div>
                     <div class="layui-form-item" pane="" style="min-height: 56px">
-                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" >辅导员数据</a></label>
+                        <label class="layui-form-label" style="width: 150px;"><a class="layui-btn" style="width: 120px" >辅导员设置</a></label>
                         <div class="layui-input-block" style="margin-left: 150px;">
                             <div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;">
                                 <span id="xsxx_xh">
                                     <b>
-                                    <a href="#" onclick="detailclick('get_batch_hascounseller')">已设置班级数:<span id="hascounsellercount" style="color:red;"></span></a>  
-                                    <a href="#" onclick="detailclick('get_batch_nohascounseller')">未设置班级数:<span id="nohascounsellercount" style="color:red;"></span></a>
+                                    <a href="#" onclick="detailclick('get_batch_hascounseller')">已设置辅导员班级<span id="hascounsellercount" style="color:red;"></span>个</a>  
+                                    <a href="#" onclick="detailclick('get_batch_nohascounseller')">未设置辅导员班级<span id="nohascounsellercount" style="color:red;"></span>个</a>
                                     </b>
                                     </span>
                             </div>

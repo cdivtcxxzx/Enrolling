@@ -125,10 +125,10 @@ function collagechange(pk_collage_no, pk_batch_no) {
                     $('#studentcount').html(mancount);
                 }
 
-                var collage = json_data.data.collage;//迎新学院
+/*                var collage = json_data.data.collage;//迎新学院
                 if (collage) {
                     $('#collagecount').html(collage.length);
-                }
+                }*/
 
                 var spe = json_data.data.spe;//迎新专业
                 if (spe) {
@@ -158,7 +158,12 @@ function collagechange(pk_collage_no, pk_batch_no) {
                 }
                 var spenohasclass = json_data.data.spenohasclass;//未设置班级的迎新专业
                 if (spenohasclass) {
-                    $('#spenohasclasscount').html(spenohasclass.length);
+                    if(spenohasclass.length==0){
+                        $('#spenohasclasscount').parent("a").hide();
+                    }else{
+                        $('#spenohasclasscount').html(spenohasclass.length);
+                        $('#spenohasclasscount').parent("a").show();
+                    }
                 }
 
                 var classhasstudent = json_data.data.classhasstudent;//班级中有学生的班级数据
@@ -177,12 +182,17 @@ function collagechange(pk_collage_no, pk_batch_no) {
                         var item = spenohasclassstudent[i];
                         studentcount=studentcount+parseInt(item.studentcount);
                     }
-                    $('#spenohasclassstudentcount').html(studentcount);
+                    if(studentcount==0){
+                        $('#spenohasclassstudentcount').parent("a").hide();
+                    }else{
+                        $('#spenohasclassstudentcount').parent("a").show();
+                        $('#spenohasclassstudentcount').html(studentcount);
+                    }
                 }
-                var classhasstudent_buterror = json_data.data.classhasstudent_buterror;//分错专业的学生数据
+/*                var classhasstudent_buterror = json_data.data.classhasstudent_buterror;//分错专业的学生数据
                 if (classhasstudent_buterror) {
                     $('#classhasstudent_buterrorcount').html(classhasstudent_buterror.length);
-                }
+                }*/
 
                 var hasbed = json_data.data.hasbed;//已预分床位数据
                 if (hasbed) {
@@ -220,7 +230,12 @@ function collagechange(pk_collage_no, pk_batch_no) {
                 }
                 var nohascounseller = json_data.data.nohascounseller;//未设置班主任数据
                 if (nohascounseller) {
-                    $('#nohascounsellercount').html(nohascounseller.length);
+                    if(nohascounseller.length==0){
+                        $('#nohascounsellercount').parent("a").hide();
+                    }else{
+                        $('#nohascounsellercount').parent("a").show();
+                        $('#nohascounsellercount').html(nohascounseller.length);
+                    }
                 }
 
                 var hascollageaffair = json_data.data.hascollageaffair;//已设置现场迎新事务的事务数据
