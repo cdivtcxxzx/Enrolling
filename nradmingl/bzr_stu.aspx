@@ -50,7 +50,7 @@
                 <div class="layui-form-item">
                     <!--迎新批次下拉列表-->
                     <div class="layui-inline">
-                        <label class="layui-form-label">迎新批次：</label>
+                        <label class="layui-form-label">批次：</label>
                         <div class="layui-input-inline">
                             <select name="batchlist" id="batchlist">
 
@@ -82,12 +82,12 @@
                                 <th scope="col">姓名</th>
                                 <th scope="col">性别</th>
                                 <th scope="col">学号</th>
-                                <th scope="col">身份证号</th>
                                 <th scope="col">高考报名号</th>
+                                <th scope="col">身份证号</th>
                                 <th scope="col">联系电话</th>
-                                <th scope="col">注册状况</th>
-                                <th scope="col">现场报到确认</th>
-                                <th scope="col">学费情况</th>
+<%--                                <th scope="col">网上注册</th>
+                                <th scope="col">到校情况</th>
+                                <th scope="col">绿色通道<br />助学贷款</th>--%>
                                 <th scope="col"></th>
                             </tr>
                         </thead>

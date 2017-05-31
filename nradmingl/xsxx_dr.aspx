@@ -156,6 +156,9 @@ ul, menu, dir {
     -o-transition: all .218s ease;
     transition: all .218s ease;
 }
+.ts_red{
+    color:red;
+}
    </style>
     <!--步骤专用CSS样式OVER-->
    
@@ -198,7 +201,7 @@ ul, menu, dir {
 
 
      <!--步骤2-->
-     <div   id="setp2cz" runat="server">
+     <div   id="setp2cz" runat="server" CssClass="site-table table-hover">
        <blockquote class="layui-elem-quote">
 
        <asp:FileUpload ID="FileUpload1" runat="server" />
@@ -215,14 +218,18 @@ ul, menu, dir {
 
 
      <!--步骤3-->
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+    
     <div   id="setp3cz" runat="server">
-    显示当前批次、年级已导入的学生数据
         
-     
+     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+         <ContentTemplate>
+
+         
         <asp:GridView  ID="GridView2"  
-          runat="server" AutoGenerateColumns="False" 
-            DataSourceID="ObjectDataSource1" CssClass="site-table table-hover" 
-            EmptyDataText="未查找相应批次的相关数据!" 
+          runat="server" AutoGenerateColumns="False" CssClass="site-table table-hover" 
+            EmptyDataText="无错误数据!" 
             AllowPaging="True" AllowSorting="True" OnDataBound="GridView1_DataBound" OnPageIndexChanging="GridView1_PageIndexChanging">
     <Columns>
     <asp:TemplateField>
@@ -230,24 +237,25 @@ ul, menu, dir {
                       <input type="checkbox"  id="selected-all" class="noshow" name="selected-all" onclick="onclicksel();" />  
                 </HeaderTemplate>
                 <ItemTemplate>
-                     <input id="BoxId" name="BoxId"  class="icheck noshow" value='<%#(Convert.ToString(Eval("PK_SNO")))%>' type="checkbox" /> 
+                     <input id="学号" name="BoxId"  class="icheck noshow" value='<%#(Convert.ToString(Eval("学号")))%>' type="checkbox" /> 
                 </ItemTemplate>
                 <ItemStyle HorizontalAlign="Center" />
                 <HeaderStyle Width="2%"  HorizontalAlign="Center" />
             </asp:TemplateField>
-    <asp:BoundField DataField="PK_SNO" HeaderText="学号"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="PK_SNO">
+    <asp:BoundField DataField="错误提示" HeaderText="错误提示" SortExpression="错误提示" ControlStyle-CssClass="ts_red"/>
+    <%--<asp:BoundField DataField="学号" HeaderText="学号"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="学号">
+        <ControlStyle CssClass="hidden-xs" />
+        <HeaderStyle CssClass="hidden-xs" />
+        <ItemStyle CssClass="hidden-xs" />
+        </asp:BoundField>--%>
+    <asp:BoundField DataField="高考报名号" HeaderText="报名号"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="高考报名号">
         <ControlStyle CssClass="hidden-xs" />
         <HeaderStyle CssClass="hidden-xs" />
         <ItemStyle CssClass="hidden-xs" />
         </asp:BoundField>
-    <asp:BoundField DataField="Test_NO" HeaderText="报名号"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="Test_NO">
-        <ControlStyle CssClass="hidden-xs" />
-        <HeaderStyle CssClass="hidden-xs" />
-        <ItemStyle CssClass="hidden-xs" />
-        </asp:BoundField>
-    <asp:BoundField DataField="Name" HeaderText="姓名" SortExpression="GenderName"/>
-    <asp:BoundField DataField="Gender" HeaderText="性别"   SortExpression="Gender"/>
-    <asp:BoundField DataField="ID_NO" HeaderText="身份证"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="ID_NO">
+    <asp:BoundField DataField="姓名" HeaderText="姓名" SortExpression="姓名"/>
+    <%--<asp:BoundField DataField="Gender" HeaderText="性别"   SortExpression="Gender"/>--%>
+    <asp:BoundField DataField="身份证号" HeaderText="身份证"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="身份证号">
         
         <ControlStyle CssClass="hidden-xs" />
         <HeaderStyle CssClass="hidden-xs" />
@@ -255,28 +263,28 @@ ul, menu, dir {
         </asp:BoundField>
 
 
-        <asp:TemplateField HeaderText="民族"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="Nation_code">
+        <%--<asp:TemplateField HeaderText="民族"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="Nation_code">
         
             <ItemTemplate>
             <%# show_mz(Eval("Nation_code").ToString()) %>
             </ItemTemplate>
 
             <ItemStyle  />
-            </asp:TemplateField>
+            </asp:TemplateField>--%>
 
-    <asp:BoundField DataField="SPE_Name" HeaderText="专业"   SortExpression="SPE_Name"/>
-   <asp:BoundField DataField="Xz" HeaderText="学制"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="Xz">
+    <asp:BoundField DataField="专业代码" HeaderText="专业代码"   SortExpression="专业代码"/>
+   <%--<asp:BoundField DataField="Xz" HeaderText="学制"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="Xz">
         
         <ControlStyle CssClass="hidden-xs" />
         <HeaderStyle CssClass="hidden-xs" />
         <ItemStyle CssClass="hidden-xs" />
-        </asp:BoundField>
-    <asp:BoundField DataField="Year" HeaderText="年级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="Year">
+        </asp:BoundField>--%>
+    <%--<asp:BoundField DataField="Year" HeaderText="年级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="Year">
         
     <ControlStyle CssClass="hidden-xs" />
     <HeaderStyle CssClass="hidden-xs" />
     <ItemStyle CssClass="hidden-xs" />
-    </asp:BoundField>
+    </asp:BoundField>--%>
     </Columns>
     <PagerTemplate>
 <span style="float:left;padding-bottom: 8px;padding-top: 8px;" class="hidden-xs" >
@@ -309,7 +317,7 @@ ul, menu, dir {
                 CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+8 %></asp:LinkButton>
 
                 <%}
-                  else if (GridView1.PageCount >= 8 && GridView1.PageCount - GridView1.PageIndex >= 5)
+                  else if (GridView2.PageCount >= 8 && GridView2.PageCount - GridView2.PageIndex >= 5)
                   { %>
                     <asp:LinkButton ID="LinkButton8" runat="server" CommandArgument="<%#((GridView)Container.NamingContainer).PageIndex+2%>"
                 CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+2 %></asp:LinkButton>
@@ -327,13 +335,18 @@ ul, menu, dir {
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;
         </PagerTemplate>
     </asp:GridView>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService" OnSelected="ObjectDataSource2_Selected">
+        <%--<asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="getStuByBatch" TypeName="organizationService" OnSelected="ObjectDataSource2_Selected">
             <SelectParameters>
                 <asp:SessionParameter DefaultValue="0" Name="batch" SessionField="batch" Type="String" />
             </SelectParameters>
-        </asp:ObjectDataSource>
+        </asp:ObjectDataSource>--%>
+        
+    
+    </ContentTemplate>
+     </asp:UpdatePanel>
     </div>
-       </div>
+
+        </div>
 
 
         <script type="text/javascript" src="plugins/layui/layui.js"></script>

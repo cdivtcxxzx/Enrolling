@@ -179,6 +179,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
 
             //开始显示数据，将数据存入datatable中
             DataTable x = new DataTable();
+            DataTable dt_all = new DataTable();
             //将EXCEL表中所有数据存入x表格中
             x = ReadXLSByExcel(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), zd);
 
@@ -195,9 +196,6 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
                 x.Columns.Add("学号");
                 x.Columns.Add("错误提示");
                 
-                
-
-
                 //循环读取并判断所有字段
                 for (int ii = 0; ii < x.Rows.Count; ii++)
                 {
@@ -298,7 +296,8 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
                                 x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + ex.Message + "";
                             }
 
-                            #region 删除号逻辑，不用更改
+                            
+                            #region 删除行号逻辑，不用更改
                             if (cgjj > 0)
                             {
                                 //记录要删除的行号
@@ -318,7 +317,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
                                 x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"] + "写入数据库失败!";
                             }
                             #endregion
-
+                            
                         }
                         #endregion
 
@@ -328,26 +327,30 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
                         //某行数据出错
                         x.Rows[ii]["错误提示"] = " 该学生数据有误请检查:" + ex.Message;
                     }
-
+                    
                     //精细化错误提示
                     if (x.Rows[ii]["错误提示"].ToString().Length > 3)
                     {
                         x.Rows[ii]["错误提示"] = "第" + (ii + 1).ToString() + "行:" + x.Rows[ii]["错误提示"].ToString();
                     }
 
+                    //将所有数据备份到dt_all
+                    dt_all = x;
                 }
                 #region (3)删除已经提交成功的行，仅显示错误提示,此逻辑不用修改
-
+                //x中记录错误记录 dt_all中记录所有记录 dt_result_ok中记录正确记录
                 string[] delok = delrow.Split(',');
+                //DataTable dt_result_ok = new DataTable();
                 if (delok.Length > 0 && delrow != "")
                 {//删除指定行
 
-                    this.ztxx.Text = "<font color=red>总共" + x.Rows.Count + "条记录，已导入" + delok.Length.ToString() + "条记录，有" + (x.Rows.Count - delok.Length) + "条错误记录在下表显示!!</font>";
+                    this.ztxx.Text = "<font color=red>总共" + x.Rows.Count + "条记录，已导入" + delok.Length.ToString() + "条记录，有" + (x.Rows.Count - delok.Length) + "条错误!!</font>";
                     for (int ok = delok.Length - 1; ok >= 0; ok--)
                     {
                         try
                         {
-                            x.Rows.RemoveAt(Convert.ToInt32(delok[ok]));
+                            //dt_result_ok.Rows.Add(x.Rows[ok]);
+                            x.Rows.RemoveAt(Convert.ToInt32(delok[ok]));   
                         }
                         catch (Exception ex)
                         {
@@ -360,6 +363,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
                             }
                         }
                     }
+                    
                 }
                 else
                 {
@@ -386,12 +390,25 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
             //    }
             //}
 
-            GridView1.DataSource = x;
-            GridView1.DataBind();
-            
+            GridView2.DataSource = x;
+
+            Session["xsDrRowsCount"] = x.Rows.Count.ToString();
+            Session["xsDrRowsCount_all"] = dt_all.Rows.Count.ToString();
+            GridView2.DataBind();
+
             #endregion
             
+            #region 跳到第三步，显示导入结果
+            setp2.Attributes.Add("class", "active");
+            setp3.Attributes.Add("class", "active");
+            setpdown.Style.Add("display", "none");
+            setpup.Style.Add("display", "");
+            setpup.HRef = "?setp=2&mb=" + Request["mb"].ToString();
 
+            setp1cz.Style.Add("display", "none");
+            setp2cz.Style.Add("display", "none");
+            setp3cz.Style.Add("display", "");
+            #endregion
         }
 
     }
@@ -483,7 +500,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
 
             if ((Int32.TryParse(ps.Text, out _PageSize) == true) && _PageSize > 0)
             {
-                GridView1.PageSize = _PageSize;
+                GridView2.PageSize = _PageSize;
             }
 
         }
@@ -530,9 +547,9 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     #region 始终显示下部控制区
     protected void GridView1_DataBound(object sender, EventArgs e)
     {
-        if (this.GridView1.Rows.Count != 0)
+        if (this.GridView2.Rows.Count != 0)
         {
-            Control table = this.GridView1.Controls[0];
+            Control table = this.GridView2.Controls[0];
             int count = table.Controls.Count;
             table.Controls[count - 1].Visible = true;
         }
@@ -580,4 +597,5 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
             DropDownListBatch.Items.FindByValue(Session["batch"].ToString()).Selected = true;
         }
     }
+
 }
