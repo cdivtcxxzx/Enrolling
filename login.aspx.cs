@@ -327,6 +327,19 @@ public partial class admin_Default : System.Web.UI.Page
 
             if (login_title.InnerText == "学生网上自助报到登陆")
             {
+                //验证时间
+                DataTable timeok = Sqlhelper.Serach("SELECT     TOP (1) Fresh_Batch.Batch_Name FROM         Fresh_Batch LEFT OUTER JOIN                      vw_fresh_student_base ON Fresh_Batch.PK_Batch_NO = vw_fresh_student_base.FK_Fresh_Batch WHERE     (Fresh_Batch.Service_Begin <= '" + DateTime.Now.ToString() + "') AND (Fresh_Batch.Service_End >= '" + DateTime.Now.ToString() + "') and (PK_SNO=@name or Test_NO=@name)", new SqlParameter("name", this.txt_name.Value));
+                if (timeok.Rows.Count > 0)
+                {
+
+                }
+                else
+                {
+                    Label1.Text = "<font color=red>对不起，迎新服务还未开始，请稍侯再试!</font>";
+                    return;
+                }
+
+
                 DataTable userxs = Sqlhelper.Serach("SELECT TOP 1 [Name],[Password],right(ID_NO,6) depassword ,PK_SNO FROM [Base_STU] where Test_NO=@name or PK_SNO=@name", new SqlParameter("name", this.txt_name.Value));
                 if (userxs.Rows.Count > 0)
                 {
