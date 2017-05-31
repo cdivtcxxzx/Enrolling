@@ -293,8 +293,8 @@ function sure(){
         alert("无效的参数");
     }
     if(feelist!=null && feelist.length>0){
-        layer.confirm('将提交您的预交费订单，订单生成后其内容仅允许到校后修改。您确认继续吗？', {
-            btn: ['继续', '终止']
+        layer.confirm('将提交您的预交费订单，订单生成后其内容仅允许到校后修改。', {
+            btn: ['继续', '重新选择']
         }, function(index){
             layer.close(index);
              console.log(JSON.stringify(feelist));

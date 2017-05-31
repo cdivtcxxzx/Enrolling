@@ -22,17 +22,18 @@
     
     <!--页面开始-->
      	<div class="admin-main">
-
+             <i class="layui-icon">&#xe602;</i>迎新准备<i class="layui-icon">&#xe602;</i>班级及班主任设置
 			<blockquote class="layui-elem-quote">
-          <a href="" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#x1002;</i>
-				</a>
+          
             <%--<div class="layui-input-inline hidden-xs"><asp:TextBox ID="TextBox1" CssClass="layui-input" runat="server"></asp:TextBox></div>
             <a href="javascript:;" class="layui-btn layui-btn-small hidden-xs" id="search">
 					<i class="layui-icon">&#xe615;</i> 搜索
 				</a>--%>
                 <div class="layui-input-inline hidden-xs"></div>
                 <span style="float:right">
+                    <a href="" class="layui-btn layui-btn-small hidden-xs">
+					<i class="layui-icon">&#x1002;</i> 刷新
+				</a>
 				<%--<a href="javascript:" id="test1" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe608;</i> 新增
 				</a>

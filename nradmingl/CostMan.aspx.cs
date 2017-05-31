@@ -340,11 +340,12 @@ public partial class nradmingl_CostMan : System.Web.UI.Page
     {
         //准备导出的DATATABLE,为了输出时列名为中文,请在写SQL语句时重定义一下列名
         //例:SELECT [int] 序号  FROM [taskmanager] order by [int] desc 
-        System.Data.DataTable dt = null;
+        string pk_fee = DDL_cost.SelectedValue;
+        System.Data.DataTable dt = Sqlhelper.ConSerach(Sqlhelper.conStr_cost, "SELECT PK_Fee_Item 编号,FK_Fee 费用批次,Fee_Code 收费项目代码,Fee_Code_Name 收费项目名称,Fee_Name 费用名称,Fee_Amount 金额,FK_Fee_Type 费用类型代码,Type_Name 费用类型,case when Is_Must=0 then '否' else '是' end 是否必收,SPE_Code 专业代码,case when Is_Online_Order=0 then '否' else '是' end 是否生成网上订单 FROM [dbo].[Fee_Item] left join Fee_Type on Fee_Item.FK_Fee_Type=Fee_Type.PK_Fee_Type where FK_Fee=@pk_fee", new SqlParameter("pk_fee", pk_fee)); ;
         #region 导出
         //引用EXCEL导出类
         toexcel xzfile = new toexcel();
-        string filen = xzfile.DatatableToExcel(dt, "寝室预分配数据");
+        string filen = xzfile.DatatableToExcel(dt, "费用标准数据");
         //Response.Write("文件名" + filen);
         if (filen.Length > 4)
         {

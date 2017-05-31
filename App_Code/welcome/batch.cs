@@ -3011,6 +3011,7 @@ public class batch
         return result;
     }
 
+
     //某迎新批次全校或某学院学生已预分床位，但年或校区错误的数据
     public System.Data.DataTable get_batch_hasbed_buterror(string PK_BATCH_NO, string College_NO)
     {
@@ -3306,7 +3307,8 @@ public class batch
                     //}
                     //spe_code = dt1.Rows[0]["ZYDM"].ToString().Trim();//教务处专业码
 
-                    List<Financial.Fee_Item> fin_data = financial_logic.get_feeitem(PK_BATCH_NO, spe_code);
+                    List<Financial.Fee_Item> tmp_data = financial_logic.get_feeitem(PK_BATCH_NO, spe_code);
+                    List<Financial.Fee_Item> fin_data = tmp_data.OrderBy(a => a.Fee_Code_Name).ToList();
                     if (fin_data != null)
                     {
                         for (int j = 0; j < fin_data.Count; j++)
@@ -3460,8 +3462,15 @@ public class batch
         {
             string sqlstr = null;
             sqlstr = "select [year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
-                    + " case when d.Tuition is null then '' else d.Tuition end as TuitionType,'' as affairstatus "
+                    + " case when a.Phone is null and a.Phone_dr is null then '' else "
+                    + " ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
+                    + " ( case when a.Phone is null and a.Phone_dr is not null then a.Phone_dr else a.Phone+','+a.Phone_dr  end )"
+                    + " end )"
+                    + " end as phone,"
+                    + " case when d.Tuition is null then '' else d.Tuition end as TuitionType,'' as affairstatus,"
+                    + " case when e.Confirm_state is null then '未注册' else (case when e.Confirm_state='0' then '注册【有误】' else '注册' end ) END as register"
                     + " from vw_fresh_student_base a LEFT JOIN Fresh_TuitionFee d on a.PK_SNO=d.PK_SNO"
+                    + " left join Fresh_Confirm e on a.PK_SNO=e.FK_SNO"
                     + " ,Fresh_Class b,Base_Code_Item c"
                     + " where a.FK_Class_NO=b.PK_Class_NO and a.Gender_Code=c.Item_NO and c.FK_Code='002'"
                     + " and a.FK_Class_NO=@cs1 order by name ";
@@ -3557,6 +3566,8 @@ public class batch
                 dt_student.Columns.Remove("Status_Code");
                 dt_student.Columns.Remove("TuitionType");
                 dt_student.Columns.Remove("test_no");
+                dt_student.Columns.Remove("id_no");
+
 
                 dt_student.AcceptChanges();
                 if (dt_affair != null && dt_affair.Rows.Count > 0)
@@ -3586,11 +3597,11 @@ public class batch
                 }
                 dt_student.Columns["name"].ColumnName = "姓名";
                 dt_student.Columns["gender"].ColumnName = "性别";
-                dt_student.Columns["pk_sno"].ColumnName = "学号";
+                //dt_student.Columns["pk_sno"].ColumnName = "学号";
                 //dt_student.Columns["test_no"].ColumnName = "高考报名号";
-                dt_student.Columns["id_no"].ColumnName = "身份证号";
+                //dt_student.Columns["id_no"].ColumnName = "身份证号";
                 dt_student.Columns["phone"].ColumnName = "联系电话";
-                dt_student.Columns["register"].ColumnName = "注册状况";
+                dt_student.Columns["register"].ColumnName = "网上注册";
                 dt_student.AcceptChanges();
                 result = dt_student;
             }
