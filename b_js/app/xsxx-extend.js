@@ -99,7 +99,7 @@
                         if (json_data.data != null && json_data.data.length > 0 && json_data.data[0].name == "student") {
                             var stu = json_data.data[0].data;
                             console.log(stu);
-                            //姓名、身份证号、性别 家庭 手机 QQ
+                            //姓名、身份证号、性别 家庭 手机 QQ 父母电话 户籍地址
                             $('#xsxx_xm').val(stu.Name);
                             $('#xsxx_xb').val(stu.Gender_Code);
                             $('#xsxx_sfz').val(stu.ID_NO);
@@ -107,6 +107,10 @@
                             $('#xsxx_addr').val(stu.Home_add);
                             $('#phone').val(stu.Phone);
                             $('#qqnum').val(stu.QQ);
+
+                            $('#xsxx_huji_add').val(stu.Huji_add);
+                            $('#phone_fa').val(stu.Phone_fa);
+                            $('#phone_ma').val(stu.Phone_ma);
                             //政治面貌 民族 身高 体重
                             $('#xsxx_zzmm').val(stu.Politics_Code);
                             $('#xsxx_mz').val(stu.Nation_Code);

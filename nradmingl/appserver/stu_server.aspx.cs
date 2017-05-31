@@ -212,6 +212,10 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                 string xsxx_tz = Request.Form["xsxx_tz"];
 
                 string xsxx_zzmm = Request.Form["xsxx_zzmm"];
+
+                string Huji_add = Request.Form["xsxx_huji_add"];
+                string Phone_fa = Request.Form["phone_fa"];
+                string Phone_ma = Request.Form["phone_ma"];
                 
                 //简单论证，todo权限认证
                 if (pk_sno != null && pk_sno.Trim().Length != 0)
@@ -249,6 +253,10 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                         stu.Census = input_province + "#" + input_city + "#" + input_area;
                         stu.Politics_Code = xsxx_zzmm;
                         stu.Home_add = xsxx_addr.Trim();
+
+                        stu.Phone_fa = Phone_fa.Trim();
+                        stu.Phone_ma = Phone_ma.Trim();
+                        stu.Huji_add = Huji_add.Trim();
                     }
                     //todo:操作事务修改
                     string create_name = null;
