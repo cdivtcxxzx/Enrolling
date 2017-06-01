@@ -6,7 +6,7 @@
 <head id="Head1" runat="server">
     
     <meta charset="utf-8">
-		<title>后台管理</title>
+		<title>新生网上报到</title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -19,13 +19,25 @@
 		<link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
 </head>
 <body>
+    <style>.layui-nav-tree .layui-nav-item {
+    display: block;
+    width: 100%;
+    line-height: 60px;
+}
+.layui-nav-tree .layui-nav-item a {
+    height: 60px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+    </style>
    <form id="form1" runat="server">
     <div class="layui-layout layui-layout-admin">
 			<div class="layui-header header header-demo">
 				<div class="layui-main" style="margin: 0 0px;">
 					<div class="admin-login-box">
 						<a class="logo"  href="/">
-							<span style="font-size: 22px;">迎新管理系统</span>
+							<span style="font-size: 22px;">新生网上报到</span>
 						</a>
 						<div title="左侧导航菜单显示/隐藏" class="admin-side-toggle  hidden-xs">
 							<i class="fa fa-chevron-left" aria-hidden="true"></i>
@@ -161,15 +173,20 @@
 			            $tabs.find('li').each(function (i, e) {
 			                var $cite = $(this).children('cite');
 			                if ($cite.text() === data.elem.find('cite').text()) {
+			                    element.tabDelete(tabFilter, i).init();
 			                    count++;
 			                    tabIndex = i;
 			                };
 			            });
 			            //tab不存在
+			            //alert(count);
+			            count = 0;
+			            
 			            if (count === 0) {
 			                //添加删除样式
 			                html += '<i class="layui-icon layui-unselect layui-tab-close">&#x1006;</i>';
 			                //添加tab
+                           
 			                element.tabAdd(tabFilter, {
 			                    title: html,
 			                    content: iframe

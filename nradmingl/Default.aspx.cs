@@ -24,6 +24,8 @@ public partial class admin_Default : System.Web.UI.Page
   
     protected void Page_Load(object sender, EventArgs e)
     {
+        Response.Redirect("defaultgl.aspx");
+        Response.End();
         //登陆验证,权限验证,日志
         new c_login().tongyiyz(pagelm1, pageqx1, "进入"+pagelm1+"页", true, pageqx1, pageqx2, pageqx3, pageqx4, pageqx5);
 

@@ -64,7 +64,7 @@ public partial class nradmingl_treemenuxs : System.Web.UI.Page
         if (Session["username"] != null)
         {
             string sc = "";
-            string sqlSerachByDhcdh = "SELECT * FROM lanm WHERE (sfdhxs=1) and lmid='255' order by px asc";
+            string sqlSerachByDhcdh = "SELECT * FROM lanm WHERE (sfdhxs=1) and fid='255' order by px asc";
             DataTable dt = Sqlhelper.Serach(sqlSerachByDhcdh);
             string url = "";
             if (dt.Rows.Count > 0)
@@ -88,7 +88,7 @@ public partial class nradmingl_treemenuxs : System.Web.UI.Page
 
                     url = dt.Rows[i]["url"].ToString().Replace("pk_sno=", "pk_sno=" + Session["username"].ToString());
                     string sqlSerachByDhcdh2 = "SELECT * FROM lanm WHERE (sfdhxs=1) and fid='" + dt.Rows[i]["lmid"].ToString() + "' order by px asc";
-                    //Response.Write(sqlSerachByDhcdh2);
+                   // Response.Write(sqlSerachByDhcdh2);
                     DataTable dt2 = Sqlhelper.Serach(sqlSerachByDhcdh2);
 
                     if (dt2.Rows.Count > 0)

@@ -461,9 +461,11 @@ img {
                   <article id="70" class="post">
                     
                     <div class="featured-media"><!-- 轮播处理 -->
-			<div id="demo1" class="slideBox"  style="width: 680px; height: 370px;border:1px solid #ccc">
+			<div id="demo1" class="slideBox"  style="width: 690px; height: 370px;border:1px solid #ccc">
   <ul class="items" id="tpshow" runat="server">
-    <li  style="width: 680px; height: 370px;background:url('img/1.PNG')" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="学生自助报到"></a></li>
+   <li  style="width: 690px; height: 370px;background:url('img/img1.PNG')" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="新生自助报到"><img  style="width: 690px; height: 370px;" src="img/img1.PNG" /></a></li>
+   <li  style="width: 690px; height: 370px;background:url('img/img2.PNG')" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="新生资助政策"><img src="img/img2.PNG"  style="width: 690px; height: 370px;" /></a></li>
+   <li  style="width: 690px; height: 370px;background:url('img/img3.PNG')" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="到校交通路线查询"><img src="img/img3.PNG"  style="width: 690px; height: 370px;" /></a></li>
    
    
   </ul>

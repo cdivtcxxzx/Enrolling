@@ -671,10 +671,16 @@ public class batch
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_Batch_NO.Trim()), new SqlParameter("cs2", PK_Staff_NO.Trim()));
             if (dt != null && dt.Rows.Count == 1)
             {
-                sqlstr = "select count(*) as sl from vw_fresh_student_base where FK_Fresh_Batch+'_'+SPE_Code+'_'+[year] in ( "+
-                            "select distinct(FK_Batch_NO+'_'+SPE_Code+'_'+[year]) from vw_operator_scope "+
+                //sqlstr = "select count(*) as sl from vw_fresh_student_base where FK_Fresh_Batch+'_'+SPE_Code+'_'+[year] in ( "+
+                //            "select distinct(FK_Batch_NO+'_'+SPE_Code+'_'+[year]) from vw_operator_scope "+
+                //            "where FK_Batch_NO=@cs1 and FK_Staff_NO=@cs2 and PK_Affair_NO=@cs3)" +
+                //            "and PK_SNO not in (select distinct(FK_SNO) from Fresh_Affair_Log where FK_Affair_NO=@cs3)";
+                sqlstr = "select count(*) as sl from vw_fresh_student_base where FK_Fresh_Batch+'_'+SPE_Code+'_'+[year] in ( " +
+                            "select distinct(FK_Batch_NO+'_'+SPE_Code+'_'+[year]) from vw_operator_scope " +
                             "where FK_Batch_NO=@cs1 and FK_Staff_NO=@cs2 and PK_Affair_NO=@cs3)" +
-                            "and PK_SNO not in (select distinct(FK_SNO) from Fresh_Affair_Log where FK_Affair_NO=@cs3)";
+                            "and PK_SNO not in (select distinct(tb1.FK_SNO)" +
+                            " from Fresh_Affair_Log tb1 , Fresh_Affair tb2" +
+                            " where tb1.FK_Affair_NO=tb2.PK_Affair_NO and tb1.Log_Status<>tb2.InitStatus and tb1.FK_Affair_NO=@cs3)";
                 dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_Batch_NO.Trim()), new SqlParameter("cs2", PK_Staff_NO.Trim()), new SqlParameter("cs3", PK_Affair_NO.Trim()));
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -717,10 +723,16 @@ public class batch
             System.Data.DataTable dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_Batch_NO.Trim()), new SqlParameter("cs2", PK_Staff_NO.Trim()));
             if (dt != null && dt.Rows.Count == 1)
             {
+                //sqlstr = "select count(*) as sl from vw_fresh_student_base where FK_Fresh_Batch+'_'+SPE_Code+'_'+[year] in ( " +
+                //            "select distinct(FK_Batch_NO+'_'+SPE_Code+'_'+[year]) from vw_operator_scope " +
+                //            "where FK_Batch_NO=@cs1 and FK_Staff_NO=@cs2 and PK_Affair_NO=@cs3)" +
+                //            "and PK_SNO in (select distinct(FK_SNO) from Fresh_Affair_Log where FK_Affair_NO=@cs3)";
                 sqlstr = "select count(*) as sl from vw_fresh_student_base where FK_Fresh_Batch+'_'+SPE_Code+'_'+[year] in ( " +
                             "select distinct(FK_Batch_NO+'_'+SPE_Code+'_'+[year]) from vw_operator_scope " +
                             "where FK_Batch_NO=@cs1 and FK_Staff_NO=@cs2 and PK_Affair_NO=@cs3)" +
-                            "and PK_SNO in (select distinct(FK_SNO) from Fresh_Affair_Log where FK_Affair_NO=@cs3)";
+                            "and PK_SNO in (select distinct(tb1.FK_SNO)"+
+                            " from Fresh_Affair_Log tb1 , Fresh_Affair tb2"+
+                            " where tb1.FK_Affair_NO=tb2.PK_Affair_NO and tb1.Log_Status<>tb2.InitStatus and tb1.FK_Affair_NO=@cs3)";
                 dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_Batch_NO.Trim()), new SqlParameter("cs2", PK_Staff_NO.Trim()), new SqlParameter("cs3", PK_Affair_NO.Trim()));
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -3696,5 +3708,22 @@ public class batch
         }
         return result;
     }
-
+    //根据学号的模糊查询
+    public List<model.Base_STU> getStuBy_pk_sno(string pk_sno)
+    {
+        model.organizationModelDataContext oDC = new model.organizationModelDataContext();
+        return oDC.Base_STUs.Where(s => s.PK_SNO.IndexOf(pk_sno) >= 0).ToList();
+    }
+    //根据高考报名号的模糊查询
+    public List<model.Base_STU> getStuBy_test_no(string test_no)
+    {
+        model.organizationModelDataContext oDC = new model.organizationModelDataContext();
+        return oDC.Base_STUs.Where(s => s.Test_NO.IndexOf(test_no) >= 0).ToList();
+    }
+    //根据身份证号的模糊查询
+    public List<model.Base_STU> getStuBy_id_no(string id_no)
+    {
+        model.organizationModelDataContext oDC = new model.organizationModelDataContext();
+        return oDC.Base_STUs.Where(s => s.ID_NO.IndexOf(id_no) >= 0).ToList();
+    }
 }

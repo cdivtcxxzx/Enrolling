@@ -123,10 +123,10 @@ function load(){
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-inline">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
-                                    str=str+'<option value="none" >暂不选择</option>';
                                     for(var j=0;j<itemlist.length;j++){
                                         str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                     }
+                                    str=str+'<option value="none" >暂不选择</option>';
                                     str=str+'</select>';
                                     str=str+'</div>';
                                     str=str+'</div>';
@@ -144,10 +144,10 @@ function load(){
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-inline">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
-                                    str=str+'<option value="none" >暂不选择</option>';
                                     for(var j=0;j<itemlist.length;j++){
                                         str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                     }
+                                    str=str+'<option value="none" >暂不选择</option>';
                                     str=str+'</select>';
                                     str=str+'</div>';
                                     str=str+'</div>';

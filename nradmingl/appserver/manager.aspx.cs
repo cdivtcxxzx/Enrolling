@@ -2451,6 +2451,71 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region 获取学生数据(模糊查询学号、高考报名号、身份证号)
+                if (cs.Trim().Equals("getStuBy_type"))
+                {
+                    string type = Request.QueryString["type"];
+                    string key = Request.QueryString["key"];
+                    if (key != null && key.Trim().Length != 0 && type != null && type.Trim().Length != 0)
+                    {
+                        batch logic = new batch();
+                        List<Object> newdata = null;
+                        List<model.Base_STU> stu_data = null;
+                        if (type.Trim() == "xh")
+                        {
+                            stu_data = logic.getStuBy_pk_sno(key);
+                        }
+                        if (type.Trim() == "gkbmh")
+                        {
+                            stu_data = logic.getStuBy_test_no(key);
+                        }
+                        if (type.Trim() == "sfzh")
+                        {
+                            stu_data = logic.getStuBy_id_no(key);
+                        }
+
+                        if (stu_data != null)
+                        {
+                            newdata = new List<Object>();
+                            for (int k = 0; k < stu_data.Count; k++)
+                            {
+                                base_stu stu_newdata = new base_stu();
+                                stu_newdata.PK_SNO = stu_data[k].PK_SNO;//学号
+                                stu_newdata.FK_SPE_Code = stu_data[k].FK_SPE_Code;//专业主键
+                                stu_newdata.Year = stu_data[k].Year;//学年
+                                stu_newdata.Test_NO = stu_data[k].Test_NO;//考生号
+                                stu_newdata.ID_NO = stu_data[k].ID_NO;//身份证号
+                                stu_newdata.Name = stu_data[k].Name;//姓名
+                                stu_newdata.Gender_Code = stu_data[k].Gender_Code;//性别码
+                                stu_newdata.Photo = stu_data[k].Photo;//照片地址
+                                stu_newdata.Status_Code = stu_data[k].Status_Code;//迎新状态码
+                                stu_newdata.DT_Initial = DateTime.Parse(stu_data[k].DT_Initial.ToString());//从招办导入时的时间
+                                stu_newdata.FK_Class_NO = stu_data[k].FK_Class_NO;//班级编码
+                                stu_newdata.Password = null;//口令
+
+                                List<base_code_item> itemlist = logic.get_base_code_item("002");
+                                if (itemlist != null)
+                                {
+                                    for (int i = 0; i < itemlist.Count; i++)
+                                    {
+                                        if (itemlist[i].Item_NO.Trim().Equals(stu_newdata.Gender_Code.Trim()))
+                                        {
+                                            stu_newdata.Gender_Code = itemlist[i].Item_Name.Trim();
+                                            break;
+                                        }
+                                    }
+                                }
+                                newdata.Add(stu_newdata);
+                            }
+
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = newdata;
+                    }
+                }
+                #endregion
+
             }
         }
         catch (Exception ex)
