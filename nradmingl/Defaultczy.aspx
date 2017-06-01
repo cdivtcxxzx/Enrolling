@@ -87,7 +87,12 @@
 			<div class="layui-body" style="bottom: 0;" id="admin-body">
                 <div style="width:500px;height:100%;float:left; margin-left:10px;margin-right:10px;">
                     <blockquote class="layui-elem-quote">
-                        学生学号： <div class="layui-input-inline"><asp:TextBox ID="find_xh" placeholder="请输入学生学号" cssClass="layui-input" runat="server"></asp:TextBox></div>
+                           <select name="finx_xh_xx" id="finx_xh_xx" onchange="xx_change()">
+                               <option value="xh">学号</option>
+                               <option value="gkbmh">报名号</option>
+                               <option value="sfzh">身份证号</option>
+                            </select>
+                         <div class="layui-input-inline"><asp:TextBox ID="find_xh" placeholder="请输入学生学号" cssClass="layui-input" runat="server"></asp:TextBox></div>
                         <input type="button" value="查询" class="layui-btn layui-btn-small"  onclick="find()" />
                     </blockquote>
                     <br />
@@ -372,6 +377,27 @@
         <script> load();</script>
 		</div>
   
-</form>  
+</form> 
+    <div id="stu_sele" class="site-table table-hover" cellspacing="0" rules="all" border="1" style="border-collapse: collapse;display:none;">
+            <div>
+                <table>
+                    <thead>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>身份证号</th>
+                        <th>高考报名号</th>
+                        <th>学号</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div>
+
+            </div>
+    </div>    
+     
 </body>
 </html>
