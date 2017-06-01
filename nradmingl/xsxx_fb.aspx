@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xsxx_fb.aspx.cs" Inherits="nradmingl_xsxx_fb" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="xsxx_fb.aspx.cs" Inherits="nradmingl_xsxx_fb" validateRequest="false" %>
 
 <!DOCTYPE html>
 
@@ -36,7 +36,7 @@
 					<i class="layui-icon">&#x1002;</i> 刷新
 				</a>
 
-               <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" txttop="txttop" ToolTip="表格中准确填写班级信息即可" ID="LinkButton13" runat="server"     Text='' OnClick="exportexcel" ><i class="layui-icon">&#xe61e;</i>导出所选数据模板</asp:LinkButton>
+               <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" txttop="txttop" ToolTip="表格中准确填写班级信息即可" ID="LinkButton13" runat="server"     Text='' OnClick="exportexcel" ><i class="layui-icon">&#xe61e;</i>导出数据模板</asp:LinkButton>
 
                  <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '学生数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'xsxx_fb_dr.aspx?setp=1&mb=mb/null.xls',btn:'完成'});" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe62f;</i>导入分班数据
@@ -77,9 +77,10 @@
                               <asp:Parameter DefaultValue="true" Name="Enabled" Type="String" />
                           </WhereParameters>
                       </asp:LinqDataSource>
-                      <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" SelectMethod="getYxByYhid" TypeName="organizationService">
+                      <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" SelectMethod="getYxByYhid" TypeName="organizationService" OldValuesParameterFormatString="original_{0}">
                           <SelectParameters>
                               <asp:SessionParameter DefaultValue="" Name="yhid" SessionField="UserName" Type="String" />
+                              <asp:SessionParameter Name="lsz" SessionField="Lsz" Type="String" />
                           </SelectParameters>
                       </asp:ObjectDataSource>
                     </ContentTemplate></asp:UpdatePanel>
@@ -96,12 +97,12 @@
             AllowPaging="True" AllowSorting="True" OnDataBound="GridView1_DataBound" OnPageIndexChanging="GridView1_PageIndexChanging">
     <Columns>
     <asp:TemplateField>
-                <HeaderTemplate>
+                <%--<HeaderTemplate>
                       <input type="checkbox"  id="selected-all" class="noshow" name="selected-all" onclick="onclicksel();" />  
                 </HeaderTemplate>
                 <ItemTemplate>
                      <input id="BoxId" name="BoxId"  class="icheck noshow" value='<%#(Convert.ToString(Eval("PK_SNO")))%>' type="checkbox" /> 
-                </ItemTemplate>
+                </ItemTemplate>--%>
                 <ItemStyle HorizontalAlign="Center" />
                 <HeaderStyle Width="2%"  HorizontalAlign="Center" />
             </asp:TemplateField>

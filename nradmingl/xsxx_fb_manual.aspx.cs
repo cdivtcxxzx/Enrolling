@@ -43,7 +43,7 @@ public partial class nradmingl_xsxx_fb_manual : System.Web.UI.Page
                     ddlClass.DataBind();
                 }
                 //班级信息是否已设置
-                if (stu.FK_Class_NO.Length > 0)
+                if (stu.FK_Class_NO != null && stu.FK_Class_NO.Length > 0)
                 {
                     Fresh_Class cls_bySNO = clsBySPE.Find(cls => cls.PK_Class_NO == stu.FK_Class_NO);
                     if (cls_bySNO != null)
