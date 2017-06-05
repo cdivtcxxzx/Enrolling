@@ -82,7 +82,7 @@
                     </select>
                 </div>
             </div>
-</div>
+            </div>
             <!--身高和体重-->
             <div class="layui-form-item">
             <div class="layui-inline" style="">
@@ -108,7 +108,7 @@
                     </select>
                 </div>
             </div>
-</div>
+            </div>
             <!--户籍-->
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -134,11 +134,33 @@
                     </div>
                 </div>
             </div> 
+            <!--户籍地址-->
+            <div class="layui-form-item">
+                <label class="layui-form-label">户籍地址：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="xsxx_huji_add" id="xsxx_huji_add" lay-verify="xsxx_huji_add" autocomplete="off" placeholder="请输入户籍地址" class="layui-input">
+                </div>
+            </div>
             <!--家庭住址-->
             <div class="layui-form-item">
                 <label class="layui-form-label">家庭住址：</label>
                 <div class="layui-input-block">
-                    <input type="text" name="xsxx_addr" id="xsxx_addr" lay-verify="address" autocomplete="off" placeholder="请输入现住址" class="layui-input">
+                    <input type="text" name="xsxx_addr" id="xsxx_addr" lay-verify="xsxx_addr" autocomplete="off" placeholder="请输入现住址" class="layui-input">
+                </div>
+            </div>
+            <!--父母电话-->
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">父亲电话：</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" name="phone_fa" id="phone_fa"  lay-verify="phone_fa"  placeholder="父亲电话" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">母亲电话：</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" name="phone_ma" id="phone_ma"  lay-verify="phone_ma"  placeholder="母亲电话" autocomplete="off" class="layui-input">
+                    </div>
                 </div>
             </div>
             <!--手机号和QQ-->
@@ -156,6 +178,7 @@
                     </div>
                 </div>
             </div>
+            
             <div style="text-align: center; float: left; margin-top: 10px; margin-left: 115px">
                 <span>
                     <a href="" class="layui-btn layui-btn-small" lay-submit="" lay-filter="demo1" id="">

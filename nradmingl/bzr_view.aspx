@@ -44,11 +44,21 @@
               <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
         <div class="admin-main">
             <blockquote class="layui-elem-quote">
-                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>查看学生信息           
+                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>新生网上报到进度           
             </blockquote>
             <div>
                 
                 <div class="layui-form-item">
+                    <!--迎新批次下拉列表-->
+                    <div class="layui-inline">
+                        <label class="layui-form-label">批次：</label>
+                        <div class="layui-input-inline">
+                            <select name="batchlist" id="batchlist">
+
+                            </select>
+                        </div>
+                    </div>
+
                     <!--班级下拉列表-->
                     <div class="layui-inline">
                         <label class="layui-form-label">班级：</label>
@@ -91,17 +101,18 @@
                         <thead>
                             <tr>        
                                 <th scope="col">序号</th>                        
-                                <th scope="col">年级</th>
+<%--                                <th scope="col">年级</th>
                                 <th scope="col">学院</th>
-                                <th scope="col" >专业</th>
+                                <th scope="col" >专业</th>--%>
                                 <th scope="col">姓名</th>
                                 <th scope="col">性别</th>
                                 <th scope="col">学号</th>
-                                <th scope="col">身份证号</th>
                                 <th scope="col">高考报名号</th>
-                                <th scope="col">报到</th>
-                                <th scope="col">学费</th>
-                                <th scope="col">状态</th>
+                                <th scope="col">身份证号</th>
+                                <th scope="col">联系电话</th>
+                                <th scope="col">网上注册</th>
+                                <th scope="col">绿色通道<br />助学贷款</th>
+                                <th scope="col">项目情况</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>

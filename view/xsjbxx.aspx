@@ -57,6 +57,9 @@
     text-align: center;
     border-radius: 4px;
 }
+.layui-form-label{
+    width:85px !important;
+}
      </style>
      <!--展示响应式CSS块over-->
      <!--页面开始全范围框架-->

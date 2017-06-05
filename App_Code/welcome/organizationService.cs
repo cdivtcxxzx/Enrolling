@@ -540,20 +540,40 @@ public static class organizationService
     }
     #endregion
 
-    #region 根据用户ID返回能管理的学院信息 getYxByYhid
-    public static List<Base_College> getYxByYhid(string yhid)
+    #region 根据用户ID和隶属组Lsz返回能管理的学院信息 getYxByYhidLsz
+    /// <summary>
+    /// 根据用户ID和隶属组Lsz返回能管理的学院信息
+    /// </summary>
+    /// <param name="yhid"></param>
+    /// <param name="lsz"></param>
+    /// <returns></returns>
+    public static List<Base_College> getYxByYhid(string yhid , string lsz)
     {        
         List<Base_College> result = new List<Base_College>();
         if (yhid == "" || yhid == null) return result;
-        ArrayList yxmcList = new Power().GetYxmcsByYhid(yhid);
+        Power getPower = new Power();
+        ArrayList yxmcList = getPower.GetYxmcsByYhid(yhid);
         organizationModelDataContext oDC = new organizationModelDataContext();
+        
+        
+        //组权限判断
+        if (lsz != null && lsz.Length > 0)
+        {
+            var lszs = lsz.TrimEnd(',').Split(',');
+            for (int i = 0; i < lszs.Length; i++)
+            {
+                yxmcList.AddRange(getPower.GetYxmcsByZid(lszs[i]));
+            }
+
+        }
         foreach (var item in yxmcList)
         {
             Base_College colle = oDC.Base_Colleges.Where(s => s.Name == item && s.Enabled == "true").SingleOrDefault();
 
             if (colle != null) result.Add(colle);
         }
-        return result;
+
+        return result.Distinct().ToList();
     }
     #endregion
 

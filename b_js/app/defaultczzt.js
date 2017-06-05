@@ -204,7 +204,7 @@ function collagechange(pk_collage_no, pk_batch_no) {
                     $('#hasbedcount').html(bedcount);
                 }
 
-                var nohasbedclass = json_data.data.nohasbedclass;//未预分床位人数数据
+/*                var nohasbedclass = json_data.data.nohasbedclass;//未预分床位人数数据
                 if (nohasbedclass) {
                     var requirebedcount=0;
                     for(i=0;i<nohasbedclass.length;i++){
@@ -222,6 +222,36 @@ function collagechange(pk_collage_no, pk_batch_no) {
                         bedcount=bedcount+parseInt(item.bedcount);
                     }
                     $('#hasbed_buterrorcount').html(bedcount);
+                }*/
+
+                var nohasbedclass_boy = json_data.data.nohasbedclass_boy;//未预分床位男生人数数据
+                if (nohasbedclass_boy) {
+                    var requirebedcount=0;
+                    for(i=0;i<nohasbedclass_boy.length;i++){
+                        var item = nohasbedclass_boy[i];
+                        requirebedcount=requirebedcount+parseInt(item.requirebedcount);
+                    }
+                    if(requirebedcount==0){
+                        $('#nohasbedcount_boy').parent("a").hide();
+                    }else{
+                        $('#nohasbedcount_boy').parent("a").show();
+                        $('#nohasbedcount_boy').html(requirebedcount);
+                    }
+                }
+
+                var nohasbedclass_girl = json_data.data.nohasbedclass_girl;//未预分床位女生人数数据
+                if (nohasbedclass_girl) {
+                    var requirebedcount=0;
+                    for(i=0;i<nohasbedclass_girl.length;i++){
+                        var item = nohasbedclass_girl[i];
+                        requirebedcount=requirebedcount+parseInt(item.requirebedcount);
+                    }
+                    if(requirebedcount==0){
+                        $('#nohasbedcount_girl').parent("a").hide();
+                    }else{
+                        $('#nohasbedcount_girl').parent("a").show();
+                        $('#nohasbedcount_girl').html(requirebedcount);
+                    }
                 }
 
                 var hascounseller = json_data.data.hascounseller;//已设置班主任数据

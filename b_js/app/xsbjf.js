@@ -123,10 +123,10 @@ function load(){
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-inline">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
-                                    str=str+'<option value="none" >暂不选择</option>';
                                     for(var j=0;j<itemlist.length;j++){
                                         str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                     }
+                                    str=str+'<option value="none" >暂不选择</option>';
                                     str=str+'</select>';
                                     str=str+'</div>';
                                     str=str+'</div>';
@@ -144,10 +144,10 @@ function load(){
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-inline">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
-                                    str=str+'<option value="none" >暂不选择</option>';
                                     for(var j=0;j<itemlist.length;j++){
                                         str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                     }
+                                    str=str+'<option value="none" >暂不选择</option>';
                                     str=str+'</select>';
                                     str=str+'</div>';
                                     str=str+'</div>';
@@ -293,8 +293,8 @@ function sure(){
         alert("无效的参数");
     }
     if(feelist!=null && feelist.length>0){
-        layer.confirm('将提交您的预交费订单，订单生成后其内容仅允许到校后修改。您确认继续吗？', {
-            btn: ['继续', '终止']
+        layer.confirm('将提交您的预交费订单，订单生成后其内容仅允许到校后修改。', {
+            btn: ['继续', '重新选择']
         }, function(index){
             layer.close(index);
              console.log(JSON.stringify(feelist));

@@ -106,7 +106,7 @@ public partial class test_testView : System.Web.UI.Page
         //Response.Write(organizationService.createNum("2017","1","03"));
         
         //测试权限获取
-        List<Base_College> yx = organizationService.getYxByYhid("");
+        List<Base_College> yx = organizationService.getYxByYhid("chenzhiqiu",Session["Lsz"].ToString());
         foreach (var item in yx)
         {
             Response.Write(item.Name);

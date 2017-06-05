@@ -1259,6 +1259,26 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                         System.Data.DataTable nohascollageaffair_data = batch_logic.get_batch_nohascollageaffair(pk_batch_no);//某迎新批次全校未设置现场迎新事务的事务数据，但年或校区错误的数据
                         System.Data.DataTable collegefinancial_data = batch_logic.get_batch_college_financial(pk_batch_no, pk_collage_no);//某迎新批次全校或某学院的专业财务交费项目数据，但年或校区错误的数据
 
+                        System.Data.DataTable nohasbedclass_boy_data = null;
+                        System.Data.DataTable nohasbedclass_girl_data = null;
+                        if (nohasbedclass_data != null && nohasbedclass_data.Rows.Count > 0)
+                        {
+                            nohasbedclass_boy_data = nohasbedclass_data.Copy();
+                            nohasbedclass_girl_data = nohasbedclass_data.Copy();
+                            for (int i = nohasbedclass_data.Rows.Count-1; i >= 0; i--)
+                            {
+                                if (nohasbedclass_boy_data.Rows[i]["gender"].ToString().Trim().Equals("女"))
+                                {
+                                    nohasbedclass_boy_data.Rows.RemoveAt(i);
+                                }
+                                if (nohasbedclass_girl_data.Rows[i]["gender"].ToString().Trim().Equals("男"))
+                                {
+                                    nohasbedclass_girl_data.Rows.RemoveAt(i);
+                                }
+                            }
+                            nohasbedclass_boy_data.AcceptChanges();
+                            nohasbedclass_girl_data.AcceptChanges();
+                        }
 
                         result.code = "success";
                         result.message = "成功";
@@ -1275,7 +1295,9 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                             nohascounseller = nohascounseller_data,
                                             hascollageaffair = hascollageaffair_data,
                                             nohascollageaffair = nohascollageaffair_data,
-                                            collegefinancial = collegefinancial_data
+                                            collegefinancial = collegefinancial_data,
+                                            nohasbedclass_boy = nohasbedclass_boy_data,
+                                            nohasbedclass_girl = nohasbedclass_girl_data
                         };
                     }
                 }
@@ -1779,6 +1801,180 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region 某迎新批次全校或某学院男学生未预分床位人数数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_nohasbedclass_boy"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_nohasbedclass(pk_batch_no, pk_collage_no);
+                        int total = 0;
+                        for (int i = jg.Rows.Count - 1; i >= 0; i--)
+                        {
+                            if (jg.Rows[i]["gender"].ToString().Trim().Equals("女"))
+                            {
+                                jg.Rows.RemoveAt(i);
+                            }
+                            else
+                            {
+                                total = total + int.Parse(jg.Rows[i]["requirebedcount"].ToString());
+                            }
+                        }
+                        jg.AcceptChanges();
+
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("Campus_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "校区";
+                            }
+                            if (colname.Trim().Equals("Name"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("ClassName"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                            if (colname.Trim().Equals("gender"))
+                            {
+                                jg.Columns[i].ColumnName = "性别";
+                            }
+                            if (colname.Trim().Equals("studentcount"))
+                            {
+                                jg.Columns[i].ColumnName = "学生人数";
+                            }
+                            if (colname.Trim().Equals("hasbedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "已预分床位数";
+                            }
+                            if (colname.Trim().Equals("nohasbedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "学生床位差";
+                            }
+                            if (colname.Trim().Equals("requirebedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "缺少床位数";
+                            }
+                        }
+
+                        if (jg != null)
+                        {
+                            DataRow row = jg.NewRow();
+                            row["校区"] = "";
+                            row["学院名称"] = "";
+                            row["专业名称"] = "";
+                            row["班级名称"] = "";
+                            row["性别"] = "合计";
+                            row["缺少床位数"] = total;
+                            jg.Rows.InsertAt(row, 0);
+
+                            jg.Columns.Remove("学生人数");
+                            jg.Columns.Remove("已预分床位数");
+                            jg.Columns.Remove("学生床位差");
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region 某迎新批次全校或某学院女学生未预分床位人数数据(汉字列头)
+                if (cs.Trim().Equals("get_batch_nohasbedclass_girl"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_collage_no = Request.QueryString.Get("pk_collage_no");
+
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_batch_nohasbedclass(pk_batch_no, pk_collage_no);
+                        int total = 0;
+                        for (int i = jg.Rows.Count - 1; i >= 0; i--)
+                        {
+                            if (jg.Rows[i]["gender"].ToString().Trim().Equals("男"))
+                            {
+                                jg.Rows.RemoveAt(i);
+                            }
+                            else
+                            {
+                                total = total + int.Parse(jg.Rows[i]["requirebedcount"].ToString());
+                            }
+                        }
+                        jg.AcceptChanges();
+
+                        for (int i = 0; jg != null && i < jg.Columns.Count; i++)
+                        {
+                            string colname = jg.Columns[i].ColumnName;
+                            if (colname.Trim().Equals("Campus_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "校区";
+                            }
+                            if (colname.Trim().Equals("Name"))
+                            {
+                                jg.Columns[i].ColumnName = "学院名称";
+                            }
+                            if (colname.Trim().Equals("ClassName"))
+                            {
+                                jg.Columns[i].ColumnName = "班级名称";
+                            }
+                            if (colname.Trim().Equals("SPE_Name"))
+                            {
+                                jg.Columns[i].ColumnName = "专业名称";
+                            }
+                            if (colname.Trim().Equals("gender"))
+                            {
+                                jg.Columns[i].ColumnName = "性别";
+                            }
+                            if (colname.Trim().Equals("studentcount"))
+                            {
+                                jg.Columns[i].ColumnName = "学生人数";
+                            }
+                            if (colname.Trim().Equals("hasbedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "已预分床位数";
+                            }
+                            if (colname.Trim().Equals("nohasbedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "学生床位差";
+                            }
+                            if (colname.Trim().Equals("requirebedcount"))
+                            {
+                                jg.Columns[i].ColumnName = "缺少床位数";
+                            }
+                        }
+                        if (jg != null)
+                        {
+                            DataRow row = jg.NewRow();
+                            row["校区"] = "";
+                            row["学院名称"] = "";
+                            row["专业名称"] = "";
+                            row["班级名称"] = "";
+                            row["性别"] = "合计";
+                            row["缺少床位数"] = total;
+                            jg.Rows.InsertAt(row, 0);
+                            jg.Columns.Remove("学生人数");
+                            jg.Columns.Remove("已预分床位数");
+                            jg.Columns.Remove("学生床位差");
+                            jg.AcceptChanges();
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
                 #region 某迎新批次全校或某学院学生已预分床位，但年或校区错误的数据(汉字列头)
                 if (cs.Trim().Equals("get_batch_hasbed_buterror"))
                 {
@@ -2251,6 +2447,71 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                     else
                     {
                         result.message = "未登陆";
+                    }
+                }
+                #endregion
+
+                #region 获取学生数据(模糊查询学号、高考报名号、身份证号)
+                if (cs.Trim().Equals("getStuBy_type"))
+                {
+                    string type = Request.QueryString["type"];
+                    string key = Request.QueryString["key"];
+                    if (key != null && key.Trim().Length != 0 && type != null && type.Trim().Length != 0)
+                    {
+                        batch logic = new batch();
+                        List<Object> newdata = null;
+                        List<model.Base_STU> stu_data = null;
+                        if (type.Trim() == "xh")
+                        {
+                            stu_data = logic.getStuBy_pk_sno(key);
+                        }
+                        if (type.Trim() == "gkbmh")
+                        {
+                            stu_data = logic.getStuBy_test_no(key);
+                        }
+                        if (type.Trim() == "sfzh")
+                        {
+                            stu_data = logic.getStuBy_id_no(key);
+                        }
+
+                        if (stu_data != null)
+                        {
+                            newdata = new List<Object>();
+                            for (int k = 0; k < stu_data.Count; k++)
+                            {
+                                base_stu stu_newdata = new base_stu();
+                                stu_newdata.PK_SNO = stu_data[k].PK_SNO;//学号
+                                stu_newdata.FK_SPE_Code = stu_data[k].FK_SPE_Code;//专业主键
+                                stu_newdata.Year = stu_data[k].Year;//学年
+                                stu_newdata.Test_NO = stu_data[k].Test_NO;//考生号
+                                stu_newdata.ID_NO = stu_data[k].ID_NO;//身份证号
+                                stu_newdata.Name = stu_data[k].Name;//姓名
+                                stu_newdata.Gender_Code = stu_data[k].Gender_Code;//性别码
+                                stu_newdata.Photo = stu_data[k].Photo;//照片地址
+                                stu_newdata.Status_Code = stu_data[k].Status_Code;//迎新状态码
+                                stu_newdata.DT_Initial = DateTime.Parse(stu_data[k].DT_Initial.ToString());//从招办导入时的时间
+                                stu_newdata.FK_Class_NO = stu_data[k].FK_Class_NO;//班级编码
+                                stu_newdata.Password = null;//口令
+
+                                List<base_code_item> itemlist = logic.get_base_code_item("002");
+                                if (itemlist != null)
+                                {
+                                    for (int i = 0; i < itemlist.Count; i++)
+                                    {
+                                        if (itemlist[i].Item_NO.Trim().Equals(stu_newdata.Gender_Code.Trim()))
+                                        {
+                                            stu_newdata.Gender_Code = itemlist[i].Item_Name.Trim();
+                                            break;
+                                        }
+                                    }
+                                }
+                                newdata.Add(stu_newdata);
+                            }
+
+                        }
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = newdata;
                     }
                 }
                 #endregion
