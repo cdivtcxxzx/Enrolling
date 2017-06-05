@@ -19,7 +19,6 @@ public class GZJW
     public bool SyncClass()
     {
         string year = DateTime.Today.Year.ToString();
-        year = "2016";
         DataTable dt = Sqlhelper.ConSerach(Sqlhelper.conStrzsgl, "select cl.bh PK_Class_NO,cl.xqdm FK_Campus_NO,spe.pk_spe FK_SPE_NO,zy.SPE_Code,cl.bjmc Name from gzjw.[PantoSchoolGJ].[dbo].[JX_Class] cl left join enrollment.yxxt_data.dbo.Base_SPE_ZYDM zy on cl.zydm=zy.zydm left join enrollment.yxxt_data.dbo.Fresh_SPE spe on zy.spe_code=spe.spe_code left join enrollment.yxxt_data.dbo.Fresh_Counseller coun on cl.bh=coun.fk_class_no  where cl.njdm=@njdm and spe.[year]=@njdm", new SqlParameter("njdm", year));
         DataSet tempDs = new DataSet();
         DataTable temp = dt.Clone();
@@ -82,13 +81,11 @@ public class GZJW
     public DataTable GetClassDT()
     {
         string year = DateTime.Today.Year.ToString();
-        year = "2016";
         return Sqlhelper.Serach("select cl.PK_Class_NO,spe.pk_spe,col.College_NO,col.Name College_Name,cl.name,yh.yhid,yh.xm,coun.Phone,coun.QQ from [Fresh_Class] cl left join Fresh_SPE spe on cl.FK_SPE_NO=spe.PK_SPE left join Base_College col on spe.FK_College_Code=col.PK_College left join Fresh_Counseller coun on cl.PK_Class_NO=coun.fk_class_no left join yonghqx yh on coun.fk_staff_no=yh.yhid where spe.[year]=@njdm", new SqlParameter("njdm", year));
     }
     public DataTable GetClassOutDT()
     {
         string year = DateTime.Today.Year.ToString();
-        year = "2016";
         return Sqlhelper.Serach("select cl.PK_Class_NO 班号,cl.name 班级名称,yh.yhid 辅导员帐号,yh.xm 辅导员姓名,coun.Phone 辅导员电话,coun.QQ 辅导员QQ号 from [Fresh_Class] cl left join Fresh_SPE spe on cl.FK_SPE_NO=spe.PK_SPE left join Base_College col on spe.FK_College_Code=col.PK_College left join Fresh_Counseller coun on cl.PK_Class_NO=coun.fk_class_no left join yonghqx yh on coun.fk_staff_no=yh.yhid where spe.[year]=@njdm", new SqlParameter("njdm", year));
     }
     public bool SetCounseller(string PK_Class_NO,string yhid,string phone,string qq)
