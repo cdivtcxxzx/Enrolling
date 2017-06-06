@@ -124,6 +124,19 @@
     </ul>
 </div>
     </div>
+        <p>
+            &nbsp;</p>
+        <p>
+            <asp:DropDownList ID="yx" runat="server" DataSourceID="SqlDataSource6" DataTextField="yxmc" DataValueField="yxdm" AutoPostBack="True">
+                <asp:ListItem Selected="True">全部院系</asp:ListItem>
+            </asp:DropDownList>
+            <asp:SqlDataSource ID="SqlDataSource6" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [YXDM], [YXMC] FROM [DM_YUANXI] WHERE (([isjx] = @isjx) AND ([zt] = @zt)) ORDER BY [YXDM]">
+                <SelectParameters>
+                    <asp:Parameter DefaultValue="true" Name="isjx" Type="Boolean" />
+                    <asp:Parameter DefaultValue="true" Name="zt" Type="Boolean" />
+                </SelectParameters>
+            </asp:SqlDataSource>
+        </p>
     </form>
 </body>
 </html>

@@ -108,6 +108,17 @@
                                 PropertyName="SelectedValue" Type="String" />
                         </SelectParameters>
                     </asp:SqlDataSource>
+                      <asp:DropDownList ID="yx"  Font-Size="Medium" runat="server" DataSourceID="SqlDataSource6" DataTextField="yxmc" DataValueField="yxdm" AutoPostBack="True" OnSelectedIndexChanged="yx_SelectedIndexChanged">
+                <asp:ListItem Selected="True">全部院系</asp:ListItem>
+            </asp:DropDownList>
+            <asp:SqlDataSource ID="SqlDataSource6" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="select '0' yxdm,'全部院系' yxmc union(SELECT [YXDM], [YXMC] FROM [DM_YUANXI] WHERE (([isjx] = @isjx) AND ([zt] = @zt))) ORDER BY [YXDM]">
+                <SelectParameters>
+                    <asp:Parameter DefaultValue="true" Name="isjx" Type="Boolean" />
+                    <asp:Parameter DefaultValue="true" Name="zt" Type="Boolean" />
+                </SelectParameters>
+            </asp:SqlDataSource>
+
+                     
                     <asp:DropDownList ID="bj" runat="server" DataSourceID="SqlDataSource5" 
                         DataTextField="Name" DataValueField="PK_Class_NO" AutoPostBack="True" 
                         onselectedindexchanged="bj_SelectedIndexChanged" Font-Size="Medium">
@@ -150,8 +161,7 @@
     <asp:BoundField DataField="房间编号" HeaderText="房间编号" SortExpression="房间编号"/>
     <asp:BoundField DataField="房间类型" HeaderText="房间类型"   SortExpression="房间类型"/>
     <asp:BoundField DataField="性别" HeaderText="性别"   SortExpression="性别"/>
-  <%-- <asp:BoundField DataField="班级名称" HeaderText="预分配班级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="班级名称"/>
-  --%>  
+  
 <%--    
      <asp:TemplateField HeaderText="学生"  SortExpression="title">
         
