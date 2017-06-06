@@ -181,7 +181,9 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
             DataTable x = new DataTable();
             DataTable dt_all = new DataTable();
             //将EXCEL表中所有数据存入x表格中
-            x = ReadXLSByExcel(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), zd);
+            //x = ReadXLSByExcel(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), zd);
+            toexcel todatatable = new toexcel();
+            x = todatatable.ExcelfileToDatatalbe(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), true);
 
             //循环输出，判断
             string[] zds = zd.Split(',');

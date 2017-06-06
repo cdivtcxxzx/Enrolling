@@ -181,8 +181,9 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
             //开始显示数据，将数据存入datatable中
             DataTable x = new DataTable();
             //将EXCEL表中所有数据存入x表格中
-            x = ReadXLSByExcel(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), zd);
-
+            //x = ReadXLSByExcel(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), zd);
+            toexcel todatatable = new toexcel();
+            x = todatatable.ExcelfileToDatatalbe(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), true);
             //循环输出，判断
             string[] zds = zd.Split(',');
             //读取所有行
@@ -360,7 +361,7 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
             }
 
             #region (4)隐藏不需要提示的列,绑定gridview呈现错误数据
-            x.Columns.Remove("班级代码");
+            //x.Columns.Remove("班级代码");
             GridView1.DataSource = x;
             GridView1.DataBind();
 
