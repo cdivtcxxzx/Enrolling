@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="./b_css/vs.min.css">
     <link rel="stylesheet" type="text/css" href="./b_css/screen.css">
 	 <link rel="stylesheet" href="./bootstrap/jquery.slideBox.css">
+     <link rel="stylesheet" href="b_css/login.css">
 	   <script type="text/javascript" src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <script>
         var _hmt = _hmt || [];
@@ -43,6 +44,8 @@
     }
     @media (max-width: 550px) 
     {
+        .main-navigation{ display: none;}
+       
        #logook
     {
         background:url(images/logobgyxs550.png)!important;height:100px
@@ -220,40 +223,27 @@
                 </div>
             </div>
 
-            <ul class="main-nav" id="topmenu" runat="server">
-               <li class="nav-docs" style="margin:50px 15px;display:none;"><a href="#">用户注册</a>
-              </li>
-				<li class="nav-community"  style="margin:10px 15px;display:none;"><a href="#">用户登陆</a>
-                </li>
-				<li class="nav-community"  style="margin:10px 15px;display:none">
-                </li>
-                </ul>
-<div class="aw-search-box  hidden-xs hidden-sm">
-				<form class="navbar-search" action="/serch.aspx" id="global_search_form" method="post">
-					<input class="form-control search-query" type="text" placeholder="搜索新闻，输入关键字" autocomplete="off" name="word" id="word">
-					<span title="搜索" id="global_search_btns" onClick="location.href='/serch.aspx?word='+ document.getElementById('word').value"><i class="fa fa-search"></i></span>
-					<div class="aw-dropdown" style="display: none;">
-						<div class="mod-body">
-							<p class="title">输入关键字进行搜索</p>
-							<ul class="aw-dropdown-list hide"></ul>
-							<p class="search" style="display: block;"><span>搜索:</span><a onClick="location.href='/serch.aspx?word='+ document.getElementById('word').value"></a></p>
-						</div>
-						
-					</div>
-				</form>
-			</div>
+           
 <style>
     .main ul.main-nav > li {
     display: inline-block;
     margin: 0 15px;
 }
 
+    @media (max-width: 767px)
+    {
+.main-navigation {
+    display:none;
+}
+
+    }
+
 
     @media (max-width: 500px)
     {
-        #demo1{width:500px!important;width:288px!important;}
-        #demo1 img{width:500px!important;width:288px!important;}
-        #demo1 li{width:500px!important;width:288px!important;}
+        #demo1{width:100%!important;}
+        #demo1 img{width:100%!important;}
+        #demo1 li{width:100%!important;}
 
 
     }
@@ -441,11 +431,11 @@ img {
 	    jQuery(function ($) {
 	        $('#demo1').slideBox(
     {
-        duration: 0.3, //滚动持续时间，单位：秒
+        duration: 0.5, //滚动持续时间，单位：秒
         easing: 'linear', //swing,linear//滚动特效
-        delay: 5, //滚动延迟时间，单位：秒
+        delay: 15, //滚动延迟时间，单位：秒
         hideClickBar: false, //不自动隐藏点选按键
-        startIndex: 1//初始焦点顺序
+        startIndex: 0//初始焦点顺序
     }
     );
 
@@ -453,7 +443,7 @@ img {
 </script>
 
     <!-- start site's main content area -->
-    <div class="content-wrap">
+    <div class="content-wrap" style="background: #f5f5f5;">
         <div class="container">
             <div class="row">
 
@@ -461,20 +451,18 @@ img {
                   <article id="70" class="post">
                     
                     <div class="featured-media"><!-- 轮播处理 -->
-			<div id="demo1" class="slideBox"  style="width: 690px; height: 370px;border:1px solid #ccc">
+<div id="demo1" class="slideBox"  style="width:100%; height: 100%;border:0px solid #ccc">
   <ul class="items" id="tpshow" runat="server">
-   <li  style="width: 690px; height: 370px;background:url('img/img1.PNG')" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="新生自助报到"><img  style="width: 690px; height: 370px;" src="img/img1.PNG" /></a></li>
-   <li  style="width: 690px; height: 370px;background:url('img/img2.PNG')" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="新生资助政策"><img src="img/img2.PNG"  style="width: 690px; height: 370px;" /></a></li>
-   <li  style="width: 690px; height: 370px;background:url('img/img3.PNG')" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="到校交通路线查询"><img src="img/img3.PNG"  style="width: 690px; height: 370px;" /></a></li>
-   
-   
+   <li  style="width: 100%; height: 100%;" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="新生自助报到"><img style="width:auto;height:auto;"  src="img/img1.PNG" /></a></li>
+   <li  style="width: 100%;height: 100%;" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="新生资助政策"><img style="width:auto;height:auto;"   src="img/img2.PNG"   /></a></li>
+   <li  style="width: 100%;height: 100%;" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="到校交通路线查询"><img style="width:auto;height:auto;"   src="img/img3.PNG"  /></a></li>
   </ul>
 </div>
 <!-- 轮播处理结束 --></div>
                     <div class="post-content">
-                      <p id="rdxw" runat="server"><b><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs">【学生登陆】</a></b><b><a href="/login.aspx?url=/nradmingl/defaultczy.aspx&sf=czy">【操作员登陆】</a></b><a href="/view/xszz-index.aspx?pk_sno=2">【测试学生2】</a><a href="/view/xszz-index.aspx?pk_sno=3">【测试学生3】</a><a href="/view/xszz-index.aspx?pk_sno=4">【测试学生4】</a><a href="/view/xszz-index.aspx?pk_sno=5">【测试学生5】</a></p>
+                      <p id="rdxw" runat="server"><b><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs">【新生网上报到说明】</a></b><b>此处放置简要报到流程</b><br /><br /><br /><br /><br /><br /><br /></p><p style="text-align:right"></p>
                     </div>
-                    <div class="post-permalink" id="read1" runat="server"> <a href="#" class="btn btn-default">阅读全文</a> </div>
+                    <div class="post-permalink" id="read1" style="float: right;    margin-bottom: 10px;    margin-right: 10px;" runat="server"> <a href="#" class="btn btn-default">查看详细报到流程</a> </div>
                   </article>
               </main>
 
@@ -486,7 +474,7 @@ img {
 <div class="widget" >
 	<h4 class="title" id="tztitle" runat="server"><span style="float:right;" ><p><a href="/list.aspx?id=12">更多</a></p></span>通知公告</h4>
 	<div class="content community" id="tzlist" runat="server">
-		<p>暂无通知公告</p>
+		<p>暂无内容</p>
 		
 		
 	</div>
@@ -498,38 +486,103 @@ img {
 
 <!-- start tag cloud widget -->
 <div class="widget">
-	<h4 class="title" id="mydivtitle" runat="server"><span style="float:right;font-size:15px"><a href="/list.aspx?id=88">更多</a></span>报到须知</h4>
-	<div class="content tag-cloud" id="mydiv" style="overflow:hidden; height:200px;" runat="server" >
-	<a href="###tag/laravel-5-2/">报到指南</a>
+	<h4 class="title" id="mydivtitle" runat="server"><span style="float:right;font-size:15px"><a href="/list.aspx?id=88">>></a></span>新生网上报到登陆</h4>
+	<div class="content tag-cloud" id="mydiv" style="overflow:hidden; height:220px;" runat="server" >
+	<div style=" text-align:center;">
+              <div class="login_area">
+              <div id="login-main-form">
+                  <div class="loginbox c_b">
+                    <!-- 输入框 -->
+                    <div class="lgn_inputbg c_b" style="text-align:left">
+                        <!--验证用户名--><div class="single_imgarea" id="account-info">
+                        <div class="na-img-area" id="account-avator" style="display:none">
+                          <div class="na-img-bg-area" id="account-avator-con"></div>
+                        </div>
+                 <br />
+                           
+                        <p class="us_id"></p>
+                      </div>
+                      <label id="region-code" class="labelbox login_user c_b" for="">
+                        <div class="turn_area"><a class="btn_turn" id="manual_code" href="javascript:void(0);" title="关闭国家码"></a></div>
+                        <div class="country_list">
+                          <div class="animation countrycode_selector" id="countrycode_selector">
+                            <span class="country_code"><tt class="countrycode-value" id="countrycode_value"></tt><i class="icon_arrow_down"></i></span>
+                          </div>
+                        </div>
+                        <input name="txt_name" type="text" id="txt_name" class="item_account" autocomplete="off" placeholder="请输入高考报名号">
+                      </label>
+                      <div class="country-container" id="countrycode_container" style="display: none;">
+                        <div class="country_container_con" id="countrycode_container_con"></div>
+                      </div>
+                      <label class="labelbox pwd_panel c_b">
+                        <div class="eye_panel pwd-visiable">
+                          <i class="eye pwd-eye">
+                          <svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <path class="eye_outer" d="M0 8 C6 0,14 0,20 8, 14 16,6 16, 0 8 z"></path>
+                            <circle class="eye_inner" cx="10" cy="8" r="3"></circle>
+                          </svg>
+                          </i>
+                        </div>
+                        <input name="txt_pwd" type="password" id="txt_pwd" placeholder="默认密码为身份证后六位" autocomplete="off">
+
+                        &nbsp;<input type="text" placeholder="请输入密码" autocomplete="off" id="visiablePwd" style="display:none">
+                      </label>
+                    </div>
+                    <div class="security_Controller" style="display: none;">
+                      <label class="checkbox_area"><input type="checkbox" id="trustSecurityController" class="checkbox">使用安全控件</label>
+                    </div>
+                    <div class="lgncode" id="captcha">
+                    </div>
+                    <!-- 错误信息 -->
+                    <div class="err_tip" id="error-outcon">
+                      <div class="dis_box"><em class="icon_error"></em><span class="error-con"></span></div>
+                    </div>
+                    <!-- 登录频繁 -->
+                    <div id="error-forbidden" class="err_forbidden">您的操作频率过快，请稍后再试。</div>
+                    <div class="btns_bg">
+                      <input type="submit" name="Button1" value="立即登录" id="Button1" class="btnadpt btn_orange" style="border-radius: 5px;">
+                      <span id="custom_display_8" class="sns-default-container sns_default_container" style="display: none;">
+                      </span>
+                      <span id="Label1" style="color:#CC0000;font-size:Medium;text-decoration:none;"></span>
+                    </div>
+                    <!-- 其他登录方式 s -->
+                    <div style="display: none;" class="other_login_type sns-login-container" id="custom_display_16">
+                      <fieldset class="oth_type_tit">
+                        <legend align="center" class="oth_type_txt">其他方式登录</legend>
+                      </fieldset>
+                      <div class="oth_type_links">
+                        <a class="icon_type btn_qq sns-login-link" data-type="qq" href="#" title="QQ登录" target="_blank"><i class="btn_sns_icontype icon_default_qq"></i></a>
+                       
+                        <a class="icon_type btn_alipay sns-login-link" data-type="alipay" href="#" title="支付宝登录" target="_blank"><i class="btn_sns_icontype icon_default_alipay"></i></a>
+                        <a class="icon_type btn_weixin sns-login-link" data-type="weixin" href="#" title="微信登录" style="display: "><i class="btn_sns_icontype icon_default_weixin"></i></a>
+                      </div>
+                    </div>
+                  </div>
+               
+              </div>
+              </div>
+            </div>
 
 	
 	</div>
-	<script>
-	    var oMarquee = document.getElementById("mydiv"); //滚动对象
-	    var iLineHeight = 34;                       //单行高度
-	    var iLineCount = 12;         //实际行数
-	    var iScrollAmount = 1;    //每次滚动高度
-	    var p = false;
-
-	    function play() {
-	        oMarquee.onmouseover = function () { p = true; }
-	        oMarquee.onmouseout = function () { p = false; }
-	        if (!p) {
-	            oMarquee.scrollTop += iScrollAmount;
-	        }
-	        if (oMarquee.scrollTop == iLineHeight * iLineCount) {
-	            oMarquee.scrollTop = 0;
-	            //到底了清零，以重复循环
-	        }
-	        if (oMarquee.scrollTop % iLineHeight == 0) {
-	            window.setTimeout("play()", 2000);
-	        } else {
-	            window.setTimeout("play()", 50);
-	        }
+	<style>.login_area {
+    width: 358px;
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+.err_tip {
+    margin-bottom: 5px;
+    line-height: 20px;
+    color: #f56700;
+    display: none;
+}
+input[type="text"]{
+	        border: 0px solid #ebebeb;
 	    }
-	    oMarquee.innerHTML += oMarquee.innerHTML;
-	    window.setTimeout("play()", 1000);  //定时器用来循环滚动
-</script>
+.login_area{width:268px;}
+.labelbox input {width:266px;height:43px;}
+
+	</style>
 </div>
 <!-- end tag cloud widget -->	
 
@@ -543,62 +596,7 @@ img {
           </div>
         </div>
     </div>
- <div class="banner" style="text-align:center;width:1050px;margin:auto;">
-        <img src="images/banner.jpg" id="bannershow" runat="server" style="width:100%" /></div>
-    <div class="main-footer">
-        <div class="container">
-            <div class="row" id="sftopshow" runat="server">
-                <div class="col-sm-4">
-                    <div class="widget">
-                        <span style="float:right;"><a href="/list.aspx?id=12">更多</a></span><h4 class="title">最新动态</h4>
-                        <div class="content recent-post">
-                               <span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-sm-4">
-                    <div class="widget">
-                        <h4 class="title">行业资讯</h4>
-                        <div class="content tag-cloud">
-                            <span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="widget">
-                        <h4 class="title">认证培训</h4>
-                        <div class="content tag-cloud friend-links">
-                            <span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		<span style="float:right">[09-16]</span><p>新闻标题一二三四五六七八九十&nbsp;&nbsp;&nbsp;&nbsp;</p>
-		  </div>
-                </div></div>
-            </div>
-        </div>
-    </div>
     
     <div class="copyright">
 	
