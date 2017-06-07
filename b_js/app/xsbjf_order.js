@@ -55,7 +55,7 @@ function load(){
                         dataType: "text",
                         data: { "cs": "get_fee_order","pk_sno": pk_sno},
                         success: function (data) {
-                            console.log(data);
+                            //console.log(data);
                             var json_data = JSON.parse(data);
                             if (json_data.code == 'success') {
                                 if(json_data.data && json_data.data.length>0){
@@ -287,7 +287,7 @@ function sure(){
             btn: ['继续', '重新选择']
         }, function(index){
             layer.close(index);
-             console.log(JSON.stringify(feelist));
+             //console.log(JSON.stringify(feelist));
             //生成订单
             var pk_staff_no= $("#pk_staff_no").val();
             var returnurl=window.location.href;
@@ -305,7 +305,7 @@ function sure(){
                 dataType: "text",
                 data: data,
                 success: function (data) {
-                    console.log(data);
+                    //console.log(data);
                     var json_data = JSON.parse(data);
                     if (json_data.code == 'success') {
                         if ($.trim(pk_staff_no).length > 0 ) {

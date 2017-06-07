@@ -3439,7 +3439,7 @@ public class batch
             //        +" ,Fresh_Class b,Base_Code_Item c"
             //        +" where a.FK_Class_NO=b.PK_Class_NO and a.Gender_Code=c.Item_NO and c.FK_Code='002'"
             //        + " and a.FK_Class_NO=@cs1 order by name ";
-            sqlstr = "select [year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
+            sqlstr = "select a.[year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
                     + " case when d.Tuition is null then '' else d.Tuition end as TuitionType, "
                     + " case when a.Phone is null and a.Phone_dr is null then '' else "
                     + " ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
@@ -3473,7 +3473,7 @@ public class batch
         try
         {
             string sqlstr = null;
-            sqlstr = "select [year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
+            sqlstr = "select a.[year],collage,spe_name,a.name,c.Item_Name as gender,a.pk_sno,test_no,id_no,Status_Code,"
                     + " case when a.Phone is null and a.Phone_dr is null then '' else "
                     + " ( case when a.Phone is not null and a.Phone_dr is null then a.Phone else "
                     + " ( case when a.Phone is null and a.Phone_dr is not null then a.Phone_dr else a.Phone+','+a.Phone_dr  end )"
