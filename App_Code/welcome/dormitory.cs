@@ -1513,7 +1513,7 @@ public class dormitory
     ///     <param name="czy">操作人员</param>
     /// <returns>提示信息:1,成功；0失败，错误信息</returns>
 
-    public static string update_Fresh_bed(string bedid, string bedname,string roomid,  string czy)
+    public static string update_Fresh_bed(string bedid, string bedname,string roomid,string yxid,  string czy)
     {
         string sql = "";
         string usql = "";
@@ -1594,10 +1594,12 @@ public class dormitory
             if (bedname.Length > 0)
             {
 
-                usql += ",Bed_Name='" + bedname + "'";
-                csql += ",'" + bedname + "'";
+                usql += ",Bed_Name='" + bedname + "',[College_NO]='" + yxid + "'";
+                csql += ",'" + bedname + "','"+yxid+"'";
             }
 
+
+            
             //sql = "检测结束";
 
 
@@ -1622,7 +1624,7 @@ public class dormitory
             else
             {
                 //创建
-                sql = "INSERT INTO [Fresh_Bed]  ([PK_Bed_NO],[FK_Room_NO],[Bed_NO],[remark],[Bed_Name])VALUES('" + guid + "'" + csql + ")";
+                sql = "INSERT INTO [Fresh_Bed]  ([PK_Bed_NO],[FK_Room_NO],[Bed_NO],[remark],[Bed_Name],[College_NO])VALUES('" + guid + "'" + csql + ")";
                 
                 if (Sqlhelper.ExcuteNonQuery(sql) > 0)
                 {
@@ -1656,6 +1658,215 @@ public class dormitory
     }
 
 
+
+
+    /// <summary>
+    /// 传入床位编号、房间编号、院系名称，创建或更新预分配床位到系
+    /// </summary>
+    /// <param name="bedid">床位编号</param>
+    /// <param name="bedname">床位位置描述</param>
+    ///    <param name="roomid">房间ID</param>
+    ///     <param name="czy">操作人员</param>
+    /// <returns>提示信息:1,成功；0失败，错误信息</returns>
+
+    public static string update_Fresh_bedyfpx(string bedid, string roomid, string yxid, string bjmc, string czy)
+    {
+        string sql = "";
+        string usql = "";
+        string csql = "";
+        string bz = "";
+        string guid = Guid.NewGuid().ToString();//自动生成主键和编号
+        string cxnonull = "";
+        string bedzj = "";
+        //判断数据
+        string err = "";
+        try
+        {
+
+            //房间主键查询
+            string roomzj = "";
+            if (roomid.Length < 1)
+            {
+                err += "房间编号不能为空！";
+            }
+            else
+            {
+                //查询是否已经有该房间了
+                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 *  FROM [Fresh_Room] where Room_NO='" + roomid + "'");
+                if (cx.Rows.Count > 0)
+                {
+                    roomzj = cx.Rows[0]["PK_Room_NO"].ToString();
+
+                }
+                else
+                {
+                    err += "无房间信息！";
+                }
+
+
+            }
+            //获取班级信息
+            string bjzj = "";
+            if (bjmc.Length < 1)
+            {
+                err += "";
+                bjzj="";
+            }
+            else
+            {
+                //查询是否已经有班级了
+                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 [PK_Class_NO]  FROM [Fresh_Class] where Name='" + bjmc + "'");
+                if (cx.Rows.Count > 0)
+                {
+                    bjzj = cx.Rows[0]["PK_Class_NO"].ToString();
+
+                }
+                else
+                {
+                    err += "系统中无【" + bjmc + "】班级信息！";
+                }
+
+
+            }
+            //查询是否已经有该床位
+            //SELECT TOP 1 [PK_Bed_NO] ,[Bed_NO],[Bed_Name],[FK_Bed_Type],[FK_Room_NO]  FROM [yxxt_data].[dbo].[Fresh_Bed] where Bed_NO='01' and FK_Room_NO='1'
+            if (bedid.Length < 1)
+            {
+                err += "床位编号不能为空！";
+            }
+            else
+            {
+                //查询是否已经有该房间了
+                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 [PK_Bed_NO] ,[Bed_NO],[Bed_Name],[FK_Bed_Type],[FK_Room_NO]  FROM [Fresh_Bed] where Bed_NO='" + bedid + "' and FK_Room_NO='" + roomzj + "'");
+                if (cx.Rows.Count > 0)
+                {
+
+                    bedzj = cx.Rows[0]["PK_Bed_NO"].ToString();
+                    //usql += "FK_Bed_NO='" + bedzj + "','remark=" + cx.Rows[0]["PK_Bed_NO"].ToString() + "','" + czy + DateTime.Now.ToString() + "插入预分配数据'"; ; ;
+                    //FK_Class_NO
+                }
+
+            }
+
+            //查询床位是否已分配
+
+
+            if (bedzj.Length < 1)
+            {
+                err += "床位未找到！如果你是第一次导入，请勾选【同时更新寝室床位等信息】";
+            }
+            else
+            {
+                //查询是否已经分配该房间了
+                DataTable cx = Sqlhelper.Serach("SELECT TOP 1 [PK_Bed_Class_Log],[FK_Bed_NO],[FK_Class_NO],[remark] FROM [Fresh_Bed_Class_Log] where FK_Bed_NO='" + bedzj + "'");
+                if (cx.Rows.Count > 0)
+                {
+                    //先查询学生是否已经选择寝室，如果该寝室已经被选过了，就不能再分配该寝室
+                    #region 查询选寝室情况
+                    DataTable cxxq = Sqlhelper.Serach("SELECT     TOP (1) Fresh_Bed_Log.FK_SNO AS 学号, Base_STU.Year AS 年度, Base_STU.Name AS 姓名, Fresh_Class.Name AS 班级名称 FROM         Fresh_Bed_Log INNER JOIN                      Base_STU ON Fresh_Bed_Log.FK_SNO = Base_STU.PK_SNO INNER JOIN   Fresh_Class ON Base_STU.FK_Class_NO = Fresh_Class.PK_Class_NO WHERE     (Fresh_Bed_Log.PK_Bed_Log = '" + bedzj + "')");
+                    if (cxxq.Rows.Count > 0)
+                    {
+                        err += "该床位已被" + cxxq.Rows[0]["年度"].ToString() + "级" + cxxq.Rows[0]["班级名称"].ToString() + cxxq.Rows[0]["姓名"].ToString() + "选择，不能重新分配！";
+                    }
+                    else
+                    {
+                        cxnonull = "1";
+                        if (cx.Rows[0]["remark"].ToString().Length > 2000)
+                        {
+                            usql += "FK_Bed_NO='" + bedzj + "',FK_Class_NO='" + bjzj + "',College_NO='" + yxid + "',remark='" + czy + DateTime.Now.ToString() + "更新预分配数据,因备注大于1000字符，重写备注，原床位主键为：" + bedzj + "|'";
+
+                        }
+                        else
+                        {
+
+                            usql += "FK_Bed_NO='" + bedzj + "',FK_Class_NO='" + bjzj + "',College_NO='" + yxid + "',remark='" + cx.Rows[0]["remark"].ToString() + "" + czy + DateTime.Now.ToString() + "更新预分配数据，原床位主键为：" + bedzj + "|'";
+                        }
+                    }
+                    #endregion
+                    csql += "已经分配了房间,不能插入";
+                    //FK_Class_NO
+                }
+                else
+                {
+                    csql = bedzj + "','" + bjzj + "','" + yxid + "','" + czy + DateTime.Now.ToString() + "插入预分配到系数据|'";
+
+                }
+            }
+
+
+
+            // return "0@失败" + err + csql;
+
+
+
+            if (err.Length > 0) return "0@" + err;
+
+            //操作
+            if (cxnonull == "1")
+            {
+                //更新
+                sql = "UPDATE [Fresh_Bed_Class_Log] set " + usql + " WHERE  FK_Bed_NO='" + bedzj + "'";
+                if (Sqlhelper.ExcuteNonQuery(sql) > 0)
+                {
+                    return "1@更新数据成功！";
+                }
+                else
+                {
+                    return "0@更新数据失败！";
+                }
+
+
+            }
+            else
+            {
+                //创建
+                sql = "INSERT INTO [Fresh_Bed_Class_Log]  ([PK_Bed_Class_Log],[FK_Bed_NO],[FK_Class_NO],College_NO,[remark])VALUES('" + guid + "','" + csql + ")";
+                if (Sqlhelper.ExcuteNonQuery(sql) > 0)
+                {
+                    return "1@插入数据成功！";
+                }
+                else
+                {
+                    return "0@插入数据失败！";
+                }
+            }
+        }
+        catch (Exception e1)
+        {
+            try
+            {
+                if (logzt) new c_log().logAdd("dormitory.cs", "update_Fresh_bedyfpx", e1.Message, "2", "zhangming1");//记录错误日志
+                throw;
+            }
+            catch { }
+            if (modezt)
+            {
+                return "0@预分配失败:" + e1.Message + sql;
+            }
+            else
+            {
+
+                return "0@预分配失败:" + e1.Message;
+            }
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /// <summary>
     /// 传入床位编号、房间编号、班级名称，创建或更新预分配床位
     /// </summary>
@@ -1665,7 +1876,7 @@ public class dormitory
     ///     <param name="czy">操作人员</param>
     /// <returns>提示信息:1,成功；0失败，错误信息</returns>
 
-    public static string update_Fresh_bedyfp(string bedid, string roomid, string bjmc, string czy)
+    public static string update_Fresh_bedyfp(string bedid, string roomid,string yxid, string bjmc, string czy)
     {
         string sql = "";
         string usql = "";
@@ -1731,7 +1942,7 @@ public class dormitory
             }
             else
             {
-                //查询是否已经有该房间了
+                //查询是否已经有该床位了
                 DataTable cx = Sqlhelper.Serach("SELECT TOP 1 [PK_Bed_NO] ,[Bed_NO],[Bed_Name],[FK_Bed_Type],[FK_Room_NO]  FROM [Fresh_Bed] where Bed_NO='" + bedid + "' and FK_Room_NO='" + roomzj + "'");
                 if (cx.Rows.Count > 0)
                 {
@@ -1768,13 +1979,13 @@ public class dormitory
                         cxnonull = "1";
                         if (cx.Rows[0]["remark"].ToString().Length >2000)
                         {
-                            usql += "FK_Bed_NO='" + bedzj + "',FK_Class_NO='" + bjzj + "',remark='" + czy + DateTime.Now.ToString() + "更新预分配数据,因备注大于1000字符，重写备注，原床位主键为：" + bedzj + "|'";
+                            usql += "FK_Bed_NO='" + bedzj + "',FK_Class_NO='" + bjzj + "',College_NO='"+yxid+"',remark='" + czy + DateTime.Now.ToString() + "更新预分配数据,因备注大于1000字符，重写备注，原床位主键为：" + bedzj + "|'";
                     
                         }
                         else
                         {
 
-                            usql += "FK_Bed_NO='" + bedzj + "',FK_Class_NO='" + bjzj + "',remark='" + cx.Rows[0]["remark"].ToString() + "" + czy + DateTime.Now.ToString() + "更新预分配数据，原床位主键为：" + bedzj + "|'";
+                            usql += "FK_Bed_NO='" + bedzj + "',FK_Class_NO='" + bjzj + "',College_NO='" + yxid + "',remark='" + cx.Rows[0]["remark"].ToString() + "" + czy + DateTime.Now.ToString() + "更新预分配数据，原床位主键为：" + bedzj + "|'";
                         }
                     }
                     #endregion
@@ -1783,7 +1994,7 @@ public class dormitory
                 }
                 else
                 {
-                    csql = bedzj + "','" + bjzj + "','" + czy + DateTime.Now.ToString() + "插入预分配数据|'";
+                    csql = bedzj + "','" + bjzj + "','"+yxid+"','" + czy + DateTime.Now.ToString() + "插入预分配数据|'";
                    
                 }
             }
@@ -1815,7 +2026,7 @@ public class dormitory
             else
             {
                 //创建
-                sql = "INSERT INTO [Fresh_Bed_Class_Log]  ([PK_Bed_Class_Log],[FK_Bed_NO],[FK_Class_NO],[remark])VALUES('" + guid + "','" + csql + ")";
+                sql = "INSERT INTO [Fresh_Bed_Class_Log]  ([PK_Bed_Class_Log],[FK_Bed_NO],[FK_Class_NO],College_NO,[remark])VALUES('" + guid + "','" + csql + ")";
                 if (Sqlhelper.ExcuteNonQuery(sql) > 0)
                 {
                     return "1@插入数据成功！";
@@ -2219,13 +2430,48 @@ public class dormitory
 
 
     #region 宿舍管理显示相关类
-    //获取房间详细信息,仅提供SQL语句
-    public static string serch_yfpgl(string xq,string dorm,string floor ,string bjbh,string sql)
+
+    //获取系的寝室和学生数据 
+    public static string serch_yfptj(string yxid,string lx,string yxmc)
     {
+        string ts="";
+        string nd = basic.dqnd();
+       if(lx=="all")
+       {
+           DataTable xss = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base]) a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed] ) b on 1=1");
+           if(xss.Rows.Count>0)
+           {
+               ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,准备床位数：<b>" + xss.Rows[0][1].ToString()+"</b></font>";
+           }
+       }
+       else
+       {
+             DataTable xss = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base] where College_NO='"+yxid+"') a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed] where [College_NO]='"+yxid+"') b on 1=1");
+             if (xss.Rows.Count > 0)
+             {
+                 ts = "<font color=red>" + nd + "年"+yxmc+"招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,准备床位数：<b>" + xss.Rows[0][1].ToString() + "</b></font>";
+             }
+       }
+          
+
+
        
+
+        return ts;
+    }
+
+
+
+
+
+
+    //获取房间详细信息,仅提供SQL语句,根据院系ID及用户名筛选
+    public static string serch_yfpgl(string xq,string dorm,string floor ,string bjbh,string sql,string username,string yxid)
+    {
+        if (yxid == "全部院系") yxid = "0";
         try
         {
-            sql = "select row_number() over (order by  房间编号)  AS 序号,* from (SELECT DISTINCT    TOP (500) Fresh_Room.Room_NO AS 房间编号, Fresh_Room.PK_Room_NO AS id, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称,     Fresh_Room.Floor AS 楼层, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别 FROM         Fresh_Dorm RIGHT OUTER JOIN            Fresh_Room_Type RIGHT OUTER JOIN                      Fresh_Bed_Class_Log RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON                       Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO LEFT OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO WHERE     (1 = 1)";
+            sql = "select row_number() over (order by  房间编号)  AS 序号,* from (SELECT DISTINCT            TOP (500) Fresh_Room.Room_NO AS 房间编号, Fresh_Room.PK_Room_NO AS id, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称,             Fresh_Room.Floor AS 楼层, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别 FROM         Fresh_Bed_Class_Log RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      Base_Campus RIGHT OUTER JOIN                      Fresh_Dorm RIGHT OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO ON                       Base_Campus.Campus_NO = Fresh_Dorm.Campus_NO ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO WHERE     (1 = 1)";
             if (xq.Trim().Length > 0)
             {
                 sql += " and  Base_Campus.Campus_NO='" + xq + "'";
@@ -2244,6 +2490,41 @@ public class dormitory
             if (bjbh.Trim().Length > 0)
             {
                 sql += " and Fresh_Class.PK_Class_NO='" + bjbh + "' ";
+
+            }
+            if(yxid!="0")
+            {
+                sql += " and Fresh_Bed.College_NO='" + yxid + "' ";
+            }
+            else
+            {
+                //根据权限读取能管理的院系
+                #region 获取该操作员能操作的系数据
+                Power qxhq = new Power();
+               string  qx = qxhq.Getonebmdm("Fresh_SPE.FK_College_Code");
+                try
+                {
+                    qx = qx.Substring(0, qx.Length - 1);
+                }
+                catch { }
+                //Response.Write(qx);
+                if (qx.Length > 0)
+                {
+                    sql += " and ( ";
+                    for (int i = 0; i < qx.Split(',').Length; i++)
+                    {
+                        if (i == 0)
+                        { sql += " Fresh_Bed.College_NO='" + qx.Split(',')[i].ToString() + "' "; }
+                        else
+                        {
+                            sql += " or Fresh_Bed.College_NO='" + qx.Split(',')[i].ToString() + "' ";
+                        }
+                    }
+                    sql+=" )";
+                }
+                
+                #endregion
+
 
             }
             sql += "   ) t order by  房间编号";
@@ -2284,7 +2565,7 @@ public class dormitory
         DataTable bjcx = new DataTable();
         try
         {
-            string sql = "select row_number() over (order by  房间编号)  AS 序号,* from (SELECT   DISTINCT   TOP (500)  Fresh_Room.Room_NO AS 房间编号,  Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别,            Fresh_Class.Name AS 班级名称 FROM         Fresh_Dorm FULL OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO FULL OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                  Fresh_Class INNER JOIN                   Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON     Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO where 1=1 ";
+            string sql = "select row_number() over (order by  房间编号)  AS 序号,* from (SELECT DISTINCT     TOP (500) Fresh_Room.Room_NO AS 房间编号, Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层,      Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别, Base_College.Name AS 院系名称, Fresh_Class.Name AS 班级名称 FROM         Fresh_Room_Type RIGHT OUTER JOIN                      Fresh_Room LEFT OUTER JOIN                      Base_College INNER JOIN                      Fresh_Bed_Class_Log ON Base_College.College_NO = Fresh_Bed_Class_Log.College_NO LEFT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO ON                       Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO WHERE     (1 = 1)";
             if (xq.Trim().Length > 0)
             {
                 sql += " and  Base_Campus.Campus_NO='" + xq + "'";

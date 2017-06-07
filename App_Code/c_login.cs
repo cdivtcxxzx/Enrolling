@@ -363,7 +363,7 @@ public class c_login:System.Web.UI.Page
         }
     }
     /// <summary>
-    /// 用户登陆、用户所权限获取 登录页面方法
+    ///(登录) 用户登陆、用户所权限获取 登录页面方法
     /// </summary>
     /// <param name="strUsername">用户名</param>
     /// <param name="strPwd">密码</param>
@@ -372,141 +372,461 @@ public class c_login:System.Web.UI.Page
     /// <returns></returns>
     public bool login(string strUsername, string strPwd, bool Cache, bool IsCookie)
     {
-        if (strUsername == "" || strPwd == "")
-        {
-            return false;
-        }
+        //if (strUsername == "" || strPwd == "")
+        //{
+        //    return false;
+        //}
+        //try
+        //{            
+        //    if (IsCookie)
+        //    {
+        //        strPwd = md5.MD5Decrypt(strPwd, md5.GetKey());
+        //    }
+        //    strUsername = strUsername.Trim();
+        //    strPwd = strPwd.Trim();
+        //    //再次确定输入非空
+        //    if (strUsername != "" && strPwd != "")
+        //    {
+        //        string strSqlBenDiLogin = "SELECT * FROM yonghqx WHERE yhid=@yhid AND mm=@mm";
+        //        string strPwdEncrypt = md5.MD5Encrypt(strPwd, md5.GetKey());
+        //        DataTable dtBenDiLogin = Sqlhelper.Serach(strSqlBenDiLogin, new SqlParameter("yhid", strUsername), new SqlParameter("mm", strPwdEncrypt));
+        //        if (dtBenDiLogin.Rows.Count == 1)
+        //        {//登陆成功
+        //            string LoginName = dtBenDiLogin.Rows[0]["xm"].ToString();
+        //            string LoginUerLsz = dtBenDiLogin.Rows[0]["lsz"] != null ? dtBenDiLogin.Rows[0]["lsz"].ToString() : "";
+        //            //资源结构JSON
+        //            string FileGroup = dtBenDiLogin.Rows[0]["file_json"] != null ? dtBenDiLogin.Rows[0]["file_json"].ToString() : "";
+        //            if (Cache)
+        //            {
+        //                HttpCookie mycookie = new HttpCookie("LoginUser");
+
+        //                mycookie.Values.Add("UserName", strUsername);
+        //                mycookie.Values.Add("Name", LoginName);
+        //                mycookie.Values.Add("Pwd", strPwdEncrypt);//加密的密码存于cookie
+        //                mycookie.Values.Add("file_json", FileGroup);
+        //                mycookie.Expires = DateTime.Now.AddDays(7);
+        //                HttpContext.Current.Response.AppendCookie(mycookie);
+        //            }
+        //            //存SESSION
+        //            Session["UserName"] = strUsername;
+        //            Session["Name"] = LoginName;
+        //            Session["Yhqx"] = this.getPowerFromYhqx(strUsername) != null ? this.getPowerFromYhqx(strUsername).ToString() : "";
+        //            Session["file_json"] = FileGroup;
+        //            Session["Lsz"] = LoginUerLsz;
+
+
+        //            string[] strLszs = LoginUerLsz.TrimEnd(',').Split(',');
+        //            foreach (string strLsz in strLszs)
+        //            {
+        //                XDocument zQx = this.getPowerFromZhuqx(strLsz);
+        //                if (zQx == null) continue; //有可能getPowerFromZhuqx得到空
+        //                foreach (var temp in zQx.Elements("Root").Elements())
+        //                {
+        //                    string lanmStr = temp.Name.ToString();
+        //                    XDocument sessionXML = XDocument.Parse(Session["Yhqx"].ToString());
+        //                    //如果直接没有该栏目的权限，直接添加该栏目结点
+        //                    if (sessionXML.Element("Root").Element(lanmStr) == null)
+        //                    {
+        //                        sessionXML.Element("Root").Add(temp);
+        //                        Session["Yhqx"] = sessionXML.ToString();
+        //                    }
+        //                    else
+        //                    {
+        //                        foreach (var oper in temp.Elements())
+        //                        {
+        //                            string operStr = oper.Name.ToString();
+        //                            if (sessionXML.Element("Root").Element(lanmStr).Element(operStr) == null)
+        //                            {
+        //                                sessionXML.Element("Root").Element(lanmStr).Add(oper);
+        //                                Session["Yhqx"] = sessionXML.ToString();
+        //                            }
+
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            //权限验证
+        //            if (!powerYanzheng(Session["UserName"].ToString(), "用户管理", "登陆", "2"))
+        //            {
+        //                Response.Write("<script>alert('" + Session["Name"].ToString() + ":对不起,您无权登陆,请联系管理员或您的上级部门!!');history.go(-1)</script>");
+        //                //Response.End();
+        //                return false;
+
+        //            }
+
+
+        //            string sqlUpdate = "UPDATE yonghqx SET fwcs=@fwcs,dltime=@dltime,mm=@md5mm WHERE yhid=@yhid";// md5.MD5Encrypt(strPwd, md5.GetKey())
+
+        //            int fwcs = 0;
+        //            try
+        //            {
+        //                fwcs = int.Parse(dtBenDiLogin.Rows[0]["fwcs"].ToString()) + 1;
+
+        //                //写入数据库
+        //                Sqlhelper.ExcuteNonQuery(sqlUpdate, new SqlParameter("fwcs", fwcs.ToString()),
+        //                    new SqlParameter("dltime", DateTime.Now.ToString()),
+        //                    new SqlParameter("md5mm", strPwdEncrypt),
+        //                    new SqlParameter("yhid", strUsername));
+
+        //            }
+        //            catch { }
+        //            //写入日志
+        //            try
+        //            {
+        //                if (IsCookie)
+        //                {
+        //                    new c_log().logAdd("用户管理", "登陆", "使用COOKIE,本地系统帐户登陆");
+        //                    // +",浏览器："+Request.Browser.Browser.ToString()+Request.Browser.Version.ToString()
+        //                }
+        //                else
+        //                {
+        //                    new c_log().logAdd("用户管理", "登陆", "手动本地系统帐户系统登陆");
+        //                }
+        //            }
+        //            catch
+        //            {
+        //                basic.MsgBox(this.Page, "登陆写入日志异常!", "");
+        //            }
+        //            return true;
+        //        }
+        //        else 
+        //        {
+        //            //本地数据库没有
+        //            return false;
+        //        }
+        //        //登陆成功完
+        //    }//异常情况，用户名密码为空
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
+        //catch(Exception e)
+
+        //{
+        //    string x = e.Message;
+        //    return false;
+        //}
+
+
+        //-------------------------------------
         try
-        {            
+        {
+            string strPwdByBenDiLogin = strPwd.Trim();//用于本地数据库登陆的密码
             if (IsCookie)
             {
                 strPwd = md5.MD5Decrypt(strPwd, md5.GetKey());
+
             }
+
             strUsername = strUsername.Trim();
             strPwd = strPwd.Trim();
+            //如果是Cookie登陆，需要对strPwd时行解密
+
             //再次确定输入非空
             if (strUsername != "" && strPwd != "")
             {
-                string strSqlBenDiLogin = "SELECT * FROM yonghqx WHERE yhid=@yhid AND mm=@mm";
-                string strPwdEncrypt = md5.MD5Encrypt(strPwd, md5.GetKey());
-                DataTable dtBenDiLogin = Sqlhelper.Serach(strSqlBenDiLogin, new SqlParameter("yhid", strUsername), new SqlParameter("mm", strPwdEncrypt));
-                if (dtBenDiLogin.Rows.Count == 1)
-                {//登陆成功
-                    string LoginName = dtBenDiLogin.Rows[0]["xm"].ToString();
-                    string LoginUerLsz = dtBenDiLogin.Rows[0]["lsz"] != null ? dtBenDiLogin.Rows[0]["lsz"].ToString() : "";
-                    //资源结构JSON
-                    string FileGroup = dtBenDiLogin.Rows[0]["file_json"] != null ? dtBenDiLogin.Rows[0]["file_json"].ToString() : "";
+                string strNameGetFromUum = "";
+                string strUserNameGetFromUum = "";
+                UUM getUum = new UUM("");
+                try
+                {
+                    strGetFromUum = client.GetUumData(new Dictionary<string, string>()
+                                 {
+                                    {"AuthCode","E97084F7-F7C3-467C-B548-E89E39B2007D"},
+                                    {"Flag","AuthUser2"},
+                                    {"UserName",strUsername},
+                                    {"Password",strPwd},
+			      	    {"AppName","学生迎新系统"},
+                                }
+                                       );
+                    XDocument xmlGetFromUum = XDocument.Parse(strGetFromUum);
+
+
+                    foreach (var temp in xmlGetFromUum.Elements("Root").Elements("User"))
+                    {
+                        strNameGetFromUum = temp.Element("Name").Value;
+                        strUserNameGetFromUum = temp.Element("UserName").Value;
+
+                        getUum.guid = temp.Element("Id").Value;
+                        getUum.yhid = strUsername;
+                        getUum.xm = strNameGetFromUum;
+                        getUum.uumzw = temp.Element("Title").Value;
+                        getUum.lxdh = temp.Element("MobilePhone").Value;
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    basic.MsgBox(this.Page, "登陆错误！", "/Default.aspx");
+                    return false;
+                }
+
+
+                if (strUserNameGetFromUum != "" && strUserNameGetFromUum == strUsername)
+                {//UUM通过验证
+
+
+
                     if (Cache)
                     {
                         HttpCookie mycookie = new HttpCookie("LoginUser");
 
                         mycookie.Values.Add("UserName", strUsername);
-                        mycookie.Values.Add("Name", LoginName);
-                        mycookie.Values.Add("Pwd", strPwdEncrypt);//加密的密码存于cookie
-                        mycookie.Values.Add("file_json", FileGroup);
+                        mycookie.Values.Add("Name", strNameGetFromUum);
+                        mycookie.Values.Add("Pwd", md5.MD5Encrypt(strPwd, md5.GetKey()));//加密存于cookie
+
                         mycookie.Expires = DateTime.Now.AddDays(7);
                         HttpContext.Current.Response.AppendCookie(mycookie);
                     }
-                    //存SESSION
                     Session["UserName"] = strUsername;
-                    Session["Name"] = LoginName;
-                    Session["Yhqx"] = this.getPowerFromYhqx(strUsername) != null ? this.getPowerFromYhqx(strUsername).ToString() : "";
-                    Session["file_json"] = FileGroup;
-                    Session["Lsz"] = LoginUerLsz;
+                    Session["Name"] = strNameGetFromUum;
+                    Session["Yhqx"] = this.getPowerFromYhqx(strUsername);
+                    Session["Lsz"] = "";
 
-
-                    string[] strLszs = LoginUerLsz.TrimEnd(',').Split(',');
-                    foreach (string strLsz in strLszs)
+                    //登陆信息写入数据库
+                    string sqlSerachByYhid = "SELECT * FROM [yonghqx] WHERE yhid=@yhid";
+                    DataTable dt = Sqlhelper.Serach(sqlSerachByYhid, new SqlParameter("yhid", strUsername));
+                    try
                     {
-                        XDocument zQx = this.getPowerFromZhuqx(strLsz);
-                        if (zQx == null) continue; //有可能getPowerFromZhuqx得到空
-                        foreach (var temp in zQx.Elements("Root").Elements())
-                        {
-                            string lanmStr = temp.Name.ToString();
-                            XDocument sessionXML = XDocument.Parse(Session["Yhqx"].ToString());
-                            //如果直接没有该栏目的权限，直接添加该栏目结点
-                            if (sessionXML.Element("Root").Element(lanmStr) == null)
+                        if (dt.Rows.Count > 0)
+                        {//如果已经存在于数据库，则只修改登陆次数 ,将用户组写入session
+                            Session["Lsz"] = dt.Rows[0]["lsz"].ToString().TrimEnd(',');
+                            //如果用户组为空,则赋予普通用户给用户
+                            if (Session["Lsz"] == "") Session["Lsz"] = new c_log().getlsz("普通用户");
+                            string[] strLszs = Session["Lsz"].ToString().Split(',');
+                            if (Session["Lsz"].ToString() != "")
                             {
-                                sessionXML.Element("Root").Add(temp);
-                                Session["Yhqx"] = sessionXML.ToString();
-                            }
-                            else
-                            {
-                                foreach (var oper in temp.Elements())
+                                foreach (string strLsz in strLszs)
                                 {
-                                    string operStr = oper.Name.ToString();
-                                    if (sessionXML.Element("Root").Element(lanmStr).Element(operStr) == null)
+                                    XDocument zQx = this.getPowerFromZhuqx(strLsz);
+                                    if (zQx == null) continue; //有可能getPowerFromZhuqx得到空
+                                    foreach (var temp in zQx.Elements("Root").Elements())
                                     {
-                                        sessionXML.Element("Root").Element(lanmStr).Add(oper);
-                                        Session["Yhqx"] = sessionXML.ToString();
-                                    }
+                                        string lanmStr = temp.Name.ToString();
+                                        XDocument sessionXML = XDocument.Parse(Session["Yhqx"].ToString());
+                                        //如果直接没有该栏目的权限，直接添加该栏目结点
+                                        if (sessionXML.Element("Root").Element(lanmStr) == null)
+                                        {
+                                            sessionXML.Element("Root").Add(temp);
+                                            Session["Yhqx"] = sessionXML.ToString();
+                                        }
+                                        else
+                                        {
+                                            foreach (var oper in temp.Elements())
+                                            {
+                                                string operStr = oper.Name.ToString();
+                                                if (sessionXML.Element("Root").Element(lanmStr).Element(operStr) == null)
+                                                {
+                                                    sessionXML.Element("Root").Element(lanmStr).Add(oper);
+                                                    Session["Yhqx"] = sessionXML.ToString();
+                                                }
 
+                                            }
+                                        }
+                                    }
                                 }
+                            }
+                            //else
+                            //{
+                            //    Session["Yhqx"] = "";
+                            //}
+                            //权限验证
+                            if (!powerYanzheng(Session["UserName"].ToString(), "用户管理", "登陆", "2"))
+                            {
+                                Response.Write("<script>alert('" + Session["Name"].ToString() + ":对不起,您无权登陆,请联系管理员或您的上级部门!!');history.go(-1)</script>");
+                                //Response.End();
+                                return false;
+
+                            }
+                            string sqlUpdate = "UPDATE yonghqx SET fwcs=@fwcs,dltime=@dltime,mm=@md5mm WHERE yhid=@yhid";// md5.MD5Encrypt(strPwd, md5.GetKey())
+                            int fwcs = int.Parse(dt.Rows[0]["fwcs"].ToString()) + 1;
+                            //写入数据库
+                            Sqlhelper.ExcuteNonQuery(sqlUpdate, new SqlParameter("fwcs", fwcs.ToString()),
+                                new SqlParameter("dltime", DateTime.Now.ToString()),
+                                new SqlParameter("md5mm", md5.MD5Encrypt(strPwd, md5.GetKey())),
+                                new SqlParameter("yhid", strUsername));
+                        }
+                        else
+                        {//不存在,则新建一条记录 
+                            string sqlInsert = "INSERT INTO  [yonghqx](guid,yhqx,lsz,yhid,xm,mm,uumzw,lxdh,dltime,fwcs) VALUES(@guid,@yhqx,@lsz,@yhid,@xm,@mm,@uumzw,@lxdh,@dltime,@fwcs)";
+                            //密码来自用户输入
+                            if (Sqlhelper.ExcuteNonQuery(sqlInsert,
+                                new SqlParameter("guid", getUum.guid),
+                                new SqlParameter("yhqx", "0"),
+                                new SqlParameter("lsz", getUum.lsz),
+                                new SqlParameter("yhid", getUum.yhid),
+                                new SqlParameter("xm", getUum.xm),
+                                new SqlParameter("mm", md5.MD5Encrypt(strPwd, md5.GetKey())),
+                                new SqlParameter("uumzw", getUum.uumzw),
+                                new SqlParameter("lxdh", getUum.lxdh),
+                                new SqlParameter("dltime", DateTime.Now),
+                                new SqlParameter("fwcs", 1)) > 0)
+                                return true;
+                            //权限验证
+                            if (!powerYanzheng(Session["UserName"].ToString(), "用户管理", "登陆", "2"))
+                            {
+                                Response.Write("<script>alert('" + Session["Name"].ToString() + ":对不起,您是第一次登陆,请重新登陆一次!!');history.go(-1)</script>");
+                                //Response.End();
+                                return false;
+
                             }
                         }
                     }
-                    //权限验证
-                    if (!powerYanzheng(Session["UserName"].ToString(), "用户管理", "登陆", "2"))
+                    catch
                     {
-                        Response.Write("<script>alert('" + Session["Name"].ToString() + ":对不起,您无权登陆,请联系管理员或您的上级部门!!');history.go(-1)</script>");
-                        //Response.End();
+                        basic.MsgBox(this.Page, "登陆异常！", "-1");
                         return false;
-
                     }
-
-
-                    string sqlUpdate = "UPDATE yonghqx SET fwcs=@fwcs,dltime=@dltime,mm=@md5mm WHERE yhid=@yhid";// md5.MD5Encrypt(strPwd, md5.GetKey())
-
-                    int fwcs = 0;
-                    try
-                    {
-                        fwcs = int.Parse(dtBenDiLogin.Rows[0]["fwcs"].ToString()) + 1;
-
-                        //写入数据库
-                        Sqlhelper.ExcuteNonQuery(sqlUpdate, new SqlParameter("fwcs", fwcs.ToString()),
-                            new SqlParameter("dltime", DateTime.Now.ToString()),
-                            new SqlParameter("md5mm", strPwdEncrypt),
-                            new SqlParameter("yhid", strUsername));
-
-                    }
-                    catch { }
                     //写入日志
                     try
                     {
                         if (IsCookie)
                         {
-                            new c_log().logAdd("用户管理", "登陆", "使用COOKIE,本地系统帐户登陆");
+                            new c_log().logAdd("用户管理", "登陆", "使用COOKIE,UUM系统登陆");
                             // +",浏览器："+Request.Browser.Browser.ToString()+Request.Browser.Version.ToString()
                         }
                         else
                         {
-                            new c_log().logAdd("用户管理", "登陆", "手动本地系统帐户系统登陆");
+                            new c_log().logAdd("用户管理", "登陆", "手动UUM系统登陆");
                         }
                     }
                     catch
                     {
                         basic.MsgBox(this.Page, "登陆写入日志异常!", "");
+                        return false;
                     }
                     return true;
                 }
-                else 
-                {
-                    //本地数据库没有
-                    return false;
+                else
+                {//未通过UUM，从本地库中尝试登陆
+                    if (!IsCookie) strPwdByBenDiLogin = md5.MD5Encrypt(strPwd, md5.GetKey()); //如果不是Cookie登陆则需要加密
+                    string strSqlBenDiLogin = "SELECT * FROM yonghqx WHERE yhid=@yhid AND mm=@mm";
+                    try
+                    {
+                        DataTable dtBenDiLogin = Sqlhelper.Serach(strSqlBenDiLogin, new SqlParameter("yhid", strUsername), new SqlParameter("mm", strPwdByBenDiLogin));
+                        if (dtBenDiLogin.Rows.Count == 1)
+                        {
+                            string LoginName = dtBenDiLogin.Rows[0]["xm"].ToString();
+                            string LoginUerLsz = dtBenDiLogin.Rows[0]["lsz"] != null ? dtBenDiLogin.Rows[0]["lsz"].ToString() : "";
+                            if (Cache)
+                            {
+                                HttpCookie mycookie = new HttpCookie("LoginUser");
+
+                                mycookie.Values.Add("UserName", strUsername);
+                                mycookie.Values.Add("Name", LoginName);
+                                mycookie.Values.Add("Pwd", strPwdByBenDiLogin);
+
+                                mycookie.Expires = DateTime.Now.AddDays(7);
+                                HttpContext.Current.Response.AppendCookie(mycookie);
+                            }
+
+                            Session["UserName"] = strUsername;
+                            Session["Name"] = LoginName;
+                            Session["Yhqx"] = this.getPowerFromYhqx(strUsername) != null ? this.getPowerFromYhqx(strUsername).ToString() : "";
+                            Session["Lsz"] = "";
+
+
+                            string[] strLszs = LoginUerLsz.Split(',');
+                            if (Session["Lsz"].ToString() == "")
+                            {
+                                foreach (string strLsz in strLszs)
+                                {
+                                    XDocument zQx = this.getPowerFromZhuqx(strLsz);
+                                    if (zQx == null) continue; //有可能getPowerFromZhuqx得到空
+                                    foreach (var temp in zQx.Elements("Root").Elements())
+                                    {
+                                        string lanmStr = temp.Name.ToString();
+                                        XDocument sessionXML = XDocument.Parse(Session["Yhqx"].ToString());
+                                        //如果直接没有该栏目的权限，直接添加该栏目结点
+                                        if (sessionXML.Element("Root").Element(lanmStr) == null)
+                                        {
+                                            sessionXML.Element("Root").Add(temp);
+                                            Session["Yhqx"] = sessionXML.ToString();
+                                        }
+                                        else
+                                        {
+                                            foreach (var oper in temp.Elements())
+                                            {
+                                                string operStr = oper.Name.ToString();
+                                                if (sessionXML.Element("Root").Element(lanmStr).Element(operStr) == null)
+                                                {
+                                                    sessionXML.Element("Root").Element(lanmStr).Add(oper);
+                                                    Session["Yhqx"] = sessionXML.ToString();
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            //else
+                            //{
+                            //    Session["Yhqx"] = "";
+                            //}
+
+                            //权限验证
+                            if (!powerYanzheng(Session["UserName"].ToString(), "用户管理", "登陆", "2"))
+                            {
+                                Response.Write("<script>alert('" + Session["Name"].ToString() + ":对不起,您无权登陆,请联系管理员或您的上级部门!!');history.go(-1)</script>");
+                                //Response.End();
+                                return false;
+
+                            }
+
+
+                            string sqlUpdate = "UPDATE yonghqx SET fwcs=@fwcs,dltime=@dltime,mm=@md5mm WHERE yhid=@yhid";// md5.MD5Encrypt(strPwd, md5.GetKey())
+                            int fwcs = int.Parse(dtBenDiLogin.Rows[0]["fwcs"].ToString()) + 1;
+                            //写入数据库
+                            Sqlhelper.ExcuteNonQuery(sqlUpdate, new SqlParameter("fwcs", fwcs.ToString()),
+                                new SqlParameter("dltime", DateTime.Now.ToString()),
+                                new SqlParameter("md5mm", strPwdByBenDiLogin),
+                                new SqlParameter("yhid", strUsername));
+
+
+
+                            //写入日志
+                            try
+                            {
+                                if (IsCookie)
+                                {
+                                    new c_log().logAdd("用户管理", "登陆", "使用COOKIE,本地系统帐户登陆");
+                                    // +",浏览器："+Request.Browser.Browser.ToString()+Request.Browser.Version.ToString()
+                                }
+                                else
+                                {
+                                    new c_log().logAdd("用户管理", "登陆", "手动本地系统帐户系统登陆");
+                                }
+                            }
+                            catch
+                            {
+                                basic.MsgBox(this.Page, "登陆写入日志异常!", "");
+                            }
+                            return true;
+
+                        }
+                        else
+                        {//本地数据中查不到用户信息
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        return false;
+                    }
                 }
-                //登陆成功完
-            }//异常情况，用户名密码为空
+            }
             else
             {
                 return false;
             }
         }
-        catch(Exception e)
-
+        catch
         {
-            string x = e.Message;
             return false;
         }
+        //-----------------------------------------------------
     }
 
     /// <summary>

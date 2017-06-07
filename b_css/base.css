@@ -38,7 +38,7 @@ a:hover{ text-decoration:underline; color: #EC3C1B; }
 
 /**头部**/
 .wp-header {background:#fff url(../images/pkucloud1h100.png) no-repeat top right;} /**头部背景**/
-.wp-header .wp-inner{width:1024px; background:none;}
+.wp-header .wp-inner{width:1100px; background:none;}
  /**
   * [站点LOGO]
   */

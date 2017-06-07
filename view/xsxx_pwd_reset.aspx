@@ -52,7 +52,7 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <asp:button ID="btn_confirm" runat="server" cssClass="layui-btn layui-btn-normal" Text="重置" OnClick="btn_confirm_Click"/>
+                    <asp:button ID="btn_confirm" runat="server" cssClass="layui-btn layui-btn-normal" Text="重置"/>
                 </div>
             </div>
         </div>
