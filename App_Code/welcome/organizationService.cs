@@ -309,7 +309,7 @@ public static class organizationService
     #endregion    
     #region 验证学生基本信息是否确认 isStuConfrim
     /// <summary>
-    /// 对比学生学号验证学生是否进行基本信息的确认(有数据则已确认)
+    /// 对比学生学号验证学生是否进行基本信息的确认
     /// </summary>
     /// <param name="FK_SNO">学号</param>
     /// <returns>是否确认</returns>
@@ -320,12 +320,33 @@ public static class organizationService
         return confirm != null ? true : false;
     }
     #endregion
+    #region 获取基本信息确认状态（false 无误 true 有误 ) getStuConfirm
+    /// <summary>
+    /// 获取基本信息确认状态（false 无误 true 有误 )
+    /// </summary>
+    /// <param name="FK_SNO">学号</param>
+    /// <returns></returns>
+    public static bool getStuConfirm(string FK_SNO)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        Fresh_Confirm confirm = oDC.Fresh_Confirms.Where(s => s.FK_SNO == FK_SNO).SingleOrDefault();
+        if (confirm != null && confirm.Confirm_state == false)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+        //return confirm != null ? true : false;
+    }
+    #endregion
     #region 判断添加学生基本信息确认记录 addStuConfirm
     /// <summary>
     /// 判断添加学生基本信息确认记录，有记录则只修改
     /// </summary>
     /// <param name="FK_SNO">学生学号</param>
-    /// <param name="state">状态：true为信息无误，false为信息有误</param>
+    /// <param name="state">状态：true为信息有误，false为信息无误</param>
     /// <returns></returns>
     public static bool addStuConfirm(string FK_SNO, bool state)
     {

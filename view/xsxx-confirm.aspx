@@ -110,6 +110,9 @@
         .layui-form input[type=radio]{
             display: inline;
         }
+        .layui-form-label{
+            width:85px !important;
+        }
     </style>
 
 </head>
@@ -142,7 +145,7 @@
                     </div>
                     <div class="xx-content">
                         <div class="layui-form-item">
-                            <p>相关信息说明</p>
+                            
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">姓名：</label>
@@ -203,22 +206,22 @@
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">班主任：</label>
+                        <label class="layui-form-label">辅导员：</label>
                         <div class="layui-input-block">
                             <asp:Label ID="lqxx_bzr" CssClass="layui-input" runat="server" Text=""></asp:Label>
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">班主任电话：</label>
+                        <label class="layui-form-label">辅导员电话：</label>
                         <div class="layui-input-block">
                             <asp:Label ID="lqxx_bzrdh" CssClass="layui-input" runat="server" Text=""></asp:Label>
                         </div>
                     </div>
                     <div class="layui-form-item" id="xx_confirm_div"   style="display:none;">
-                        <span style="color: #ffd800; margin-bottom: 10px; display: inline-block;">请仔细核对个人信息，确认信息有无错误；信息有误请及时联系班主任！</span>
+                        <span style="color: red; margin-bottom: 10px; display: inline-block;">请核对相关信息；若信息有误及时联系辅导员并选择有误后确认，信息有误则暂时不能进行报到注册！</span>
                         <div class="layui-input-block">
-                            <input type="radio" name="xx_confirm" title="信息无误" value="1" checked="" />
-                            <input type="radio" name="xx_confirm" title="信息有误" value="0" />
+                            <input type="radio" name="xx_confirm" title="信息无误" value="0" checked="" />
+                            <input type="radio" name="xx_confirm" title="信息有误" value="1" />
                         </div>
                     </div>
                 </div>

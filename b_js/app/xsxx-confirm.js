@@ -75,12 +75,16 @@
                 success: function (data) {
                     var json_data = JSON.parse(data);
                     if (json_data.code == 'success') {
-                        layer.msg('确认成功！3秒后跳转至主界面~');
-                        $('#btn_submit').hide();
-                        $('#xx_confirm_div').hide();
-                        setTimeout(function () {
-                            window.location.href = "../../nradmingl/defaultxs.aspx";
-                        },3000);
+                        if (confirmState == "0") {
+                            layer.msg('确认成功！3秒后跳转至主界面~');
+                            $('#btn_submit').hide();
+                            $('#xx_confirm_div').hide();
+                            setTimeout(function () {
+                                window.location.href = "../../nradmingl/defaultxs.aspx";
+                            }, 3000);
+                        } else {
+                            layer.msg("确认成功！信息有误，将不能继续报到注册！");
+                        }
                     } else if(json_data.code='failure'){
                         layer.msg(json_data.message);
                     }   
