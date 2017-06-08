@@ -31,6 +31,7 @@
 
     </style>
     <form id="form1"  runat="server">
+        <asp:HiddenField ID="hid_daoru_flag" runat="server" />
     <div class="admin-main">
       <blockquote class="layui-elem-quote">
           <i class="layui-icon">&#xe602;</i>后台管理<i class="layui-icon">&#xe602;</i>学生信息
@@ -41,7 +42,7 @@
                   <a href="mb/xsxxdr.xls" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe62a;</i> 模板下载
 				</a>
-                 <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '学生数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'xsxx_dr.aspx?setp=1&mb=mb/xsxxdr.xls',btn:'完成'});" class="layui-btn layui-btn-small">
+                 <a href="javascript:" id="btn_daoru" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe62f;</i>导入学生数据
 				</a>
                
@@ -226,6 +227,16 @@
                 if ($("#tsxx").val() != "") {
                     parent.layer.open({ content: $("#tsxx").val(), title: '提示信息(30秒后自动关闭)', btn: ['关闭'], time: 30000 });
                     $("#tsxx").value = "";
+                }
+
+                $('#btn_daoru').on('click', fun_daoru);
+                //导入
+                function fun_daoru() {
+                    if ($('#hid_daoru_flag').val() == "true") {
+                        parent.layer.open({ type: 2, title: '学生数据导入', shadeClose: true, shade: 0.8, area: ['98%', '98%'], content: 'xsxx_dr.aspx?setp=1&mb=mb/xsxxdr.xls', btn: '完成' });
+                    } else {
+                        layer.alert('非受权时间，系统不允许再导入！');
+                    }
                 }
             });
             layui.config({

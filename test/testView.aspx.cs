@@ -106,12 +106,16 @@ public partial class test_testView : System.Web.UI.Page
         //Response.Write(organizationService.createNum("2017","1","03"));
         
         //测试权限获取
-        List<Base_College> yx = organizationService.getYxByYhid("chenzhiqiu",Session["Lsz"].ToString());
-        foreach (var item in yx)
-        {
-            Response.Write(item.Name);
-            Response.Write("<br/>");
-        }
+        //List<Base_College> yx = organizationService.getYxByYhid("chenzhiqiu",Session["Lsz"].ToString());
+        //foreach (var item in yx)
+        //{
+        //    Response.Write(item.Name);
+        //    Response.Write("<br/>");
+
+        //测试批次时间判断
+        DateTime tsts = Convert.ToDateTime("2007-10-6 00:12:00");
+        Response.Write(organizationService.isInEnableBatch(tsts));
+        
     }
     //测试导出
     protected void Button1_Click(object sender, EventArgs e)
