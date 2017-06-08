@@ -66,6 +66,7 @@ function load(){
                         success: function (data) {
                             var json_data = JSON.parse(data);
                             if (json_data.code == 'success') {
+                                $('#tmpdata').val(data);
                                 var fee_id_list=new Array();
                                 var count=0;
 
@@ -92,7 +93,50 @@ function load(){
                                     $('#sure').show();
                                 }
 
+                                var find_index=-1;
                                 for(i=0;multiple_must!=null && i<multiple_must.length;i++){
+                                    var itemlist=multiple_must[i];
+                                    for(var j=0;j<itemlist.length;j++){
+                                        if($.trim(itemlist[j].Fee_Name)=='绿色通道' || $.trim(itemlist[j].Fee_Name)=='助学贷款'){
+                                            find_index=i;
+                                            break;
+                                        }
+                                    }
+                                    if(find_index!=-1){
+                                        $('#contents').append('<tr><td>');
+                                        var str='<div class="layui-inline" style="">';
+                                        str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
+                                        str=str+'<div class="layui-input-inline">';
+                                        str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><label>'+fillstr(itemlist[0].Fee_Amount)+'元</label></div>';
+                                        str=str+'</div>';
+                                        str=str+'</div>';
+                                        $('#contents').append(str);
+                                        $('#contents').append('</tr></td>');
+
+                                        $('#TuitionClass').attr("ref-data",itemlist[0].Fee_Code);
+                                        for(var j=0;j<itemlist.length;j++){
+                                            if($.trim(itemlist[j].Fee_Name)=='绿色通道'){
+                                                $('#xf_green').val(itemlist[j].PK_Fee_Item);
+                                                $('#xf_green').attr('fee',itemlist[j].Fee_Amount);
+                                            }else{
+                                                if($.trim(itemlist[j].Fee_Name)=='助学贷款'){
+                                                    $('#xf_loan').val(itemlist[j].PK_Fee_Item);
+                                                    $('#xf_loan').attr('fee',itemlist[j].Fee_Amount);
+                                                } else{
+                                                    $('#xf_normal').val(itemlist[j].PK_Fee_Item);
+                                                    $('#xf_normal').attr('fee',itemlist[j].Fee_Amount);
+                                                    $('#xf_normal').attr('checked', 'checked');
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                for(i=0;multiple_must!=null && i<multiple_must.length;i++){
+                                    if(i==find_index){
+                                        continue;
+                                    }
                                     var itemlist=multiple_must[i];
                                     $('#contents').append('<tr><td>');
                                     var str='<div class="layui-inline" style="" id=_mm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].PK_Fee_Item+'">';
@@ -119,14 +163,14 @@ function load(){
                                 for(i=0;single_nomust!=null && i<single_nomust.length;i++){
                                     itemlist=single_nomust[i];
                                     $('#contents').append('<tr><td>');
-                                    var str='<div class="layui-inline" style="" id=snm'+itemlist[0].Fee_Code+' ref-data="none">';
+                                    var str='<div class="layui-inline" style="" id=snm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].PK_Fee_Item+'">';
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-inline">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
                                     for(var j=0;j<itemlist.length;j++){
                                         str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                     }
-                                    str=str+'<option value="none" >暂不选择</option>';
+                                    str=str+'<option value="none" >不需要</option>';
                                     str=str+'</select>';
                                     str=str+'</div>';
                                     str=str+'</div>';
@@ -140,14 +184,14 @@ function load(){
                                 for(i=0;multiple_nomust!=null && i<multiple_nomust.length;i++){
                                     var itemlist=multiple_nomust[i];
                                     $('#contents').append('<tr><td>');
-                                    var str='<div class="layui-inline" style="" id=mnm'+itemlist[0].Fee_Code+' ref-data="none">';
+                                    var str='<div class="layui-inline" style="" id=mnm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].PK_Fee_Item+'">';
                                     str=str+'<label class="layui-form-label" >'+itemlist[0].Fee_Code_Name+'：</label>';
                                     str=str+'<div class="layui-input-inline">';
                                     str=str+'<select id="'+itemlist[0].Fee_Code+'" lay-filter="aihao">';
                                     for(var j=0;j<itemlist.length;j++){
                                         str=str+'<option value="'+itemlist[j].PK_Fee_Item+'" >'+fillstr(itemlist[j].Fee_Amount)+'元&nbsp&nbsp'+itemlist[j].Fee_Name+'</option>';
                                     }
-                                    str=str+'<option value="none" >暂不选择</option>';
+                                    str=str+'<option value="none" >不需要</option>';
                                     str=str+'</select>';
                                     str=str+'</div>';
                                     str=str+'</div>';
@@ -275,29 +319,133 @@ function sure(){
     var data=$('#contents').attr('fee_id_list');
     if(data!=null && $.trim(data).length>0){
         fee_id_list=data.split(',');
-    }else{
-        alert("无效的参数");
     }
+
+    feelist=new Array();
+    var count=0;
+    var code=null;
     if(fee_id_list!=null && fee_id_list.length>0){
-        feelist=new Array();
-        var count=0;
         for(i=0;i<fee_id_list.length;i++){
-            var code=fee_id_list[i].substring(3);
+            code=fee_id_list[i].substring(3);
             var val=$('#'+fee_id_list[i]).attr('ref-data');
             if(val!='none'){
                 feelist[count]={"code":code,"value":val};
                 count=count+1;
             }
         }
-    }else{
-        alert("无效的参数");
     }
+    code=$('#TuitionClass').attr('ref-data');
+    if(code!='none'){
+        var data=$('#tmpdata').val();
+        var json_data = JSON.parse(data);
+        var single_must=json_data.data.single_must;//必交单项
+        var multiple_must=json_data.data.multiple_must;//必交多项
+        var single_nomust=json_data.data.single_nomust;//选交单项
+        var multiple_nomust=json_data.data.multiple_nomust;//选交多项
+        var sum=0;
+        for(var i=0;i<feelist.length;i++){
+            var key_code=feelist[i].code;
+            var key_value=feelist[i].value;
+            var find=false;
+            for(var j=0;!find && single_must!=null && j<single_must.length;j++){
+                var itemlist=single_must[j];
+                if(itemlist[0].Fee_Code==key_code){
+                    for(var k=0;k<itemlist.length;k++){
+                        if(itemlist[k].PK_Fee_Item==key_value){
+                            //var str=itemlist[k].Fee_Name+'_'+itemlist[k].Fee_Amount;
+                            //console.log(str);
+                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                            find=true;
+                            break;
+                        }
+                    }
+                }
+            }
+            for(var j=0;!find && multiple_must!=null && j<multiple_must.length;j++){
+                var itemlist=multiple_must[j];
+                if(itemlist[0].Fee_Code==key_code){
+                    for(var k=0;k<itemlist.length;k++){
+                        if(itemlist[k].PK_Fee_Item==key_value){
+                            //var str=itemlist[k].Fee_Name+'_'+itemlist[k].Fee_Amount;
+                            //console.log(str);
+                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                            find=true;
+                            break;
+                        }
+                    }
+                }
+            }
+            for(var j=0;!find && single_nomust!=null && j<single_nomust.length;j++){
+                var itemlist=single_nomust[j];
+                if(itemlist[0].Fee_Code==key_code){
+                    for(var k=0;k<itemlist.length;k++){
+                        if(itemlist[k].PK_Fee_Item==key_value){
+                            //var str=itemlist[k].Fee_Name+'_'+itemlist[k].Fee_Amount;
+                            //console.log(str);
+                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                            find=true;
+                            break;
+                        }
+                    }
+                }
+            }
+            for(var j=0;!find && multiple_nomust!=null && j<multiple_nomust.length;j++){
+                var itemlist=multiple_nomust[j];
+                if(itemlist[0].Fee_Code==key_code){
+                    for(var k=0;k<itemlist.length;k++){
+                        if(itemlist[k].PK_Fee_Item==key_value){
+                            //var str=itemlist[k].Fee_Name+'_'+itemlist[k].Fee_Amount;
+                            //console.log(str);
+                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                            find=true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        $('#TuitionClass').attr('feesum',sum);
+        changesum();
+        layer.open({
+            title: '学费缴纳方式',
+            type: 1,
+            //area: ['800px', '600px'],
+            content: $('#TuitionClass') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            , btn: ['确定', '放弃']
+            , btn1: function (index, layero) {
+                //按钮【按钮一】的回调
+                var val=$("#TuitionClass input[name='TuitionClass']:checked").val();
+                var code=$('#TuitionClass').attr('ref-data');
+                feelist[count]={"code":code,"value":val};
+                layer.close(index);
+                submitfee(feelist,pk_batch_no,pk_sno,pk_affair_no);
+            }
+            , btn2: function (index, layero) {
+                //按钮【按钮二】的回调
+                layer.close(index);
+
+                //return false 开启该代码可禁止点击该按钮关闭
+            }
+            , cancel: function () {
+                //右上角关闭回调
+                //return false 开启该代码可禁止点击该按钮关闭
+            }
+        });
+    }else{
+        submitfee(feelist,pk_batch_no,pk_sno,pk_affair_no);
+    }
+}
+
+function submitfee(feelist,pk_batch_no,pk_sno,pk_affair_no){
+    //console.log(feelist);
+    //return;
     if(feelist!=null && feelist.length>0){
-        layer.confirm('将提交您的预交费订单，订单生成后其内容仅允许到校后修改。', {
+        layer.confirm('将提交您选择的缴费项目并生成缴费订单，缴费订单生成后其内容仅允许到校后修改。', {
             btn: ['继续', '重新选择']
         }, function(index){
             layer.close(index);
-             console.log(JSON.stringify(feelist));
+            //console.log(JSON.stringify(feelist));
             //生成订单
             var pk_staff_no= $("#pk_staff_no").val();
             var returnurl=window.location.href;
@@ -315,12 +463,12 @@ function sure(){
                 dataType: "text",
                 data: data,
                 success: function (data) {
-                    console.log(data);
+                    //console.log(data);
                     var json_data = JSON.parse(data);
                     if (json_data.code == 'success') {
                         if ($.trim(pk_staff_no).length > 0 ) {
                             $('#sure').hide();
-                            alert('已帮助学生生成交费订单，请通知学生及时交费');
+                            alert('已帮助学生生成缴费订单，请通知学生及时缴费');
                         }else{
                             window.location.href='xsbjf_order.aspx?pk_sno='+pk_sno;
                         }
@@ -338,6 +486,23 @@ function sure(){
     }
 }
 
+
 function cancel(){
     window.location.href="xswsjf.aspx";
+}
+
+function msg(title_t,msg_t){
+    layer.open({
+        title: title_t
+        ,content: msg_t
+    });
+}
+function changesum(){
+    var sum=$('#TuitionClass').attr('feesum');
+    var id_name=$("#TuitionClass input[name='TuitionClass']:checked").attr('id');
+    if(id_name=='xf_normal'){
+        sum=parseFloat(sum)+parseFloat($('#'+id_name).attr('fee'));
+    }
+    console.log(sum);
+    $('#fee_sum').html(sum);
 }
