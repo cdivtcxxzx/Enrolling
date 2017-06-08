@@ -544,6 +544,7 @@ img {
                       <span id="custom_display_8" class="sns-default-container sns_default_container" style="display: none;">
                       </span>
                       <span id="Label1" style="color:#CC0000;font-size:Medium;text-decoration:none;"></span>
+                        <a class="outer-link" href="view/xsxx_pwd_reset.aspx">忘记密码？</a>
                     </div>
                     <!-- 其他登录方式 s -->
                     <div style="display: none;" class="other_login_type sns-login-container" id="custom_display_16">

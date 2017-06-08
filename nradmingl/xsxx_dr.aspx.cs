@@ -594,7 +594,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     protected void DropDownListBatch_DataBound(object sender, EventArgs e)
     {
         //初次下拉加载数据后设置批次选中
-        if (Session["batch"] != null && Session["batch"] != "")
+        if (Session["batch"] != null && Session["batch"].ToString() != "")
         {
             DropDownListBatch.Items.FindByValue(Session["batch"].ToString()).Selected = true;
         }
