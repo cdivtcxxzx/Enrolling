@@ -81,7 +81,7 @@
 
                 <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
                     ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-                    SelectCommand="select row_number() over (order by  房间编号)  AS 序号,* from (SELECT   DISTINCT   TOP (500)   Base_Campus.Campus_Name AS 校区,Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room.Room_NO AS 房间编号,   Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别,            Fresh_Class.Name AS 已分配班级 FROM         Fresh_Dorm FULL OUTER JOIN                      Base_Campus ON Fresh_Dorm.Campus_NO = Base_Campus.Campus_NO FULL OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                  Fresh_Class INNER JOIN                   Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON     Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO where 1=1 AND Fresh_Room.Room_NO= @Room_NO  ) t order by  房间编号">
+                    SelectCommand="select row_number() over (order by  已分配院系)  AS 序号,* from (SELECT DISTINCT                       TOP (10) Base_Campus.Campus_Name AS 校区, Fresh_Dorm.Name AS 公寓楼名称, Fresh_Room.Floor AS 楼层, Fresh_Room.Room_NO AS 房间编号,                       Fresh_Room_Type.Type_Name AS 房间类型, Fresh_Room.Gender AS 性别, Base_College.Name AS 已分配院系, Fresh_Class.Name AS 已分配班级 FROM         Fresh_Class RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO RIGHT OUTER JOIN                      Base_College RIGHT OUTER JOIN                      Fresh_Bed ON Base_College.College_NO = Fresh_Bed.College_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      Base_Campus RIGHT OUTER JOIN                      Fresh_Dorm RIGHT OUTER JOIN                      Fresh_Room_Type RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Room_Type.PK_Room_Type = Fresh_Room.FK_Room_Type ON Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO ON                       Base_Campus.Campus_NO = Fresh_Dorm.Campus_NO ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO WHERE     (Fresh_Room.Room_NO = @Room_NO)) t order by  已分配院系">
                     <SelectParameters>
                         <asp:QueryStringParameter Name="Room_NO" QueryStringField="roomno" 
                             Type="String" />
@@ -136,15 +136,17 @@
 
                 <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
                     ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-                    SelectCommand="SELECT     TOP (20) Fresh_Bed.Bed_NO AS 床位编号, Fresh_Bed.Bed_Name AS 床位描述, Fresh_Room.Room_NO AS 房间编号, Fresh_Bed_Log.FK_SNO AS 学号, 
-                      Base_STU.Name AS 姓名, Fresh_Class.Name AS 班级名称, Base_College.Name AS 学院名称, Fresh_SPE.SPE_Name AS 专业名称
-FROM         Fresh_Room RIGHT OUTER JOIN
-                      Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO LEFT OUTER JOIN
-                      Base_STU LEFT OUTER JOIN
-                      Fresh_SPE LEFT OUTER JOIN
-                      Base_College ON Fresh_SPE.FK_College_Code = Base_College.PK_College ON Base_STU.FK_SPE_Code = Fresh_SPE.PK_SPE LEFT OUTER JOIN
-                      Fresh_Class ON Base_STU.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN
-                      Fresh_Bed_Log ON Base_STU.PK_SNO = Fresh_Bed_Log.FK_SNO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Log.FK_Bed_NO where Fresh_Room.Room_NO=@Room_NO
+                    SelectCommand="SELECT     TOP (20) Fresh_Room.Room_NO AS 房间编号, Fresh_Bed.Bed_NO AS 床位编号,Fresh_Bed.Bed_Name AS 床位位置描述,  Base_College.Name AS 已分配院系, 
+                      Fresh_Class.Name AS 已分配班级, Fresh_Bed_Log.FK_SNO AS 学生学号, Base_STU.Name AS 学生姓名, Base_STU.Phone AS 联系电话
+FROM         Fresh_Bed LEFT OUTER JOIN
+                      Fresh_Bed_Log LEFT OUTER JOIN
+                      Base_STU ON Fresh_Bed_Log.FK_SNO = Base_STU.PK_SNO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Log.FK_Bed_NO LEFT OUTER JOIN
+                      Base_College ON Fresh_Bed.College_NO = Base_College.College_NO LEFT OUTER JOIN
+                      Fresh_Class RIGHT OUTER JOIN
+                      Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO ON 
+                      Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO LEFT OUTER JOIN
+                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO
+WHERE     (Fresh_Room.Room_NO = @Room_NO)
 ORDER BY 床位编号">
                     <SelectParameters>
                         <asp:QueryStringParameter Name="Room_NO" QueryStringField="roomno" 

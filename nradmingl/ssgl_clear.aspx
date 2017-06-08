@@ -52,7 +52,7 @@
                 </asp:ScriptManager>
         
         <div>
-           年度选择： <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource1" DataTextField="Year" DataValueField="Year"></asp:DropDownList>
+           年度选择： <asp:DropDownList ID="year" runat="server" DataSourceID="SqlDataSource1" DataTextField="Year" DataValueField="Year"></asp:DropDownList>
             <asp:DropDownList ID="yxdm" runat="server" DataSourceID="SqlDataSource2" DataTextField="Name" DataValueField="PK_College">
             </asp:DropDownList>
             <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [PK_College], [Name] FROM [Base_College] WHERE ([Enabled] = @Enabled) ORDER BY [College_NO]">
@@ -66,7 +66,7 @@
            &nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_dorm" runat="server" Text="清空公寓宿舍信息" />
           <br />  <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_room" runat="server" Text="清空房间信息" />
            &nbsp;&nbsp;&nbsp;&nbsp; <asp:CheckBox ID="c_bed" runat="server" Text="清空床位信息" />
-           <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfp" Checked="true" runat="server" Text="清空预分配信息" />
+           <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfpyx"  runat="server" Text="清空院系预分配信息" />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfp" Checked="true" runat="server" Text="清空班级预分配信息" />
        <br /> 
             <br />
             <br /> 
