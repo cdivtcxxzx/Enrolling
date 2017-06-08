@@ -143,14 +143,14 @@
 
   <div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
-                    <label class="layui-form-label" style="width: 120px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" id="xscz_jf1" runat="server" onclick="action(&quot;2&quot;,&quot;2&quot;)">缴费项目选择</a></label>
+                    <label class="layui-form-label" style="width: 120px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" id="xscz_jf1" runat="server" >缴费项目选择</a></label>
                     <div class="layui-input-block" style="margin-left: 120px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_jf1" runat="server"><font color="green"><b>已选择</b></font></span> <span  id="xsztxq_jf1" runat="server" class="hidden-xs"></span></div></div></div>
 
                    
 
                       <div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
-                    <label class="layui-form-label" style="width: 120px;"><a class="layui-btn" style="width:100%;" href="xswsjf.aspx"  id="xscz_jf2" runat="server" onclick="action(&quot;2&quot;,&quot;2&quot;)">确认网上缴费</a></label>
+                    <label class="layui-form-label" style="width: 120px;"><a class="layui-btn" style="width:100%;" href="xswsjf.aspx"  id="xscz_jf2" runat="server" >缴费信息查看</a></label>
                     <div class="layui-input-block" style="margin-left: 120px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span  id="xszt_jf2" runat="server"><font color="green"><b>已缴费</b></font></span> <span  id="xsztxq_jf2" runat="server" class="hidden-xs"></span></div></div></div>
 
                        

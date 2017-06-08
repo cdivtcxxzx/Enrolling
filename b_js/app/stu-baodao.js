@@ -12,7 +12,7 @@
     }
     //控制时间显示
     var changeCheck = setInterval(function () {
-        console.log(count);
+        //console.log(count);
         btnCofirm.val(count + ' 秒');
         if (count < 1)
         {

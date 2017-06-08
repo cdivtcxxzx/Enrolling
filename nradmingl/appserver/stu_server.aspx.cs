@@ -131,7 +131,7 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
             #region 学生信息确认 xsxx_confirm
             if (type.Trim().Equals("xsxx_confirm"))
             {
-                string confirmState = Request.QueryString["confirmState"];//获取确认状态
+                string confirmState = Request.QueryString["confirmState"];//获取确认状态 0无误 1有误
                 //string pk_batch_no = Request["pk_batch_no"];
                 //string pk_affair_no = Request["pk_affair_no"];
                 //string pk_staff_no = Request["pk_staff_no"];
@@ -159,8 +159,8 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
 
                 if (pk_sno != null && pk_sno.Trim().Length != 0 && confirmState != null)
                 {
-                    //1代表无误 非1代表信息有错误
-                    bool boolState = confirmState == "1" ? true : false;
+                    //1代表有误 非1代表信息无误
+                    bool boolState = confirmState == "1" ? false : true;
                     //todo:操作事务修改
                     //string create_name = null;
                     //if (Session["pk_sno"] != null)
@@ -178,6 +178,7 @@ public partial class nradmingl_appserver_stu_server : System.Web.UI.Page
                     //{
                     //    throw new Exception("事务修改失败");
                     //}
+
                     if (organizationService.addStuConfirm(pk_sno, boolState))
                     {
                         result.code = "success";
