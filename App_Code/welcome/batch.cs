@@ -1523,7 +1523,7 @@ public class batch
         {
             try
             {
-                new c_log().logAdd("batch.cs", "get_studentaffairlog_list", ex.Message, "2", "huyuan");//记录错误日志
+                new c_log().logAdd("batch.cs", "get_student_affair_affairlog_list", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
             throw ex;
@@ -3726,4 +3726,55 @@ public class batch
         model.organizationModelDataContext oDC = new model.organizationModelDataContext();
         return oDC.Base_STUs.Where(s => s.ID_NO.IndexOf(id_no) >= 0).ToList();
     }
+
+    public void freshlog()
+    {
+        int count = 0;
+        string jg = "";
+        DateTime st = DateTime.Now;
+        string sqlstr = "";
+        try {
+            List<fresh_batch> batchlist = this.get_freshbatch_list();
+            if (batchlist != null && batchlist.Count > 0)
+            {
+                for (int i = 0; i < batchlist.Count; i++)
+                {
+                    sqlstr = "select PK_SNO from Fresh_STU where FK_Fresh_Batch=@cs1";
+                    System.Data.DataTable dt_stu = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", batchlist[i].PK_Batch_NO.ToString().Trim()));//学生
+                    if (dt_stu != null && dt_stu.Rows.Count > 0)
+                    {
+                        for(int j=0;j<dt_stu.Rows.Count;j++)
+                        {
+                            count = count + 1;
+                            string pk_sno = dt_stu.Rows[j]["pk_sno"].ToString().Trim();
+                            this.get_studentaffairlog_list(pk_sno);
+                            this.get_schoolaffairlog_list(pk_sno);
+                        }
+                    }
+                }
+                jg = "更新学生总数量"+count.ToString().Trim()+"人";
+            }
+            else
+            {
+                jg = "没有可更新的迎新批次";
+            }            
+        }
+        catch (Exception ex)
+        {
+            jg = "发生错误。" + ex.Message.Trim();
+        }
+        finally
+        {
+            DateTime et = DateTime.Now;
+            TimeSpan ts = et - st;
+            jg = "更新耗时" + ts.TotalSeconds.ToString().Trim() + "秒，" + jg;
+            sqlstr = "update FreshAffairLogScanLog set etime=getdate(),memo=@cs1";
+            Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", jg.Trim()));
+        }
+
+    }
+
+ 
+
+
 }

@@ -126,7 +126,11 @@
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSource5" runat="server" 
                         ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-                        SelectCommand="select ' ' PK_Class_NO,'全部班级' Name union ( SELECT DISTINCT [PK_Class_NO], [Name] FROM [Fresh_Class])  ORDER BY [PK_Class_NO]">
+                        SelectCommand="select ' ' PK_Class_NO,'全部班级' Name union ( SELECT DISTINCT Fresh_Class.PK_Class_NO, Fresh_Class.Name FROM         Fresh_Class LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE  where Fresh_SPE.FK_College_Code=@yxdm)  ORDER BY [PK_Class_NO]">
+                     <SelectParameters>
+                            <asp:ControlParameter ControlID="yx" Name="yxdm" 
+                                PropertyName="SelectedValue" Type="String" />
+                        </SelectParameters>
                     </asp:SqlDataSource>
                     &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
                     </ContentTemplate></asp:UpdatePanel>
@@ -180,7 +184,7 @@
             <ItemStyle  />
             </asp:TemplateField>--%>
 
-         <asp:TemplateField HeaderText="预分配班级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  >
+         <asp:TemplateField HeaderText="预分配院系班级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  >
         
             <ItemTemplate>
             <a href="#" class="hidden-xs"><%# yfpbj(Eval("房间编号").ToString())%></a>
@@ -206,7 +210,7 @@
                 <%--<a onclick="return batchAudit(this.id);" id="btnDelete" href="javascript:__doPostBack('btnDelete','')"><span id="plcz" runat="server">点此批量发放毕业证</span></a>--%>
                 </HeaderTemplate>
                 <ItemTemplate>
-             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－<%# Eval("公寓楼名称").ToString() %><%# Eval("房间编号").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?roomno=<%# Eval("房间编号").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情</a> &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="调整"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
+             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－【<%# Eval("公寓楼名称").ToString() %>】<%# Eval("房间编号").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?roomno=<%# Eval("房间编号").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情查看</a>  
               </asp:LinkButton>
             </ItemTemplate>
                 

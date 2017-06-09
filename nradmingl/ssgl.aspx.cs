@@ -441,7 +441,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     {
         //准备导出的DATATABLE,为了输出时列名为中文,请在写SQL语句时重定义一下列名
         //例:SELECT [int] 序号  FROM [taskmanager] order by [int] desc 
-        System.Data.DataTable dt = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
+        System.Data.DataTable dt = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue,Session["username"].ToString(),yx.SelectedValue);
         #region 导出
         //引用EXCEL导出类
         toexcel xzfile = new toexcel();
@@ -449,7 +449,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         //Response.Write("文件名" + filen);
         if (filen.Length > 4)
         {
-            this.tsbox.Value = "<span style=\"font-size:Large;\"> <font color=green>导出成功,请<a href=" + filen + " target=_blank >点此下载</a></font></span>";
+            this.tsbox.Value = "<span style=\"font-size:Large;\"> <font color=green>导出成功,请</font><a href=" + filen + " target=_blank ><b><font color=red>点此下载</font></b></a></span>";
             //this.Label1.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
 
         }
@@ -479,7 +479,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     protected void gzt()
     {
         ViewState["gridsql"] = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "",Session["username"].ToString(),yx.SelectedValue);
-        this.g_ts.Text= ViewState["gridsql"].ToString();
+        //this.g_ts.Text= ViewState["gridsql"].ToString();
         
         SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
         //Response.Write(SqlDataSource1.SelectCommand);

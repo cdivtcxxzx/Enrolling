@@ -72,6 +72,9 @@
                         </div>
                     </div>
 
+                    <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="tjlist" style="border-collapse: collapse;">
+
+                    </table>
                    
                     <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
 

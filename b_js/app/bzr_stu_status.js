@@ -139,6 +139,8 @@ function getstudentstatus() {
                     $('#studentlist').append(str);
                 }
                 $('#studentlist').append('</tbody>');
+                console.log('hi');
+                tj(json_data.data);
                 parent.layer.close(index);
             } else {
                 parent.layer.close(index);
@@ -150,6 +152,86 @@ function getstudentstatus() {
             alert("错误");
         }
     });
+}
+
+function tj(data){
+    var count=0;
+    var classdata=new Array();
+    if(data!=null && data.length>0){
+        var item=data[0];
+        for(var key in item){
+            if(key!='pk_sno' && key!='姓名' && key!='性别' && key!='联系电话'){
+                classdata[count]={'key':key,'data':null};
+                count=count+1;
+            }
+        }
+    }
+    for(k=0;data!=null && k<data.length;k++){
+        var item=data[k];
+        for(var key in item){
+            if(key!='pk_sno' && key!='姓名' && key!='性别' && key!='联系电话'){
+                var itemvalue=item[key];
+                for(var i=0;i<classdata.length;i++){
+                    if(classdata[i].key==key){
+                        var list=classdata[i].data;
+                        if(list==null){
+                            list=new Array();
+                            list[0]={'itemvalue':itemvalue,'count':1};
+                            classdata[i].data=list;
+                        }else{
+                            var find=false;
+                            for(var j=0;j<list.length;j++){
+                                if(list[j].itemvalue==itemvalue){
+                                    list[j].count=list[j].count+1;
+                                    find=true;
+                                    break;
+                                }
+                            }
+                            if(!find){
+                                list[list.length]={'itemvalue':itemvalue,'count':1};
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    console.log(classdata);
+
+    $('#tjlist thead').remove();
+    $('#tjlist tbody').remove();
+    if(classdata!=null){
+        var str='<thead><tr>';
+        for(i=0;i<classdata.length;i++){
+            str=str+'<th>'+classdata[i].key+'</th>';
+        }
+        str=str+'</tr></thead>';
+        $('#tjlist').append(str);
+
+        str='<tbody><tr>';
+        for(var i=0;i<classdata.length;i++){
+            str=str+'<td valign="top">';
+            var list=classdata[i].data;
+            if(list!=null && list.length>0){
+                str=str+'<table><thead><tr><th>状态</th><th>人数</th><th>比例</th></tr></thead>';
+                str=str+'<tbody>';
+                for(var j=0;j<list.length;j++){
+                    str=str+'<tr>';
+                    str=str+'<td>'+list[j].itemvalue+'</td>';
+                    str=str+'<td>'+list[j].count+'</td>';
+                    str=str+'<td>'+parseInt(list[j].count/data.length*100)+'%</td>';
+                    str=str+'</tr>';
+                }
+                str=str+'</tbody>';
+                str=str+'</table>'
+            }
+            str=str+'</td>';
+        }
+        str=str+'</tr>';
+        $('#tjlist').append(str);
+    }
+
 }
 
 function studentdetail(pk_sno){
