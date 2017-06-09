@@ -575,13 +575,13 @@ public partial class nradmingl_CostImport : System.Web.UI.Page
                                     {
                                         //更新
 
-                                        sqlupdate = dormitory.update_Fresh_bed(cwbh, cwms, roomid, Session["username"].ToString());
+                                        //sqlupdate = dormitory.update_Fresh_bed(cwbh, cwms, roomid, Session["username"].ToString());
 
                                     }
                                     else
                                     {
                                         //写入
-                                        sqlupdate = dormitory.update_Fresh_bed(cwbh, cwms, roomid, Session["username"].ToString());
+                                        //sqlupdate = dormitory.update_Fresh_bed(cwbh, cwms, roomid, Session["username"].ToString());
                                     }
 
                                     // Response.Write("导入结果：" + sqlupdate);
@@ -601,7 +601,7 @@ public partial class nradmingl_CostImport : System.Web.UI.Page
                                 string sqlupdat = "";
                                 if (bjmcyz > 0)
                                 {
-                                    sqlupdat = dormitory.update_Fresh_bedyfp(cwbh, roomid, bjmc, Session["username"].ToString());
+                                    //sqlupdat = dormitory.update_Fresh_bedyfp(cwbh, roomid, bjmc, Session["username"].ToString());
                                 }
                                 cgjj = sqlupdat.Split('@')[0].ToString();
                                 if (cgjj != "1")

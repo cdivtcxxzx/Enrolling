@@ -146,6 +146,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             this.xscz_wsjf.HRef = "xswsjf.aspx";//网上缴费
             this.xscz_xzqs.HRef = "ssfp-yfp.aspx?pk_affair_no=3&pk_sno="+Session["username"].ToString();//选择寝室
             this.xscz_xxws.HRef = "xsxx-extend.aspx?pk_affair_no=12&pk_sno=" + Session["username"].ToString();//信息完善
+            this.xscz_tzgg.HRef = "classmsg.aspx";//通知
 #endregion
 
         }
