@@ -23,6 +23,12 @@
 	 <link rel="stylesheet" href="./bootstrap/jquery.slideBox.css">
      <link rel="stylesheet" href="b_css/login.css">
 	   <script type="text/javascript" src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    	 <script src="./b_js/jquery.min2.js"></script>
+<script src="./b_js/jquery.slideBox.min.js" type="text/javascript"></script>
+   <script src="./bootstrap/3.3.4/js/bootstrap.min.js"></script>
+   
+
+  <script src="./layer/layer.js"></script>
     <script>
         var _hmt = _hmt || [];
     </script>
@@ -423,11 +429,11 @@ img {
         </div>
     </div>
     <!-- end navigation -->
-	 <script src="./b_js/jquery.min2.js"></script>
-<script src="./b_js/jquery.slideBox.min.js" type="text/javascript"></script>
-   <script src="./bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 	<script>
+
+
+
 	    jQuery(function ($) {
 	        $('#demo1').slideBox(
     {
@@ -486,10 +492,11 @@ img {
 
 <!-- start tag cloud widget -->
 <div class="widget">
-	<h4 class="title" id="mydivtitle" runat="server"><span style="float:right;font-size:15px"><a href="/list.aspx?id=88">>></a></span>新生网上报到登陆</h4>
+	<h4 class="title" id="mydivtitle" runat="server"><span style="float:right;font-size:15px"><a href="#" onclick="layer.open({  type: 2,  title: '学生重置登陆密码',  maxmin: true,  shadeClose: true,  area : ['90%' , '80%'],  content: '/view/xsxx_pwd_reset.aspx'  });">>>忘记密码</a></span>新生网上报到登陆</h4>
 	<div class="content tag-cloud" id="mydiv" style="overflow:hidden; height:220px;" runat="server" >
 	<div style=" text-align:center;">
               <div class="login_area">
+                  <form method="post" action="login.aspx?sf=xs" id="form1">
               <div id="login-main-form">
                   <div class="loginbox c_b">
                     <!-- 输入框 -->
@@ -561,6 +568,7 @@ img {
                   </div>
                
               </div>
+                      </form>
               </div>
             </div>
 
