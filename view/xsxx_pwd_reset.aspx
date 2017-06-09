@@ -52,6 +52,8 @@
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <asp:button ID="btn_confirm" runat="server" cssClass="layui-btn layui-btn-normal" Text="提交"/>
+                    &nbsp;&nbsp;
+                    <input type="button" id="btn_back" class="layui-btn layui-btn-normal" value="返回" />
                 </div>
             </div>
         </div>
@@ -68,7 +70,9 @@
                     parent.layer.open({ content: $("#tsxx").val(), title: '提示信息(30秒后自动关闭)', btn: ['关闭'], time: 30000 });
                     $("#tsxx").value = "";
                 }
-                               
+                $('#btn_back').on('click', function () {
+                    parent.window.history.go(-1);
+                });
             });
             layui.config({
                 base: 'plugins/layui/modules/'
