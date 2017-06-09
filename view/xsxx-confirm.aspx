@@ -218,7 +218,7 @@
                         </div>
                     </div>
                     <div class="layui-form-item" id="xx_confirm_div"   style="display:none;">
-                        <span style="color: red; margin-bottom: 10px; display: inline-block;">请核对相关信息；若信息有误及时联系辅导员并选择有误后确认，信息有误则暂时不能进行报到注册！</span>
+                        <span style="color: red; margin-bottom: 10px; display: inline-block;">说明：请核对自己相关信息，若信息有误及时联系辅导员（特别是专业、身份证等信息，将会影响收费和学籍信息）并选择有误后确认，信息有误则暂时不能进行报到注册！</span>
                         <div class="layui-input-block">
                             <input type="radio" name="xx_confirm" title="信息无误" value="0" checked="" />
                             <input type="radio" name="xx_confirm" title="信息有误" value="1" />
