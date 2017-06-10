@@ -426,12 +426,119 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
 
                     }
                     #endregion
-             
+            #region 清除床位信息
+
+            #endregion
         }
         catch (Exception e1)
         {
             ztts.Text = "<font color=red>操作出错:" + e1.Message+"</font>";
         }
     }
-   
+
+    protected void c_roomtype_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_roomtype.Checked)
+        {
+            c_dorm.Checked = true;
+            c_room.Checked = true;
+            c_bed.Checked = true;
+            c_bedyfpyx.Checked = true;
+            c_bedyfp.Checked = true;
+
+            //变灰
+            c_dorm.Enabled = false;
+            c_room.Enabled = false;
+            c_bed.Enabled = false;
+            c_bedyfpyx.Enabled = false;
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+            c_dorm.Enabled = true;
+            c_room.Enabled = true;
+            c_bed.Enabled = true;
+            c_bedyfpyx.Enabled = true;
+            c_bedyfp.Enabled = true;
+        }
+    }
+    protected void c_dorm_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_dorm.Checked)
+        {
+            c_room.Checked = true;
+            c_bed.Checked = true;
+            c_bedyfpyx.Checked = true;
+            c_bedyfp.Checked = true;
+            //变灰
+           
+            c_room.Enabled = false;
+            c_bed.Enabled = false;
+            c_bedyfpyx.Enabled = false;
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+            c_room.Enabled = true;
+            c_bed.Enabled = true;
+            c_bedyfpyx.Enabled = true;
+            c_bedyfp.Enabled = true;
+
+        }
+    }
+    protected void c_room_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_room.Checked)
+        {
+            c_bed.Checked = true;
+            c_bedyfpyx.Checked = true;
+            c_bedyfp.Checked = true;
+            //变灰
+
+           
+            c_bed.Enabled = false;
+            c_bedyfpyx.Enabled = false;
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+            c_bed.Enabled = true;
+            c_bedyfpyx.Enabled = true;
+            c_bedyfp.Enabled = true;
+        }
+    }
+    protected void c_bed_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_bed.Checked)
+        {
+            c_bedyfpyx.Checked = true;
+            c_bedyfp.Checked = true;
+            //变灰
+
+            c_bedyfpyx.Enabled = false;
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+           
+            c_bedyfpyx.Enabled = true;
+            c_bedyfp.Enabled = true;
+        }
+    }
+    protected void c_bedyfpyx_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_bedyfpyx.Checked)
+        {
+            c_bedyfp.Checked = true;
+            //变灰
+
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+
+          
+            c_bedyfp.Enabled = true;
+        }
+    }
 }
