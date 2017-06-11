@@ -12,90 +12,6 @@ using System.CodeDom.Compiler;
 using System.Reflection;
 using System.Data.SqlClient;
 
-/// 动态调用web服务 
-public class WSHelper
-{
-    /// < summary>           
-    /// 动态调用web服务         
-    /// < /summary>          
-    /// < param name="url">WSDL服务地址< /param> 
-    /// < param name="methodname">方法名< /param>           
-    /// < param name="args">参数< /param>           
-    /// < returns>< /returns>          
-    public static object InvokeWebService(string url, string methodname, object[] args)
-    {
-        return WSHelper.InvokeWebService(url, null, methodname, args);
-    }
-    /// < summary>          
-    /// 动态调用web服务 
-    /// < /summary>          
-    /// < param name="url">WSDL服务地址< /param>
-    /// < param name="classname">类名< /param>  
-    /// < param name="methodname">方法名< /param>  
-    /// < param name="args">参数< /param> 
-    /// < returns>< /returns>
-    public static object InvokeWebService(string url, string classname, string methodname, object[] args)
-    {
-        string @namespace = "EnterpriseServerBase.WebService.DynamicWebCalling";
-        if ((classname == null) || (classname == ""))
-        {
-            classname = WSHelper.GetWsClassName(url);
-        }
-        try
-        {                   //获取WSDL   
-            WebClient wc = new WebClient();
-            Stream stream = wc.OpenRead(url + "?wsdl");
-            ServiceDescription sd = ServiceDescription.Read(stream);
-            ServiceDescriptionImporter sdi = new ServiceDescriptionImporter();
-            sdi.AddServiceDescription(sd, "", "");
-            CodeNamespace cn = new CodeNamespace(@namespace);
-            //生成客户端代理类代码          
-            CodeCompileUnit ccu = new CodeCompileUnit();
-            ccu.Namespaces.Add(cn);
-            sdi.Import(cn, ccu);
-            CSharpCodeProvider icc = new CSharpCodeProvider();
-            //设定编译参数                 
-            CompilerParameters cplist = new CompilerParameters();
-            cplist.GenerateExecutable = false;
-            cplist.GenerateInMemory = true;
-            cplist.ReferencedAssemblies.Add("System.dll");
-            cplist.ReferencedAssemblies.Add("System.XML.dll");
-            cplist.ReferencedAssemblies.Add("System.Web.Services.dll");
-            cplist.ReferencedAssemblies.Add("System.Data.dll");
-            //编译代理类                 
-            CompilerResults cr = icc.CompileAssemblyFromDom(cplist, ccu);
-            if (true == cr.Errors.HasErrors)
-            {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                foreach (System.CodeDom.Compiler.CompilerError ce in cr.Errors)
-                {
-                    sb.Append(ce.ToString());
-                    sb.Append(System.Environment.NewLine);
-                }
-                throw new Exception(sb.ToString());
-            }
-            //生成代理实例，并调用方法   
-            System.Reflection.Assembly assembly = cr.CompiledAssembly;
-            Type t = assembly.GetType(@namespace + "." + classname, true, true);
-            object obj = Activator.CreateInstance(t);
-            System.Reflection.MethodInfo mi = t.GetMethod(methodname);
-            return mi.Invoke(obj, args);
-            // PropertyInfo propertyInfo = type.GetProperty(propertyname);     
-            //return propertyInfo.GetValue(obj, null); 
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.InnerException.Message, new Exception(ex.InnerException.StackTrace));
-        }
-    }
-    private static string GetWsClassName(string wsUrl)
-    {
-        string[] parts = wsUrl.Split('/');
-        string[] pps = parts[parts.Length - 1].Split('.');
-        return pps[0];
-    }
-}
-
 public class affair_operate_auth_msg
 {
     public bool isauth;
@@ -3887,4 +3803,27 @@ public class batch
         return result;
     }
 
+    //获取某学生未读通知
+    public System.Data.DataTable get_noreadmsg(string PK_SNO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select distinct(a.pk_no) as pk_no from vw_classmsg a,Base_STU b"
+                    + " where a.FK_Class_NO=b.FK_Class_NO and Disabled='on' and b.PK_SNO=@cs1"
+                    + " and not a.PK_NO in (select FK_NO_ClassMsg from ClassMsgStu where FK_SNO=@cs1)";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_noreadmsg", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 }
