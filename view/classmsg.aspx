@@ -108,28 +108,103 @@
       <asp:HiddenField ID="pk_sno" Value="" runat="server" />
     <asp:HiddenField ID="server_msg" Value="" runat="server" />
 
-     <div  id="contents" >   
-        <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
-                        <thead>
-                            <tr>        
-                                <th scope="col">标题</th>                        
-                                <th scope="col">日期</th>
-                                <th scope="col">状态</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>        
-                                <td scope="col">通知1</td>                        
-                                <td scope="col">2017-6-6</td>
-                                <td scope="col">未读</td>
-                            </tr>
-                                                        <tr>        
-                                <td scope="col">通知1</td>                        
-                                <td scope="col">2017-6-6</td>
-                                <td scope="col">未读</td>
-                            </tr>
-                        </tbody>
-                    </table>
+     <div  id="contents" >
+            <asp:GridView  ID="GridView1"  
+          runat="server" AutoGenerateColumns="False" CssClass="site-table table-hover" 
+            EmptyDataText="无通知消息！"  PageSize="5"
+            AllowPaging="True" AllowSorting="True" OnDataBound="GridView1_DataBound" OnPageIndexChanging="GridView1_PageIndexChanging">
+    <Columns>
+    <%--<asp:TemplateField>
+        <HeaderTemplate>
+                <input type="checkbox"  id="selected-all" class="noshow" name="selected-all" onclick="onclicksel();" />  
+        </HeaderTemplate>
+        <ItemTemplate>
+                <input id="BoxId" name="BoxId"  class="icheck noshow" value='<%#(Convert.ToString(Eval("PK_SNO")))%>' type="checkbox" /> 
+        </ItemTemplate>
+        <ItemStyle HorizontalAlign="Center" />
+        <HeaderStyle Width="2%"  HorizontalAlign="Center" />
+    </asp:TemplateField>--%>
+    
+    <asp:BoundField DataField="title" HeaderText="标题" SortExpression="title"/>
+    <asp:BoundField DataField="CreateDate" HeaderText="时间"   SortExpression="CreateDate"/>
+    <asp:TemplateField HeaderText="状态"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="pk_no">
+        
+        <ItemTemplate>
+        <%# show_disable(Eval("pk_no").ToString()) %>
+        </ItemTemplate>
+
+        <ItemStyle  />
+        </asp:TemplateField>
+
+    <%--<asp:BoundField DataField="Year" HeaderText="年级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"   SortExpression="Year">
+        
+    <ControlStyle CssClass="hidden-xs" />
+    <HeaderStyle CssClass="hidden-xs" />
+    <ItemStyle CssClass="hidden-xs" />
+    </asp:BoundField>--%>
+        <asp:TemplateField HeaderText="" >
+                 
+                <HeaderTemplate>操作
+
+                </HeaderTemplate>
+                <ItemTemplate>                
+             <a href="javascript: " msg ='<%# Eval("pk_no").ToString() %>'   class="layui-btn layui-btn-mini btn_show_msg"  title="消息查看">查看</a> <%--&nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
+              </asp:LinkButton>--%>
+            </ItemTemplate>
+                
+                </asp:TemplateField>
+
+    </Columns>
+    <PagerTemplate>
+<span style="float:left;padding-bottom: 8px;padding-top: 8px;" class="hidden-xs" >
+    &nbsp;&nbsp;总共：<%# Session["rowsCount"] %>&nbsp;行&nbsp;&nbsp;&nbsp;&nbsp;
+
+            每页 <asp:Label ID="LabelPageSize" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageSize %>"></asp:Label>
+            条 &nbsp;&nbsp;</span><span style="float:left;padding-bottom: 8px;padding-top: 8px;"  >当前<asp:Label ID="LabelCurrentPage" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>
+            /<asp:Label ID="Label3" runat="server" Text="<%# ((GridView)Container.NamingContainer).PageCount %>"></asp:Label>
+            页&nbsp;&nbsp;&nbsp;&nbsp;<asp:LinkButton ID="LinkButtonFirstPage" runat="server" CommandArgument="First"
+                CommandName="Page" Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=0 %>">首页</asp:LinkButton>
+            <asp:LinkButton ID="LinkButtonPreviousPage" runat="server" CommandArgument="Prev"
+                CommandName="Page" Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=0 %>">上一页</asp:LinkButton>
+                <%if (GridView1.PageCount >= 8 && GridView1.PageCount - GridView1.PageIndex >= 8)
+                  {
+                     
+                       %>
+                <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument="<%# ((GridView)Container.NamingContainer).PageIndex+2 %>"
+                CommandName="Page"><%# ((GridView)Container.NamingContainer).PageIndex+2 %></asp:LinkButton>
+                <asp:LinkButton ID="LinkButton3" runat="server" CommandArgument="<%# ((GridView)Container.NamingContainer).PageIndex+3 %>"
+                CommandName="Page"><%# ((GridView)Container.NamingContainer).PageIndex+3 %></asp:LinkButton>
+                <asp:LinkButton ID="LinkButton4" runat="server" CommandArgument="<%# ((GridView)Container.NamingContainer).PageIndex+4 %>"
+                CommandName="Page"><%# ((GridView)Container.NamingContainer).PageIndex+4 %></asp:LinkButton>
+               <asp:LinkButton ID="LinkButton5" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+5 %>"
+                CommandName="Page"><%#  ((GridView)Container.NamingContainer).PageIndex+6 %></asp:LinkButton> 
+                <asp:LinkButton ID="LinkButton6" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+6 %>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+6 %></asp:LinkButton>
+                <asp:LinkButton ID="LinkButton7" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+7 %>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+7 %></asp:LinkButton>
+                  <asp:LinkButton ID="LinkButton9" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+8 %>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+8 %></asp:LinkButton>
+
+                <%}
+                  else if (GridView1.PageCount >= 8 && GridView1.PageCount - GridView1.PageIndex >= 5)
+                  { %>
+                    <asp:LinkButton ID="LinkButton8" runat="server" CommandArgument="<%#((GridView)Container.NamingContainer).PageIndex+2%>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+2 %></asp:LinkButton>
+                <asp:LinkButton ID="LinkButton10" runat="server" CommandArgument="<%#((GridView)Container.NamingContainer).PageIndex+3 %>" CommandName="Page"> <%#  ((GridView)Container.NamingContainer).PageIndex+3 %></asp:LinkButton>
+                  <asp:LinkButton ID="LinkButton11" runat="server" CommandArgument="<%#  ((GridView)Container.NamingContainer).PageIndex+4 %>"
+                CommandName="Page" ><%#  ((GridView)Container.NamingContainer).PageIndex+4 %></asp:LinkButton>
+                    <%}%>
+
+            <asp:LinkButton ID="LinkButtonNextPage" runat="server" CommandArgument="Next" CommandName="Page"
+                Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">下一页</asp:LinkButton>
+            <asp:LinkButton ID="LinkButtonLastPage" runat="server" CommandArgument="Last" CommandName="Page"
+                Enabled="<%# ((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">尾页</asp:LinkButton>
+            &nbsp;&nbsp;&nbsp;&nbsp;<asp:TextBox ID="txt_go" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>
+
+            <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;
+        </PagerTemplate>
+    </asp:GridView>
+        
      </div>
 
     </form>
@@ -139,14 +214,9 @@
   <!--标签框架over-->
 
         </div>
-        <script type="text/javascript" src="../b_js/jquery.min2.js"></script>
-        <script type="text/javascript" src="../b_js/app/classmsg.js"></script>
-
+        <script type="text/javascript" src="../b_js/jquery.min2.js"></script>       
         <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
-
-        <script>
-            load();
-		</script>
+        <script type="text/javascript" src="../b_js/app/classmsg.js"></script>
 
 </body>
 </html>
