@@ -3826,4 +3826,32 @@ public class batch
         }
         return result;
     }
+
+    //获取某班级分配床位情况
+    public System.Data.DataTable get_classbedstudent(string PK_Class_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select a.*,d.FK_SNO,d.studentname from vw_class_beds a LEFT JOIN "
+                    +" (select c.name as studentname,b.* from Fresh_Bed_Log b,Base_STU c"
+                    +" where b.fk_sno=c.pk_sno and c.FK_Class_NO=@cs1) as d"
+                    +" on a.PK_Bed_NO=d.FK_Bed_NO"
+                    +" where a.PK_Class_NO=@cs1"
+                    + " order by a.Gender,a.Campus_Name,a.DormName,a.Floor,a.Room_NO,a.Bed_NO";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_Class_NO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_noreadmsg", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
 }
