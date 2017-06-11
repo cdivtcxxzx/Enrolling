@@ -173,7 +173,6 @@ function classchange(pk_class_no) {
 }
 
 function affairchange(pk_affair_no) {
-    console.log('hi,affair');
 }
 
 
