@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -43,7 +44,7 @@ public class WSHelper
         try
         {                   //获取WSDL   
             WebClient wc = new WebClient();
-            Stream stream = wc.OpenRead(url + "?WSDL");
+            Stream stream = wc.OpenRead(url + "?wsdl");
             ServiceDescription sd = ServiceDescription.Read(stream);
             ServiceDescriptionImporter sdi = new ServiceDescriptionImporter();
             sdi.AddServiceDescription(sd, "", "");
@@ -1095,19 +1096,23 @@ public class batch
                         /*Call_Function格式，web服务器url地址?方法名称，例如：http://localhost:3893/test/WebService.asmx?test_Log_Status*/
                         try
                         {
-                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                            string[] parts = url.Split('?');
-                            if (parts.Length != 2)
-                            {
-                                throw new Exception("函数格式错误");
-                            }
+                            //string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            //string[] parts = url.Split('?');
+                            //if (parts.Length != 2)
+                            //{
+                            //    throw new Exception("函数格式错误");
+                            //}
 
-                            url = parts[0];
-                            string method = parts[1];
-                            string[] args = new string[1];
-                            args[0] = row.FK_SNO;
-                            object data = WSHelper.InvokeWebService(url, method, args);
-                            string jg = data.ToString().Trim();
+                            //url = parts[0];
+                            //string method = parts[1];
+                            //string[] args = new string[1];
+                            //args[0] = row.FK_SNO;
+                            //object data = WSHelper.InvokeWebService(url, method, args);
+                            //string jg = data.ToString().Trim();
+
+                            string function_name = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string jg = AffairFuns.RunAffairFun(function_name, row.FK_SNO);
+
                             row.Log_Status = jg.Trim();
 
                             if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0)
@@ -1190,19 +1195,23 @@ public class batch
                         /*Call_Function格式，web服务器url地址?方法名称，例如：http://localhost:3893/test/WebService.asmx?test_Log_Status*/
                         try
                         {
-                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                            string[] parts = url.Split('?');
-                            if (parts.Length != 2)
-                            {
-                                throw new Exception("函数格式错误");
-                            }
+                            //string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            //string[] parts = url.Split('?');
+                            //if (parts.Length != 2)
+                            //{
+                            //    throw new Exception("函数格式错误");
+                            //}
 
-                            url = parts[0];
-                            string method = parts[1];
-                            string[] args = new string[1];
-                            args[0] = row.FK_SNO;
-                            object data = WSHelper.InvokeWebService(url, method, args);
-                            string jg = data.ToString().Trim();
+                            //url = parts[0];
+                            //string method = parts[1];
+                            //string[] args = new string[1];
+                            //args[0] = row.FK_SNO;
+                            //object data = WSHelper.InvokeWebService(url, method, args);
+                            //string jg = data.ToString().Trim();
+
+                            string function_name = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string jg = AffairFuns.RunAffairFun(function_name, row.FK_SNO);
+
                             row.Log_Status = jg.Trim();
 
                             if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0)
@@ -1284,19 +1293,22 @@ public class batch
                         /*Call_Function格式，web服务器url地址?方法名称，例如：http://localhost:3893/test/WebService.asmx?test_Log_Status*/
                         try
                         {
-                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                            string[] parts = url.Split('?');
-                            if (parts.Length != 2)
-                            {
-                                throw new Exception("函数格式错误");
-                            }
+                            //string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            //string[] parts = url.Split('?');
+                            //if (parts.Length != 2)
+                            //{
+                            //    throw new Exception("函数格式错误");
+                            //}
 
-                            url = parts[0];
-                            string method = parts[1];
-                            string[] args = new string[1];
-                            args[0] = row.FK_SNO;
-                            object data = WSHelper.InvokeWebService(url, method, args);
-                            string jg = data.ToString().Trim();
+                            //url = parts[0];
+                            //string method = parts[1];
+                            //string[] args = new string[1];
+                            //args[0] = row.FK_SNO;
+                            //object data = WSHelper.InvokeWebService(url, method, args);
+                            //string jg = data.ToString().Trim();
+
+                            string function_name = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string jg = AffairFuns.RunAffairFun(function_name, row.FK_SNO);
                             row.Log_Status = jg.Trim();
 
                             if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0 && jg.Trim() == "已完成")
@@ -1390,18 +1402,21 @@ public class batch
                     {
                         try
                         {
-                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                            string[] parts = url.Split('?');
-                            if (parts.Length != 2)
-                            {
-                                throw new Exception("函数格式错误");
-                            }
-                            url = parts[0];
-                            string method = parts[1];
-                            string[] args = new string[1];
-                            args[0] = row.FK_SNO;
-                            object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
-                            string jg = data.ToString().Trim();
+                            //string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            //string[] parts = url.Split('?');
+                            //if (parts.Length != 2)
+                            //{
+                            //    throw new Exception("函数格式错误");
+                            //}
+                            //url = parts[0];
+                            //string method = parts[1];
+                            //string[] args = new string[1];
+                            //args[0] = row.FK_SNO;
+                            //object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
+                            //string jg = data.ToString().Trim();
+
+                            string function_name = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string jg = AffairFuns.RunAffairFun(function_name, row.FK_SNO);
                             row.Log_Status = jg.Trim();
 
                             if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0)
@@ -1483,18 +1498,21 @@ public class batch
                     {
                         try
                         {
-                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                            string[] parts = url.Split('?');
-                            if (parts.Length != 2)
-                            {
-                                throw new Exception("函数格式错误");
-                            }
-                            url = parts[0];
-                            string method = parts[1];
-                            string[] args = new string[1];
-                            args[0] = row.FK_SNO;
-                            object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
-                            string jg = data.ToString().Trim();
+                            //string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            //string[] parts = url.Split('?');
+                            //if (parts.Length != 2)
+                            //{
+                            //    throw new Exception("函数格式错误");
+                            //}
+                            //url = parts[0];
+                            //string method = parts[1];
+                            //string[] args = new string[1];
+                            //args[0] = row.FK_SNO;
+                            //object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
+                            //string jg = data.ToString().Trim();
+
+                            string function_name = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string jg = AffairFuns.RunAffairFun(function_name, row.FK_SNO);
                             row.Log_Status = jg.Trim();
 
                             if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0)
@@ -1574,18 +1592,21 @@ public class batch
                     {
                         try
                         {
-                            string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                            string[] parts = url.Split('?');
-                            if (parts.Length != 2)
-                            {
-                                throw new Exception("函数格式错误");
-                            }
-                            url = parts[0];
-                            string method = parts[1];
-                            string[] args = new string[1];
-                            args[0] = row.FK_SNO;
-                            object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
-                            string jg = data.ToString().Trim();
+                            //string url = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            //string[] parts = url.Split('?');
+                            //if (parts.Length != 2)
+                            //{
+                            //    throw new Exception("函数格式错误");
+                            //}
+                            //url = parts[0];
+                            //string method = parts[1];
+                            //string[] args = new string[1];
+                            //args[0] = row.FK_SNO;
+                            //object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
+                            //string jg = data.ToString().Trim();
+
+                            string function_name = dt.Rows[i]["Call_Function"].ToString().Trim();
+                            string jg = AffairFuns.RunAffairFun(function_name, row.FK_SNO);
                             row.Log_Status = jg.Trim();
 
                             if (row.PK_Affair_Log != null && row.PK_Affair_Log.Trim().Length != 0 && jg.Trim() == "已完成")
@@ -3727,6 +3748,7 @@ public class batch
         return oDC.Base_STUs.Where(s => s.ID_NO.IndexOf(id_no) >= 0).ToList();
     }
 
+    //刷新所有当前有效学生迎新事务状态
     public void freshlog()
     {
         int count = 0;
@@ -3774,7 +3796,95 @@ public class batch
 
     }
 
- 
+    //获取某批次某班主任所管班级的通知列表
+    public System.Data.DataTable get_classmsgbystaff(string PK_Batch_NO, string PK_STAFF_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select * from vw_classmsg_classlist"
+                    +" where pk_no in ("
+                    +" select distinct(pk_no) "
+                    +" from vw_classmsg_classlist as t1,"
+                    +" ("
+                    +" select b.PK_Class_NO "
+                    +" from Fresh_Counseller a,Fresh_Class b"
+                    +" where a.fk_staff_no=@cs1 and a.FK_Class_NO=b.PK_Class_NO and a.FK_Class_NO in ("
+                    +" select DISTINCT(fk_class_no) from vw_fresh_student_base"
+                    +" where FK_Fresh_Batch=@cs2)"
+                    +" ) as t2"
+                    +" where t1.FK_Class_NO_STR like '%, '+rtrim(ltrim(t2.PK_Class_NO))+'%')"
+                    +" order by createdate DESC";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_STAFF_NO.Trim()),new SqlParameter("cs2", PK_Batch_NO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_classmsgbystaff", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 
+
+    //创建班级通知
+    public bool createclassmsg(string TITLE, string CONTENT, string AUTHOR, string[] CLASSLIST)
+    {
+        bool result = false;
+        try
+        {
+            if (TITLE == null || TITLE.Trim().Length == 0 || CONTENT == null || CONTENT.Trim().Length == 0
+                || AUTHOR == null || AUTHOR.Trim().Length == 0 || CLASSLIST == null || CLASSLIST.Length == 0)
+            {
+                return result;
+            }
+            int jg = 0;
+
+            string now = DateTime.Now.ToString().Trim();
+            string sqlstr = "insert into classmsg (Title,Content,CreateDate,Author,Disabled) values ("
+                            + "@cs1,@cs2,@cs3,@cs4,@cs5)";
+            jg = Sqlhelper.ExcuteNonQuery(sqlstr, 
+                new SqlParameter("cs1", TITLE.Trim()), 
+                new SqlParameter("cs2", CONTENT.Trim()), 
+                new SqlParameter("cs3", now.Trim()),
+                new SqlParameter("cs4", AUTHOR.Trim()),
+                new SqlParameter("cs5","on"));
+            if (jg == 0)
+            {
+                throw new Exception("insert错误");
+            }
+            sqlstr = "select * from classmsg"
+                    + " where Title=@cs1 and Author=@cs2 and CreateDate=@cs3 and Disabled=@cs4";
+            System.Data.DataTable data = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", TITLE.Trim()), 
+                new SqlParameter("cs2", AUTHOR.Trim()),
+                new SqlParameter("cs3", now.Trim()),
+                new SqlParameter("cs4", "on"));
+            if (data==null || data.Rows.Count!=1)
+            {
+                throw new Exception("数据错误");
+            }
+            string PK_NO = data.Rows[0]["PK_NO"].ToString().Trim();
+            for (int i = 0; i < CLASSLIST.Length; i++)
+            {
+                sqlstr = "insert into classmsgobj (FK_NO_ClassMsg,FK_Class_NO) values (@cs1,@cs2)";
+                jg = Sqlhelper.ExcuteNonQuery(sqlstr, new SqlParameter("cs1", PK_NO.Trim()),new SqlParameter("cs2", CLASSLIST[i].Trim()));
+            }
+            result = true;
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "createclassmsg", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
 
 }
