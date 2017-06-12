@@ -2,12 +2,13 @@
 
 <script runat="server">
 
-    public static string zrlaiy = "新版新闻网站";//记录来源
-    public static string zrsql = "Data Source=bds250590547.my3w.com;Initial Catalog=bds250590547_db; User ID=bds250590547;Password=cdfhsql2016";//用来记录注入的SQL连接 
+    public static string zrlaiy = "新生报到系统";//记录来源
+    public static string zrsql = "Data Source=118.114.252.173,20933;Initial Catalog=yxxt_data; User ID=sa;Password=123!@#qwe";//用来记录注入的SQL连接 
     public static string fwjlop = "0";//是否记录所有页面访问记录，1为开，0为不开启
     //需过滤的注入关键字
-    public static string word = "win.ini|boot.ini|concat|exec|insert|select|delete|update|master|truncate|declare|join|script|sysadmin|create|char|union|extractvalue|updatexml|xmlelement|<div style=\"display:none\">|substr|group by|unhex|(0x";
-    public static string wzkey = "教育信息化工作委员会";
+    //public static string word = "win.ini|boot.ini|concat|exec|insert|select|delete|update|master|truncate|declare|join|script|sysadmin|create|char|union|extractvalue|updatexml|xmlelement|<div style=\"display:none\">|substr|group by|unhex|(0x";
+    public static string word = "";
+    public static string wzkey = "新生报到系统";
    // public static string usernamea = "匿名a";
 
     private void myTime(object sender, System.Timers.ElapsedEventArgs e)
@@ -397,6 +398,7 @@
                 if (i == "__VIEWSTATE") continue;
                 if (i == "__EVENTVALIDATION") continue;
                 this.goErr(this.Request.Form[i].ToString(), "form");
+                Response.Write("<br>form:" + this.Request.Form[i].ToString());
 
             }
             //遍历Get参数。
@@ -408,6 +410,7 @@
                 else
                 {
                     this.goErr(this.Request.QueryString[i].ToString(), "query");
+                    Response.Write("<br>get:" + this.Request.QueryString[i].ToString());
                 }
             }
         }
@@ -420,8 +423,8 @@
         string username = SqlFilter2(tm, rque);
         if ( username!= "false")
         {
-
-            Response.Redirect("/404/?id=" + HttpUtility.HtmlEncode("|错误时间：" + DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss") + "||问题提示：[" + HttpContext.Current.Request.UserHostAddress + "]请勿非法操作网站,如果10次非法访问,将禁止访问!||若您是正常操作出现此提示请与联系!") + "&username=" + username);
+            Response.Write(username);
+            //Response.Redirect("/404/?id=" + HttpUtility.HtmlEncode("|错误时间：" + DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss") + "||问题提示：[" + HttpContext.Current.Request.UserHostAddress + "]请勿非法操作网站,如果10次非法访问,将禁止访问!||若您是正常操作出现此提示请与联系!") + "&username=" + username);
             //如果有恶意参数，跳转
             Response.End();
             
