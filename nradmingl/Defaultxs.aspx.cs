@@ -139,7 +139,7 @@ public partial class nradmingl_Defaultxs : System.Web.UI.Page
         #endregion
         if (Session["username"] != null)
         {
-            this.xsxxurl.HRef = "xsjbxx.aspx?pk_affair_no=11&pk_sno=" + Session["username"].ToString() + "";
+            //this.xsxxurl.HRef = "/view/xsjbxx.aspx?pk_affair_no=11&pk_sno=" + Session["username"].ToString() + "";
         }
         else
         {
