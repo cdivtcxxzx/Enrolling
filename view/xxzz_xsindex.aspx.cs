@@ -48,6 +48,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             this.xszt_wsjf.InnerHtml = "<font color=red>未完成</font>";//网上缴费
             this.xszt_czqs.InnerHtml = "<font color=red>未完成</font>";//选择寝室
             this.xszt_xxws.InnerHtml = "<font color=red>未完成</font>";//信息完善
+            this.xszt_tzgg.InnerHtml = "<font color=red>未完成</font>";//通知公告
 
             //详细情况
             this.xsztxq_bdzc.InnerHtml = "";//报到注册
@@ -55,6 +56,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             this.xsztxq_wsjh.InnerHtml = "";//网上缴费
             this.xsztxq_xzqs.InnerHtml = "";//选择寝室
             this.xsztxq_xxws.InnerHtml = "";//信息完善
+            this.xsztxq_tzgg.InnerHtml = "";//通知公告
 
             //图片状态更改说明
             zttp1.Src = "../images/xszt/1.png";//状态已完成：1.png 未完成1-1.png
@@ -62,10 +64,24 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             zttp3.Src = "../images/xszt/3-3.png";//状态已完成：3.png 未完成3-3.png
             zttp4.Src = "../images/xszt/4-4.png";//状态已完成：4.png 未完成4-4.png
             zttp5.Src = "../images/xszt/5-5.png";//状态已完成：5.png 未完成5-5.png
-            zttp6.Src = "../images/xszt/w6-6.png";//状态已完成：w4.png 未完成w4-4.png
+            zttp6.Src = "../images/xszt/w6-6.png";//状态已完成：w6.png 未完成w6-6.png
 
 
             batch batch_logic = new batch();
+            System.Data.DataTable dtmsg = batch_logic.get_noreadmsg(xh);//获取发给学生的未读通知
+            if (dtmsg != null && dtmsg.Rows.Count > 0)
+            {
+                zttp6.Src = "../images/xszt/w6.png";
+                this.xszt_tzgg.InnerHtml = "<font color=red>"+dtmsg.Rows.Count.ToString().Trim()+"条通知未读</font>";//通知公告
+                this.xsztxq_tzgg.InnerHtml = "";//通知公告
+            }
+            else
+            {
+                zttp6.Src = "../images/xszt/w6.png";
+                this.xszt_tzgg.InnerHtml = "<font color=green></font>";//通知公告
+                this.xsztxq_tzgg.InnerHtml = "";//通知公告
+            }
+
             List<fresh_affair_log> affairlog_list = batch_logic.get_studentaffairlog_list(xh);//事务日志列表
             if (affairlog_list != null)
             {

@@ -2516,6 +2516,59 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region 获取某批次某班主任所管班级的通知列表
+                if (cs.Trim().Equals("get_classmsgbystaff"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    string pk_staff_no = Request.QueryString.Get("pk_staff_no");
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0 && pk_staff_no != null && pk_staff_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_classmsgbystaff(pk_batch_no, pk_staff_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
+                #region  创建班级通知
+                if (cs.Trim().Equals("createclassmsg"))
+                {
+                    string title = Request.Form.Get("title");
+                    string content = Request.Form.Get("content");
+                    string author = Request.Form.Get("author");
+                    string classliststr = Request.Form.Get("classliststr");
+
+                    if (title != null && title.Trim().Length != 0 && content != null && content.Trim().Length != 0
+                        && author != null && author.Trim().Length != 0 && classliststr != null && classliststr.Trim().Length != 0)
+                    {
+                        string[] classlist = null;
+                        classlist = classliststr.Split(',');
+                        batch batch_logic = new batch();
+                        batch_logic.createclassmsg(title, content, author, classlist);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = null;
+                    }
+                }
+                #endregion
+
+                #region 获取某班级分配床位情况
+                if (cs.Trim().Equals("get_classbedstudent"))
+                {
+                    string pk_class_no = Request.QueryString.Get("pk_class_no");
+                    if (pk_class_no != null && pk_class_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_classbedstudent(pk_class_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
+
             }
         }
         catch (Exception ex)
