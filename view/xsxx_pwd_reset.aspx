@@ -34,7 +34,7 @@
         </asp:ScriptManager>
          
         <div class="container">
-            <asp:label runat="server" ID="ts" CssClass="tishi" Text="" >请输入高考报名号和身份证号，密码将重置为身份证号后六位。</asp:label>
+            <asp:label runat="server" ID="ts" CssClass="tishi" Text="" >请输入高考报名号和身份证号，密码将重置为身份证号后八位。</asp:label>
             <div class="layui-form-item">
                 <label class="layui-form-label">报名号：</label>
                 <div class="layui-input-block">
@@ -71,7 +71,7 @@
                     $("#tsxx").value = "";
                 }
                 $('#btn_back').on('click', function () {
-                    parent.window.history.go(-1);
+                    window.history.go(-1);
                 });
             });
             layui.config({

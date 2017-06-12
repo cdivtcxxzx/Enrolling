@@ -18,7 +18,7 @@
             , id: 'msg' + msg_pk
             , content: 'classmsg_detail.aspx?msg='+msg_pk
             , end: function () {
-                window.parent.location.reload();              
+                window.location.reload();              
             }
         });
 

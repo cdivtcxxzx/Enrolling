@@ -18,7 +18,7 @@ public partial class view_xsxx_pwd_reset : System.Web.UI.Page
             Base_STU stu = organizationService.getStuDataBySFZ(ID_NO);
             if (stu != null && stu.Test_NO == Test_NO)
             {
-                stu.Password = stu.ID_NO.Substring(12, 6);
+                stu.Password = stu.ID_NO.Substring(10, 8);
                 if (organizationService.stuUpdate(stu.PK_SNO, stu))
                 {
                     tsxx.Value = "重置成功，请重新登录！";

@@ -127,7 +127,7 @@
     
     <asp:BoundField DataField="title" HeaderText="标题" SortExpression="title"/>
     <asp:BoundField DataField="CreateDate" HeaderText="时间"   SortExpression="CreateDate"/>
-    <asp:TemplateField HeaderText="状态"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="pk_no">
+    <asp:TemplateField HeaderText="状态"  ControlStyle-CssClass="hidden-xs"   SortExpression="pk_no">
         
         <ItemTemplate>
         <%# show_disable(Eval("pk_no").ToString()) %>
