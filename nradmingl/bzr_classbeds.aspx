@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="bzr_stu_status.aspx.cs" Inherits="nradmingl_Default3" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="bzr_classbeds.aspx.cs" Inherits="view_bzr_classbeds" %>
 
 <!DOCTYPE html>
 
@@ -44,10 +44,9 @@
 <%--              <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />--%>
         <div class="admin-main">
             <blockquote class="layui-elem-quote">
-                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>新生状态总览           
+                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>查看宿舍分配           
             </blockquote>
-            <div>
-                
+            <div>                
                 <div class="layui-form-item">
                     <!--迎新批次下拉列表-->
                     <div class="layui-inline">
@@ -71,18 +70,47 @@
                             </select>
                         </div>
                     </div>
-                     <div class="layui-inline" style="margin-bottom:0px;">
-                         <a href="#" onclick="getstudentstatus();" class="layui-btn layui-btn-small hidden-xs">
-					    <i class="layui-icon">&#x1002;</i> 刷新
-				        </a>
-                    </div> 
 
-                    <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="tjlist" style="border-collapse: collapse;">
 
+                <div class="layui-form-item" style="margin-bottom:0px;">
+                    <table class="site-table table-hover" cellspacing="0" rules="all" border="1" style="border-collapse: collapse;">
+                        <tr>
+                            <td id="count">学生总计：0人<</td>
+                            <td id="boy_count">男生：0人</td>
+                            <td id="girl_count">女生：0人</td>
+                        </tr>
+                        <tr>
+                            <td id="bed_count">床位总数：0张</td>
+                            <td id="bed_boy_count">男床位：0张</td>
+                            <td id="bed_girl_count">女床位：0张</td>
+                        </tr>
+                        <tr>
+                            <td id="stu_bed_count">已分床位总数：0张</td>
+                            <td id="stu_bed_boy_count">已分男床位：0张</td>
+                            <td id="stu_bed_girl_count">已分女床位：0张</td>
+                        </tr>
                     </table>
+
                    
                     <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
+                        <thead>
+                            <tr>        
+                                <th scope="col">序号</th>                        
+                                <th scope="col">校区</th>
+                                <th scope="col">宿舍</th>
+                                <th scope="col">楼层</th>
+                                <th scope="col">房间类型</th>
+                                <th scope="col">房间号</th>
+                                <th scope="col">类别</th>
+                                <th scope="col">床号</th>
+                                <th scope="col">位置</th>
+                                <th scope="col">姓名</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
+                        </tbody>
                     </table>
 
                 </div>
@@ -91,7 +119,7 @@
         </div>
     </form>
         <script type="text/javascript" src="../b_js/jquery.min2.js"></script>
-        <script type="text/javascript" src="../b_js/app/bzr_stu_status.js"></script>
+        <script type="text/javascript" src="../b_js/app/bzr_classbeds.js"></script>
 
 <%--        <script type="text/javascript" src="plugins/layui/layui.js"></script>--%>
     <script>
@@ -100,6 +128,6 @@
         //    var form = layui.form(); //只有执行了这一步，部分表单元素才会修饰成功
         //});
     </script>
+
 </body>
-   
 </html>

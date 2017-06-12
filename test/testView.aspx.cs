@@ -113,8 +113,26 @@ public partial class test_testView : System.Web.UI.Page
         //    Response.Write("<br/>");
 
         //测试批次时间判断
-        DateTime tsts = Convert.ToDateTime("2007-10-6 00:12:00");
-        Response.Write(organizationService.isInEnableBatch(tsts));
+        //DateTime tsts = Convert.ToDateTime("2017-6-6 00:12:00");
+        //Response.Write(organizationService.isInEnableBatch(tsts));
+
+        //测试信息获取
+        //List<ClassMsgObj> dt = messageService.getMsgsByClassNO("2017010022");
+
+        //foreach (var item in dt)
+        //{
+        //    Response.Write(item.PK_NO + "<br/>");
+        //}
+
+        var dt = messageService.getListMsgsByClassNO("2017010022");
+        foreach (var item in dt)
+        {
+            Response.Write(item);
+        }
+
+        //测试信息插入
+        //string iseeee = messageService.addStuReadMsg("1", "201756010203010");
+        //Response.Write(iseeee);
         
     }
     //测试导出
