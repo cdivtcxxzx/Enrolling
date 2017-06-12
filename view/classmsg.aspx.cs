@@ -123,14 +123,13 @@ public partial class view_classmsg : System.Web.UI.Page
 
     public string show_disable(string pk_no)
     {
-        string pk_sno = "201756010203010";
+        string pk_sno = "";
         string result = "";
-        //if (Session["username"] == null)
-        //{
-        //    
-        //    return result;
-        //}
-
+        if (Session["username"] == null)
+        {
+            return result;
+        }
+        pk_sno = Session["username"].ToString();
         if (messageService.isStuReadMsg(pk_no, pk_sno))
             result = "<span style='color:blue'>已阅读</span>";
         else

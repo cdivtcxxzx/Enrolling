@@ -12,13 +12,13 @@ public partial class view_classmsg_detail : System.Web.UI.Page
     {
         string pk_sno = null;//获取学号
         string msg = Request.QueryString["msg"].Trim();//获取msg主键
-        //if (Session["username"] == null)
-        //{
-        //    this.server_msg.Value = "参数错误";
-        //    return;
-        //}
-        //pk_sno = Session["username"].ToString().Trim();
-        pk_sno = "201756010203010";
+        if (Session["username"] == null)
+        {
+            msg_label.Text = "参数错误";
+            return;
+        }
+       pk_sno = Session["username"].ToString().Trim();
+        //pk_sno = "201756010203010";
 
         if(!messageService.isStuReadMsg(msg,pk_sno))
         {
