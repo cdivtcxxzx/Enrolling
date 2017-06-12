@@ -25,7 +25,7 @@
             </SelectParameters>
         </asp:ObjectDataSource>
         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />--%>
-
+        <img src="../nradmingl/yanzhengma.aspx" alt="点击刷新" style="width:100px;height:38px" />
     </form>
 </body>
 

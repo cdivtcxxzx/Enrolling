@@ -131,8 +131,13 @@ public partial class test_testView : System.Web.UI.Page
         //}
 
         //测试信息插入
-        string iseeee = messageService.addStuReadMsg("1", "201756010203010");
-        Response.Write(iseeee);
+        //string iseeee = messageService.addStuReadMsg("1", "201756010203010");
+        //Response.Write(iseeee);
+
+        //validatedCode v = new validatedCode();
+        //string code = v.CreateVerifyCode();
+        //v.CreateImageOnPage(code, this.Context);
+        
         
     }
     //测试导出

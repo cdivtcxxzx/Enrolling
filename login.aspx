@@ -92,7 +92,7 @@
                             <span class="country_code"><tt class="countrycode-value" id="countrycode_value"></tt><i class="icon_arrow_down"></i></span>
                           </div>
                         </div>
-                        <input　runat="server" class="item_account" autocomplete="off" type="text" name="txt_name" id="txt_name" placeholder="请输入用户帐号">
+                        <input　runat="server" class="item_account" autocomplete="off" type="text" name="txt_name" id="txt_name" placeholder="请输入用户帐号" />
                       </label>
                       <div class="country-container" id="countrycode_container" style="display: none;">
                         <div class="country_container_con" id="countrycode_container_con"></div>
@@ -110,7 +110,25 @@
 
                         &nbsp;<input type="text" placeholder="请输入密码" autocomplete="off" id="visiablePwd" style="display:none">
                       </label>
-                    </div>
+
+                        <label id="region-code" class="labelbox" for="">
+                            <div style="float:left;width:250px">
+                                <input runat="server"  class="item_account" autocomplete="off" type="text" name="txt_validate" id="txt_validate" placeholder="请输入验证码" />
+                            </div>
+                            <div style="float:right;width:100px">
+                                <image src="nradmingl/yanzhengma.aspx" id="img_yzm" style="width:100px;height:45px;cursor:pointer" />
+                                
+                            </div>
+                        
+                      </label>
+                        <script type="text/javascript">
+                            var img = document.getElementById('img_yzm');
+                            img.onclick = function () {
+                                img.src = 'http://localhost:3893/nradmingl/yanzhengma.aspx?temp=' + Date.now();
+                            }
+                         </script>
+                        
+</div>
                     <div class="security_Controller" style="display: none;">
                       <label class="checkbox_area"><input type="checkbox" id="trustSecurityController" class="checkbox">使用安全控件</label>
                     </div>
