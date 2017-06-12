@@ -124,15 +124,15 @@ public partial class test_testView : System.Web.UI.Page
         //    Response.Write(item.PK_NO + "<br/>");
         //}
 
-        //var dt = messageService.getListMsgsByClassNO("2017010022");
-        //foreach (var item in dt)
-        //{
-        //    Response.Write(item);
-        //}
+        var dt = messageService.getListMsgsByClassNO("2017010022");
+        foreach (var item in dt)
+        {
+            Response.Write(item);
+        }
 
         //测试信息插入
-        string iseeee = messageService.addStuReadMsg("1", "201756010203010");
-        Response.Write(iseeee);
+        //string iseeee = messageService.addStuReadMsg("1", "201756010203010");
+        //Response.Write(iseeee);
         
     }
     //测试导出

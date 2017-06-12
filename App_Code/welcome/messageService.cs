@@ -34,6 +34,7 @@ public static class messageService
         var msgs = from m in mDC.ClassMsgs
                    join mObj in mDC.ClassMsgObjs on m.PK_NO equals mObj.FK_NO_ClassMsg
                    where mObj.FK_Class_NO == fk_class_no && m.Disabled == "on"
+                   orderby m.CreateDate descending
                    select new
                    {
                        pk_no = m.PK_NO,
@@ -55,6 +56,7 @@ public static class messageService
         var msgs = from m in mDC.ClassMsgs
                    join mObj in mDC.ClassMsgObjs on m.PK_NO equals mObj.FK_NO_ClassMsg
                    where mObj.FK_Class_NO == fk_class_no && m.Disabled == "on"
+                   orderby m.CreateDate  descending
                    select new
                    {
                        pk_no = m.PK_NO,
