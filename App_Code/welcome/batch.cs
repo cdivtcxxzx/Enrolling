@@ -1074,14 +1074,6 @@ public class batch
             {
                 return null;
             }
-
-            //string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
-            //                "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
-            //                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
-            //                " from vw_fresh_student_base a,Fresh_Batch b," +
-            //                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
-            //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
-            //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='SCHOOL' or upper(c.Affair_Type)='BOTH')";
             string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
                             "(case when d.Log_Status is null then c.InitStatus else d.Log_Status end) as Log_Status," +
                             "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
@@ -1105,26 +1097,10 @@ public class batch
                     row.Updater = dt.Rows[i]["Updater"].ToString().Trim();//更新者
                     row.Update_DT = dt.Rows[i]["Update_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Update_DT"].ToString());//更新时间
 
-                    //if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
                     if (dt.Rows[i]["Log_Status"].ToString().Trim() != "已完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
                     {
-                        /*Call_Function格式，web服务器url地址?方法名称，例如：http://localhost:3893/test/WebService.asmx?test_Log_Status*/
                         try
                         {
-                            //string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                            //string[] parts = url.Split('?');
-                            //if (parts.Length != 2)
-                            //{
-                            //    throw new Exception("函数格式错误");
-                            //}
-
-                            //url = parts[0];
-                            //string method = parts[1];
-                            //string[] args = new string[1];
-                            //args[0] = row.FK_SNO;
-                            //object data = WSHelper.InvokeWebService(url, method, args);
-                            //string jg = data.ToString().Trim();
-
                             string function_name = dt.Rows[i]["Call_Function"].ToString().Trim();
                             string jg = AffairFuns.RunAffairFun(function_name, row.FK_SNO);
 
@@ -1379,13 +1355,6 @@ public class batch
                 return null;
             }
 
-            //string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
-            //                "(case when d.Log_Status='已完成' or d.Log_Status=NULL then '已完成' else '未完成' end) as Log_Status," +
-            //                "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
-            //                " from vw_fresh_student_base a,Fresh_Batch b," +
-            //                "Fresh_Affair c LEFT JOIN (select * from Fresh_Affair_Log where FK_SNO=@cs1) d on c.PK_Affair_NO=d.FK_Affair_NO " +
-            //                " where a.FK_Fresh_Batch=b.PK_Batch_NO and c.FK_Batch_NO=b.PK_Batch_NO" +
-            //                " and  a.PK_SNO=@cs1 and upper(c.Affair_CHAR)='INTERACTIVE' and (upper(c.Affair_Type)='STUDENT' or upper(c.Affair_Type)='BOTH')";
             string sqlstr = "select d.PK_Affair_Log,a.PK_SNO as FK_SNO,c.PK_Affair_NO as FK_Affair_NO," +
                 "(case when d.Log_Status is null then c.InitStatus else d.Log_Status end) as Log_Status," +
                 "d.Creater,d.Create_DT,d.Updater,d.Update_DT,c.Call_Function" +
@@ -1409,24 +1378,10 @@ public class batch
                     row.Updater = dt.Rows[i]["Updater"].ToString().Trim();//更新者
                     row.Update_DT = dt.Rows[i]["Update_DT"] is DBNull ? DateTime.Now : DateTime.Parse(dt.Rows[i]["Update_DT"].ToString());//更新时间
 
-                    //if (dt.Rows[i]["Log_Status"].ToString().Trim() == "未完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
                     if (dt.Rows[i]["Log_Status"].ToString().Trim() != "已完成" && dt.Rows[i]["Call_Function"] != null && dt.Rows[i]["Call_Function"].ToString().Trim().Length != 0)
                     {
                         try
                         {
-                            //string url = dt.Rows[i]["Call_Function"].ToString().Trim();
-                            //string[] parts = url.Split('?');
-                            //if (parts.Length != 2)
-                            //{
-                            //    throw new Exception("函数格式错误");
-                            //}
-                            //url = parts[0];
-                            //string method = parts[1];
-                            //string[] args = new string[1];
-                            //args[0] = row.FK_SNO;
-                            //object data = WSHelper.InvokeWebService(url, method, args);//动态调用webservice格式的回调函数
-                            //string jg = data.ToString().Trim();
-
                             string function_name = dt.Rows[i]["Call_Function"].ToString().Trim();
                             string jg = AffairFuns.RunAffairFun(function_name, row.FK_SNO);
                             row.Log_Status = jg.Trim();
