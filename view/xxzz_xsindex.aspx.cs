@@ -72,14 +72,14 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             if (dtmsg != null && dtmsg.Rows.Count > 0)
             {
                 zttp6.Src = "../images/xszt/w6.png";
-                this.xszt_tzgg.InnerHtml = "<font color=red>"+dtmsg.Rows.Count.ToString().Trim()+"条通知未读</font>";//通知公告
-                this.xsztxq_tzgg.InnerHtml = "";//通知公告
+                this.xszt_tzgg.InnerHtml = "<font color=red>"+dtmsg.Rows.Count.ToString().Trim()+"条未读</font>";//通知公告
+                //this.xsztxq_tzgg.InnerHtml = "";//通知公告
             }
             else
             {
                 zttp6.Src = "../images/xszt/w6.png";
                 this.xszt_tzgg.InnerHtml = "<font color=green></font>";//通知公告
-                this.xsztxq_tzgg.InnerHtml = "";//通知公告
+                //this.xsztxq_tzgg.InnerHtml = "";//通知公告
             }
 
             List<fresh_affair_log> affairlog_list = batch_logic.get_studentaffairlog_list(xh);//事务日志列表
@@ -145,11 +145,11 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
                 {
                     if (!has_must)
                     {
-                        this.xsztxq_wsjh.InnerHtml = has_must_log;//网上缴费
+                        //this.xsztxq_wsjh.InnerHtml = has_must_log;//网上缴费
                     }
                     else
                     {
-                        this.xsztxq_wsjh.InnerHtml = has_order_log;//网上缴费
+                        //this.xsztxq_wsjh.InnerHtml = has_order_log;//网上缴费
                     }
                 }
             }         

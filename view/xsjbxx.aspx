@@ -68,9 +68,7 @@
     		<blockquote class="layui-elem-quote">
           
             <i class="layui-icon">&#xe602;</i>自助报到>>学生信息
-            <span style="float:right"  id="btnback">
-            
-				
+            <span style="float:right"  id="btnback">            				
                  <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>

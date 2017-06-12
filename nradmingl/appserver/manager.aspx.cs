@@ -60,13 +60,13 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
         try {
 
             #region 检测用户是否登陆
-            //Object se_pk_sno = Session["pk_sno"];//获取学号
-            //Object se_pk_staff_no = Session["pk_staff_no"];//获取员工编号
+            Object se_pk_sno = Session["pk_sno"];//获取学号
+            Object se_pk_staff_no = Session["pk_staff_no"];//获取员工编号
 
-            //if ((se_pk_sno == null || se_pk_sno.ToString().Trim().Length == 0) && (se_pk_staff_no == null || se_pk_staff_no.ToString().Trim().Length == 0))
-            //{
-            //    result.message = "非授权访问";
-            //}
+            if ((se_pk_sno == null || se_pk_sno.ToString().Trim().Length == 0) && (se_pk_staff_no == null || se_pk_staff_no.ToString().Trim().Length == 0))
+            {
+                result.message = "非授权访问";
+            }
             #endregion
 
             string cs = Request.QueryString["cs"];//获取get的参数

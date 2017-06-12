@@ -43,11 +43,11 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">新密码：</label>
                     <div class="layui-input-inline">
-                        <input id="pwd1" type="password" name="password" lay-verify="pass" placeholder="字母或数字6-10位" autocomplete="off" class="layui-input">
+                        <input id="pwd1" type="password" name="password" lay-verify="pass" placeholder="8-10位字母数字特殊字符" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">重复输入新密码：</label>
+                    <label class="layui-form-label">新密码：</label>
                     <div class="layui-input-inline">
                         <input id="pwd2" type="password" name="password" lay-verify="same" placeholder="重复输入新密码" autocomplete="off" class="layui-input">
                     </div>
