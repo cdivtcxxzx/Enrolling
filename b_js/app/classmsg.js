@@ -16,7 +16,7 @@
             , btn: ['关闭']
             , shade: 0.7
             , id: 'msg' + msg_pk
-            , content: 'classmsg_detail.aspx?msg='+msg_pk
+            , content: '../view/classmsg_detail.aspx?msg='+msg_pk
             , end: function () {
                 window.location.reload();              
             }
