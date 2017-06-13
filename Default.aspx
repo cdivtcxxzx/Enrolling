@@ -28,7 +28,8 @@
    <script src="./bootstrap/3.3.4/js/bootstrap.min.js"></script>
    
 
-  <script src="./layer/layer.js"></script>
+  <script src="./layer/layer.js"></script>
+
     <script>
         var _hmt = _hmt || [];
     </script>
@@ -496,7 +497,8 @@ img {
 	<div class="content tag-cloud" id="mydiv" style="overflow:hidden; height:220px;" runat="server" >
 	<div style=" text-align:center;">
               <div class="login_area">
-                  <form method="post" action="login.aspx?sf=xs" id="form1">
+                  <form method="post" action="login.aspx?sf=xs&dl=default" id="form1">
+
               <div id="login-main-form">
                   <div class="loginbox c_b">
                     <!-- 输入框 -->
