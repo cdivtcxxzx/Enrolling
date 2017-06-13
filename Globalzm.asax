@@ -6,8 +6,8 @@
     public static string zrsql = "Data Source=118.114.252.173,20933;Initial Catalog=yxxt_data; User ID=sa;Password=123!@#qwe";//用来记录注入的SQL连接 
     public static string fwjlop = "0";//是否记录所有页面访问记录，1为开，0为不开启
     //需过滤的注入关键字
-    //public static string word = "win.ini|boot.ini|concat|exec|insert|select|delete|update|master|truncate|declare|join|script|sysadmin|create|char|union|extractvalue|updatexml|xmlelement|<div style=\"display:none\">|substr|group by|unhex|(0x";
-    public static string word = "";
+    public static string word = "win.ini|boot.ini|concat|exec|insert|select|delete|update|master|truncate|declare|join|script|sysadmin|create|char|union|extractvalue|updatexml|xmlelement|<div style=\"display:none\">|substr|group by|unhex|(0x";
+   // public static string word = "";
     public static string wzkey = "新生报到系统";
    // public static string usernamea = "匿名a";
 
@@ -426,7 +426,7 @@
             Response.Write(username);
             //Response.Redirect("/404/?id=" + HttpUtility.HtmlEncode("|错误时间：" + DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss") + "||问题提示：[" + HttpContext.Current.Request.UserHostAddress + "]请勿非法操作网站,如果10次非法访问,将禁止访问!||若您是正常操作出现此提示请与联系!") + "&username=" + username);
             //如果有恶意参数，跳转
-            Response.End();
+            //Response.End();
             
         }
     }
@@ -438,33 +438,36 @@
         
         if (InText == null)
             return "false";
-        foreach (string i in word.Split('|'))
+        try
         {
-            //string.ToLower()是小写的意思  
+            foreach (string i in word.Split('|'))
+            {
+                //string.ToLower()是小写的意思  
 
-            if (InText.ToString().Length > 200 || InText.ToLower().Contains(i) || (InText.ToLower().Contains("and") && InText.ToLower().Contains("or")))
+                if (InText.ToString().Length > 200 || InText.ToLower().Contains(i) || (InText.ToLower().Contains("and") && InText.ToLower().Contains("or")))
                 {
                     //写入日志
-                    string fitmc = i.ToString();
-                    if((InText.ToLower().Contains("and")&& InText.ToLower().Contains("or")))fitmc="andor";
-                    if (InText.ToString().Length > 200) fitmc = "大于200字符";
+                    string fitmc = i.ToString() + "@";
+                    if ((InText.ToLower().Contains("and") && InText.ToLower().Contains("or"))) fitmc += "andor";
+                    if (InText.ToString().Length > 200) fitmc += "大于200字符";
+                    fitmc += "@当前验证：" + InText.ToString() + "<br>";
                     //获得当前IP
                     string ipok = HttpContext.Current.Request.UserHostAddress;
                     //获得当前页面
 
                     string urlok = "未获取到地址";
                     urlok = HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.Url.PathAndQuery;
-                    string khd = (HttpContext.Current.Request.UserAgent + "").ToLower().Trim()+"|" + HttpContext.Current.Request.Url.Port;
+                    string khd = (HttpContext.Current.Request.UserAgent + "").ToLower().Trim() + "|" + HttpContext.Current.Request.Url.Port;
                     //HttpContext.Current.Request.Url.Authority +"|"+ HttpContext.Current.Request.Url;
                     //获得当前用户
-                    string username = ipok+DateTime.Now.ToString("yyMMddhhmmssfff");
-                    
-                    
+                    string username = ipok + DateTime.Now.ToString("yyMMddhhmmssfff");
+
+
                     //写入数据库
                     try
                     {
                         zrupdate("INSERT INTO [sqllog] ([sql],[time],[ip],[url],[username],[bz],[laiyuan],[khd]) VALUES(@sql,'" + DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss.fff") + "','" + ipok + "',@urlok,'" + username + "','直接拦截" + rque + ":" + fitmc + "','" + zrlaiy + "','" + khd + "')", new System.Data.SqlClient.SqlParameter("sql", InText), new System.Data.SqlClient.SqlParameter("urlok", urlok));
-                        return username;              
+                        return username + fitmc;
                     }
                     catch (Exception e)
                     {
@@ -473,9 +476,14 @@
                     }
                     //Sqlhelper.ExcuteNonQuery("INSERT INTO [sqllog] ([sql],[time],[ip],[url],[username],[bz],[laiyuan]) VALUES('" +InText + "','" + DateTime.Now.ToString() + "','" + ipok + "','" + urlok + "','" + username + "','request直接拦截','学院网站')");
                     //return "true";
+                }else
+                {
+                    return "无问题：" + InText + "<br>";
                 }
-            
+
+            }
         }
+        catch (Exception eeee) { return "err:" + eeee.Message; }
         return "false";
     }
 </script>
