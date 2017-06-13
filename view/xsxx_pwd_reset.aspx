@@ -53,7 +53,7 @@
                 <div class="layui-input-block">
                     <asp:button ID="btn_confirm" runat="server" cssClass="layui-btn layui-btn-normal" Text="提交"/>
                     &nbsp;&nbsp;
-                    <input type="button" id="btn_back" class="layui-btn layui-btn-normal" value="返回" />
+                    <input type="button" id="btn_back" class="layui-btn layui-btn-normal" value="返回" style="display:none" />
                 </div>
             </div>
         </div>

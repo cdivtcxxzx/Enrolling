@@ -82,6 +82,8 @@ function clear() {
     $('#spenohasclassstudentcount').html('0');
     $('#classhasstudent_buterrorcount').html('0');
     $('#hasbedcount').html('0');
+    $('#nohasbedcount_boy').html('0');
+    $('#nohasbedcount_girl').html('0');
     $('#nohasbedcount').html('0');
     $('#hasbed_buterrorcount').html('0');
     $('#hascollageaffairacount').html('0');
