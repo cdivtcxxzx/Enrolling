@@ -141,7 +141,7 @@ public partial class admin_Default : System.Web.UI.Page
         {
             this.login_title.InnerHtml = "学生网上自助报到登陆";
             this.txt_name.Attributes.Add("placeholder", "请输入高考报名号");
-            this.txt_pwd.Attributes.Add("placeholder", "默认密码为身份证后六位");
+            this.txt_pwd.Attributes.Add("placeholder", "默认密码为身份证后八位");
 
         }
         if (sf == "czy")
@@ -324,7 +324,13 @@ public partial class admin_Default : System.Web.UI.Page
         if (this.txt_name.Value != "" && this.txt_pwd.Value != "")
         {
             string x2 = "2";
+            string yanzhengma = Session["Yanzhengma"] != null ? Session["Yanzhengma"].ToString() : "";
 
+            if (yanzhengma != this.txt_validate.Value.Trim())
+            {
+                Label1.Text = "<font color=red>验证码错误！</font>";
+                return;
+            }
             if (login_title.InnerText == "学生网上自助报到登陆")
             {
                 //验证时间

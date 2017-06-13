@@ -38,32 +38,38 @@ public partial class view_xswsjf : System.Web.UI.Page
             this.xsztxq_jf2.InnerHtml = "";//网上缴费
 
             batch batch_logic = new batch();
-            List<fresh_affair_log> affairlog_list = batch_logic.get_studentaffairlog_list(xh);//事务日志列表
-            if (affairlog_list != null)
+            List<fresh_affair> affairlst_stu = batch_logic.get_freshstudent_affair_list(xh);//学生事务            
+
+            if (affairlst_stu != null)
             {
-                for (int j = 0; affairlog_list != null && j < affairlog_list.Count; j++)
+                for (int j = 0; affairlst_stu != null && j < affairlst_stu.Count; j++)
                 {
-                    if (affairlog_list[j].FK_Affair_NO.Trim().Equals("7"))//缴费项目确认
+                    List<fresh_affair_log> affairlog_list = null;//事务日志列表
+                    if (affairlst_stu[j].Affair_Index == 6)//缴费项目确认
                     {
-                        this.xszt_jf1.InnerHtml = affairlog_list[j].Log_Status.Trim();//网上缴费
+                        this.xscz_jf1.HRef = "xsbjf.aspx?pk_affair_no=" + affairlst_stu[j].PK_Affair_NO.ToString().Trim() + "&pk_sno=" + Session["username"].ToString();//缴费项目选择
+
+                        affairlog_list = batch_logic.get_student_affair_affairlog_list(xh, affairlst_stu[j].PK_Affair_NO);
+                        if (affairlog_list != null && !affairlog_list[0].Log_Status.Trim().Equals("未确认"))
+                        {
+                            this.xszt_jf1.InnerHtml = affairlog_list[0].Log_Status.Trim();//缴费项目确认
+                        }
                     }
-                    if (affairlog_list[j].FK_Affair_NO.Trim().Equals("10"))//网上缴费
+                    if (affairlst_stu[j].Affair_Index == 9)//网上缴费
                     {
-                        this.xszt_jf2.InnerHtml = affairlog_list[j].Log_Status.Trim();//网上缴费
+                        this.xscz_jf2.HRef = "xsbjf_order.aspx?pk_affair_no=" + affairlst_stu[j].PK_Affair_NO.ToString().Trim() + "&pk_sno=" + Session["username"].ToString();//确认网上缴费
+
+                        affairlog_list = batch_logic.get_student_affair_affairlog_list(xh, affairlst_stu[j].PK_Affair_NO);
+                        if (affairlog_list != null && !affairlog_list[0].Log_Status.Trim().Equals("未确认"))
+                        {
+                            this.xszt_jf2.InnerHtml = affairlog_list[0].Log_Status.Trim();//网上缴费
+                        }
                     }
                 }
             }            
 
 
             #endregion
-
-            #region 链接跳转
-
-
-            this.xscz_jf1.HRef = "xsbjf.aspx?pk_affair_no=7&pk_sno=" + Session["username"].ToString();//缴费项目选择
-            this.xscz_jf2.HRef = "xsbjf_order.aspx?pk_affair_no=10&pk_sno=" + Session["username"].ToString();//确认网上缴费
-            #endregion
-
         }
         else
         {
