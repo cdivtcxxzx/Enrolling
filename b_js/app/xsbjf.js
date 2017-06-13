@@ -502,6 +502,7 @@ function changesum(){
     var id_name=$("#TuitionClass input[name='TuitionClass']:checked").attr('id');
     if(id_name=='xf_normal'){
         sum=parseFloat(sum)+parseFloat($('#'+id_name).attr('fee'));
+        sum = Math.round(sum*100)/100;
     }
     console.log(sum);
     $('#fee_sum').html(sum);
