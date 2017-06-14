@@ -29,16 +29,16 @@
 
          <div class="admin-main">
      <!--顶部提示及导航-->
-    		<blockquote class="layui-elem-quote">
+    		<blockquote class="layui-elem-quote" style="font-size:100%;">
           
-            <i class="layui-icon">&#xe602;</i>自助报到>>预分配宿舍
-            <span style="float:right" id="btnback">
+            <i class="layui-icon">&#xe602;</i>预分配宿舍
+<%--            <span style="float:right" id="btnback">
             
 				
                  <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe603;</i>
+					返回
 				</a>
-               </span>
+               </span>--%>
 				<div style="display:none">
                     <asp:Label ID="xh" runat="server" Text=""></asp:Label></div>
 			</blockquote>

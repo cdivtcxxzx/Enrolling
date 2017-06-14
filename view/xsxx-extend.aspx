@@ -23,12 +23,12 @@
 <body>
     <div class="admin-main" style="    margin: 5px 15px 10px 15px;">
         <blockquote class="layui-elem-quote">
-            <i class="layui-icon">&#xe602;</i>自助报到<i class="layui-icon">&#xe602;</i>完善个人信息
-            <span style="float: right" id="btnback">
+            <%--<i class="layui-icon">&#xe602;</i>自助报到--%><i class="layui-icon">&#xe602;</i>完善个人信息
+<%--            <span style="float: right" id="btnback">
                  <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe603;</i>
                 </a>
-            </span>
+            </span>--%>
         </blockquote>
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
             <legend style="font-size:16px;">请完善如下信息</legend>
