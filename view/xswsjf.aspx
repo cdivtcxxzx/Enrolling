@@ -70,12 +70,12 @@
         <!--顶部提示及导航-->
         <blockquote class="layui-elem-quote">
 
-           <span ><i class="layui-icon">&#xe602;</i>自助报到>>网上缴费</span>
-            <span style="float: right">
+           <span ><i class="layui-icon">&#xe602;</i>网上缴费</span>
+<%--            <span style="float: right">
                  <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe603;</i>
                 </a>
-            </span>
+            </span>--%>
 
         </blockquote>
         <!--顶部提示及导航OVER-->

@@ -67,12 +67,12 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>自助报到>>学生信息
-            <span style="float:right"  id="btnback">            				
+            <i class="layui-icon">&#xe602;</i>学生信息
+<%--            <span style="float:right"  id="btnback">            				
                  <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
-               </span>
+               </span>--%>
 				
 			</blockquote>
  <!--顶部提示及导航OVER-->
@@ -114,7 +114,8 @@
     <div class="xsxx1"><div class="layui-form-item" pane="">
           <label class="layui-form-label" style="height:94%;display:none">照片：</label>
           <div class="layui-input-block" style="margin-left: 10px!important">
-           <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
+           <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important">
+               <asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
         </div></div>
      <div class="xsxx2"  >   <div class="layui-form-item" pane="">
           <label class="layui-form-label">学号：</label>

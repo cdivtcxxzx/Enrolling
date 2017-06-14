@@ -64,12 +64,12 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>自助报到>>通知
-            <span style="float:right;" id="btnback">            				
+            <i class="layui-icon">&#xe602;</i>通知
+<%--            <span style="float:right;" id="btnback">            				
                  <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
-           </span>
+           </span>--%>
 				
 			</blockquote>
  <!--顶部提示及导航OVER-->

@@ -70,7 +70,14 @@
         <!--顶部提示及导航-->
         <blockquote class="layui-elem-quote" style="border-left: 0px solid #005CA3;border-radius: 5px 5px 5px 5px;">
 
-           <span class="hidden-xs"><i class="layui-icon">&#xe613;</i><asp:Label ID="xsxx_bj" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp;</span> <i class="layui-icon">&#xe612;</i><asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp; <span class="hidden-xs"><i class="layui-icon">&#xe63a;</i><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></span>
+           <span class="hidden-xs">
+               <i class="layui-icon">&#xe613;</i>
+               <asp:Label ID="xsxx_bj" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp;
+           </span> 
+            <i class="layui-icon">&#xe612;</i>
+            <asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp; 
+            <span class="hidden-xs"><i class="layui-icon">&#xe63a;</i>
+                <asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></span>
             <span style="float: right">
                  <a id="xsxxurl" runat="server" href="xsjbxx.aspx" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe63c;</i>查看详细
