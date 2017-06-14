@@ -165,22 +165,22 @@
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bjmc" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任：</label>
+          <label class="layui-form-label">辅导员：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任电话：</label>
+          <label class="layui-form-label">辅导员电话：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任QQ：</label>
+          <label class="layui-form-label">辅导员QQ：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrqq" runat="server" Text=""></asp:Label></div></div>
         </div>
         <div class="layui-form-item" style="text-align:center">
-          <a class="layui-btn" id="backmain" onclick="window.location.href='/view/xxzz_xsindex.aspx';">返回操作首页</a>
+          <a class="layui-btn" id="backmain" onclick="window.location.href='/view/xxzz_xsindex.aspx';">返回</a>
         </div>
 
      </div>

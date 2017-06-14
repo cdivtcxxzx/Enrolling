@@ -231,8 +231,8 @@
 
 
 <div class="layui-form-item" style="text-align:center">
-          <asp:Button ID="sc_qsxz" runat="server"  class="layui-btn"  onclick="qsxz_Click" Text="确认寝室选择" />
-&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="backmain" runat="server"  class="layui-btn"  onclick="qsxz_Click2" Text="返回操作首页" />
+          <asp:Button ID="sc_qsxz" runat="server"  class="layui-btn"  onclick="qsxz_Click" Text="确认" />
+&nbsp;&nbsp;&nbsp;&nbsp; <asp:Button ID="backmain" runat="server"  class="layui-btn"  onclick="qsxz_Click2" Text="返回" />
         </div>
 
 
