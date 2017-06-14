@@ -109,7 +109,7 @@
 <%--			<div class="site-tree-mobile layui-hide">
 				<i class="layui-icon">&#xe602;</i>
 			</div>--%>
-			<div class="site-mobile-shade"></div>
+			<%--<div class="site-mobile-shade"></div>--%>
             <!--前端框架ＪＳ及弹出层ＪＳ-->
 			<script type="text/javascript" src="plugins/layui/layui.js"></script>
              <!--前端框架ＪＳ及弹出层ＪＳＯＶＥＲ-->
@@ -135,7 +135,8 @@
 			        //iframe自适应
 			        $(window).on('resize', function () {
 			            var $content = $('.admin-nav-card .layui-tab-content');
-			            $content.height($(this).height() - 117);
+			            //$content.height($(this).height() - 117);
+			            $content.height($(this).height()-70);
 			            $content.find('iframe').each(function () {
 			                $(this).height($content.height());
 			            });
