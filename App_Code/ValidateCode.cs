@@ -91,7 +91,7 @@ public class validatedCode
     #endregion
 
     #region 自定义随机码字符串序列(使用逗号分隔)
-    string codeSerial = "1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,p,q,r,s,t,u,v,w,x,y,z";
+    string codeSerial = "1,2,3,4,5,6,7,8,9,0";
     public string CodeSerial
     {
         get { return codeSerial; }

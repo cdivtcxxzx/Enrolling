@@ -124,7 +124,7 @@
                         <script type="text/javascript">
                             var img = document.getElementById('img_yzm');
                             img.onclick = function () {
-                                img.src = 'http://localhost:3893/nradmingl/yanzhengma.aspx?temp=' + Date.now();
+                                img.src = '../nradmingl/yanzhengma.aspx?temp=' + Date.now();
                             }
                          </script>
                         
