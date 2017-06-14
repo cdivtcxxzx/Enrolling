@@ -22,4 +22,71 @@
         }
         count--;
     }, 1000);
+
+    var tip = $("#tip");
+    $(window).scroll(function () {
+        if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+            tip.attr('style', 'display:none');
+        }else {
+            tip.attr('style', 'display:block');
+        }
+    });
+    ////gototop
+    //var offsetY = $(window).height() - $('#go_top_bottom').height() + $(document).scrollTop();
+    //var offsetX = $('.admin-main').width() + $('.admin-main').offset().left + $(document).scrollLeft();
+    //$('#go_top_bottom').css({ 'left': offsetX, 'top': offsetY });
+    //$(window).scroll(function () { scroll_position('go_top_bottom'); console.log("window.scroll"); });
+    //$(window).resize(function () { scroll_position('go_top_bottom'); console.log("window.resize"); });
+    //$(window).load(function () { scroll_position('go_top_bottom'); console.log("window.load"); });
+    //$('#go_top_bottom #go_top').click(function () {
+    //    scroll_to_pos('top');
+    //    return false;
+    //});
+
+    //$('#go_top_bottom #go_bottom').click(function () {
+    //    scroll_to_pos('bottom');
+    //    return false;
+    //});
+
+    //if (!isScroll()) {
+    //    $('#go_top_bottom').hide();
+    //}
+    //else {
+    //    $('#go_top_bottom').show();
+    //}
+
+    ////common
+    //function menu_drop(menuId, display) {
+    //    $id(menuId).style.display = display;
+    //}
+
+    //function $id(id) {
+    //    return document.getElementById(id);
+    //}
+
+    //function isScroll() {
+    //    return $(window).height() == $(document).height() ? false : true;
+    //}
+
+    //function scroll_position(id) {
+    //    var o = $('#' + id);
+    //    var offsetY = $(window).height() - o.height() + $(document).scrollTop();
+    //    o.stop(true, false).animate({ top: offsetY }, { duration: 700, queue: false });
+    //    if ($(document).scrollTop() == 0) {
+    //        $('#go_top').hide();
+    //        $('#go_bottom').show();
+    //    }
+    //    else if ($(document).scrollTop() == $('body').height() - $(window).height()) {
+    //        $('#go_top').show();
+    //        $('#go_bottom').hide();
+    //    }
+    //    else {
+    //        o.find('a').show();
+    //    }
+    //    if (!isScroll()) {
+    //        $('#go_top_bottom').hide();
+    //    }
+     
+
+
 });

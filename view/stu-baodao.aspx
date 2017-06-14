@@ -58,6 +58,23 @@
             height: 28px;
             font-size: 1em;
         }
+        #tip{
+            position:fixed;
+            bottom:5%;
+            right:6%;
+            width:38px;
+            height:43px;
+            padding-left:5px;
+            color:#ffffff;
+            display:none;
+            background-color:#808080;
+        }
+
+        @media(max-width:480px){
+            #tip{
+                display:block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -121,8 +138,10 @@
                 <asp:CheckBox ID="checkCofirm" runat="server" Text="已阅读" />
                 <asp:Button ID="btnConfirm" CssClass="btn_disable" runat="server" Text="10 秒" Enabled="false" OnClick="btnConfirm_Click" />
             </div>
-        </div>
+            
+        </div>        
     </form>
+    <div id="tip"><span>向下滑动</span></div>
     <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
     <script src="../b_js/app/stu-baodao.js"></script>
     

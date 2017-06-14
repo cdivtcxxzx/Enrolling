@@ -47,12 +47,12 @@
                     var json_data = JSON.parse(data);
                     if (json_data.code == 'success') {
                         if (confirmState == "0") {
-                            layer.msg('确认成功！3秒后跳转至主界面~');
+                            layer.msg('确认成功！即将跳转至主界面~');
                             $('#btn_submit').hide();
                             $('#xx_confirm_div').hide();
                             setTimeout(function () {
                                 window.location.href = "../../nradmingl/defaultxs.aspx";
-                            }, 3000);
+                            }, 1000);
                         } else {
                             layer.msg("信息有误将不能继续报到，重新确认下？", {
                                 time: 10000,
