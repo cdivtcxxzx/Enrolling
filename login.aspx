@@ -22,7 +22,7 @@
         agent.IndexOf("ucweb") != -1 ||
         agent.IndexOf("opera mini") != -1 ||
         agent.IndexOf("mobi") != -1)
-    {
+    {                                                                                                                                                                                                                                                                                                   
         //终端可能是手机
         Response.Write("<?xml version='1.0'?><!DOCTYPE html><HTML>");
     }
@@ -169,7 +169,7 @@
             <!-- 其他登录方式 e -->
             <div class="n_links_area" id="custom_display_64">
 			<a class="outer-link" href="/">返回首页</a><span>|</span>
-              <a class="outer-link" href="#" onclick="layer.open({  type: 2,  title: '学生重置登陆密码',  maxmin: true,  shadeClose: true,  area : ['90%' , '80%'],  content: '/view/xsxx_pwd_reset.aspx'  });">忘记密码？</a>
+              <a class="outer-link" href="#" onclick="layer.open({  type: 2,  title: '学生重置登陆密码',  area : ['90%' , '80%'],  content: '/view/xsxx_pwd_reset.aspx'  });">忘记密码？</a>
             </div>
           </div>
 
@@ -184,14 +184,10 @@
         </div>
       </div>
     </div>
-   <script src="b_js/jquery.min2.js"></script>
+   <script src="b_js/jquery.min2.js" type="text/javascript"></script>
 <script src="b_js/jquery.slideBox.min.js" type="text/javascript"></script>
-
-   
-
-  <script src="./layer/layer.js"></script>
-  
-
+  <script src="./layer/layer.js" type="text/javascript"></script>
+<script src="b_js/weixin.js" type="text/javascript"></script>
     </form>
 </body>
 </html>

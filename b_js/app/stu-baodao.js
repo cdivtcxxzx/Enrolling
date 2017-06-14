@@ -12,7 +12,6 @@
     }
     //控制时间显示
     var changeCheck = setInterval(function () {
-        //console.log(count);
         btnCofirm.val(count + ' 秒');
         if (count < 1)
         {
@@ -22,4 +21,16 @@
         }
         count--;
     }, 1000);
+
+    var tip = $("#tip");
+    $(window).scroll(function () {
+        if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+            tip.attr('style', 'display:none');
+        }else {
+            tip.attr('style', 'display:block');
+        }
+    });
+        
+
+
 });

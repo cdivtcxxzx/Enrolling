@@ -70,7 +70,14 @@
         <!--顶部提示及导航-->
         <blockquote class="layui-elem-quote" style="border-left: 0px solid #005CA3;border-radius: 5px 5px 5px 5px;">
 
-           <span class="hidden-xs"><i class="layui-icon">&#xe613;</i><asp:Label ID="xsxx_bj" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp;</span> <i class="layui-icon">&#xe612;</i><asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp; <span class="hidden-xs"><i class="layui-icon">&#xe63a;</i><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></span>
+           <span class="hidden-xs">
+               <i class="layui-icon">&#xe613;</i>
+               <asp:Label ID="xsxx_bj" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp;
+           </span> 
+            <i class="layui-icon">&#xe612;</i>
+            <asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp; 
+            <span class="hidden-xs"><i class="layui-icon">&#xe63a;</i>
+                <asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></span>
             <span style="float: right">
                  <a id="xsxxurl" runat="server" href="xsjbxx.aspx" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe63c;</i>查看详细
@@ -151,7 +158,7 @@
                        
                          <tr><td style="vertical-align:bottom;width:60px;padding-bottom:5px;"><img  id="zttp2" runat="server" style="width:50px" src="../images/xszt/2-2.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" id="xscz_bdxz" runat="server" >报到须知</a></label>
+                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" id="xscz_bdxz" runat="server" >报到需知</a></label>
                     <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_bdxz" runat="server"><font color="green"><b>已阅读</b></font></span> <span  id="xsztxq_bdxz" runat="server"></span></div></div></div></td></tr>
 
                    

@@ -25,12 +25,12 @@
             </blockquote>--%>
 
            <blockquote class="layui-elem-quote">
-            <i class="layui-icon">&#xe602;</i>自助报到<i class="layui-icon">&#xe602;</i>修改密码
-            <span style="float: right" id="btnback">
+            <%--<i class="layui-icon">&#xe602;</i>自助报到--%><i class="layui-icon">&#xe602;</i>修改密码
+<%--            <span style="float: right" id="btnback">
                  <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
-                    <i class="layui-icon">&#xe603;</i>
+                    返回
                 </a>
-            </span>
+            </span>--%>
         </blockquote>
 
             <div>

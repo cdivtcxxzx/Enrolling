@@ -67,12 +67,12 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>自助报到>>学生信息
-            <span style="float:right"  id="btnback">            				
+            <i class="layui-icon">&#xe602;</i>学生信息
+<%--            <span style="float:right"  id="btnback">            				
                  <a href="xxzz_xsindex.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe603;</i>
 				</a>
-               </span>
+               </span>--%>
 				
 			</blockquote>
  <!--顶部提示及导航OVER-->
@@ -114,7 +114,8 @@
     <div class="xsxx1"><div class="layui-form-item" pane="">
           <label class="layui-form-label" style="height:94%;display:none">照片：</label>
           <div class="layui-input-block" style="margin-left: 10px!important">
-           <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important"><asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
+           <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important">
+               <asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
         </div></div>
      <div class="xsxx2"  >   <div class="layui-form-item" pane="">
           <label class="layui-form-label">学号：</label>
@@ -164,22 +165,22 @@
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bjmc" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任：</label>
+          <label class="layui-form-label">辅导员：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任电话：</label>
+          <label class="layui-form-label">辅导员电话：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
-          <label class="layui-form-label">班主任QQ：</label>
+          <label class="layui-form-label">辅导员QQ：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_bzrqq" runat="server" Text=""></asp:Label></div></div>
         </div>
         <div class="layui-form-item" style="text-align:center">
-          <a class="layui-btn" id="backmain" onclick="window.location.href='/view/xxzz_xsindex.aspx';">返回操作首页</a>
+          <a class="layui-btn" id="backmain" onclick="window.location.href='/view/xxzz_xsindex.aspx';">返回</a>
         </div>
 
      </div>

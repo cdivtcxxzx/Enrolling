@@ -58,6 +58,23 @@
             height: 28px;
             font-size: 1em;
         }
+        #tip{
+            position:fixed;
+            bottom:5%;
+            right:6%;
+            width:38px;
+            height:43px;
+            padding-left:5px;
+            color:#ffffff;
+            display:none;
+            background-color:#808080;
+        }
+
+        @media(max-width:480px){
+            #tip{
+                display:block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -65,7 +82,7 @@
         <asp:HiddenField ID="server_msg" runat="server" />
         <div class="admin-main">
             <div class="container">
-                <h2>新生报到需知</h2>
+                <h2>报到需知</h2>
                 <h3>1、新生资格审核</h3>
                 <p>到达学校，你从校车下来后，就会看到各院系的迎新人员举着标明院系的彩旗在车门口迎接新生。只要找到自己的院系的迎新人员，他们就会领你到你们院系的新生接待处。到了自己院系的新生接待处，就会有院系学工组的老师为你做新生资格审核，你必须出示自己的身份证、录取通知书和准考证，自带档案的同学需上交档案。而后你会被告知自己的宿舍房间号和领到一张报到证，上面会注明你的院系和你的学号，你凭着这张报到证去办理后续的手续。</p>
 
@@ -121,8 +138,10 @@
                 <asp:CheckBox ID="checkCofirm" runat="server" Text="已阅读" />
                 <asp:Button ID="btnConfirm" CssClass="btn_disable" runat="server" Text="10 秒" Enabled="false" OnClick="btnConfirm_Click" />
             </div>
-        </div>
+            
+        </div>        
     </form>
+    <div id="tip"><span>向下滑动</span></div>
     <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
     <script src="../b_js/app/stu-baodao.js"></script>
     

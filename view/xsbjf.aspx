@@ -57,6 +57,7 @@
     text-align: center;
     border-radius: 4px;
 }
+
      </style>
      <!--展示响应式CSS块over-->
      <!--页面开始全范围框架-->
@@ -64,10 +65,10 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>自助报到>>选择费用
+            <i class="layui-icon">&#xe602;</i>选择费用
             <span style="float:right;" id="btnback">            				
                  <a href="xswsjf.aspx" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe603;</i>
+					返回
 				</a>
            </span>
 				
@@ -118,8 +119,8 @@
          <div class="layui-form-item" pane="" style="margin-bottom:0px;">
          </div>
 
-         <div class="layui-form-item" pane="" style="margin-bottom:0px;">
-          <label class="layui-form-label">姓名：</label>
+         <div class="layui-form-item" pane="" style="margin-bottom:0px;padding-left:0px;padding-right:0px;">
+          <label class="layui-form-label" style="margin-left:0px;">姓名：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xm" runat="server" Text=""></asp:Label></div></div>
         </div>

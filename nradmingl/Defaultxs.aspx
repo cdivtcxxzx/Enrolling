@@ -37,7 +37,7 @@
 				<div class="layui-main" style="margin: 0 0px;">
 					<div class="admin-login-box">
 						<a class="logo"  href="/">
-							<span style="font-size: 22px;">新生网上报到</span>
+							<span style="font-size: 22px;">网上报到</span>
 						</a>
 						<div title="左侧导航菜单显示/隐藏" class="admin-side-toggle  hidden-xs">
 							<i class="fa fa-chevron-left" aria-hidden="true"></i>
@@ -52,8 +52,8 @@
 						
 						<li class="layui-nav-item">
 							<a href="javascript:;" class="admin-header-user">
-								<img src="../images/xstp/test.jpg" style="width: 40px; height: 40px; border-radius: 100%;" />
-                                
+								<%--<img src="../images/xstp/test.jpg" style="width: 40px; height: 40px; border-radius: 100%;" />--%>
+                                <asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" style="width: 40px; height: 40px; border-radius: 100%;" />
 								<span  id="username" class="  hidden-xs"  runat="server">用户名</span>
                                
 							</a>
@@ -71,7 +71,7 @@
 							</dl>
 						</li>
                         	<li  class="layui-nav-item">
-							<a href="defaultxs.aspx"><i class="fa fa fa-home" aria-hidden="true"  style="margin-right:2px;"></i><span  class="layui-nav-item  hidden-xs">返回操作首页</span></a>
+							<a href="defaultxs.aspx"><i class="fa fa fa-home" aria-hidden="true"  style="margin-right:2px;"></i><span  class="layui-nav-item ">返回首页</span></a>
 						</li>
                         <li class="layui-nav-item   hidden-xs"><a href="javascript:" class="admin-side-full" style="margin-right: -10px;margin-left: -10px;" title="全屏"  >
 					<i class="fa fa-arrows-alt" aria-hidden="true"></i>
@@ -106,10 +106,10 @@
 				</div>
 			</div>
 			
-			<div class="site-tree-mobile layui-hide">
+<%--			<div class="site-tree-mobile layui-hide">
 				<i class="layui-icon">&#xe602;</i>
-			</div>
-			<div class="site-mobile-shade"></div>
+			</div>--%>
+			<%--<div class="site-mobile-shade"></div>--%>
             <!--前端框架ＪＳ及弹出层ＪＳ-->
 			<script type="text/javascript" src="plugins/layui/layui.js"></script>
              <!--前端框架ＪＳ及弹出层ＪＳＯＶＥＲ-->
@@ -135,7 +135,8 @@
 			        //iframe自适应
 			        $(window).on('resize', function () {
 			            var $content = $('.admin-nav-card .layui-tab-content');
-			            $content.height($(this).height() - 117);
+			            //$content.height($(this).height() - 117);
+			            $content.height($(this).height()-70);
 			            $content.find('iframe').each(function () {
 			                $(this).height($content.height());
 			            });
