@@ -163,7 +163,7 @@ function getclassbeds() {
                         bed_girl_count=bed_girl_count+1;
                     }
 
-                    if(item.studentname='null'){
+                    if(item.studentname==null){
                         str=str+'<td></td>';
                         str=str+'<td></td>';
                     }else{
