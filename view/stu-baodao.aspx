@@ -58,9 +58,31 @@
             height: 28px;
             font-size: 1em;
         }
+        .w960{
+            width:98%;
+        }
+        #go_top_bottom{
+            width:22px;
+            position:absolute;
+            z-index:100001;
+        }
+        #go_top_bottom #go_top{
+            background: url(../b_css/img/go_top.gif) no-repeat 0 0;
+            padding-top: 69px;
+        }
+        #go_top_bottom a{
+            display:block;
+            height:0;
+            overflow:hidden;
+        }
+        #go_top_bottom #go_bottom {
+            background: url(../b_css/img/go_top.gif) no-repeat 0 -69px;
+            padding-top: 70px;
+        }
     </style>
 </head>
 <body>
+    <div class="w960"></div>
     <form id="form1" class="layui-form layui-form-pane" runat="server">
         <asp:HiddenField ID="server_msg" runat="server" />
         <div class="admin-main">
@@ -122,6 +144,7 @@
                 <asp:Button ID="btnConfirm" CssClass="btn_disable" runat="server" Text="10 秒" Enabled="false" OnClick="btnConfirm_Click" />
             </div>
         </div>
+        <div id="go_top_bottom"><a href="javascript:void(0);" id="go_top" style="display: block;">去顶部</a> <a href="javascript:void(0);" id="go_bottom">去底部</a></div>
     </form>
     <script type="text/javascript" src="../nradmingl/plugins/layui/layui.js"></script>
     <script src="../b_js/app/stu-baodao.js"></script>
