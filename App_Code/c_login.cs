@@ -641,7 +641,7 @@ public class c_login:System.Web.UI.Page
 
                             }
                             string sqlUpdate = "UPDATE yonghqx SET fwcs=@fwcs,dltime=@dltime,mm=@md5mm WHERE yhid=@yhid";// md5.MD5Encrypt(strPwd, md5.GetKey())
-                            int fwcs = int.Parse(dt.Rows[0]["fwcs"].ToString()) + 1;
+                            int fwcs = dt.Rows[0]["fwcs"].ToString()=="" ? 1 : int.Parse(dt.Rows[0]["fwcs"].ToString()) + 1;
                             //写入数据库
                             Sqlhelper.ExcuteNonQuery(sqlUpdate, new SqlParameter("fwcs", fwcs.ToString()),
                                 new SqlParameter("dltime", DateTime.Now.ToString()),

@@ -200,7 +200,14 @@
                 //})
                 return false;
             });
-
+            var tip = $("#tip");
+            $(window).scroll(function () {
+                if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+                    tip.attr('style', 'display:none');
+                } else {
+                    tip.attr('style', 'display:block');
+                }
+            });
         }
     });//end layui.use
 })();

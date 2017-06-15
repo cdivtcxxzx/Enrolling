@@ -663,7 +663,7 @@ public static class organizationService
         
         organizationModelDataContext oDC = new organizationModelDataContext();
         Fresh_Batch batch = oDC.Fresh_Batches.Where(s => s.Enabled == "run").FirstOrDefault();
-        if (batch != null && DateTime.Compare( batch.Service_Begin , putTime )< 0 && DateTime.Compare(batch.Service_End , putTime) > 0)
+        if (batch != null && DateTime.Compare( batch.Service_Begin , putTime ) > 0)
             return true;
         else
             return false;

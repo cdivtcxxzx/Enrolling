@@ -113,6 +113,23 @@
         .layui-form-label{
             width:85px !important;
         }
+        #tip{
+            position:fixed;
+            bottom:5%;
+            right:6%;
+            width:38px;
+            height:43px;
+            padding-left:5px;
+            color:#ffffff;
+            display:none;
+            background-color:#808080;
+        }
+
+        @media(max-width:480px){
+            #tip{
+                display:block;
+            }
+        }
     </style>
 
 </head>
@@ -232,6 +249,7 @@
                 
             </div>
         </form>
+        <div id="tip"><span>向下滑动</span></div>
     </div>
     <script src="../nradmingl/plugins/layui/layui.js"></script>
     <script src="../b_js/app/xsxx-confirm.js"></script>
