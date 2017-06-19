@@ -68,21 +68,7 @@
     		</div>
     		<!--//logo结束-->
 			<!--搜索开始-->
-			<div class="wp-panel search-panel panel-3" frag="面板3">
-			   <div class="aw-search-box  hidden-xs hidden-sm">
-				
-					<input class="form-control search-query" type="text" placeholder="搜索新闻，输入关键字" autocomplete="off" name="word" id="word">
-					<span title="搜索" id="global_search_btns" onClick="location.href='/serch.aspx?word='+ document.getElementById('word').value"><i class="fa fa-search"></i></span>
-					<div class="aw-dropdown" style="display: none;">
-						<div class="mod-body">
-							<p class="title">输入关键字进行搜索</p>
-							<ul class="aw-dropdown-list hide"></ul>
-							<p class="search" style="display: block;"><span>搜索:</span><a onClick="location.href='/serch.aspx?word='+ document.getElementById('word').value"></a></p>
-						</div>
-						
-					</div>
-				
-			</div>
+			
 <style>
     .main ul.main-nav > li {
     display: inline-block;

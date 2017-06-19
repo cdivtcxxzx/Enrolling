@@ -22,7 +22,7 @@
         agent.IndexOf("ucweb") != -1 ||
         agent.IndexOf("opera mini") != -1 ||
         agent.IndexOf("mobi") != -1)
-    {
+    {                                                                                                                                                                                                                                                                                                   
         //终端可能是手机
         Response.Write("<?xml version='1.0'?><!DOCTYPE html><HTML>");
     }
@@ -92,7 +92,7 @@
                             <span class="country_code"><tt class="countrycode-value" id="countrycode_value"></tt><i class="icon_arrow_down"></i></span>
                           </div>
                         </div>
-                        <input　runat="server" class="item_account" autocomplete="off" type="text" name="txt_name" id="txt_name" placeholder="请输入用户帐号">
+                        <input　runat="server" class="item_account" autocomplete="off" type="text" name="txt_name" id="txt_name" placeholder="请输入用户帐号" />
                       </label>
                       <div class="country-container" id="countrycode_container" style="display: none;">
                         <div class="country_container_con" id="countrycode_container_con"></div>
@@ -110,7 +110,25 @@
 
                         &nbsp;<input type="text" placeholder="请输入密码" autocomplete="off" id="visiablePwd" style="display:none">
                       </label>
-                    </div>
+
+                        <label id="region-code" class="labelbox" for="">
+                            <div style="float:left;width:250px">
+                                <input runat="server"  class="item_account" autocomplete="off" type="text" name="txt_validate" id="txt_validate" placeholder="请输入验证码" />
+                            </div>
+                            <div style="float:right;width:100px">
+                                <image src="nradmingl/yanzhengma.aspx" id="img_yzm" style="width:100px;height:45px;cursor:pointer" />
+                                
+                            </div>
+                        
+                      </label>
+                        <script type="text/javascript">
+                            var img = document.getElementById('img_yzm');
+                            img.onclick = function () {
+                                img.src = '../nradmingl/yanzhengma.aspx?temp=' + Date.now();
+                            }
+                         </script>
+                        
+</div>
                     <div class="security_Controller" style="display: none;">
                       <label class="checkbox_area"><input type="checkbox" id="trustSecurityController" class="checkbox">使用安全控件</label>
                     </div>
@@ -151,8 +169,7 @@
             <!-- 其他登录方式 e -->
             <div class="n_links_area" id="custom_display_64">
 			<a class="outer-link" href="/">返回首页</a><span>|</span>
-             
-              <a class="outer-link" href="#">忘记密码？</a>
+              <a class="outer-link" href="#" onclick="layer.open({  type: 2,  title: '学生重置登陆密码',  area : ['90%' , '80%'],  content: '/view/xsxx_pwd_reset.aspx'  });">忘记密码？</a>
             </div>
           </div>
 
@@ -167,10 +184,10 @@
         </div>
       </div>
     </div>
-
-   
-  
-
+   <script src="b_js/jquery.min2.js" type="text/javascript"></script>
+<script src="b_js/jquery.slideBox.min.js" type="text/javascript"></script>
+  <script src="./layer/layer.js" type="text/javascript"></script>
+<script src="b_js/weixin.js" type="text/javascript"></script>
     </form>
 </body>
 </html>

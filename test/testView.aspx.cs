@@ -106,12 +106,39 @@ public partial class test_testView : System.Web.UI.Page
         //Response.Write(organizationService.createNum("2017","1","03"));
         
         //测试权限获取
-        List<Base_College> yx = organizationService.getYxByYhid("chenzhiqiu",Session["Lsz"].ToString());
-        foreach (var item in yx)
-        {
-            Response.Write(item.Name);
-            Response.Write("<br/>");
-        }
+        //List<Base_College> yx = organizationService.getYxByYhid("chenzhiqiu",Session["Lsz"].ToString());
+        //foreach (var item in yx)
+        //{
+        //    Response.Write(item.Name);
+        //    Response.Write("<br/>");
+
+        //测试批次时间判断
+        //DateTime tsts = Convert.ToDateTime("2017-6-6 00:12:00");
+        //Response.Write(organizationService.isInEnableBatch(tsts));
+
+        //测试信息获取
+        //List<ClassMsgObj> dt = messageService.getMsgsByClassNO("2017010022");
+
+        //foreach (var item in dt)
+        //{
+        //    Response.Write(item.PK_NO + "<br/>");
+        //}
+
+        //var dt = messageService.getListMsgsByClassNO("2017010022");
+        //foreach (var item in dt)
+        //{
+        //    Response.Write(item);
+        //}
+
+        //测试信息插入
+        //string iseeee = messageService.addStuReadMsg("1", "201756010203010");
+        //Response.Write(iseeee);
+
+        //validatedCode v = new validatedCode();
+        //string code = v.CreateVerifyCode();
+        //v.CreateImageOnPage(code, this.Context);
+        
+        
     }
     //测试导出
     protected void Button1_Click(object sender, EventArgs e)

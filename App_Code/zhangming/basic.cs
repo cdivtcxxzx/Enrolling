@@ -25,6 +25,25 @@ using System.Security.Cryptography;
 /// </summary>
 public class basic
 {
+
+
+    /// <summary>
+    /// 获取当前管理年度
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string dqnd()
+    {
+        DataTable nd = Sqlhelper.Serach("SELECT TOP 1 xxnr  FROM [wangzxx] where xxgjz='当前管理年度'");
+        if(nd.Rows.Count>0)
+        {
+            return nd.Rows[0][0].ToString();
+        }
+        else
+        {
+            return DateTime.Now.Year.ToString();
+        }
+    }
     /// <summary>
     /// 64位BASE加密
     /// </summary>

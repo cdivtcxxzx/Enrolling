@@ -173,13 +173,13 @@ function classchange(pk_class_no) {
 }
 
 function affairchange(pk_affair_no) {
-    console.log('hi,affair');
 }
 
 
 function classoraffairchange() {
     var pk_class_no=$('#classlist').children('option:selected').val();
-    var pk_affair_no=$('#affairlist').children('option:selected').val()
+    var pk_affair_no=$('#affairlist').children('option:selected').val();
+    $('#itemname').html($('#affairlist').children('option:selected').html());
 
     var index = parent.layer.open({
         type: 1,
@@ -192,6 +192,15 @@ function classoraffairchange() {
         }
     });
 
+    //console.log(pk_class_no);
+    //console.log(pk_affair_no);
+
+    $('#zj').html('总计：0人');
+    $('#zc').html('网上注册：0人');
+    $('#lstd').html('绿色通道：0人');
+    $('#zxdk').html('助学贷款：0人');
+    $('#xm').html('项目：0人');
+
     $.ajax({
         url: "/nradmingl/appserver/manager.aspx",
         type: "get",
@@ -201,6 +210,14 @@ function classoraffairchange() {
             var json_data = JSON.parse(data);
             if (json_data.code == 'success') {
                 $('#studentlist tbody tr').remove();
+                var zj=0;
+                var zc=0;
+                var zcyw=0;
+                var lstd=0;
+                var zxdk=0;
+                var xm=0;
+                var xmzt=new Array();
+                var xmzt_count=new Array();
                 for(i=0;json_data.data!=null && i<json_data.data.length;i++){
                     var item=json_data.data[i];
                     var str='<tr>';
@@ -227,8 +244,49 @@ function classoraffairchange() {
                     str=str+'</td>';
                     str=str+'</tr>';
                     $('#studentlist').append(str);
-                    parent.layer.close(index);
+                    zj=zj+1;
+                    if($.trim(item.register)=='注册'){
+                        zc=zc+1;
+                    }else{
+                        if($.trim(item.register).indexOf('有误')>0){
+                            zcyw=zcyw+1;
+                        }
+                    }
+                    if($.trim(item.TuitionType)=='绿色通道'){
+                        lstd=lstd+1;
+                    }
+                    if($.trim(item.TuitionType)=='助学贷款'){
+                        zxdk=zxdk+1;
+                    }
+                    var find=false;
+                    for(var j=0;j<xmzt.length;j++){
+                        if(xmzt[j]==item.affairstatus){
+                            xmzt_count[j]=xmzt_count[j]+1;
+                            find=true;
+                            break;
+                        }
+                    }
+                    if(!find){
+                        xmzt[xmzt.length]=item.affairstatus;
+                        xmzt_count[xmzt_count.length]=1;
+                    }
                 }
+                parent.layer.close(index);
+                $('#zj').html('总计：'+zj+'人');
+                if(zcyw==0){
+                    $('#zc').html('网上注册：'+zc+'人('+parseInt(zc/zj*100)+'%)');
+                }else{
+                    $('#zc').html('网上注册：'+zc+'人('+parseInt(zc/zj*100)+'%),信息有误'+zcyw+'人');
+                }
+                $('#lstd').html('绿色通道：'+lstd+'人('+parseInt(lstd/zj*100)+'%)');
+                $('#zxdk').html('助学贷款：'+zxdk+'人('+parseInt(zxdk/zj*100)+'%)');
+
+                var xmmc=$('#affairlist').children('option:selected').html();
+                var str=' ';
+                for(var i=0;i<xmzt.length;i++){
+                    str=str+', 【'+xmzt[i]+'】'+xmzt_count[i]+'人('+parseInt(xmzt_count[i]/zj*100)+'%)';
+                }
+                $('#xm').html(xmmc+'：'+str.substring(1));
             } else {
                 parent.layer.close(index);
                 alert(json_data.message);

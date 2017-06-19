@@ -35,32 +35,7 @@ public static class organizationService
         return ret;
     }
     #endregion
-
-    #region 操作员身份是有效 staffVerify
-    /// <summary>
-    /// 功能描述：根据“员工编号”查询获取“密码明文”，如果“密文”==校验函数(“密码明文”,“验证码”)返回true。否则返回false。
-    /// 编写人：陈智秋
-    /// 创建：2017.3.1
-    /// 更新：无
-    /// 版本：v0.0.1
-    /// </summary>
-    /// <param name="staffNo">员工编号</param>
-    /// <param name="password">密码</param>
-    /// <param name="verifyCode">验证码</param>
-    /// <param name="pwdEncode">密文</param>
-    /// <returns></returns>
-    public static bool staffVerify(string staffNo,string password,string verifyCode,string pwdEncode)
-    {
-        organizationModelDataContext oDC = new organizationModelDataContext();
-        Base_Staff staff = oDC.Base_Staffs.Where(s => s.PK_Staff_NO == staffNo && s.Password == pwdEncode).SingleOrDefault();
-        if (staff == null) return false;
-        if (pwdEncode == md5.MD5Encrypt(password, verifyCode))
-        {
-            return true;
-        }
-        return false;
-    }
-    #endregion
+    
     #region 获取某操作员数据 getOperator
     /// <summary>
     /// 根据“员工编号”返回员工基本数据。否则返回null。
@@ -93,7 +68,20 @@ public static class organizationService
         return oDC.Base_STUs.Where(s => s.PK_SNO == sno).SingleOrDefault();
     }
     #endregion
-    #region 通过身份证查询是否有学生数据 getStu
+    #region 通过身份证号查询学生数据 getStuDataBySFZ
+    /// <summary>
+    /// 通过身份证号查询学生数据
+    /// </summary>
+    /// <param name="sfz">身份证号码</param>
+    /// <returns></returns>
+    public static Base_STU getStuDataBySFZ(string sfz)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        return oDC.Base_STUs.Where(s => s.ID_NO == sfz).SingleOrDefault();
+
+    }
+    #endregion
+    #region 通过身份证查询是否有学生数据 getStuBySFZ
     /// <summary>
     /// 根据“身份证号”返回是否有学生数据。
     /// 编写人：陈智秋
@@ -185,30 +173,6 @@ public static class organizationService
     {
         organizationModelDataContext oDC = new organizationModelDataContext();
         return oDC.Fresh_Classes.Where(cls => cls.FK_SPE_NO == PK_SPE).ToList();
-    }
-    #endregion
-    #region 学生身份是否有效 stuVerify
-    /// <summary>
-    /// 功能描述：根据“学号”查询所在批次中“禁止操作标志”为false，并且被授权“迎新事务”的“事务性质”为“交互性”，“事务列席”为“学生自治”或“两者”的数据。否则返回null。
-    /// 编写人：陈智秋
-    /// 创建：2017.3.1
-    /// 更新：无
-    /// 版本：v0.0.1
-    /// </summary>
-    /// <param name="sno">学号</param>
-    /// <param name="password">密码</param>
-    /// <param name="verifyCode">验证码</param>
-    /// <param name="pwdEncode">密文</param>
-    /// <returns></returns>
-    public static bool stuVerify(string sno, string password, string verifyCode, string pwdEncode)
-    {
-        organizationModelDataContext oDC = new organizationModelDataContext();
-        Base_STU stu = oDC.Base_STUs.Where(s => s.PK_SNO == sno && s.Password == pwdEncode).SingleOrDefault();
-        if (stu == null) return false;
-        if (pwdEncode == md5.MD5Encrypt(password, verifyCode))
-            return true;
-        else
-            return false;
     }
     #endregion
     #region 获取学院数据 getColleage
@@ -306,105 +270,29 @@ public static class organizationService
         organizationModelDataContext oDC = new organizationModelDataContext();
         return oDC.Fresh_SPEs.Where(s => s.PK_SPE == PK_SPE).SingleOrDefault();
     }
-    #endregion    
-    #region 验证学生基本信息是否确认 isStuConfrim
+    #endregion        
+    #region 获取基本信息确认状态（false 无误 true 有误 ) getStuConfirm
     /// <summary>
-    /// 对比学生学号验证学生是否进行基本信息的确认(有数据则已确认)
+    /// 获取基本信息确认状态（false 无误 true 有误 )
     /// </summary>
     /// <param name="FK_SNO">学号</param>
-    /// <returns>是否确认</returns>
-    public static bool isStuConfrim(string FK_SNO)
+    /// <returns></returns>
+    public static bool getStuConfirm(string FK_SNO)
     {
         organizationModelDataContext oDC = new organizationModelDataContext();
         Fresh_Confirm confirm = oDC.Fresh_Confirms.Where(s => s.FK_SNO == FK_SNO).SingleOrDefault();
-        return confirm != null ? true : false;
-    }
-    #endregion
-    #region 判断添加学生基本信息确认记录 addStuConfirm
-    /// <summary>
-    /// 判断添加学生基本信息确认记录，有记录则只修改
-    /// </summary>
-    /// <param name="FK_SNO">学生学号</param>
-    /// <param name="state">状态：true为信息无误，false为信息有误</param>
-    /// <returns></returns>
-    public static bool addStuConfirm(string FK_SNO, bool state)
-    {
-        organizationModelDataContext oDC = new organizationModelDataContext();
-        if (isStuConfrim(FK_SNO))
+        if (confirm != null && confirm.Confirm_state == false)
         {
-            //判断存在，只修改状态
-            Fresh_Confirm confirm = oDC.Fresh_Confirms.SingleOrDefault(s => s.FK_SNO == FK_SNO);
-            if (confirm != null)
-            {
-                confirm.Confirm_state = state;
-                confirm.Confirm_Date = DateTime.Now;
-            }
-            
-            try
-            {
-                oDC.SubmitChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                string s = e.Message;
-                return false;
-            }
-            
-        }
-        else
-        { 
-            //不存在，新生成
-            Fresh_Confirm confirm = new Fresh_Confirm
-            {
-                PK_Confirm_ID = Guid.NewGuid().ToString(),
-                FK_SNO = FK_SNO,
-                Confirm_state = state,
-                Confirm_Date = DateTime.Now
-            };
-            try
-            {
-                oDC.Fresh_Confirms.InsertOnSubmit(confirm);
-                oDC.SubmitChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;                
-            }
-        }
-    }
-    #endregion
-    #region 修改学生信息 stuUpdate
-    /// <summary>
-    /// 修改学生相关信息
-    /// </summary>
-    /// <param name="FK_SNO">学号</param>
-    /// <param name="stu">学生实体</param>
-    /// <returns>修改是否成功</returns>
-    public static bool stuUpdate(string FK_SNO, Base_STU stu)
-    {
-        organizationModelDataContext oDC = new organizationModelDataContext();
-        Base_STU stu_info = oDC.Base_STUs.Where(s => s.PK_SNO == FK_SNO).SingleOrDefault();
-        if (stu_info == null && stu.PK_SNO != FK_SNO) return false;
-        PropertyInfo[] propertys = stu_info.GetType().GetProperties();
-        foreach (PropertyInfo property in propertys)
-        {
-            var value = property.GetValue(stu, null);
-            property.SetValue(stu_info, value, null);                
-        }
-        try
-        {
-            oDC.SubmitChanges();
-            return true;
-        }
-        catch (Exception)
-        {
-
             return false;
         }
+        else
+        {
+            return true;
+        }
+        //return confirm != null ? true : false;
     }
-    #endregion
+    #endregion   
+    
     #region 通过代码类型名称获取代码类型数据 getCodeByCodeName
     /// <summary>
     /// 通过代码类型名称获取代码类型数据
@@ -539,7 +427,6 @@ public static class organizationService
     
     }
     #endregion
-
     #region 根据用户ID和隶属组Lsz返回能管理的学院信息 getYxByYhidLsz
     /// <summary>
     /// 根据用户ID和隶属组Lsz返回能管理的学院信息
@@ -577,6 +464,124 @@ public static class organizationService
     }
     #endregion
 
+
+    #region 添加一条相应批次的学生数据, addStu
+    /// <summary>
+    /// 添加一条学生数据
+    /// </summary>
+    /// <param name="stu">学生实体</param>
+    /// <param name="batch">批次代码</param>
+    /// <returns>真假</returns>
+    public static bool addStu(Base_STU stu, string batch)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        Fresh_STU stu_batch = new Fresh_STU
+        {
+            PK_SNO = stu.PK_SNO,
+            FK_Fresh_Batch = batch
+        };
+        try
+        {
+            oDC.Base_STUs.InsertOnSubmit(stu);
+            oDC.Fresh_STUs.InsertOnSubmit(stu_batch);
+            oDC.SubmitChanges();
+            return true;
+        }
+        catch (Exception e)
+        {
+
+            return false;
+        }
+
+    }
+    #endregion
+    #region 判断添加学生基本信息确认记录 addStuConfirm
+    /// <summary>
+    /// 判断添加学生基本信息确认记录，有记录则只修改
+    /// </summary>
+    /// <param name="FK_SNO">学生学号</param>
+    /// <param name="state">状态：true为信息有误，false为信息无误</param>
+    /// <returns></returns>
+    public static bool addStuConfirm(string FK_SNO, bool state)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        if (isStuConfrim(FK_SNO))
+        {
+            //判断存在，只修改状态
+            Fresh_Confirm confirm = oDC.Fresh_Confirms.SingleOrDefault(s => s.FK_SNO == FK_SNO);
+            if (confirm != null)
+            {
+                confirm.Confirm_state = state;
+                confirm.Confirm_Date = DateTime.Now;
+            }
+
+            try
+            {
+                oDC.SubmitChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                string s = e.Message;
+                return false;
+            }
+
+        }
+        else
+        {
+            //不存在，新生成
+            Fresh_Confirm confirm = new Fresh_Confirm
+            {
+                PK_Confirm_ID = Guid.NewGuid().ToString(),
+                FK_SNO = FK_SNO,
+                Confirm_state = state,
+                Confirm_Date = DateTime.Now
+            };
+            try
+            {
+                oDC.Fresh_Confirms.InsertOnSubmit(confirm);
+                oDC.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+    }
+    #endregion
+
+    #region 修改学生信息 stuUpdate
+    /// <summary>
+    /// 修改学生相关信息
+    /// </summary>
+    /// <param name="FK_SNO">学号</param>
+    /// <param name="stu">学生实体</param>
+    /// <returns>修改是否成功</returns>
+    public static bool stuUpdate(string FK_SNO, Base_STU stu)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        Base_STU stu_info = oDC.Base_STUs.Where(s => s.PK_SNO == FK_SNO).SingleOrDefault();
+        if (stu_info == null && stu.PK_SNO != FK_SNO) return false;
+        PropertyInfo[] propertys = stu_info.GetType().GetProperties();
+        foreach (PropertyInfo property in propertys)
+        {
+            var value = property.GetValue(stu, null);
+            property.SetValue(stu_info, value, null);
+        }
+        try
+        {
+            oDC.SubmitChanges();
+            return true;
+        }
+        catch (Exception)
+        {
+
+            return false;
+        }
+    }
+    #endregion
+
     #region 生成学号 createNum
     /// <summary>
     /// 
@@ -594,36 +599,89 @@ public static class organizationService
         return year + s.SPE_Code + xz + str_num;
     }
     #endregion
-
-    #region 添加一条相应批次的学生数据, addStu
+    #region 操作员身份是有效 staffVerify
     /// <summary>
-    /// 添加一条学生数据
+    /// 功能描述：根据“员工编号”查询获取“密码明文”，如果“密文”==校验函数(“密码明文”,“验证码”)返回true。否则返回false。
+    /// 编写人：陈智秋
+    /// 创建：2017.3.1
+    /// 更新：无
+    /// 版本：v0.0.1
     /// </summary>
-    /// <param name="stu">学生实体</param>
-    /// <param name="batch">批次代码</param>
-    /// <returns>真假</returns>
-    public static bool addStu(Base_STU stu,string batch)
+    /// <param name="staffNo">员工编号</param>
+    /// <param name="password">密码</param>
+    /// <param name="verifyCode">验证码</param>
+    /// <param name="pwdEncode">密文</param>
+    /// <returns></returns>
+    public static bool staffVerify(string staffNo, string password, string verifyCode, string pwdEncode)
     {
         organizationModelDataContext oDC = new organizationModelDataContext();
-        Fresh_STU stu_batch = new Fresh_STU
+        Base_Staff staff = oDC.Base_Staffs.Where(s => s.PK_Staff_NO == staffNo && s.Password == pwdEncode).SingleOrDefault();
+        if (staff == null) return false;
+        if (pwdEncode == md5.MD5Encrypt(password, verifyCode))
         {
-            PK_SNO = stu.PK_SNO,
-            FK_Fresh_Batch = batch
-        };
-        try
-        {
-            oDC.Base_STUs.InsertOnSubmit(stu);
-            oDC.Fresh_STUs.InsertOnSubmit(stu_batch);
-            oDC.SubmitChanges();
             return true;
         }
-         catch(Exception e)
-        {
-            
-            return false;
-        }
-        
+        return false;
     }
     #endregion
+    #region 学生身份是否有效 stuVerify
+    /// <summary>
+    /// 功能描述：根据“学号”查询所在批次中“禁止操作标志”为false，并且被授权“迎新事务”的“事务性质”为“交互性”，“事务列席”为“学生自治”或“两者”的数据。否则返回null。
+    /// 编写人：陈智秋
+    /// 创建：2017.3.1
+    /// 更新：无
+    /// 版本：v0.0.1
+    /// </summary>
+    /// <param name="sno">学号</param>
+    /// <param name="password">密码</param>
+    /// <param name="verifyCode">验证码</param>
+    /// <param name="pwdEncode">密文</param>
+    /// <returns></returns>
+    public static bool stuVerify(string sno, string password, string verifyCode, string pwdEncode)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        Base_STU stu = oDC.Base_STUs.Where(s => s.PK_SNO == sno && s.Password == pwdEncode).SingleOrDefault();
+        if (stu == null) return false;
+        if (pwdEncode == md5.MD5Encrypt(password, verifyCode))
+            return true;
+        else
+            return false;
+    }
+    #endregion
+    #region 判断当前是否在可用批次的时间内 isInEnableBatch
+    /// <summary>
+    /// 判断当前是否在可用批次的时间内
+    /// </summary>
+    /// <param name="putTime">为空，则为当前时间</param>
+    /// <returns></returns>
+    public static bool isInEnableBatch(DateTime putTime)
+    {
+        if (putTime == null)
+        { 
+            putTime = DateTime.Now;
+        }
+        
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        Fresh_Batch batch = oDC.Fresh_Batches.Where(s => s.Enabled == "run").FirstOrDefault();
+        if (batch != null && DateTime.Compare( batch.Service_Begin , putTime )< 0 && DateTime.Compare(batch.Service_End , putTime) > 0)
+            return true;
+        else
+            return false;
+    }
+    #endregion
+    #region 验证学生基本信息是否确认 isStuConfrim
+    /// <summary>
+    /// 对比学生学号验证学生是否进行基本信息的确认
+    /// </summary>
+    /// <param name="FK_SNO">学号</param>
+    /// <returns>是否确认</returns>
+    public static bool isStuConfrim(string FK_SNO)
+    {
+        organizationModelDataContext oDC = new organizationModelDataContext();
+        Fresh_Confirm confirm = oDC.Fresh_Confirms.Where(s => s.FK_SNO == FK_SNO).SingleOrDefault();
+        return confirm != null ? true : false;
+    }
+    #endregion
+
 
 }

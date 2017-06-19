@@ -357,21 +357,188 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
         try
         {
     
-                    #region 清除本年度预分配数据
+                    #region 清除本年度班级预分配数据
                    
                     if (c_bedyfp.Checked)
                     {
-                         sqlyfp = "delete Fresh_Bed_Class_Log FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE WHERE     (Fresh_SPE.FK_College_Code = '" + yxdm.SelectedValue + "') and Fresh_SPE.Year='" + this.DropDownList1.SelectedValue + "'";
+                         //sqlyfp = "delete Fresh_Bed_Class_Log FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE WHERE     (Fresh_SPE.FK_College_Code = '" + yxdm.SelectedValue + "') and Fresh_SPE.Year='" + this.DropDownList1.SelectedValue + "'";
                         //查询出该操作员能够操作的预分配数据
+                        sqlyfp=" SELECT     Fresh_Bed_Class_Log.PK_Bed_Class_Log AS 床位主键, Fresh_Bed_Class_Log.FK_Bed_NO AS 床位编号, Fresh_Bed_Class_Log.FK_Class_NO AS 班级代码, Fresh_Bed_Class_Log.College_NO AS 院系代码, Fresh_Bed_Log.FK_SNO AS 学号, Fresh_Dorm.Year AS 年度 FROM         Fresh_Bed LEFT OUTER JOIN         Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Log RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO  where Fresh_Dorm.Year='"+year.SelectedValue+"' and Fresh_Bed_Class_Log.College_NO='"+yxdm.SelectedValue+"'";
+                        //Response.Write(sqlyfp + "<br>");
+                        
+                        //1、查出原有多少条数据，已经被选择的有多少条
+                        DataTable countcw = Sqlhelper.Serach(sqlyfp);
+                        int yxcw = countcw.Rows.Count;//记录能操作的床位数
+                        int ybxcw = 0;//记录已经被选的床位
+                        if(yxcw>0)
+                        {
+                            for(int i=0;i<yxcw;i++)
+                            {
+                                if (countcw.Rows[i]["学号"].ToString().Length > 0) ybxcw++;
+                            }
+                        }
+
+
+                    //2、统计设置成功的数据
+                        string sqlcz = "update [Fresh_Bed_Class_Log] set [FK_Class_NO]=null from Fresh_Bed LEFT OUTER JOIN        Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Log RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO  where Fresh_Dorm.Year='" + year.SelectedValue + "' and Fresh_Bed_Class_Log.College_NO='" + yxdm.SelectedValue + "' and Fresh_Bed_Log.FK_SNO is null";
+                       // Response.Write(sqlcz + "<br>");
+                        int czcg = Sqlhelper.ExcuteNonQuery(sqlcz);
+                        ztts.Text = "<font color=blue>清空班级预分配操作提示:" +year.SelectedValue  + "年"+yxdm.SelectedItem.Text+"共分配床位："+yxcw.ToString()+",学生已选:"+ybxcw.ToString()+",本次清除："+czcg.ToString()+"【如果有学生选择床位将无法清除分配数据】</font><br>";
+
+                    
+                    
+                    
+                    
+                    }
+                    #endregion
+                    #region 清除本年度院系预分配数据
+
+                    if (c_bedyfpyx.Checked)
+                    {
+                        //sqlyfp = "delete Fresh_Bed_Class_Log FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE WHERE     (Fresh_SPE.FK_College_Code = '" + yxdm.SelectedValue + "') and Fresh_SPE.Year='" + this.DropDownList1.SelectedValue + "'";
+                        //查询出该操作员能够操作的预分配数据
+                        sqlyfp = " SELECT     Fresh_Bed_Class_Log.PK_Bed_Class_Log AS 床位主键, Fresh_Bed_Class_Log.FK_Bed_NO AS 床位编号, Fresh_Bed_Class_Log.FK_Class_NO AS 班级代码, Fresh_Bed_Class_Log.College_NO AS 院系代码, Fresh_Bed_Log.FK_SNO AS 学号, Fresh_Dorm.Year AS 年度 FROM         Fresh_Bed LEFT OUTER JOIN         Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Log RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO  where Fresh_Dorm.Year='" + year.SelectedValue + "' and Fresh_Bed_Class_Log.College_NO='" + yxdm.SelectedValue + "'";
+                        //Response.Write(sqlyfp + "<br>");
+
+                        //1、查出原有多少条数据，已经被选择的有多少条
+                        DataTable countcw = Sqlhelper.Serach(sqlyfp);
+                        int yxcw = countcw.Rows.Count;//记录能操作的床位数
+                        int ybxcw = 0;//记录已经被选的床位
+                        if (yxcw > 0)
+                        {
+                            for (int i = 0; i < yxcw; i++)
+                            {
+                                if (countcw.Rows[i]["学号"].ToString().Length > 0) ybxcw++;
+                            }
+                        }
+
+
+                        //2、统计设置成功的数据
+                        string sqlcz = "delete [Fresh_Bed_Class_Log]  from Fresh_Bed LEFT OUTER JOIN        Fresh_Room LEFT OUTER JOIN                      Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO RIGHT OUTER JOIN                      Fresh_Bed_Log RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO  where Fresh_Dorm.Year='" + year.SelectedValue + "' and Fresh_Bed_Class_Log.College_NO='" + yxdm.SelectedValue + "' and Fresh_Bed_Log.FK_SNO is null";
+                        //Response.Write(sqlcz + "<br>");
+                        int czcg = Sqlhelper.ExcuteNonQuery(sqlcz);
+                        int czcg2 = Sqlhelper.ExcuteNonQuery("update Fresh_Bed set college_no=null FROM         Fresh_Dorm RIGHT OUTER JOIN     Fresh_Room ON Fresh_Dorm.PK_Dorm_NO = Fresh_Room.FK_Dorm_NO RIGHT OUTER JOIN    Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO where college_no='"+yxdm.SelectedValue+"' and Year='"+year.SelectedValue+"'");
+                        ztts.Text += "<font color=blue>清空预分配到院操作提示:" + year.SelectedValue + "年" + yxdm.SelectedItem.Text + "共分配床位：" + yxcw.ToString() + ",学生已选:" + ybxcw.ToString() + ",本次删除分配床位数：" + czcg.ToString() + ",清空分配到系床位数："+czcg2.ToString()+"【如有学生选寝将无法删除】</font><br>";
+
+
+
+
 
                     }
                     #endregion
-             
+            #region 清除床位信息
+
+            #endregion
         }
         catch (Exception e1)
         {
             ztts.Text = "<font color=red>操作出错:" + e1.Message+"</font>";
         }
     }
-   
+
+    protected void c_roomtype_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_roomtype.Checked)
+        {
+            c_dorm.Checked = true;
+            c_room.Checked = true;
+            c_bed.Checked = true;
+            c_bedyfpyx.Checked = true;
+            c_bedyfp.Checked = true;
+
+            //变灰
+            c_dorm.Enabled = false;
+            c_room.Enabled = false;
+            c_bed.Enabled = false;
+            c_bedyfpyx.Enabled = false;
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+            c_dorm.Enabled = true;
+            c_room.Enabled = true;
+            c_bed.Enabled = true;
+            c_bedyfpyx.Enabled = true;
+            c_bedyfp.Enabled = true;
+        }
+    }
+    protected void c_dorm_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_dorm.Checked)
+        {
+            c_room.Checked = true;
+            c_bed.Checked = true;
+            c_bedyfpyx.Checked = true;
+            c_bedyfp.Checked = true;
+            //变灰
+           
+            c_room.Enabled = false;
+            c_bed.Enabled = false;
+            c_bedyfpyx.Enabled = false;
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+            c_room.Enabled = true;
+            c_bed.Enabled = true;
+            c_bedyfpyx.Enabled = true;
+            c_bedyfp.Enabled = true;
+
+        }
+    }
+    protected void c_room_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_room.Checked)
+        {
+            c_bed.Checked = true;
+            c_bedyfpyx.Checked = true;
+            c_bedyfp.Checked = true;
+            //变灰
+
+           
+            c_bed.Enabled = false;
+            c_bedyfpyx.Enabled = false;
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+            c_bed.Enabled = true;
+            c_bedyfpyx.Enabled = true;
+            c_bedyfp.Enabled = true;
+        }
+    }
+    protected void c_bed_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_bed.Checked)
+        {
+            c_bedyfpyx.Checked = true;
+            c_bedyfp.Checked = true;
+            //变灰
+
+            c_bedyfpyx.Enabled = false;
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+           
+            c_bedyfpyx.Enabled = true;
+            c_bedyfp.Enabled = true;
+        }
+    }
+    protected void c_bedyfpyx_CheckedChanged(object sender, EventArgs e)
+    {
+        if(c_bedyfpyx.Checked)
+        {
+            c_bedyfp.Checked = true;
+            //变灰
+
+            c_bedyfp.Enabled = false;
+        }
+        else
+        {
+
+          
+            c_bedyfp.Enabled = true;
+        }
+    }
 }

@@ -2,40 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Services;
-using Newtonsoft.Json;
 
 /// <summary>
-/// WebService 的摘要说明
-/// 胡元维护
-/// 用于迎新事务动态调用其他webservice；提供迎新事务动态状态反馈服务
+/// AffairFuns 的摘要说明
 /// </summary>
-[WebService(Namespace = "http://tempuri.org/")]
-[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-// 若要允许使用 ASP.NET AJAX 从脚本中调用此 Web 服务，请取消注释以下行。 
-// [System.Web.Script.Services.ScriptService]
-public class WebService : System.Web.Services.WebService {
-
-    public WebService () {
-
-        //如果使用设计的组件，请取消注释以下行 
-        //InitializeComponent(); 
-    }
-
-     //返回事务状态的样式用例，格式：webservice地址?方法名称
-    //http://localhost:3893/test/WebService.asmx?test_Log_Status
-    [WebMethod]
-    public string test_Log_Status(string PK_SNO)
-    {
-        return "已完成";
+public class AffairFuns
+{
+	public AffairFuns()
+	{
+		//
+		// TODO: 在此处添加构造函数逻辑
+		//
+	}
+    public static string RunAffairFun(string FunctionName,string PK_SNO){
+        string result = null;
+        if (FunctionName.Trim().Equals("get_fee_ismust"))
+        {
+            result=get_fee_ismust(PK_SNO);
+        }
+        if (FunctionName.Trim().Equals("get_hasnopayorder"))
+        {
+            result = get_hasnopayorder(PK_SNO);
+        }
+        return result;
     }
 
     //判断学生必交费是否交清
-    [WebMethod]
-    public string get_fee_ismust(string PK_SNO)
+    private static string get_fee_ismust(string PK_SNO)
     {
         string result = "未选必交费";
-        try {
+        try
+        {
             if (PK_SNO == null || PK_SNO.Trim().Length == 0)
             {
                 throw new Exception("参数错误");
@@ -54,7 +51,8 @@ public class WebService : System.Web.Services.WebService {
             }
             financial logic_fee = new financial();
             fee_list data1 = logic_fee.get_fee_ismust(pk_batch_no, PK_SNO);
-            if (data1 == null || data1.orderid==null || data1.orderid.Trim().Length==0) {
+            if (data1 == null || data1.orderid == null || data1.orderid.Trim().Length == 0)
+            {
                 result = "未选必交费";
             }
             else
@@ -97,7 +95,7 @@ public class WebService : System.Web.Services.WebService {
         {
             try
             {
-                new c_log().logAdd("webService.cs", "get_fee_ismust", ex.Message, "2", "huyuan");//记录错误日志
+                new c_log().logAdd("AffairFuns.cs", "get_fee_ismust", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
         }
@@ -105,8 +103,7 @@ public class WebService : System.Web.Services.WebService {
     }
 
     //判断学生是否还有没有完成网上交费的订单信息
-    [WebMethod]
-    public string get_hasnopayorder(string PK_SNO)
+    private static string get_hasnopayorder(string PK_SNO)
     {
         string result = "待缴订单数量:0";
         try
@@ -138,35 +135,35 @@ public class WebService : System.Web.Services.WebService {
                     string orderid = order_data[k].FEE_ORDERID;
                     string orderurl = order_data[k].FEE_ORDERID_URL;
                     List<Financial.Fee_Item> feeitem_List = logic_fee.get_feeitem_byorder(orderid);//根据订单获取学生收费款项列表
-                    bool equ=true;//订单所有款项已付费标志
-                    for(int i=0;feeitem_List!=null && i<feeitem_List.Count;i++)
+                    bool equ = true;//订单所有款项已付费标志
+                    for (int i = 0; feeitem_List != null && i < feeitem_List.Count; i++)
                     {
-                        Financial.Fee_Item items=feeitem_List[i];
-                        if(items.Fee_Amount>items.Fee_Payed && items.Is_Online_Order.Trim().Equals("1")){
-                            equ=false;
+                        Financial.Fee_Item items = feeitem_List[i];
+                        if (items.Fee_Amount > items.Fee_Payed && items.Is_Online_Order.Trim().Equals("1"))
+                        {
+                            equ = false;
                             break;
                         }
                     }
-                    if(!equ){
+                    if (!equ)
+                    {
                         nopayorder_count = nopayorder_count + 1;
                     }
                 }
-                if (nopayorder_count>0)
+                if (nopayorder_count > 0)
                 {
                     result = "待缴订单数量:" + nopayorder_count.ToString().Trim();
                 }
-            }            
+            }
         }
         catch (Exception ex)
         {
             try
             {
-                new c_log().logAdd("webService.cs", "get_fee_ismust", ex.Message, "2", "huyuan");//记录错误日志
+                new c_log().logAdd("AffairFuns.cs", "get_fee_ismust", ex.Message, "2", "huyuan");//记录错误日志
             }
             catch { }
         }
         return result;
     }
-
-
 }

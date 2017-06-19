@@ -34,19 +34,19 @@ public partial class _Default : System.Web.UI.Page
                 //if (wangzxx.Rows[i]["xxgjz"].ToString() == "logoimg") this.logoimg.Style.Add("background-image", wangzxx.Rows[i]["xxnr"].ToString());
                 //底部版权
                 if (wangzxx.Rows[i]["xxgjz"].ToString() == "copyright") this.copyrights.InnerHtml = wangzxx.Rows[i]["xxnr"].ToString();
-                //BANNER
-                if (wangzxx.Rows[i]["xxgjz"].ToString() == "banner")
-                {
-                    if (wangzxx.Rows[i]["xxnr"].ToString().Length > 4)
-                    {
+                ////BANNER
+                //if (wangzxx.Rows[i]["xxgjz"].ToString() == "banner")
+                //{
+                //    if (wangzxx.Rows[i]["xxnr"].ToString().Length > 4)
+                //    {
                         
-                        this.bannershow.Src = wangzxx.Rows[i]["xxnr"].ToString();
-                    }
-                    else
-                    {
-                        bannershow.Style.Add("display", "none");
-                    }
-                }
+                //        this.bannershow.Src = wangzxx.Rows[i]["xxnr"].ToString();
+                //    }
+                //    else
+                //    {
+                //        bannershow.Style.Add("display", "none");
+                //    }
+                //}
 
 
             }
@@ -170,7 +170,7 @@ public partial class _Default : System.Web.UI.Page
             }
             else
             {
-                tzlist.InnerHtml = "<p>暂无通知公告!</p>";
+                tzlist.InnerHtml = "<p>暂无内容!</p>";
             }
         }
         catch { }
@@ -180,80 +180,58 @@ public partial class _Default : System.Web.UI.Page
         DataTable hydw = Sqlhelper.Serach("select top 1 * from[wangzxx] where xxgjz='幻灯旁ID'");
         if (hydw.Rows.Count > 0)
         {
-            mydivtitle.InnerHtml = "<span style=\"float:right;font-size:15px\"><a href=\"/list.aspx?id=" + hydw.Rows[0]["xxnr"].ToString() + "\">更多</a></span>" + hydw.Rows[0]["title"].ToString() + "";
+            mydivtitle.InnerHtml = "<span style=\"float:right;font-size:15px\"><a href=\"/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs\">>></a></span>新生网上报到登陆";
 
-            DataTable hyxw = Sqlhelper.Serach("SELECT TOP 100 *  FROM [xw_neirong] where isyn='1' and (lmid="+hydw.Rows[0]["xxnr"].ToString()+") and readpower like '%00|%' order by fabutime desc");
-            if (hyxw.Rows.Count > 0)
-            {
-                mydiv.InnerHtml = "";
-               
-                for (int i = 0; i < hyxw.Rows.Count; i++)
-                {
-                    string nr = basic.ReplaceHtmlTag(hyxw.Rows[i]["title"].ToString(), 14);
-
-                    mydiv.InnerHtml += "<a href=/xw.aspx?xwid=" + hyxw.Rows[i]["id"].ToString() + ">" + nr + "</a>";
-                }
-
-
-            }
-            else
-            {
-                mydiv.InnerHtml = "";
-            }
         }
-        else
-        {
-            mydivtitle.InnerHtml="未设置栏目";
-            mydiv.InnerHtml = "";
-        }
+        
         #endregion
 
-        #region 首页新闻
-        //<b>【首页新闻】</b>
-        try
-        {
-            //首页显示栏目
-            DataTable toplm = Sqlhelper.Serach("SELECT top 15 *  FROM [xw_lanm] where sftop='1' order by px asc");
-            if (toplm.Rows.Count > 0)
-            {
-                sftopshow.InnerHtml = "";
-                for (int i = 0; i < toplm.Rows.Count; i++)
-                {
-                    //框架
+        //#region 首页新闻
+        ////<b>【首页新闻】</b>
+        //try
+        //{
+        //    //首页显示栏目
+        //    DataTable toplm = Sqlhelper.Serach("SELECT top 15 *  FROM [xw_lanm] where sftop='1' order by px asc");
+        //    if (toplm.Rows.Count > 0)
+        //    {
+        //        sftopshow.InnerHtml = "";
+        //        for (int i = 0; i < toplm.Rows.Count; i++)
+        //        {
+        //            //框架
                    
-                   // sftopshow.InnerHtml += "<div class=\"Bbox_e fl\">  <div class=\"newItembox\">  <div class=\"newtitle\"> <span><a href=\"list.aspx?id=" + toplm.Rows[i]["lmid"].ToString() + "\">更多</a></span> <em><a href=\"list.aspx?id=" + toplm.Rows[i]["lmid"].ToString() + "\">" + toplm.Rows[i]["lmmc"].ToString() + "</a></em> </div><div class=\"clear\"></div>   <div class=\"cont\">   <ul class=\"arrowllist\"> ";
-                    sftopshow.InnerHtml += " <div class=\"col-sm-4\"><div class=\"widget\"><h4 class=\"title\" ><span style=\"float:right;font-size:15px\"><a href=\"/list.aspx?id=" + toplm.Rows[i]["lmid"].ToString() + "\">更多</a></span> " + toplm.Rows[i]["lmmc"].ToString() + "</h4>  <div class=\"content recent-post\"> ";
+        //           // sftopshow.InnerHtml += "<div class=\"Bbox_e fl\">  <div class=\"newItembox\">  <div class=\"newtitle\"> <span><a href=\"list.aspx?id=" + toplm.Rows[i]["lmid"].ToString() + "\">更多</a></span> <em><a href=\"list.aspx?id=" + toplm.Rows[i]["lmid"].ToString() + "\">" + toplm.Rows[i]["lmmc"].ToString() + "</a></em> </div><div class=\"clear\"></div>   <div class=\"cont\">   <ul class=\"arrowllist\"> ";
+        //            sftopshow.InnerHtml += " <div class=\"col-sm-4\"><div class=\"widget\"><h4 class=\"title\" ><span style=\"float:right;font-size:15px\"><a href=\"/list.aspx?id=" + toplm.Rows[i]["lmid"].ToString() + "\">更多</a></span> " + toplm.Rows[i]["lmmc"].ToString() + "</h4>  <div class=\"content recent-post\"> ";
 
-                    DataTable zdxw = Sqlhelper.Serach("SELECT     TOP 8 xw_lanm.lmmc, xw_neirong.title, xw_neirong.id, xw_neirong.LMID, xw_neirong.fabutime, xw_neirong.readpower FROM         xw_neirong LEFT OUTER JOIN       xw_lanm ON xw_neirong.LMID = xw_lanm.lmid where xw_neirong.readpower like '%00|%' and xw_neirong.lmid='" + toplm.Rows[i]["lmid"].ToString() + "' and xw_neirong.isyn='1' order by fabutime desc");
-                    if (zdxw.Rows.Count > 0)
-                    {
-                        //新闻列表      
-                        //新闻列表读取
-                        for (int c = 0; c < zdxw.Rows.Count; c++)
-                        {
-                            string datatimeok = zdxw.Rows[c]["fabutime"].ToString();
-                            try
-                            {
-                                datatimeok = DateTime.Parse(zdxw.Rows[c]["fabutime"].ToString()).ToString("MM月dd日");
+        //            DataTable zdxw = Sqlhelper.Serach("SELECT     TOP 8 xw_lanm.lmmc, xw_neirong.title, xw_neirong.id, xw_neirong.LMID, xw_neirong.fabutime, xw_neirong.readpower FROM         xw_neirong LEFT OUTER JOIN       xw_lanm ON xw_neirong.LMID = xw_lanm.lmid where xw_neirong.readpower like '%00|%' and xw_neirong.lmid='" + toplm.Rows[i]["lmid"].ToString() + "' and xw_neirong.isyn='1' order by fabutime desc");
+        //            if (zdxw.Rows.Count > 0)
+        //            {
+        //                //新闻列表      
+        //                //新闻列表读取
+        //                for (int c = 0; c < zdxw.Rows.Count; c++)
+        //                {
+        //                    string datatimeok = zdxw.Rows[c]["fabutime"].ToString();
+        //                    try
+        //                    {
+        //                        datatimeok = DateTime.Parse(zdxw.Rows[c]["fabutime"].ToString()).ToString("MM月dd日");
 
-                            }
-                            catch { }
-                            string title = basic.ReplaceHtmlTag(zdxw.Rows[c]["title"].ToString(), 14);
-                            string title1 = basic.ReplaceHtmlTag(zdxw.Rows[c]["title"].ToString(), 108);
-                            // sftopshow.InnerHtml += " <li> <a class=\"linkh\" href=\"xw.aspx?xwid=" + zdxw.Rows[c]["id"].ToString() + "\" title=\"" + title1 + "\" >" + title + " </a> </li>";
-                            sftopshow.InnerHtml += "<span style=\"float:right;clear:both;\">" + datatimeok + "</span><p><a  href=\"xw.aspx?xwid=" + zdxw.Rows[c]["id"].ToString() + "\" title=\"" + title1 + "\" >" + title + " </a> </p>";
-                        }
-                    }
-                    else
-                    {
-                        sftopshow.InnerHtml += "<p>暂无新闻</p>";
-                    }
-                    sftopshow.InnerHtml += " </div> </div>   </div>";
-                }
-            }
-        }
-        catch { }
-        #endregion
+        //                    }
+        //                    catch { }
+        //                    string title = basic.ReplaceHtmlTag(zdxw.Rows[c]["title"].ToString(), 14);
+        //                    string title1 = basic.ReplaceHtmlTag(zdxw.Rows[c]["title"].ToString(), 108);
+        //                    // sftopshow.InnerHtml += " <li> <a class=\"linkh\" href=\"xw.aspx?xwid=" + zdxw.Rows[c]["id"].ToString() + "\" title=\"" + title1 + "\" >" + title + " </a> </li>";
+        //                    sftopshow.InnerHtml += "<span style=\"float:right;clear:both;\">" + datatimeok + "</span><p><a  href=\"xw.aspx?xwid=" + zdxw.Rows[c]["id"].ToString() + "\" title=\"" + title1 + "\" >" + title + " </a> </p>";
+        //                }
+        //            }
+        //            else
+        //            {
+        //                sftopshow.InnerHtml += "<p>暂无新闻</p>";
+        //            }
+        //            sftopshow.InnerHtml += " </div> </div>   </div>";
+        //        }
+        //    }
+        //}
+        //catch { }
+        //#endregion
 
         #region 底部链接
         //<b>【首页新闻】</b>
@@ -350,6 +328,10 @@ public partial class _Default : System.Web.UI.Page
         }
         catch (Exception xx) { Response.Write(xx.Message); }
         #endregion
+
+    }
+    protected void Button3_Click(object sender, EventArgs e)
+    {
 
     }
 }

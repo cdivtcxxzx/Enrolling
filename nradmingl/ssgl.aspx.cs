@@ -122,7 +122,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
                 {
                     //string sqlok = "SELECT     TOP (1000) Fresh_SPE.Year AS 年度, Fresh_Room.Room_NO AS 房间编号,Fresh_Bed_Class_Log.FK_Bed_NO AS 床位编号, Base_College.Name AS 学院名称, Fresh_Class.Name AS 班级名称,                        Fresh_Room.Gender AS 性别 FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN                      Fresh_Room RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO LEFT OUTER JOIN                      Base_College RIGHT OUTER JOIN                      Fresh_SPE ON Base_College.PK_College = Fresh_SPE.FK_College_Code ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE WHERE     (Fresh_SPE.FK_College_Code = '03') AND (Fresh_SPE.Year = '2017') order by 房间编号";
 
-                    string sqlok = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "");
+                    string sqlok = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "",Session["username"].ToString(),yx.SelectedValue);
                     //Response.Write(sqlok);
                     //Response.End();
                     
@@ -131,6 +131,16 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
                     ViewState["gridsql"] = sqlok;//绑定数据源的查询语句
                     this.SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
                     GridView1.DataBind();
+
+                    //统计信息
+                    if (yx.SelectedValue == "全部院系" || yx.SelectedValue == "0")
+                    {
+                        g_ts.Text = dormitory.serch_yfptj("0", "all","");
+                    }
+                    else
+                    {
+                        g_ts.Text = dormitory.serch_yfptj(yx.SelectedValue, "0",yx.SelectedItem.Text);
+                    }
                     //根据屏幕高度设置ＧＲＩＤＶＩＥＷ的ＰＡＧＥ显示条数
                     if (Convert.ToInt32(xheight) <= 728) this.GridView1.PageSize = 10;
                 }
@@ -431,7 +441,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     {
         //准备导出的DATATABLE,为了输出时列名为中文,请在写SQL语句时重定义一下列名
         //例:SELECT [int] 序号  FROM [taskmanager] order by [int] desc 
-        System.Data.DataTable dt = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue);
+        System.Data.DataTable dt = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue,Session["username"].ToString(),yx.SelectedValue);
         #region 导出
         //引用EXCEL导出类
         toexcel xzfile = new toexcel();
@@ -439,7 +449,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
         //Response.Write("文件名" + filen);
         if (filen.Length > 4)
         {
-            this.tsbox.Value = "<span style=\"font-size:Large;\"> <font color=green>导出成功,请<a href=" + filen + " target=_blank >点此下载</a></font></span>";
+            this.tsbox.Value = "<span style=\"font-size:Large;\"> <font color=green>导出成功,请</font><a href=" + filen + " target=_blank ><b><font color=red>点此下载</font></b></a></span>";
             //this.Label1.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
 
         }
@@ -468,11 +478,15 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     }
     protected void gzt()
     {
-        ViewState["gridsql"] = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "");
-        //this.Label1.Text= ViewState["gridsql"].ToString();
+        ViewState["gridsql"] = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "",Session["username"].ToString(),yx.SelectedValue);
+        //this.g_ts.Text= ViewState["gridsql"].ToString();
         
         SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
+        //Response.Write(SqlDataSource1.SelectCommand);
         GridView1.DataBind();
+
+       
+
     }
     protected void ObjectDataSource1_Selected(object sender, ObjectDataSourceStatusEventArgs e)
     {
@@ -481,6 +495,19 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     protected void clearyfp(object sender, EventArgs e)
     {
         //清空预分配数据
+    }
+    protected void yx_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        gzt();
+        //提示统计信息
+        if (yx.SelectedValue == "全部院系" || yx.SelectedValue == "0")
+        {
+            g_ts.Text = dormitory.serch_yfptj("0", "all","");
+        }
+        else
+        {
+            g_ts.Text = dormitory.serch_yfptj(yx.SelectedValue, "0",yx.SelectedItem.Text);
+        }
     }
 }
 

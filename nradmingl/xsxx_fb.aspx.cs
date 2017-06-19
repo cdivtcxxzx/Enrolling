@@ -99,7 +99,8 @@ public partial class nradmingl_xsxx_fb : System.Web.UI.Page
             //new c_login().tongyiyz(webpage, pagelm1, pageqx1, "进入" + pagelm1 + "页", true, pageqx1, pageqx2, pageqx3, pageqx4, pageqx5);
             //默认如权限１，若单独验证某个权限，如下方式
             //new c_login().powerYanzheng(Session["username"].ToString(), pagelm1, pageqx2, "2");//验证当前栏目关键字中的权限２,通常在按钮中需验证权限时使用
-
+            //记录该批次是否受导入时间限制 true为可导入 false不可导入
+            hid_daoru_flag.Value = organizationService.isInEnableBatch(DateTime.Now) ? "true" : "false";
             #endregion
 
         }

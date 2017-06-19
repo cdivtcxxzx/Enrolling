@@ -57,6 +57,7 @@
     text-align: center;
     border-radius: 4px;
 }
+
      </style>
      <!--展示响应式CSS块over-->
      <!--页面开始全范围框架-->
@@ -64,10 +65,10 @@
      <!--顶部提示及导航-->
     		<blockquote class="layui-elem-quote">
           
-            <i class="layui-icon">&#xe602;</i>自助报到>>选择费用
+            <i class="layui-icon">&#xe602;</i>选择费用
             <span style="float:right;" id="btnback">            				
                  <a href="xswsjf.aspx" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe603;</i>
+					返回
 				</a>
            </span>
 				
@@ -111,14 +112,15 @@
       <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
 
      <asp:HiddenField ID="server_msg" Value="" runat="server" />
+                   <asp:HiddenField ID="tmpdata" Value="" runat="server" />
 
 
      <div  id="contents" >   
          <div class="layui-form-item" pane="" style="margin-bottom:0px;">
          </div>
 
-         <div class="layui-form-item" pane="" style="margin-bottom:0px;">
-          <label class="layui-form-label">姓名：</label>
+         <div class="layui-form-item" pane="" style="margin-bottom:0px;padding-left:0px;padding-right:0px;">
+          <label class="layui-form-label" style="margin-left:0px;">姓名：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xm" runat="server" Text=""></asp:Label></div></div>
         </div>
@@ -192,6 +194,19 @@
         <script>
             load();
 		</script>
-
+        <div id="TuitionClass" ref-data="none" style="display:none;margin-left:10px;margin-right:10px;">
+            <div style="margin-top:10px;color:red;"><label>需要支付的金额总计：</label><label id="fee_sum">0</label><label>元</label></div>
+        <div style="margin-top:10px;">
+        <label><input id="xf_normal" name="TuitionClass" type="radio" value="" onclick="changesum();" />正常缴费 </label> 
+        <label><input id="xf_green" name="TuitionClass" type="radio" value="" onclick="msg('提示', '绿色通道需要到校现场申请办理'); changesum();" />绿色通道 </label> 
+        <label><input id="xf_loan" name="TuitionClass" type="radio" value="" onclick="msg('提示', '助学贷款需要到校现场申请办理'); changesum();" />助学贷款 </label> 
+        </div>
+        <div style="margin-top:10px;">            
+            <div >
+                <label style="color:red;font:bold;">提示：</label><br />
+                <label style="color:orangered;font:bold;">“绿色通道”和“助学贷款”申请需要到校现场申请办理</label>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

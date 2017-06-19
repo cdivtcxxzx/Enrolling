@@ -28,8 +28,12 @@
         {
             display:inline-block;
             height: 37px;
-        }
 
+        }
+        .inputw input{width:20px;height:20px;}
+        .inputw  label{
+            font-size: 16px;
+        }
     </style>
     <form id="form1"  runat="server">
     <div class="admin-main">
@@ -52,7 +56,7 @@
                 </asp:ScriptManager>
         
         <div>
-           年度选择： <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="SqlDataSource1" DataTextField="Year" DataValueField="Year"></asp:DropDownList>
+           年度选择： <asp:DropDownList ID="year" runat="server" DataSourceID="SqlDataSource1" DataTextField="Year" DataValueField="Year"></asp:DropDownList>
             <asp:DropDownList ID="yxdm" runat="server" DataSourceID="SqlDataSource2" DataTextField="Name" DataValueField="PK_College">
             </asp:DropDownList>
             <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT [PK_College], [Name] FROM [Base_College] WHERE ([Enabled] = @Enabled) ORDER BY [College_NO]">
@@ -62,11 +66,11 @@
             </asp:SqlDataSource>
             <br />
            &nbsp;&nbsp;&nbsp;&nbsp; <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT DISTINCT [Year] FROM [Fresh_Room_Type] ORDER BY [Year]"></asp:SqlDataSource>
-            <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_roomtype" runat="server" Text="清空房间类型信息" />
-           &nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_dorm" runat="server" Text="清空公寓宿舍信息" />
-          <br />  <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_room" runat="server" Text="清空房间信息" />
-           &nbsp;&nbsp;&nbsp;&nbsp; <asp:CheckBox ID="c_bed" runat="server" Text="清空床位信息" />
-           <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfp" Checked="true" runat="server" Text="清空预分配信息" />
+            <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_roomtype" CssClass="inputw" runat="server" Text="清空房间类型信息" AutoPostBack="True" OnCheckedChanged="c_roomtype_CheckedChanged" />
+           &nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_dorm" runat="server" CssClass="inputw"  Text="清空公寓宿舍信息" AutoPostBack="True" OnCheckedChanged="c_dorm_CheckedChanged" />
+          <br />  <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_room" CssClass="inputw"  runat="server" Text="清除所有房间信息" AutoPostBack="True" OnCheckedChanged="c_room_CheckedChanged" />
+           &nbsp;&nbsp;&nbsp;&nbsp; <asp:CheckBox ID="c_bed" runat="server" CssClass="inputw"  Text="清空所有床位信息" AutoPostBack="True" OnCheckedChanged="c_bed_CheckedChanged" />
+           &nbsp;【注：房间类型、公寓、房间、床位与院系无关，仅与年度有关】<br /><br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfpyx" CssClass="inputw"   runat="server" Text="清空院系预分配信息" AutoPostBack="True" OnCheckedChanged="c_bedyfpyx_CheckedChanged" />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfp" CssClass="inputw"  Checked="true" runat="server" Text="清空班级预分配信息" />
        <br /> 
             <br />
             <br /> 
@@ -113,142 +117,7 @@
 		</div>
      
 		<!--引发ＬＡＹＵＩ前端必须ＪＳ-->
-    <script type="text/javascript" src="plugins/layui/layui.js"></script>
-  
-    <!--引发ＬＡＹＵＩ前端必须ＪＳ　ＯＶＥＲ-->
    
-
-
-
-	<script>
-	    // $('#code').qrcode(window.location.href);
-	    //鼠标滑过图片及文字提示时显示titop样式
-	    //	    $(document).tooltip({
-	    //	        items: "img, [titop], [title]", content: function () {
-	    //	            var element = $(this);
-	    //	            if (element.is("[titop]")) {	                var text = element.attr("alt");	                return "<img class='map'  src='" + text + "'>";	            }
-	    //	            if (element.is("[txttop]")) {return element.attr("title");             }
-
-	    //	        }  });
-	    //一般直接写在一个js文件中
-	    layui.use(['layer', 'form'], function () {
-	        var layer = layui.layer
-  , form = layui.form();
-
-	        //layer.msg('Hello World');
-	        //layer.open({ type: 2, title: 'layer mobile页', shadeClose: true, shade: 0.8, area: ['380px', '90%'], content: 'http://layer.layui.com/mobile/' });
-	    });
-
-
-	    layui.config({
-	        base: 'plugins/layui/modules/'
-	    });
-
-	    layui.use(['icheck', 'laypage'], function () {
-	        var $ = layui.jquery,
-					laypage = layui.laypage;
-	        $('input').iCheck({
-	            checkboxClass: 'icheckbox_square-blue'
-	        });
-
-	        //page
-	        laypage({
-	            cont: 'page',
-	            pages: 10 //总页数
-						,
-	            groups: 5 //连续显示分页数
-						,
-	            jump: function (obj, first) {
-	                //得到了当前页，用于向服务端请求对应数据
-	                var curr = obj.curr;
-	                if (!first) {
-	                    //layer.msg('第 '+ obj.curr +' 页');
-	                }
-	            }
-	        });
-
-	        $('#search').on('click', function () {
-	            parent.layer.alert('你点击了搜索按钮')
-	        });
-
-
-	        $('.site-table tbody tr').on('click', function (event) {
-	            var $this = $(this);
-	            var $input = $this.children('td').eq(0).find('input');
-	            $input.on('ifChecked', function (e) {
-	                $this.css('background-color', '#EEEEEE');
-	            });
-	            $input.on('ifUnchecked', function (e) {
-	                $this.removeAttr('style');
-	            });
-	            $input.iCheck('toggle');
-	        }).find('input').each(function () {
-	            var $this = $(this);
-	            $this.on('ifChecked', function (e) {
-	                $this.parents('tr').css('background-color', '#EEEEEE');
-	            });
-	            $this.on('ifUnchecked', function (e) {
-	                $this.parents('tr').removeAttr('style');
-	            });
-	        });
-	        $('#selected-all').on('ifChanged', function (event) {
-	            var $input = $('.site-table tbody tr td').find('input');
-	            $input.iCheck(event.currentTarget.checked ? 'check' : 'uncheck');
-	        });
-	    });
-		</script>
-
-             <script type="text/javascript">
-                 //后台操作提示配合
-                 if (document.all("tsxx").value != "") {
-                     parent.layer.msg(document.all("tsxx").value);
-                     document.all("tsxx").value = "";
-                 }
-                 //tsxx纯为提示,tsbox 需点关闭或延时1分钟关闭
-                 if (document.all("tsbox").value != "") {
-                     parent.layer.open({ content: document.all("tsbox").value, title: '提示信息', btn: ['关闭'], time: 60000 });
-                     document.all("tsbox").value = "";
-                 }
-                 //批量操作
-
-                 function batchAudit(id) {
-                     var AuditVal = "";
-                     var bid = document.getElementsByName("BoxId");
-                     for (var i = 0; i < bid.length; i++) {
-                         if (bid[i].checked == true) {
-                             AuditVal = AuditVal + bid[i].value + ",";
-                         }
-                     }
-                     if (AuditVal.length <= 0) {
-                         parent.layer.msg("请先选择一条记录,在记录前打勾!");
-
-                         return false;
-                     }
-                     else {
-                         if (id == "btnDelete") {
-                             document.getElementById("hdfWPBH").value = AuditVal;
-                             return true;
-                             //                             layer.open({ content: '您确认要批量删除这' + String(AuditVal.length / 4) + '条记录吗？'
-                             //                                      , btn: ['确认', '取消']
-                             //                                      , yes: function (index, layero) {
-                             //                                          document.getElementById("hdfWPBH").value = AuditVal;
-                             //                                          //此处写传给删除页面的参数
-                             //                                          return true;
-                             //                                          //使用AJAX回调删除
-                             //                                          layer.close(index);
-
-                             //                                      }, btn2: function (index, layero) {
-                             //                                          return false;
-                             //                                      }
-                             //                                      , cancel: function () {
-                             //                                          return false;
-                             //                                      }
-                             //                             });
-                             return false;
-                         }
-                     }
-                 }  
-    </script>
     </form>
 </body>
 </html>

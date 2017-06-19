@@ -205,6 +205,9 @@ ul, menu, dir {
            <asp:CheckBox ID="updateroom_c" runat="server" Font-Size="Medium" 
                Text="同时更新寝室床位等信息（第一次导入请勾选）" />
     	
+           <asp:CheckBox ID="updateroom_qz" runat="server" Font-Size="Medium" 
+               Text="如已分配到班,强制清除重分配" />
+    	
 	</blockquote>
     <br />
           

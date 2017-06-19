@@ -44,13 +44,13 @@
               <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
         <div class="admin-main">
             <blockquote class="layui-elem-quote">
-                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>新生网上报到进度           
+                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>网上报到情况           
             </blockquote>
             <div>
                 
-                <div class="layui-form-item">
+                <div class="layui-form-item" style="margin-bottom:0px;">
                     <!--迎新批次下拉列表-->
-                    <div class="layui-inline">
+                    <div class="layui-inline" style="margin-bottom:0px;">
                         <label class="layui-form-label">批次：</label>
                         <div class="layui-input-inline">
                             <select name="batchlist" id="batchlist">
@@ -60,7 +60,7 @@
                     </div>
 
                     <!--班级下拉列表-->
-                    <div class="layui-inline">
+                    <div class="layui-inline" style="margin-bottom:0px;">
                         <label class="layui-form-label">班级：</label>
                         <div class="layui-input-inline">
                             <select name="classlist" id="classlist">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <!--项目下拉列表-->
-                    <div class="layui-inline">
+                    <div class="layui-inline" style="margin-bottom:0px;">
                         <label class="layui-form-label">项目：</label>
                         <div class="layui-input-inline">
                             <select name="affairlist" id="affairlist">
@@ -84,20 +84,31 @@
                                 <option value="4">element</option>
                             </select>
                         </div>
-                    </div>
-<%--                    <div class="layui-inline">
-                        <label class="layui-form-label">状态：</label>
-                        <div class="layui-input-inline">
-                            <select name="modules">
-                                <option value="">请选择项目完成状态</option>
-                                <option value="1">layer</option>
-                                <option value="2">form</option>
-                                <option value="3">layim</option>
-                                <option value="4">element</option>
-                            </select>
-                        </div>
-                    </div>--%>
-                    <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
+                    </div> 
+                    
+                     <div class="layui-inline" style="margin-bottom:0px;">
+                         <a href="#" onclick="classoraffairchange();" class="layui-btn layui-btn-small hidden-xs">
+					    <i class="layui-icon">&#x1002;</i> 刷新
+				        </a>
+                    </div>                  
+                </div>
+
+                <div class="layui-form-item" style="margin-bottom:0px;">
+                    <div class="layui-inline" style="margin-bottom:0px;">
+                        <label class="layui-form-label" style="width:100px;padding:0px 0px;" id="zj">总计：0人</label>
+                        <label class="layui-form-label" style="width:220px;padding:0px 0px;" id="zc">网上注册：0人</label>
+                        <label class="layui-form-label" style="width:220px;padding:0px 0px;" id="lstd">绿色通道：0人</label>
+                        <label class="layui-form-label" style="width:220px;padding:0px 0px;" id="zxdk">助学贷款：0人</label>
+                    </div>                 
+                </div>
+                <div class="layui-form-item" style="margin-bottom:0px;">
+                    <div class="layui-inline" style="margin-bottom:0px;">
+                        <label class="layui-form-label" style="width:800px;" id="xm">项目：0人</label>
+                    </div>                 
+                </div>
+
+                <div class="layui-form-item">
+ <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
                         <thead>
                             <tr>        
                                 <th scope="col">序号</th>                        
@@ -112,7 +123,7 @@
                                 <th scope="col">联系电话</th>
                                 <th scope="col">网上注册</th>
                                 <th scope="col">绿色通道<br />助学贷款</th>
-                                <th scope="col">项目情况</th>
+                                <th scope="col" id="itemname">项目情况</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -120,9 +131,7 @@
 
                         </tbody>
                     </table>
-
                 </div>
-
             </div>
         </div>
     </form>

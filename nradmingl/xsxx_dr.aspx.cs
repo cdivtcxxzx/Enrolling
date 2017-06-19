@@ -276,7 +276,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
                                     ID_NO = x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", ""),
                                     Photo = "images/xstp/" + x.Rows[ii]["高考报名号"].ToString().Trim().Replace("'", "") + ".jpg",
                                     Status_Code = "未报到",
-                                    Password = x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", "").Substring(12, 6),
+                                    Password = x.Rows[ii]["身份证号"].ToString().Trim().Replace("'", "").Substring(10, 8),
                                     Name = x.Rows[ii]["姓名"].ToString().Trim().Replace("'", ""),
                                     Gender_Code = x.Rows[ii]["性别"].ToString().Trim().Replace("'", ""),
                                     DT_Initial = DateTime.Now,
@@ -594,7 +594,7 @@ public partial class nradmingl_xsxx_dr : System.Web.UI.Page
     protected void DropDownListBatch_DataBound(object sender, EventArgs e)
     {
         //初次下拉加载数据后设置批次选中
-        if (Session["batch"] != null && Session["batch"] != "")
+        if (Session["batch"] != null && Session["batch"].ToString() != "")
         {
             DropDownListBatch.Items.FindByValue(Session["batch"].ToString()).Selected = true;
         }

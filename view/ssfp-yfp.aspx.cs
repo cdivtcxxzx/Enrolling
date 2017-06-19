@@ -11,6 +11,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        cwts.Text = "";
         //获取传递参数
         string pk_sno = "";
         if (Request["pk_sno"] != null)

@@ -27,7 +27,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
     private string pagelm1 = "预分配寝室管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
     private string upfile = "预分配寝室导入";//导入上传的临时文件名称
     //导入模板的字段
-    private string zd = "序号,年度,校区,公寓名称,楼层,房间编号,房间类型,性别,房间人数,床位编号,床位位置说明,班级名称";
+    private string zd = "序号,年度,校区,公寓名称,楼层,房间编号,房间类型,性别,房间人数,床位编号,床位位置说明,院系名称,班级名称";
     //错误提示时，要隐藏的字段
     private  string removeok = "年度,校区,公寓名称,楼层,房间类型,房间人数,床位位置说明";
     
@@ -247,6 +247,20 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
 
             if (x.Rows.Count > 0)
             {
+
+                #region 存入有重复数据的值 
+                var query = from t in x.AsEnumerable()
+                            group t by new { t1 = t.Field<string>("房间编号"), t2 = t.Field<string>("床位编号") } into m
+                            select new
+                            {
+                                code = m.Key.t1,
+                                name = m.Key.t2,
+                                rowcount = m.Count()
+
+
+                            };
+                #endregion
+
                 //获取总记录数
                 zs = x.Rows.Count;
                 //添加错误提示
@@ -267,6 +281,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         string dormname = x.Rows[ii]["公寓名称"].ToString().Replace("'", "");
                         string floor=x.Rows[ii]["楼层"].ToString().Replace("'", "");
                         string roomid = x.Rows[ii]["房间编号"].ToString().Replace("'", "");
+                        string yxmc = x.Rows[ii]["院系名称"].ToString().Replace("'", "");
                         string roomzj = "";
                         string roomtype = x.Rows[ii]["房间类型"].ToString().Replace("'", "");
                         string xb = x.Rows[ii]["性别"].ToString().Replace("'", "");
@@ -282,7 +297,23 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         //每列数据判断，第一列,验证举例
                         //"序号,年度,校区,公寓名称,楼层,房间编号,房间类型,房间人数,床位编号,床位位置说明,班级名称";
 
-                        
+                        #region 重复数据验证
+                       
+                        foreach (var q in query)
+                        {
+                           // Response.Write(q + "<br>");
+                            //q.rowcount可以获取到一共有几条重复数据，比如在该例子中q.rowcount就是3  
+                            if (q.rowcount > 1 && q.code == roomid && q.name ==cwbh)
+                            {
+                                //有重复 
+                                x.Rows[ii]["错误提示"] = x.Rows[ii]["错误提示"].ToString().Replace("该床位在表中有重复，请检查！", "") + "该床位在表中有重复，请检查！";
+
+                            }
+                        }
+
+
+
+                        #endregion
                         #region 验证年度
 
 
@@ -376,6 +407,48 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                             }
                         }
                         #endregion
+                       
+                        #region 验证院系
+                        int yxyz = 0;
+                        string yxid = "";
+                        string xqstr1 = "";
+                        DataTable xqsql1 = Sqlhelper.Serach("SELECT TOP 20 [PK_College],[Name] 院系名称,[College_NO] 院系代码  FROM [Base_College]  where [Enabled]='true'");
+                        if (xqsql1.Rows.Count > 0)
+                        {
+                            for (int i = 0; i < xqsql1.Rows.Count; i++)
+                            {
+                                if (yxmc == xqsql1.Rows[i]["院系名称"].ToString())
+                                {
+                                    yxyz = 1;
+                                    yxid = xqsql1.Rows[i]["院系代码"].ToString();
+                                }
+                                else
+                                {
+                                    if (i == 0)
+                                    {
+                                        xqstr1 += xqsql1.Rows[i]["院系名称"].ToString();
+                                    }
+                                    else
+                                    {
+                                        xqstr1 += "," + xqsql1.Rows[i]["院系名称"].ToString();
+                                    }
+
+                                }
+                            }
+                        }
+                        if (yxyz == 0)
+                        {
+                            if (xqstr1.Replace(",", "").Length > 0)
+                            {
+                                x.Rows[ii]["错误提示"] += "未找到该院系信息，系统中有的院区为：";
+                            }
+                            else
+                            {
+                                x.Rows[ii]["错误提示"] += "系统中无院系信息，请联系管理员！";
+                            }
+                        }
+                        #endregion
+
                         int dormyz = 0;//记录是否已经有该公寓了
                         #region 验证公寓名称
 
@@ -392,7 +465,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         #endregion
                         int roomyz = 0;//记录是否已经有该房间了
                         #region 验证房间编号
-                        DataTable roomsql = Sqlhelper.Serach("SELECT     TOP (10)  Fresh_Room.FK_Dorm_NO,Fresh_Room.Room_NO AS 房间编号, Fresh_Dorm.Name AS 公寓名称, Fresh_Room.Floor AS 楼层, Fresh_Room.Gender AS 性别,             Fresh_Room_Type.Type_Name AS 类型名称 FROM         Fresh_Room LEFT OUTER JOIN                   Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type where Fresh_Room.Room_NO='" + roomid + "'");
+                        DataTable roomsql = Sqlhelper.Serach("SELECT     TOP (10)  Fresh_Room.PK_Room_NO,Fresh_Room.FK_Dorm_NO,Fresh_Room.Room_NO AS 房间编号, Fresh_Dorm.Name AS 公寓名称, Fresh_Room.Floor AS 楼层, Fresh_Room.Gender AS 性别,             Fresh_Room_Type.Type_Name AS 类型名称 FROM         Fresh_Room LEFT OUTER JOIN                   Fresh_Dorm ON Fresh_Room.FK_Dorm_NO = Fresh_Dorm.PK_Dorm_NO LEFT OUTER JOIN                      Fresh_Room_Type ON Fresh_Room.FK_Room_Type = Fresh_Room_Type.PK_Room_Type where Fresh_Room.Room_NO='" + roomid + "'");
                         if (roomsql.Rows.Count > 0)
                         {
                             //验证房间的类型、公寓、楼层、男女
@@ -412,7 +485,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                             {
                                 x.Rows[ii]["错误提示"] += "该房间编号的公寓名称与系统中的信息不符，系统中为【" + roomsql.Rows[0]["公寓名称"].ToString() + "】该信息以第一次导入为准，若有误请清除所有数据后重新操作！";
                             }
-                            roomzj = roomsql.Rows[0]["FK_Dorm_NO"].ToString();
+                            roomzj = roomsql.Rows[0]["PK_Room_NO"].ToString();
                             roomyz = roomsql.Rows.Count;
                         }
                         if (roomyz > 1)
@@ -462,7 +535,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         #region 床位编号验证
                        string bedsqlcx = "SELECT TOP 10 [PK_Bed_NO],[Bed_NO],[Bed_Name]  FROM [Fresh_Bed] where bed_No='" + cwbh + "' and FK_Room_NO='" + roomzj + "'";
                         DataTable bedsql = Sqlhelper.Serach(bedsqlcx);
-                        Response.Write(bedsqlcx);
+                       //Response.Write(bedsqlcx+"<br>");
                         
                         
                         if (bedsql.Rows.Count > 0)
@@ -480,10 +553,24 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         if (bjmc.Length > 0)
                         {
 
-                            DataTable bjmcsql = Sqlhelper.Serach("SELECT TOP 10 [PK_Class_NO],[FK_Campus_NO],[FK_SPE_NO],[Name]  FROM [Fresh_Class] where name='" + bjmc + "'");
+                            DataTable bjmcsql = Sqlhelper.Serach("SELECT     TOP (10) Fresh_Class.PK_Class_NO, Fresh_Class.FK_Campus_NO, Fresh_Class.FK_SPE_NO, Fresh_Class.Name, Base_College.Name AS 院系名称 FROM         Base_College RIGHT OUTER JOIN                  Fresh_SPE ON Base_College.College_NO = Fresh_SPE.FK_College_Code RIGHT OUTER JOIN                   Fresh_Class ON Fresh_SPE.PK_SPE = Fresh_Class.FK_SPE_NO WHERE     (Fresh_Class.Name = '"+bjmc+"')");
                             if (bjmcsql.Rows.Count > 0)
                             {
                                 bjmcyz = bjmcsql.Rows.Count;
+
+                                //判断班级的院系与表中的院系以前BED中的院系是否一致
+                                if(bjmcsql.Rows[0]["院系名称"].ToString()==yxmc)
+                                {
+                                    
+                                }
+                                else
+                                {
+                                    x.Rows[ii]["错误提示"] += bjmc + "，该班的院系是：" + bjmcsql.Rows[0]["院系名称"].ToString() + "!与你表中提供的院系不符：" + yxmc + "";
+                                }
+
+
+
+
                             }
                             else
                             {
@@ -607,15 +694,22 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
 
                                     if (bedyz > 0)
                                     {
-                                        //更新
-                                        
-                                            sqlupdate = dormitory.update_Fresh_bed(cwbh,cwms,roomid, Session["username"].ToString());
+                                        //更新,是否强制预分配
+                                        if (updateroom_qz.Checked)
+                                        {
+                                            sqlupdate = dormitory.update_Fresh_bed(cwbh, cwms, roomid, yxid, Session["username"].ToString(), true,roomrs);
+                                        }else
+                                        {
+                                            sqlupdate = dormitory.update_Fresh_bed(cwbh, cwms, roomid, yxid, Session["username"].ToString(), false, roomrs);
+                                     
+
+                                        }
                                        
                                     }
                                     else
                                     {
                                         //写入
-                                        sqlupdate = dormitory.update_Fresh_bed(cwbh, cwms, roomid, Session["username"].ToString());
+                                        sqlupdate = dormitory.update_Fresh_bed(cwbh, cwms, roomid, yxid, Session["username"].ToString(), false, roomrs);
                                     }
 
                                    // Response.Write("导入结果：" + sqlupdate);
@@ -631,13 +725,14 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                                     #endregion
                                 }
                                 //班级预分配床位
+                            
                                 #region 班级预分配床位
                                 if (bjmc.Length > 0)
                                 {
                                     string sqlupdat = "";
                                     if (bjmcyz > 0)
                                     {
-                                        sqlupdat = dormitory.update_Fresh_bedyfp(cwbh, roomid, bjmc, Session["username"].ToString());
+                                        sqlupdat = dormitory.update_Fresh_bedyfp(cwbh, roomid, yxid,bjmc, Session["username"].ToString());
                                     }
                                     cgjj = sqlupdat.Split('@')[0].ToString();
                                     if (cgjj != "1")
@@ -687,7 +782,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                     catch (Exception ex)
                     {
                         //某行数据出错
-                        x.Rows[ii]["错误提示"] = "该学生数据有误请检查" + ex.Message;
+                        x.Rows[ii]["错误提示"] = "该数据有误请检查" + ex.Message;
                     }
 
                     //精细化错误提示
@@ -707,7 +802,14 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         {
                             if (  this.updateroom_c.Checked)
                             {
-                                x.Rows[ii]["错误提示"] =  "第" + (ii + 1).ToString() + "行:更新寝室床位等信息成功！由于班级为空未预分配班级！";
+                                if (yxmc.Length > 0)
+                                {
+                                    x.Rows[ii]["错误提示"] = "导入成功";
+                                }
+                                else
+                                {
+                                    x.Rows[ii]["错误提示"] = "第" + (ii + 1).ToString() + "行:更新寝室床位等信息成功！由于院系为空未预分配到院系！";
+                                }
                             }
                             else
                             {
@@ -860,7 +962,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
             if (e.Row.RowType != DataControlRowType.Pager)//如果不是分页列
             {
                 //将GRIDVIEW的第一列隐藏
-                e.Row.Cells[6].Attributes.Add("style", "display:none;");
+                e.Row.Cells[7].Attributes.Add("style", "display:none;");
                 e.Row.Cells[0].Attributes.Add("style", "text-align:left;width:40%;text-indent:-30px;padding-left:40px");
                 e.Row.Cells[1].Attributes.Add("style", "width:50px;");
                 //e.Row.Cells[2].Attributes.Add("style", "width:60px;");

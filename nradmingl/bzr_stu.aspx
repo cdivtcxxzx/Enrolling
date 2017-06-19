@@ -71,6 +71,11 @@
                         </div>
                     </div>
 
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width:100px;" id="count">总计：0人</label>
+                        <label class="layui-form-label" style="width:100px;" id="boy_count">男生：0人</label>
+                        <label class="layui-form-label" style="width:100px;" id="girl_count">女生：0人</label>
+                    </div>
                    
                     <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
                         <thead>

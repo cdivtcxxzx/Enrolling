@@ -87,7 +87,9 @@ function batchchange() {
 
 function getstudent() {
     var pk_class_no=$('#classlist').children('option:selected').val();
-
+    $('#count').html('总计：0人');
+    $('#boy_count').html('男生：0人');
+    $('#girl_count').html('女生：0人');
     $.ajax({
         url: "/nradmingl/appserver/manager.aspx",
         type: "get",
@@ -97,6 +99,8 @@ function getstudent() {
             var json_data = JSON.parse(data);
             if (json_data.code == 'success') {
                 $('#studentlist tbody tr').remove();
+                var boy_count=0;
+                var girl_count=0;
                 for(i=0;json_data.data!=null && i<json_data.data.length;i++){
                     var item=json_data.data[i];
                     var str='<tr>';
@@ -122,7 +126,17 @@ function getstudent() {
                     str=str+'</td>';
                     str=str+'</tr>';
                     $('#studentlist').append(str);
+                    if($.trim(item.gender)=='男'){
+                        boy_count=boy_count+1;
+                    }
+                    if($.trim(item.gender)=='女'){
+                        girl_count=girl_count+1;
+                    }
                 }
+                $('#count').html('总计：'+(boy_count+girl_count)+'人');
+                $('#boy_count').html('男生：'+boy_count+'人');
+                $('#girl_count').html('女生：'+girl_count+'人');
+                console.log(boy_count);
             } else {
                 alert(json_data.message);
             }

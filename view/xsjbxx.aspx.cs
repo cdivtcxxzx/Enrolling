@@ -21,12 +21,12 @@ public partial class view_xsjbxx : System.Web.UI.Page
             return;
         }
 
-        string pk_affair_no = Request.QueryString["pk_affair_no"];//获取事务主键
-        if (pk_affair_no == null || pk_affair_no.Trim().Length == 0)
-        {
-            this.server_msg.Value = "参数错误";
-            return;
-        }
+        //string pk_affair_no = Request.QueryString["pk_affair_no"];//获取事务主键
+        //if (pk_affair_no == null || pk_affair_no.Trim().Length == 0)
+        //{
+        //    this.server_msg.Value = "参数错误";
+        //    return;
+        //}
         string pk_staff_no = Request.QueryString["pk_staff_no"];//获取员工编号
 
         //string session_pk_sno = null;

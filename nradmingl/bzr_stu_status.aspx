@@ -71,7 +71,15 @@
                             </select>
                         </div>
                     </div>
+                     <div class="layui-inline" style="margin-bottom:0px;">
+                         <a href="#" onclick="getstudentstatus();" class="layui-btn layui-btn-small hidden-xs">
+					    <i class="layui-icon">&#x1002;</i> 刷新
+				        </a>
+                    </div> 
 
+                    <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="tjlist" style="border-collapse: collapse;">
+
+                    </table>
                    
                     <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
 
