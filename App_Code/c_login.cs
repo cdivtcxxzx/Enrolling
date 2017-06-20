@@ -638,7 +638,7 @@ public class c_login:System.Web.UI.Page
                                 Response.Write("<script>alert('" + Session["Name"].ToString() + ":对不起,您无权登陆,请联系管理员或您的上级部门!!');history.go(-1)</script>");
                                 //Response.End();
                                 return false;
-
+                                  
 
                             }
                             string sqlUpdate = "UPDATE yonghqx SET fwcs=@fwcs,dltime=@dltime,mm=@md5mm WHERE yhid=@yhid";// md5.MD5Encrypt(strPwd, md5.GetKey())
