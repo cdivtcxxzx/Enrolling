@@ -12,14 +12,14 @@ public partial class view_stu_baodao : System.Web.UI.Page
         if (Session["pk_sno"] != null && Session["pk_sno"].ToString() != "")
         {
             //检查是否确认
-            if (organizationService.isStuConfrim(Session["pk_sno"].ToString()) && organizationService.getStuConfirm(Session["pk_sno"].ToString()))
-            {
+            //if (organizationService.isStuConfrim(Session["pk_sno"].ToString()) && organizationService.getStuConfirm(Session["pk_sno"].ToString()))
+            //{
                 //this.server_msg.Value = "您的信息已经确认,无需再次确认";
                 //todo..跳转
                 //btn_submit.Visible = false;               
 
                 Response.Write("<script>window.location.href='../../nradmingl/defaultxs.aspx';</script>"); 
-            }        
+            //}        
         }
         
     }
