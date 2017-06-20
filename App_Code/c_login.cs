@@ -639,6 +639,7 @@ public class c_login:System.Web.UI.Page
                                 //Response.End();
                                 return false;
 
+
                             }
                             string sqlUpdate = "UPDATE yonghqx SET fwcs=@fwcs,dltime=@dltime,mm=@md5mm WHERE yhid=@yhid";// md5.MD5Encrypt(strPwd, md5.GetKey())
                             int fwcs = dt.Rows[0]["fwcs"].ToString()=="" ? 1 : int.Parse(dt.Rows[0]["fwcs"].ToString()) + 1;
@@ -1259,11 +1260,6 @@ public class c_login:System.Web.UI.Page
             return false;
         }
     }
-
-
-
-
-
     /// <summary>
     /// 权限验证（重载）
     /// </summary>
