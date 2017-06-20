@@ -10,7 +10,7 @@ public partial class nradmingl_Defaultgl : System.Web.UI.Page
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "后台管理";//请与系统栏目管理设置为一致便于权限管理
+    private string pagelm1 = "迎新管理首页";//请与系统栏目管理设置为一致便于权限管理
 
     private string pageqx1 = "浏览";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";
