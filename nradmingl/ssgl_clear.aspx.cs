@@ -21,10 +21,10 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "宿舍预分配清空";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
+    private string pagelm1 = "寝室预分配";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
 
     private string pageqx1 = "浏览";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
-    private string pageqx2 = "";
+    private string pageqx2 = "删除";
     private string pageqx3 = "";
     private string pageqx4 = "";
     private string pageqx5 = "";
@@ -100,6 +100,43 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
 
             #endregion
 
+
+            #region 验证和设置各版块权限 
+             //权限验证
+            bool yz=new c_login().powerYanzheng(Session["UserName"].ToString(), pagelm1,pageqx2, "2");
+
+            //Response.Write(yz.ToString() + "@" + Session["UserName"].ToString() +pagelm1+pageqx2 +"@" + Session["yhqx"].ToString());
+            if (yz)
+            {
+               
+                //拥有删除权限
+                delroom.Style.Add("display", "");
+                c_roomtype.Visible = true;
+                c_dorm.Visible = true;
+                c_room.Visible = true;
+                c_bed.Visible = true;
+                yxdm.Visible = true;
+
+            }
+            else
+            {
+                delroom.Style.Add("display", "none");
+                c_roomtype.Visible = false;
+                c_dorm.Visible = false;
+                c_room.Visible = false;
+                c_bed.Visible = false;
+                yxdm.Visible = false;
+            }
+            
+            
+
+
+            #endregion
+
+
+
+
+
             string qx = "";
             string sx = "";
             #region 获取该操作员能操作的系数据
@@ -117,6 +154,15 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
             }
             else { this.ztts.Text = "您暂时没有能管理的数据，请联系迎新管理员"; }
             #endregion
+
+
+
+
+
+
+
+
+
             if (qx.Split(',').Length > 0)
             {
 
@@ -356,7 +402,7 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
         string sqlyfp = "";
         try
         {
-    
+            
                     #region 清除本年度班级预分配数据
                    
                     if (c_bedyfp.Checked)
@@ -426,7 +472,47 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
 
                     }
                     #endregion
+            
+
+
+
             #region 清除床位信息
+            string bedsql="delete from Fresh_Bed;";
+            string roomsql = "delete from Fresh_room;";
+            string dormsql="delete from Fresh_Dorm;";
+            string roomtypesql="delete from Fresh_Room_Type;";
+            if(c_bed.Checked)
+            {
+                int cws = Sqlhelper.Serach("select [Bed_NO] from Fresh_Bed;").Rows.Count;
+                
+                int czcg = Sqlhelper.ExcuteNonQuery(bedsql);
+                ztts.Text += "<font color=blue>清除床位操作提示:共有床位：" + cws.ToString() + ",本次清除床位数：" + czcg.ToString() + "</font><br>";
+
+            }
+            if(c_room.Checked)
+            {
+                int cws = Sqlhelper.Serach("select [Room_NO] from Fresh_room;").Rows.Count;
+
+                int czcg = Sqlhelper.ExcuteNonQuery(roomsql);
+                ztts.Text += "<font color=blue>清除房间操作提示:共有房间：" + cws.ToString() + ",本次清除房间数：" + czcg.ToString() + "</font><br>";
+
+            }
+            if ( c_dorm.Checked)
+            {
+                int cws = Sqlhelper.Serach("select [Dorm_NO] from Fresh_Dorm;").Rows.Count;
+
+                int czcg = Sqlhelper.ExcuteNonQuery(dormsql);
+                ztts.Text += "<font color=blue>清除公寓楼数据提示:共有公寓楼：" + cws.ToString() + ",本次清除公寓楼数：" + czcg.ToString() + "</font><br>";
+
+            }
+            if (c_roomtype.Checked)
+            {
+                int cws = Sqlhelper.Serach("SELECT [Type_NO]  FROM [Fresh_Room_Type]").Rows.Count;
+
+                int czcg = Sqlhelper.ExcuteNonQuery(roomtypesql);
+                ztts.Text += "<font color=blue>清除房间类型数据提示:共有房间类型：" + cws.ToString() + ",本次清除房间类型数：" + czcg.ToString() + "</font><br>";
+
+            }
 
             #endregion
         }

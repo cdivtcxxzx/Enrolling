@@ -1259,6 +1259,11 @@ public class c_login:System.Web.UI.Page
             return false;
         }
     }
+
+
+
+
+
     /// <summary>
     /// 权限验证（重载）
     /// </summary>

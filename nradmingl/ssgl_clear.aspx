@@ -65,12 +65,13 @@
                 </SelectParameters>
             </asp:SqlDataSource>
             <br />
+            <div id="delroom" style="display:none;" runat="server">
            &nbsp;&nbsp;&nbsp;&nbsp; <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT DISTINCT [Year] FROM [Fresh_Room_Type] ORDER BY [Year]"></asp:SqlDataSource>
             <br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_roomtype" CssClass="inputw" runat="server" Text="清空房间类型信息" AutoPostBack="True" OnCheckedChanged="c_roomtype_CheckedChanged" />
            &nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_dorm" runat="server" CssClass="inputw"  Text="清空公寓宿舍信息" AutoPostBack="True" OnCheckedChanged="c_dorm_CheckedChanged" />
           <br />  <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_room" CssClass="inputw"  runat="server" Text="清除所有房间信息" AutoPostBack="True" OnCheckedChanged="c_room_CheckedChanged" />
            &nbsp;&nbsp;&nbsp;&nbsp; <asp:CheckBox ID="c_bed" runat="server" CssClass="inputw"  Text="清空所有床位信息" AutoPostBack="True" OnCheckedChanged="c_bed_CheckedChanged" />
-           &nbsp;【注：房间类型、公寓、房间、床位与院系无关，仅与年度有关】<br /><br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfpyx" CssClass="inputw"   runat="server" Text="清空院系预分配信息" AutoPostBack="True" OnCheckedChanged="c_bedyfpyx_CheckedChanged" />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfp" CssClass="inputw"  Checked="true" runat="server" Text="清空班级预分配信息" />
+           &nbsp;【注：房间类型、公寓、房间、床位与院系无关，仅与年度有关】<br /></div><br /> <br />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfpyx" CssClass="inputw"   runat="server" Text="清空院系预分配信息" AutoPostBack="True" OnCheckedChanged="c_bedyfpyx_CheckedChanged" />&nbsp;&nbsp;&nbsp;&nbsp;<asp:CheckBox ID="c_bedyfp" CssClass="inputw"  Checked="true" runat="server" Text="清空班级预分配信息" />
        <br /> 
             <br />
             <br /> 
