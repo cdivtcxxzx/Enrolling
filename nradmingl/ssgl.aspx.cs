@@ -21,7 +21,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     #region 页面初始化参数
     private string xwdith = "1366";//屏宽
     private string xheight = "768";//屏高
-    private string pagelm1 = "宿舍预分配管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
+    private string pagelm1 = "寝室预分配";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
 
     private string pageqx1 = "浏览";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";
@@ -130,6 +130,50 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
                    
                     ViewState["gridsql"] = sqlok;//绑定数据源的查询语句
                     this.SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
+
+                    #region 管理数据筛选
+                    string qx = "";
+                    string sx = "";
+                    #region 获取该操作员能操作的系数据
+                    Power qxhq = new Power();
+                    qx = qxhq.Getonebmdm("Fresh_SPE.FK_College_Code");
+                    try
+                    {
+                        qx = qx.Substring(0, qx.Length - 1);
+                    }
+                    catch { }
+                    //Response.Write(qx);
+                  
+                    #endregion
+                    if (qx.Split(',').Length > 0)
+                    {
+
+                        for (int i = 0; i < qx.Split(',').Length; i++)
+                        {
+                            #region 清除本年度预分配数据
+                            string sqlcx = "SELECT TOP 1 [YXMC] FROM  [DM_YUANXI] where yxdm='" + qx.Split(',')[i].ToString() + "'";
+                            DataTable qxd = Sqlhelper.Serach(sqlcx);
+                            //this.ztts.Text +=sqlcx;
+                            if (qxd.Rows.Count > 0)
+                            {
+                                //查询有多少条预分配数据
+                                // SELECT     count(Fresh_Bed_Class_Log.PK_Bed_Class_Log) FROM         Fresh_SPE RIGHT OUTER JOIN                      Fresh_Class ON Fresh_SPE.PK_SPE = Fresh_Class.FK_SPE_NO RIGHT OUTER JOIN                      Fresh_Bed_Class_Log ON Fresh_Class.PK_Class_NO = Fresh_Bed_Class_Log.FK_Class_NO
+                                sx += " or yxdm='" + qx.Split(',')[i].ToString() + "'";
+
+                               
+                            }
+
+                            #endregion
+                        }
+                        if (sx.Length > 0)
+                        {
+                            sx = " yxdm='0' " + sx + "";
+                        }
+                    }
+                    #endregion
+                    this.SqlDataSource6.FilterExpression = sx;//院系筛选
+
+
                     GridView1.DataBind();
 
                     //统计信息

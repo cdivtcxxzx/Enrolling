@@ -30,6 +30,36 @@ public partial class admin_yonghzgl : System.Web.UI.Page
 
                 Session["YHZTotalRows"] = new Power().ZhuPower().Rows.Count;
         }
+       // Response.Write(Session["Lsz"].ToString());
+
+        string qx = "0";
+        if (Session["Lsz"].ToString().Length>1)
+        {
+           for(int x=0;x<Session["Lsz"].ToString().Split(',').Length;x++)
+           {
+               if (Session["Lsz"].ToString().Split(',')[x].ToString() == "1") qx = "1";
+           }
+        }
+        else
+        {
+            if (Session["Lsz"].ToString() == "1") qx = "1";
+        }
+
+
+        if (Session["Lsz"].ToString() == "1" || Session["Lsz"].ToString().Contains("1,"))
+        {
+            SqlDataSource1.SelectCommand = "SELECT [ZID], [ZMC], [ZQX], [ZSM] FROM [zhuqx]  order by px";
+            GridView1.DataBind();
+        }
+        else
+        {
+            SqlDataSource1.SelectCommand = "SELECT [ZID], [ZMC], [ZQX], [ZSM] FROM [zhuqx] where zt=1 order by px";
+            GridView1.DataBind();
+        }
+
+
+
+
     }
     #region 设置页面显示条数事件
     protected void PageSize_Go(object sender, EventArgs e)

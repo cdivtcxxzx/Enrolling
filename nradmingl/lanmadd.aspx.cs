@@ -673,16 +673,32 @@ public partial class admin_lanmadd : System.Web.UI.Page
 
         //填充权限列表
         enablePower.Text = "";
-        string[] PowerListIDs = new Power().getFromQx(editBindStructLanm.sfqxyz);
-        if (editBindStructLanm.sfqxyz != "0" && PowerListIDs != null)
+        string[] PowerListIDs = new Power().getFromQx(editBindStructLanm.lmyyqx);
+        if (editBindStructLanm.lmyyqx != "0" && PowerListIDs != null)
         {
             foreach (string PowerListID in PowerListIDs)
             {
                 DataTable dtGetLanmPowerListName = this.getQuanxian(Convert.ToInt32(PowerListID));
                 if (dt.Rows.Count > 0)
                 {
-                    enablePower.Text = enablePower.Text +
-                        "<input type='checkbox' checked=true class='enableCheckbox' onclick='getEnablePowerCheckbox()' value='" + dtGetLanmPowerListName.Rows[0]["qxmc"].ToString() + "' /><lable>" + dtGetLanmPowerListName.Rows[0]["qxmc"].ToString() + "</lable>";
+                   //Response.Write("是否需要验证"+editBindStructLanm.sfqxyz.ToString());
+                    for (int x = 0; x < dt.Rows.Count; x++)
+                    {
+                       //Response.Write("当前:" + dtGetLanmPowerListName.Rows[x]["qxid"].ToString()+",");
+                        string checkbox1 = "";
+                        if (editBindStructLanm.sfqxyz.ToString().Length>1)
+                        {
+                            if (editBindStructLanm.sfqxyz.ToString().Contains(dtGetLanmPowerListName.Rows[x]["qxid"].ToString() + ",")) checkbox1 = "checked=true";
+                        }
+                        else
+                        {
+                            if (editBindStructLanm.sfqxyz.ToString().Contains(dtGetLanmPowerListName.Rows[x]["qxid"].ToString())) checkbox1 = "checked=true";
+                        
+                        }
+                       // Response.Write("当前:" + dtGetLanmPowerListName.Rows[x]["qxid"].ToString() + "," + checkbox1);
+                        enablePower.Text = enablePower.Text +
+                            "<input type='checkbox' " + checkbox1 + " class='enableCheckbox' onclick='getEnablePowerCheckbox()' value='" + dtGetLanmPowerListName.Rows[x]["qxmc"].ToString() + "' /><lable>" + dtGetLanmPowerListName.Rows[x]["qxmc"].ToString() + "</lable>";
+                    }
                 }
             }
         }
