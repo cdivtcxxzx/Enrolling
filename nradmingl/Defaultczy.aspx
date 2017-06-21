@@ -48,12 +48,7 @@
                                
 							</a>
 							<dl class="layui-nav-child dda">
-								<dd>
-									<a href="/zyzx/grset.aspx"><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
-								</dd>
-								<dd>
-									<a href="/zyzx/grset.aspx"><i class="fa fa-gear" aria-hidden="true"></i> 个人设置</a>
-								</dd>
+								
 								<dd>
 									<a href="/logout.aspx"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销退出</a>
 								</dd>

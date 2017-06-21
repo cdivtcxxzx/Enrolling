@@ -430,7 +430,8 @@ public partial class admin_Default : System.Web.UI.Page
                         
                         Session["pk_batch_no"] = pc.SelectedValue; ;
                         Session["pk_staff_no"] = Session["UserName"].ToString();
-
+                        Response.Redirect("/" + Sqlhelper.gldir + "/defaultczy.aspx");
+                        Response.End();
                     }
                     Response.Write("<script>alert('登陆成功！');</script>");
                     //Server.Transfer("~/"+Sqlhelper.gldir+"/default.aspx");
@@ -443,7 +444,7 @@ public partial class admin_Default : System.Web.UI.Page
                     }
                     else
                     {
-                        Response.Redirect("/" + Sqlhelper.gldir + "/default.aspx");
+                        Response.Redirect("/" + Sqlhelper.gldir + "/defaultgl.aspx");
                     }
                 }
                 else
