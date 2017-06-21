@@ -26,15 +26,15 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             DataTable bjxx = dormitory.serch_xsxx(xh);
             if (bjxx.Rows.Count > 0)
             {
-                this.xsxx_bj.Text = "班级：" + bjxx.Rows[0]["班级名称"].ToString();
-                this.xsxx_bzr.Text = "辅导员：" + bjxx.Rows[0]["班主任姓名"].ToString();
-                this.xsxx_bzrdh.Text = "联系电话：" + bjxx.Rows[0]["班主任电话"].ToString();
+                this.xsxx_bj.Text = "班级:" + bjxx.Rows[0]["班级名称"].ToString();
+                this.xsxx_bzr.Text = "辅导员:" + bjxx.Rows[0]["班主任姓名"].ToString();
+                this.xsxx_bzrdh.Text = "电话:" + bjxx.Rows[0]["班主任电话"].ToString();
             }
             else
             {
-                this.xsxx_bj.Text = "班级：无";
-                this.xsxx_bzr.Text = "辅导员：无";
-                this.xsxx_bzrdh.Text = "联系电话：无";
+                this.xsxx_bj.Text = "班级:无";
+                this.xsxx_bzr.Text = "辅导员:无";
+                this.xsxx_bzrdh.Text = "电话:无";
             }
 #endregion
             #region 获取操作状态更改图标状态
@@ -151,7 +151,8 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
             #endregion
 
 #region 链接跳转
-            this.xsxxurl.HRef = "xsjbxx.aspx?pk_sno=" + Session["username"].ToString() + "";
+            //this.xsxxurl.HRef = "xsjbxx.aspx?pk_sno=" + Session["username"].ToString() + "";
+            this.xscz_bdzc.HRef = "xsjbxx.aspx?pk_sno=" + Session["username"].ToString() + "";
             this.xscz_bdxz.HRef = "guide.html";//报到须知  
             this.xscz_wsjf.HRef = "xswsjf.aspx";//网上缴费
             this.xscz_tzgg.HRef = "classmsg.aspx";//通知
