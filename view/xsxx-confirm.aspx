@@ -245,7 +245,7 @@
             </div>
             <%--确认按钮--%>
             <div class="btn-confirm">
-                <asp:Button ID="btn_submit" CssClass="layui-btn layui-btn-big" style=""  runat="server" Text="确  认"/>
+                <asp:Button ID="btn_submit" CssClass="layui-btn layui-btn-big" style=""  runat="server" Text="确认注册"/>
                 
             </div>
         </form>
