@@ -47,16 +47,16 @@
                     var json_data = JSON.parse(data);
                     if (json_data.code == 'success') {
                         if (confirmState == "0") {
-                            layer.msg('确认成功！即将跳转至主界面~');
+                            layer.msg('确认注册成功！即将跳转至主界面~');
                             $('#btn_submit').hide();
                             $('#xx_confirm_div').hide();
                             setTimeout(function () {
                                 window.location.href = "../../nradmingl/defaultxs.aspx";
                             }, 1000);
                         } else {
-                            layer.msg("信息有误将不能继续报到，重新确认下？", {
+                            layer.msg("信息有误将不能继续报到，重新确认注册下？", {
                                 time: 10000,
-                                btn: ['返回主页', '重新确认'],
+                                btn: ['返回主页', '重新注册确认'],
                                 btn1:function () {
                                     window.location.href = "../";
                                 }
