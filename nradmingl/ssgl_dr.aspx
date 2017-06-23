@@ -183,6 +183,7 @@ ul, menu, dir {
      <a href="#" class="layui-btn layui-btn-small" id="mbfile" runat="server">
 					<i class="layui-icon">&#xe61e;</i>下载模板
 				</a>
+
       <asp:Label ID="setp1ts" runat="server"
          Text="系统为您提供了标准的导入模板,请先下载EXCLE模板按模板准备资料,若你已经准备好资料,请点击＂下一步＂!" 
              Font-Size="Medium"></asp:Label>

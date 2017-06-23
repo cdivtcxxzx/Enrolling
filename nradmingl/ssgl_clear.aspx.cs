@@ -115,6 +115,7 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
                 c_dorm.Visible = true;
                 c_room.Visible = true;
                 c_bed.Visible = true;
+                c_bedyfp.Visible = true;
                 yxdm.Visible = true;
 
             }
@@ -125,7 +126,8 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
                 c_dorm.Visible = false;
                 c_room.Visible = false;
                 c_bed.Visible = false;
-                yxdm.Visible = false;
+                c_bedyfp.Visible = false;
+                yxdm.Visible = true;
             }
             
             

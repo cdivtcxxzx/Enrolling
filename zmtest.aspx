@@ -13,6 +13,7 @@
     
         <br />
         输入学号：<asp:TextBox ID="xh" runat="server">学号</asp:TextBox>
+        <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="验证密码强度" />
         <br />
         <br />
         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="学生是否已分配宿舍（学号）" />
