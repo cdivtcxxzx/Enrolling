@@ -95,6 +95,7 @@
                 <%--<a onclick="return batchAudit(this.id);" id="btnDelete" href="javascript:__doPostBack('btnDelete','')"><span id="plcz" runat="server">点此批量发放毕业证</span></a>--%>
                 </HeaderTemplate>
                 <ItemTemplate>
+                    <%--<asp:HyperLink runat="server" ID="HL_set" NavigateUrl=<%#"javascript: parent.layer.open({  type: 2,  title: '辅导员设置－"+Eval("name").ToString()+"',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'Class_Counseller.aspx?id="+Eval("PK_Class_NO").ToString()+"'});"%>  txttop="txttop" class="layui-btn layui-btn-mini"  title="辅导员设置"></asp:HyperLink>--%>
              <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '辅导员设置－<%# Eval("name").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'Class_Counseller.aspx?id=<%# Eval("PK_Class_NO").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="辅导员设置">辅导员设置</a>
               <%-- &nbsp;&nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CssClass="layui-btn layui-btn-danger layui-btn-mini" CommandName="删除"  CommandArgument='<%#Eval("id")%>'    OnClientClick="" CausesValidation="False"  Text='删除' >      
               </asp:LinkButton>--%>
