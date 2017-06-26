@@ -108,8 +108,7 @@
             </div>
             <!-- 其他登录方式 e -->
             <div class="n_links_area" id="custom_display_64">
-			<a class="outer-link" href="/">返回首页</a><span>|</span>
-              <a class="outer-link" href="#" onclick="layer.open({  type: 2,  title: '学生重置登陆密码',  area : ['90%' , '80%'],  content: '/view/xsxx_pwd_reset.aspx'  });">忘记密码？</a>
+			<a class="outer-link" href="/">返回首页</a><span>
             </div>
           </div>
 
