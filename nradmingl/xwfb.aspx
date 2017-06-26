@@ -184,8 +184,8 @@ $.layer({
         </tr> 
         
         
-        <tr>
-            <td style="width: 120px;">
+        <tr style="width: 120px;display:none">
+            <td style="width: 120px;display:none">
                 是否幻灯：
             </td>
             <td><asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -242,7 +242,7 @@ $.layer({
                 </td>
 
         </tr>
-         <tr>
+         <tr style="display:none">
             <td style="width: 120px;">
                 链接地址：
             </td>
@@ -253,8 +253,8 @@ $.layer({
                 </td>
 
         </tr>
-        <tr>
-            <td style="width: 120px;">
+        <tr style="display:none">
+            <td>
                 是否置顶：
             </td>&nbsp;&nbsp;
             <td>
@@ -263,7 +263,7 @@ $.layer({
                </td>
 
         </tr>
-        <tr>
+        <tr  style="display:none">
         <td>上传展示图片:</td><td><asp:UpdatePanel ID="UpdatePanel4" runat="server"><Triggers><asp:PostBackTrigger ControlID="upload"/></Triggers><ContentTemplate><asp:Image runat="server" ID="xwimg" /><asp:FileUpload ID="FileUpload1" runat="server" /></ContentTemplate></asp:UpdatePanel>
         <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
         <Triggers>
@@ -275,7 +275,7 @@ $.layer({
         </ContentTemplate>
                 </asp:UpdatePanel>    </td>
         </tr>
-        <tr>
+        <tr style="display:none">
 
             <td style="width: 120px;">
                 查看对象：

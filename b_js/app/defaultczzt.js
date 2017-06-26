@@ -93,6 +93,12 @@ function clear() {
 }
 
 function collagechange(pk_collage_no, pk_batch_no) {
+    if(pk_batch_no==null){
+        pk_batch_no=$('#freshbatch').children('option:selected').val();
+    }
+    if(pk_collage_no==null){
+        pk_collage_no=$('#collageList').children('option:selected').val();
+    }
     clear();
     if (pk_collage_no === 'all') {
         pk_collage_no = '';

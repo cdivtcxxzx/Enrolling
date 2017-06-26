@@ -33,7 +33,6 @@ public partial class nradmingl_ClassMan : System.Web.UI.Page
     {
         try
         {
-
             #region 获取屏幕可用高度和宽度做相应页面设置
             //高度小于７２８列表记录只显示１０条最合适　，当宽度小于一定程度时隐藏一些列
             try

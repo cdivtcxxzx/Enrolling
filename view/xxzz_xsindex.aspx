@@ -76,13 +76,13 @@
            </span> 
             <i class="layui-icon">&#xe612;</i>
             <asp:Label ID="xsxx_bzr" runat="server" Text=""></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp; 
-            <span class="hidden-xs"><i class="layui-icon">&#xe63a;</i>
+            <span ><%--<i class="layui-icon">&#xe63a;</i>--%>
                 <asp:Label ID="xsxx_bzrdh" runat="server" Text=""></asp:Label></span>
-            <span style="float: right">
+<%--            <span style="float: right">
                  <a id="xsxxurl" runat="server" href="xsjbxx.aspx" class="layui-btn layui-btn-small">
                     <i class="layui-icon">&#xe63c;</i>查看详细
                 </a>
-            </span>
+            </span>--%>
 
         </blockquote>
         <!--顶部提示及导航OVER-->
@@ -152,7 +152,7 @@
 
                          <tr><td style="vertical-align:bottom;width:60px;padding-bottom:5px;"><img  id="zttp1" runat="server" style="width:50px" src="../images/xszt/1-1.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" id="xscz_bdzc" runat="server" >报到注册</a></label>
+                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="xsjbxx.aspx" id="xscz_bdzc" runat="server" >报到注册</a></label>
                     <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_bdzc" runat="server"><font color="green"><b>已完成</b></font></span> <span  id="xsztxq_bdzc" runat="server"></span></div></div></div></td></tr>
 
                        

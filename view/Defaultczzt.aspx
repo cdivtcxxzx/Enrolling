@@ -147,20 +147,28 @@
 
 
             <form class="layui-form layui-form-pane" action="">
-            <div class="layui-form-item">
+    <div>
+            <div class="layui-inline">
                 <label class="layui-form-label">迎新批次</label>
                 <div class="layui-input-block">
                     <select name="freshbatch" id="freshbatch">
                     </select>
                 </div>
             </div>
-           <div class="layui-form-item">
+           <div class="layui-inline">
                 <label class="layui-form-label">学院</label>
                 <div class="layui-input-block">
                     <select name="collageList" id="collageList">
                     </select>
                 </div>
             </div>
+            <div class="layui-inline" style="margin-bottom:0px;">
+                <a href="#" onclick="collagechange(null,null);" class="layui-btn layui-btn-small hidden-xs">
+			    <i class="layui-icon">&#x1002;</i> 刷新
+			    </a>
+            </div> 
+
+    </div>
 
         <div class="xsxx2">
                                 <div class="layui-form-item" pane="" style="min-height: 56px">
