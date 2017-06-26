@@ -198,13 +198,13 @@
             <div style="margin-top:10px;color:red;"><label>需要支付的金额总计：</label><label id="fee_sum">0</label><label>元</label></div>
         <div style="margin-top:10px;">
         <label><input id="xf_normal" name="TuitionClass" type="radio" value="" onclick="changesum();" />正常缴费 </label> 
-        <label><input id="xf_green" name="TuitionClass" type="radio" value="" onclick="msg('提示', '绿色通道需要到校现场申请办理'); changesum();" />绿色通道 </label> 
+       <%-- <label><input id="xf_green" name="TuitionClass" type="radio" value="" onclick="msg('提示', '绿色通道需要到校现场申请办理'); changesum();" />绿色通道 </label> --%>
         <label><input id="xf_loan" name="TuitionClass" type="radio" value="" onclick="msg('提示', '助学贷款需要到校现场申请办理'); changesum();" />助学贷款 </label> 
         </div>
         <div style="margin-top:10px;">            
             <div >
                 <label style="color:red;font:bold;">提示：</label><br />
-                <label style="color:orangered;font:bold;">“绿色通道”和“助学贷款”申请需要到校现场申请办理</label>
+                <label style="color:orangered;font:bold;">“助学贷款”申请需要到校现场申请办理</label>
             </div>
         </div>
     </div>
