@@ -122,16 +122,23 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
         toexcel xzfile = new toexcel();
         string filen = xzfile.DatatableToExcel(dt, "寝室预分配模板");
         //Response.Write("文件名" + filen);
-        if (filen.Length > 4)
+        if (dt.Rows.Count > 0)
         {
-            mbfile.HRef = filen;
-            //this.Label1.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
+            if (filen.Length > 4)
+            {
+                mbfile.HRef = filen;
+                //this.Label1.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
 
+            }
+            else
+            {
+                mbfile.HRef = "mb/ssyfpdr.xls";
+
+            }
         }
         else
         {
             mbfile.HRef = "mb/ssyfpdr.xls";
-
         }
         #endregion
             }
@@ -266,7 +273,8 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
             x = todatatable.ExcelfileToDatatalbe(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), true);
             DataTable clok = new DataTable();//读取所有行  
             DataTable errdata = todatatable.ExcelfileToDatatalbe(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), true);//记录所有错误表
-            
+            //errdata.Columns.Add("错误提示");
+            x.Columns.Add("错误提示");
             //判断各列名是否正确
             string err = "";
             int colzs = zd.Split(',').Length;
@@ -320,7 +328,8 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                 //获取总记录数
                 zs = x.Rows.Count;
                 //添加错误提示
-                x.Columns.Add("错误提示");
+               // x.Columns.Add("错误提示");
+                
                 errdata.Columns.Add("错误提示_做为模板时请删除此列");
                 //循环读取并判断所有字段
                 int updatetype = 0;//类型更新只写一次

@@ -180,6 +180,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
     {
 
         R_bed.Items.Clear();
+        this.shuseImg.Src = "../images/room_small.jpg";
         zt();
     }
     protected void R_bed_SelectedIndexChanged(object sender, EventArgs e)
