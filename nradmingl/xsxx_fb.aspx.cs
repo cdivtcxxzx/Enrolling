@@ -237,6 +237,7 @@ public partial class nradmingl_xsxx_fb : System.Web.UI.Page
         dt.Columns["Xz"].ColumnName = "学制";
         dt.Columns["Year"].ColumnName = "年级";
         dt.Columns["Class_Name"].ColumnName = "班级名称";
+        dt.Columns["Note"].ColumnName = "备注";
         #region 导出
         //引用EXCEL导出类
         toexcel xzfile = new toexcel();

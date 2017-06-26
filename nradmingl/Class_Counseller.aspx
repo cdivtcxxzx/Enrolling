@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="layui-form-item">
-               <div class="layui-input-inline">
+               <div style="margin-left:180px;margin-top:5px;">
                         <asp:Label runat="server" ID="LB_tips" CssClass="layui-input-inline"></asp:Label>
                </div>
              </div>
