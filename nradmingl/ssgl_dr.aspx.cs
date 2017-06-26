@@ -106,6 +106,67 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                         setp1cz.Style.Add("display", "");
                         setp2cz.Style.Add("display", "none");
                         setp3cz.Style.Add("display", "none");
+
+
+                        //准备模板
+                        
+ #region 根据参数提供第一步的模板下载(mb=auto:使用配置的数据库语句自动生成EXCEL,mb=文件名路径)
+        if (Request["mb"] != null)
+        {
+            if (Request["mb"].ToString() == "auto")
+            {
+                //自定义生产模板文件，请参考“导出”项生成一个Excel下载地址，本项不需要
+                System.Data.DataTable dt = dormitory.serch_yfpgl("","", "全部楼层", "", Session["username"].ToString(), "全部院系");
+        #region 导出
+        //引用EXCEL导出类
+        toexcel xzfile = new toexcel();
+        string filen = xzfile.DatatableToExcel(dt, "寝室预分配模板");
+        //Response.Write("文件名" + filen);
+        if (dt.Rows.Count > 0)
+        {
+            if (filen.Length > 4)
+            {
+                mbfile.HRef = filen;
+                //this.Label1.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
+
+            }
+            else
+            {
+                mbfile.HRef = "mb/ssyfpdr.xls";
+
+            }
+        }
+        else
+        {
+            mbfile.HRef = "mb/ssyfpdr.xls";
+        }
+        #endregion
+            }
+            else
+            {
+               mbfile.HRef = Request["mb"].ToString();
+            }
+        }
+        else
+        {
+            setp1cz.Style.Add("display", "");
+            setp2cz.Style.Add("display", "none");
+            setp3cz.Style.Add("display", "none");
+            setp1ts.Text = "<font color=red>程序员很懒,该页的导入模板参数未提供,请上报错误![出错地址:" + webpage + "]</font>";
+            this.setpdown.Style.Add("display", "none");
+
+        }
+        #endregion
+
+
+
+        
+    
+
+
+
+
+
                     }
                     if (Request["setp"].ToString() == "2")
                     {
@@ -134,29 +195,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                     }
                 }
             #endregion
-                #region 根据参数提供第一步的模板下载(mb=auto:使用配置的数据库语句自动生成EXCEL,mb=文件名路径)
-                if (Request["mb"] != null)
-                {
-                    if (Request["mb"].ToString() == "auto")
-                    {
-                        //自定义生产模板文件，请参考“导出”项生成一个Excel下载地址，本项不需要
-
-                    }
-                    else
-                    {
-                        mbfile.HRef = Request["mb"].ToString();
-                    }
-                }
-                else
-                {
-                    setp1cz.Style.Add("display", "");
-                    setp2cz.Style.Add("display", "none");
-                    setp3cz.Style.Add("display", "none");
-                    setp1ts.Text = "<font color=red>程序员很懒,该页的导入模板参数未提供,请上报错误![出错地址:" + webpage + "]</font>";
-                    this.setpdown.Style.Add("display", "none");
-
-                }
-                #endregion
+                
 
 
 
@@ -234,7 +273,8 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
             x = todatatable.ExcelfileToDatatalbe(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), true);
             DataTable clok = new DataTable();//读取所有行  
             DataTable errdata = todatatable.ExcelfileToDatatalbe(HttpContext.Current.Server.MapPath(Upload.FileInfo["filepath"]), true);//记录所有错误表
-            
+            //errdata.Columns.Add("错误提示");
+            x.Columns.Add("错误提示");
             //判断各列名是否正确
             string err = "";
             int colzs = zd.Split(',').Length;
@@ -288,7 +328,8 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
                 //获取总记录数
                 zs = x.Rows.Count;
                 //添加错误提示
-                x.Columns.Add("错误提示");
+               // x.Columns.Add("错误提示");
+                
                 errdata.Columns.Add("错误提示_做为模板时请删除此列");
                 //循环读取并判断所有字段
                 int updatetype = 0;//类型更新只写一次
@@ -1030,5 +1071,10 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
        
       
     }
-   
+
+    protected void batch_import_Click1(object sender, EventArgs e)
+    {
+        //模板准备
+
+    }
 }

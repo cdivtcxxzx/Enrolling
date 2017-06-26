@@ -48,10 +48,8 @@
                <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据清除',  shadeClose: true,  shade: 0.8,  area: ['80%', '98%'],  content: 'ssgl_clear.aspx',btn:'完成'});" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe630;</i>清空<span class=" hidden-xs">预分配数据</span>
 				</a>
-                  <a href="mb/ssyfpdr.xls" class="layui-btn layui-btn-small hidden-xs">
-					<i class="layui-icon">&#xe62a;</i> 模板<span class=" hidden-xs">下载</span>
-				</a>
-                 <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'ssgl_dr.aspx?setp=1&mb=mb/ssyfpdr.xls',btn:'完成'});" class="layui-btn layui-btn-small">
+                  
+                 <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'ssgl_dr.aspx?setp=1&mb=auto',btn:'完成'});" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#xe62f;</i>导入<span class=" hidden-xs">预分配数据</span>
 				</a>
                

@@ -18,7 +18,7 @@ public partial class nradmingl_xsxx_fb_dr : System.Web.UI.Page
     private string pagelm1 = "学生分班管理";//请与系统栏目管理中栏目关键字设置为一致便于权限管理
     private string upfile = "xsxx_upload";//导入上传的临时文件名称
     //导入模板的字段
-    private string zd = "学号,姓名,性别,身份证,专业,学制,年级,班级名称";
+    private string zd = "学号,姓名,性别,身份证,专业,学制,年级,班级名称,备注";
 
     private string pageqx1 = "导入";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "";

@@ -68,7 +68,17 @@
                       
                       <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" SelectMethod="GetFee" TypeName="CostMan" OldValuesParameterFormatString="original_{0}" >
                       </asp:ObjectDataSource>
-                    
+                    专业：<asp:DropDownList ID="DDL_spe" runat="server" AutoPostBack="True" 
+                        DataSourceID="ObjectDataSource1" DataTextField="SPE_Name" 
+                        DataValueField="SPE_Code" 
+                        Font-Size="Medium">
+                    </asp:DropDownList>
+                      
+                      <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="GetCostSpe" TypeName="CostMan" OldValuesParameterFormatString="original_{0}" >
+                      <SelectParameters>
+                              <asp:ControlParameter ControlID="DDL_cost" Name="pk_fee" PropertyName="SelectedValue" Type="String" />
+                          </SelectParameters>
+                      </asp:ObjectDataSource>
                     
                     &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
                     </ContentTemplate></asp:UpdatePanel>
@@ -95,15 +105,16 @@
                 <ItemStyle HorizontalAlign="Center" />
                 <HeaderStyle Width="2%"  HorizontalAlign="Center" />
             </asp:TemplateField>
-    <asp:BoundField DataField="PK_Fee_Item" HeaderText="编号" SortExpression="PK_Fee_Item"/>
-    <asp:BoundField DataField="SPE_Code" HeaderText="专业代码"  SortExpression="SPE_Code"/>
-    <asp:BoundField DataField="Fee_Name" HeaderText="费用名称"  SortExpression="Fee_Name"/>
-    <asp:BoundField DataField="Fee_Amount" HeaderText="金额"  SortExpression="Fee_Amount"/>
         <asp:BoundField DataField="Fee_Code" HeaderText="收费项目代码"  SortExpression="Fee_Code"/>
         <asp:BoundField DataField="Fee_Code_Name" HeaderText="收费项目名称"  SortExpression="Fee_Code_Name"/>
-        <asp:BoundField DataField="Type_Name" HeaderText="费用类型"  SortExpression="Type_Name"/>
+        <asp:BoundField DataField="SPE_Code" HeaderText="专业代码"  SortExpression="SPE_Code"/>
+        <asp:BoundField DataField="Fee_Amount" HeaderText="金额"  SortExpression="Fee_Amount"/>
         <asp:BoundField DataField="Is_Must" HeaderText="是否必收"  SortExpression="Is_Must"/>
-        <asp:BoundField DataField="Is_Online_Order" HeaderText="是否生成网上订单"  SortExpression="Is_Online_Order"/>
+    
+        <%--<asp:BoundField DataField="Type_Name" HeaderText="费用类型"  SortExpression="Type_Name"/>--%>
+        <%--<asp:BoundField DataField="PK_Fee_Item" HeaderText="编号" SortExpression="PK_Fee_Item"/>--%>
+        <asp:BoundField DataField="Fee_Name" HeaderText="费用名称"  SortExpression="Fee_Name"/>
+        <%--<asp:BoundField DataField="Is_Online_Order" HeaderText="是否生成网上订单"  SortExpression="Is_Online_Order"/>--%>
 <%--    
      <asp:TemplateField HeaderText="学生"  SortExpression="title">
         
@@ -184,6 +195,7 @@
         <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" SelectMethod="GetCostStandard" TypeName="CostMan" OldValuesParameterFormatString="original_{0}" >
                           <SelectParameters>
                               <asp:ControlParameter ControlID="DDL_cost" Name="pk_fee" PropertyName="SelectedValue" Type="String" />
+                              <asp:ControlParameter ControlID="DDL_spe" Name="spe_code" PropertyName="SelectedValue" Type="String" />
                           </SelectParameters>
                       </asp:ObjectDataSource>
        
