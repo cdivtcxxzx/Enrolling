@@ -404,7 +404,7 @@ public class financial
                         //获取已生成订单的数据
                         for (int i = 0; i < data1.Count; i++)
                         {
-                            if (data1[i].Fee_Code.Trim().Equals(Fee_Code.Trim()))
+                            if (data1[i].Fee_Code!=null && data1[i].Fee_Code.Trim().Equals(Fee_Code.Trim()))
                             {
                                 find = true;
                                 sfbz = data1[i].Fee_Amount + sfbz;
