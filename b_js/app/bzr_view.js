@@ -197,7 +197,7 @@ function classoraffairchange() {
 
     $('#zj').html('总计：0人');
     $('#zc').html('网上注册：0人');
-    $('#lstd').html('绿色通道：0人');
+    //$('#lstd').html('绿色通道：0人');
     $('#zxdk').html('助学贷款：0人');
     $('#xm').html('项目：0人');
 
@@ -252,9 +252,9 @@ function classoraffairchange() {
                             zcyw=zcyw+1;
                         }
                     }
-                    if($.trim(item.TuitionType)=='绿色通道'){
+/*                    if($.trim(item.TuitionType)=='绿色通道'){
                         lstd=lstd+1;
-                    }
+                    }*/
                     if($.trim(item.TuitionType)=='助学贷款'){
                         zxdk=zxdk+1;
                     }
@@ -278,7 +278,7 @@ function classoraffairchange() {
                 }else{
                     $('#zc').html('网上注册：'+zc+'人('+parseInt(zc/zj*100)+'%),信息有误'+zcyw+'人');
                 }
-                $('#lstd').html('绿色通道：'+lstd+'人('+parseInt(lstd/zj*100)+'%)');
+                //$('#lstd').html('绿色通道：'+lstd+'人('+parseInt(lstd/zj*100)+'%)');
                 $('#zxdk').html('助学贷款：'+zxdk+'人('+parseInt(zxdk/zj*100)+'%)');
 
                 var xmmc=$('#affairlist').children('option:selected').html();

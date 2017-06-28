@@ -97,7 +97,7 @@
                     <div class="layui-inline" style="margin-bottom:0px;">
                         <label class="layui-form-label" style="width:100px;padding:0px 0px;" id="zj">总计：0人</label>
                         <label class="layui-form-label" style="width:220px;padding:0px 0px;" id="zc">网上注册：0人</label>
-                        <label class="layui-form-label" style="width:220px;padding:0px 0px;" id="lstd">绿色通道：0人</label>
+                        <%--<label class="layui-form-label" style="width:220px;padding:0px 0px;" id="lstd">绿色通道：0人</label>--%>
                         <label class="layui-form-label" style="width:220px;padding:0px 0px;" id="zxdk">助学贷款：0人</label>
                     </div>                 
                 </div>
@@ -122,7 +122,7 @@
                                 <th scope="col">身份证号</th>
                                 <th scope="col">联系电话</th>
                                 <th scope="col">网上注册</th>
-                                <th scope="col">绿色通道<br />助学贷款</th>
+                                <th scope="col">助学贷款</th>
                                 <th scope="col" id="itemname">项目情况</th>
                                 <th scope="col"></th>
                             </tr>

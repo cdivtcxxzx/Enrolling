@@ -97,7 +97,8 @@ function load(){
                                 for(i=0;multiple_must!=null && i<multiple_must.length;i++){
                                     var itemlist=multiple_must[i];
                                     for(var j=0;j<itemlist.length;j++){
-                                        if($.trim(itemlist[j].Fee_Name)=='绿色通道' || $.trim(itemlist[j].Fee_Name)=='助学贷款'){
+                                        if($.trim(itemlist[j].Fee_Name)=='绿色通道' || $.trim(itemlist[j].Fee_Name)=='助学贷款')
+                                        {
                                             find_index=i;
                                             break;
                                         }
@@ -352,8 +353,6 @@ function sure(){
                 if(itemlist[0].Fee_Code==key_code){
                     for(var k=0;k<itemlist.length;k++){
                         if(itemlist[k].PK_Fee_Item==key_value){
-                            //var str=itemlist[k].Fee_Name+'_'+itemlist[k].Fee_Amount;
-                            //console.log(str);
                             sum=sum+parseFloat(itemlist[k].Fee_Amount);
                             find=true;
                             break;
@@ -366,8 +365,6 @@ function sure(){
                 if(itemlist[0].Fee_Code==key_code){
                     for(var k=0;k<itemlist.length;k++){
                         if(itemlist[k].PK_Fee_Item==key_value){
-                            //var str=itemlist[k].Fee_Name+'_'+itemlist[k].Fee_Amount;
-                            //console.log(str);
                             sum=sum+parseFloat(itemlist[k].Fee_Amount);
                             find=true;
                             break;
@@ -380,8 +377,6 @@ function sure(){
                 if(itemlist[0].Fee_Code==key_code){
                     for(var k=0;k<itemlist.length;k++){
                         if(itemlist[k].PK_Fee_Item==key_value){
-                            //var str=itemlist[k].Fee_Name+'_'+itemlist[k].Fee_Amount;
-                            //console.log(str);
                             sum=sum+parseFloat(itemlist[k].Fee_Amount);
                             find=true;
                             break;
@@ -394,8 +389,6 @@ function sure(){
                 if(itemlist[0].Fee_Code==key_code){
                     for(var k=0;k<itemlist.length;k++){
                         if(itemlist[k].PK_Fee_Item==key_value){
-                            //var str=itemlist[k].Fee_Name+'_'+itemlist[k].Fee_Amount;
-                            //console.log(str);
                             sum=sum+parseFloat(itemlist[k].Fee_Amount);
                             find=true;
                             break;
@@ -445,7 +438,6 @@ function submitfee(feelist,pk_batch_no,pk_sno,pk_affair_no){
             btn: ['继续', '重新选择']
         }, function(index){
             layer.close(index);
-            //console.log(JSON.stringify(feelist));
             //生成订单
             var pk_staff_no= $("#pk_staff_no").val();
             var returnurl=window.location.href;
@@ -463,7 +455,6 @@ function submitfee(feelist,pk_batch_no,pk_sno,pk_affair_no){
                 dataType: "text",
                 data: data,
                 success: function (data) {
-                    //console.log(data);
                     var json_data = JSON.parse(data);
                     if (json_data.code == 'success') {
                         if ($.trim(pk_staff_no).length > 0 ) {
