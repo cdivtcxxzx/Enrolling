@@ -479,42 +479,64 @@ public partial class nradmingl_ssgl_clear : System.Web.UI.Page
 
 
             #region 清除床位信息
+            string bedlog = "delete from [Fresh_Bed_Class_Log]";
             string bedsql="delete from Fresh_Bed;";
             string roomsql = "delete from Fresh_room;";
             string dormsql="delete from Fresh_Dorm;";
             string roomtypesql="delete from Fresh_Room_Type;";
             if(c_bed.Checked)
             {
+                try
+                {
+                    int czcgok = Sqlhelper.ExcuteNonQuery(bedlog);
+                }
+                catch
+                {
+                    ztts.Text += "<font color=blue>已有学生选择寝室，只允许更新，不允许删除床位数据！</font>";
+                    return;
+                }
+                
+
+
                 int cws = Sqlhelper.Serach("select [Bed_NO] from Fresh_Bed;").Rows.Count;
                 
                 int czcg = Sqlhelper.ExcuteNonQuery(bedsql);
                 ztts.Text += "<font color=blue>清除床位操作提示:共有床位：" + cws.ToString() + ",本次清除床位数：" + czcg.ToString() + "</font><br>";
+                if(czcg>0)
+                {
+                    if (c_room.Checked)
+                    {
+                        int cws1 = Sqlhelper.Serach("select [Room_NO] from Fresh_room;").Rows.Count;
 
+                        int czcg1 = Sqlhelper.ExcuteNonQuery(roomsql);
+                        ztts.Text += "<font color=blue>清除房间操作提示:共有房间：" + cws1.ToString() + ",本次清除房间数：" + czcg1.ToString() + "</font><br>";
+                        if(czcg1>0)
+                        {
+                            if (c_dorm.Checked)
+                            {
+                                int cws2 = Sqlhelper.Serach("select [Dorm_NO] from Fresh_Dorm;").Rows.Count;
+
+                                int czcg2 = Sqlhelper.ExcuteNonQuery(dormsql);
+                                ztts.Text += "<font color=blue>清除公寓楼数据提示:共有公寓楼：" + cws2.ToString() + ",本次清除公寓楼数：" + czcg2.ToString() + "</font><br>";
+                                if(czcg2>0)
+                                {
+                                    if (c_roomtype.Checked)
+                                    {
+                                        int cws3 = Sqlhelper.Serach("SELECT [Type_NO]  FROM [Fresh_Room_Type]").Rows.Count;
+
+                                        int czcg3 = Sqlhelper.ExcuteNonQuery(roomtypesql);
+                                        ztts.Text += "<font color=blue>清除房间类型数据提示:共有房间类型：" + cws3.ToString() + ",本次清除房间类型数：" + czcg3.ToString() + "</font><br>";
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            if(c_room.Checked)
-            {
-                int cws = Sqlhelper.Serach("select [Room_NO] from Fresh_room;").Rows.Count;
-
-                int czcg = Sqlhelper.ExcuteNonQuery(roomsql);
-                ztts.Text += "<font color=blue>清除房间操作提示:共有房间：" + cws.ToString() + ",本次清除房间数：" + czcg.ToString() + "</font><br>";
-
-            }
-            if ( c_dorm.Checked)
-            {
-                int cws = Sqlhelper.Serach("select [Dorm_NO] from Fresh_Dorm;").Rows.Count;
-
-                int czcg = Sqlhelper.ExcuteNonQuery(dormsql);
-                ztts.Text += "<font color=blue>清除公寓楼数据提示:共有公寓楼：" + cws.ToString() + ",本次清除公寓楼数：" + czcg.ToString() + "</font><br>";
-
-            }
-            if (c_roomtype.Checked)
-            {
-                int cws = Sqlhelper.Serach("SELECT [Type_NO]  FROM [Fresh_Room_Type]").Rows.Count;
-
-                int czcg = Sqlhelper.ExcuteNonQuery(roomtypesql);
-                ztts.Text += "<font color=blue>清除房间类型数据提示:共有房间类型：" + cws.ToString() + ",本次清除房间类型数：" + czcg.ToString() + "</font><br>";
-
-            }
+           
+            
+           
 
             #endregion
         }

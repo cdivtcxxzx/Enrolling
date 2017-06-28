@@ -2489,6 +2489,15 @@ public class dormitory
            {
                ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,准备床位数：<b>" + xss.Rows[0][1].ToString()+"</b></font>";
            }
+           DataTable fb = Sqlhelper.Serach("SELECT [FK_Bed_NO]  FROM [Fresh_Bed_Class_Log] where  FK_Class_NO is not null");
+           if (fb.Rows.Count > 0)
+           {
+               ts += "<font color=red>,已分配到班：<b>" + fb.Rows.Count.ToString() + "</b></font>";
+           }
+           else
+           {
+               ts += "<font color=red>,已分配到班：<b>0</b></font>";
+           }
        }
        else
        {
@@ -2496,6 +2505,12 @@ public class dormitory
              if (xss.Rows.Count > 0)
              {
                  ts = "<font color=red>" + nd + "年"+yxmc+"招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,准备床位数：<b>" + xss.Rows[0][1].ToString() + "</b></font>";
+             }
+             DataTable fb = Sqlhelper.Serach("SELECT [FK_Bed_NO]  FROM [Fresh_Bed_Class_Log] where college_NO='"+yxid+"' and FK_Class_NO is not null");
+             if (fb.Rows.Count > 0) { ts += "<font color=red>,已分配到班：<b>" + fb.Rows.Count.ToString() + "</b></font>"; }
+             else
+             {
+                 ts += "<font color=red>,已分配到班：<b>0</b></font>";
              }
        }
           
@@ -2540,7 +2555,7 @@ public class dormitory
             }
             if(yxid!="0")
             {
-                sql += " and Fresh_Bed_Class_Log.College_NO='" + yxid + "' ";
+                sql += " and [Fresh_Bed].College_NO='" + yxid + "' ";
             }
             else
             {

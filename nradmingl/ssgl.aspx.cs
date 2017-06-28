@@ -523,7 +523,7 @@ public partial class nradmingl_Default2 : System.Web.UI.Page
     protected void gzt()
     {
         ViewState["gridsql"] = dormitory.serch_yfpgl(xq.SelectedValue, dorm.SelectedValue, floor.SelectedValue, bj.SelectedValue, "",Session["username"].ToString(),yx.SelectedValue);
-        //this.g_ts.Text= ViewState["gridsql"].ToString();
+       // this.g_ts.Text= ViewState["gridsql"].ToString();
         
         SqlDataSource1.SelectCommand = ViewState["gridsql"].ToString();
         //Response.Write(SqlDataSource1.SelectCommand);

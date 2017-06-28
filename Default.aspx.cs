@@ -144,7 +144,7 @@ public partial class _Default : System.Web.UI.Page
         //<b>【通知】</b>
         try
         {
-             DataTable toplm = Sqlhelper.Serach("SELECT top 1 *  FROM [xw_lanm] where sfdhxs='1' and  order by px asc");
+             DataTable toplm = Sqlhelper.Serach("SELECT top 1 *  FROM [xw_lanm] where sfdhxs='1'  order by px asc");
              string lmid2="12";
             if (toplm.Rows.Count > 0)
              {
@@ -210,16 +210,16 @@ public partial class _Default : System.Web.UI.Page
         }
         catch { }
         #endregion
-        #region 会员单位
+        //#region 会员单位
         //<b>【通知】</b>
-        DataTable hydw = Sqlhelper.Serach("select top 1 * from[wangzxx] where xxgjz='幻灯旁ID'");
-        if (hydw.Rows.Count > 0)
-        {
-            mydivtitle.InnerHtml = "<span style=\"float:right;font-size:15px\"><a href=\"/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs\">>></a></span>新生网上报到登陆";
+        //DataTable hydw = Sqlhelper.Serach("select top 1 * from[wangzxx] where xxgjz='幻灯旁ID'");
+        //if (hydw.Rows.Count > 0)
+        //{
+        //    mydivtitle.InnerHtml = "<span style=\"float:right;font-size:15px\"><a href=\"/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs\">>></a></span>新生网上报到登陆";
 
-        }
+        //}
         
-        #endregion
+        //#endregion
 
         //#region 首页新闻
         ////<b>【首页新闻】</b>
