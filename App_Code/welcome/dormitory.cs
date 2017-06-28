@@ -2484,10 +2484,12 @@ public class dormitory
         string nd = basic.dqnd();
        if(lx=="all")
        {
-           DataTable xss = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base]) a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed] ) b on 1=1");
+           DataTable xss = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base]) a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed]) b on 1=1");
            if(xss.Rows.Count>0)
            {
-               ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,分配到二级学院床位数：<b>" + xss.Rows[0][1].ToString() + "</b></font>";
+               DataTable yfxs = Sqlhelper.Serach("SELECT count([Bed_NO])  FROM [yxxt_data].[dbo].[Fresh_Bed] where college_NO is not null");
+
+               ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,系统有" +xss.Rows[0][1].ToString() +"床位，分配到二级学院：<b>" + yfxs.Rows.Count.ToString()+ "</b></font>";
            }
            DataTable fb = Sqlhelper.Serach("SELECT [FK_Bed_NO]  FROM [Fresh_Bed_Class_Log] where  FK_Class_NO is not null");
            if (fb.Rows.Count > 0)
