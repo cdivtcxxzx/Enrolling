@@ -2728,11 +2728,17 @@ public class dormitory
         DataTable ycw = Sqlhelper.Serach("SELECT     Fresh_Bed.Bed_NO AS 床位编号, Fresh_Bed.Bed_Name AS 床位描述, Fresh_Room.Room_NO AS 房间编号 FROM         Fresh_Room RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO WHERE     (Fresh_Room.Room_NO = '" + room + "')");
         if(ycw.Rows.Count>0)
         {
-            sycw = "预分配(" + ycw.Rows.Count.ToString()+")";
+            sycw = "院(" + ycw.Rows.Count.ToString()+")";
+            DataTable bj = Sqlhelper.Serach("SELECT     Fresh_Bed_Class_Log.FK_Bed_NO FROM         Fresh_Bed_Class_Log RIGHT OUTER JOIN                       Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO WHERE     (Fresh_Room.Room_NO = '"+room+"') AND (Fresh_Bed_Class_Log.FK_Class_NO IS NOT NULL)");
+            if(bj.Rows.Count>0)
+            {
+                sycw += ",班(" + bj.Rows.Count.ToString() + ")";
+            }
+
             DataTable cw = Sqlhelper.Serach("SELECT     Fresh_Bed_Log.FK_Bed_NO AS 床位主键, Fresh_Bed.Bed_NO AS 床位编号, Fresh_Bed.Bed_Name AS 床位描述, Fresh_Room.Room_NO AS 房间编号, Fresh_Bed_Log.FK_SNO AS 学号, Base_STU.Name AS 姓名 FROM         Fresh_Bed_Log LEFT OUTER JOIN                      Base_STU ON Fresh_Bed_Log.FK_SNO = Base_STU.PK_SNO LEFT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO WHERE     (Fresh_Room.Room_NO = '" + room + "')");
             if (cw.Rows.Count > 0)
             {
-                sycw += ",被选(" + cw.Rows.Count.ToString()+")";
+                sycw += ",学生(" + cw.Rows.Count.ToString()+")";
             }
 
         }
