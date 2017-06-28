@@ -2487,16 +2487,16 @@ public class dormitory
            DataTable xss = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base]) a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed] ) b on 1=1");
            if(xss.Rows.Count>0)
            {
-               ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,分配到系床位数：<b>" + xss.Rows[0][1].ToString() + "</b></font>";
+               ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,分配到二级学院床位数：<b>" + xss.Rows[0][1].ToString() + "</b></font>";
            }
            DataTable fb = Sqlhelper.Serach("SELECT [FK_Bed_NO]  FROM [Fresh_Bed_Class_Log] where  FK_Class_NO is not null");
            if (fb.Rows.Count > 0)
            {
-               ts += "<font color=red>,分配到班：<b>" + fb.Rows.Count.ToString() + "</b></font>";
+               ts += "<font color=red>,已分配到班：<b>" + fb.Rows.Count.ToString() + "</b></font>";
            }
            else
            {
-               ts += "<font color=red>,分配到班：<b>0</b></font>";
+               ts += "<font color=red>,已分配到班：<b>0</b></font>";
            }
        }
        else
@@ -2504,13 +2504,13 @@ public class dormitory
              DataTable xss = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base] where College_NO='"+yxid+"') a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed] where [College_NO]='"+yxid+"') b on 1=1");
              if (xss.Rows.Count > 0)
              {
-                 ts = "<font color=red>" + nd + "年"+yxmc+"招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,分配到系床位数：<b>" + xss.Rows[0][1].ToString() + "</b></font>";
+                 ts = "<font color=red>" + nd + "年"+yxmc+"招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,分配到二级学院床位数：<b>" + xss.Rows[0][1].ToString() + "</b></font>";
              }
              DataTable fb = Sqlhelper.Serach("SELECT [FK_Bed_NO]  FROM [Fresh_Bed_Class_Log] where college_NO='"+yxid+"' and FK_Class_NO is not null");
-             if (fb.Rows.Count > 0) { ts += "<font color=red>,分配到班：<b>" + fb.Rows.Count.ToString() + "</b></font>"; }
+             if (fb.Rows.Count > 0) { ts += "<font color=red>,已分配到班：<b>" + fb.Rows.Count.ToString() + "</b></font>"; }
              else
              {
-                 ts += "<font color=red>,分配到班：<b>0</b></font>";
+                 ts += "<font color=red>,已分配到班：<b>0</b></font>";
              }
        }
           
