@@ -433,10 +433,10 @@
                 if (InText.ToString().Length > 200 || InText.ToLower().Contains(i) || (InText.ToLower().Contains("and") && InText.ToLower().Contains("or")))
                 {
                     //写入日志
-                    string fitmc = i.ToString() + "<br>";
+                    string fitmc = "" + "<br>";
                     if ((InText.ToLower().Contains("and") && InText.ToLower().Contains("or"))) fitmc += "andor";
                     if (InText.ToString().Length > 200) fitmc += "大于200字符";
-                    fitmc += "<br>非法信息：" + InText.ToString() + "<br>";
+                    //fitmc += "<br>非法信息：" + InText.ToString() + "<br>";
                     //获得当前IP
                     string ipok = GetHostAddress();
                     //获得当前页面
