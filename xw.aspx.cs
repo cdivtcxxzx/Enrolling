@@ -16,11 +16,11 @@ public partial class wblue_xw : System.Web.UI.Page
         basic.clearsqljc("bds250590547_db");
      //检查URL长度
        string jcurl = HttpContext.Current.Request.Url.PathAndQuery;
-       if (jcurl.Length > 20)
+       if (jcurl.Length > 15)
        {
-          // string wzkey = "教育信息化工作委员会,成都市工业职业技术学校";
-          // System.Web.HttpContext.Current.Response.Write("<html><head><META charset=utf-8><title>系统参数错误</title><META name=\"keywords\" content=\"" + wzkey + "\"> <META name=\"description\" content=\"" + wzkey + "\"> </head><body><br> <font color=red>对不起,你访问页面传递的参数不正确，<a href='/'>点此返回主页</a>!</body></html>");
-          // System.Web.HttpContext.Current.Response.End();
+          string wzkey = "成都工业职业技术学院";
+          System.Web.HttpContext.Current.Response.Write("<html><head><META charset=utf-8><title>系统参数错误</title><META name=\"keywords\" content=\"" + wzkey + "\"> <META name=\"description\" content=\"" + wzkey + "\"> </head><body><br> <font color=red>对不起,你访问页面传递的参数不正确，<a href='/'>点此返回主页</a>!</body></html>");
+          System.Web.HttpContext.Current.Response.End();
        }
         #endregion
        #region 网站标题标识
