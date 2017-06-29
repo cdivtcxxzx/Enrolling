@@ -467,7 +467,7 @@ img {
 </div>
 <!-- 轮播处理结束 --></div>
                     <div class="post-content" style="margin:10px 0 0 0">
-                      <p id="rdxw" runat="server" style="margin-bottom:0px;"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><asp:Image ID="Image1" runat="server" ImageUrl="~/img/bdlc.png"></asp:Image></a></p>
+                      <p id="rdxw" runat="server" style="margin-bottom:0px;"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs"><asp:Image ID="Image1" runat="server" ImageUrl="~/img/bdlc.png"></asp:Image></a></p>
                     </div>
                     </article>
               </main>

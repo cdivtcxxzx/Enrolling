@@ -2489,7 +2489,15 @@ public class dormitory
            {
                DataTable yfxs = Sqlhelper.Serach("SELECT count([Bed_NO])  FROM [yxxt_data].[dbo].[Fresh_Bed] where college_NO is not null");
 
-               ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,系统有" +xss.Rows[0][1].ToString() +"床位，分配到二级学院：<b>" + yfxs.Rows.Count.ToString()+ "</b></font>";
+               DataTable xss1 = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base] where College_NO='" + yxid + "') a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed] where [College_NO]='" + yxid + "') b on 1=1");
+               string zz = "";
+               if (xss1.Rows.Count > 0)
+               {
+                   zz = ",分配到二级学院床位数：<b>" + xss1.Rows[0][1].ToString() + "</b>";
+               }
+
+
+               ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,系统有" +xss.Rows[0][1].ToString() +"床位"+zz+"</font>";
            }
            DataTable fb = Sqlhelper.Serach("SELECT [FK_Bed_NO]  FROM [Fresh_Bed_Class_Log] where  FK_Class_NO is not null");
            if (fb.Rows.Count > 0)
