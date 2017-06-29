@@ -466,11 +466,10 @@ img {
   </ul>
 </div>
 <!-- 轮播处理结束 --></div>
-                    <div class="post-content">
-                      <p id="rdxw" runat="server"><b><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs">【新生网上报到说明】</a></b><b>此处放置简要报到流程</b><br /><br /><br /><br /><br /><br /><br /></p><p style="text-align:right"></p>
+                    <div class="post-content" style="margin:10px 0 0 0">
+                      <p id="rdxw" runat="server" style="margin-bottom:0px;"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><asp:Image ID="Image1" runat="server" ImageUrl="~/img/bdlc.png"></asp:Image></a></p>
                     </div>
-                    <div class="post-permalink" id="read1" style="float: right;    margin-bottom: 10px;    margin-right: 10px;" runat="server"> <a href="#" class="btn btn-default">查看详细报到流程</a> </div>
-                  </article>
+                    </article>
               </main>
 
                 <aside class="col-md-4 sidebar">

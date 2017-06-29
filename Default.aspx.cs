@@ -133,8 +133,8 @@ public partial class _Default : System.Web.UI.Page
         {
             string nr = basic.ReplaceHtmlTag(rdxw1.Rows[0]["content"].ToString(),169);
             
-                rdxw.InnerHtml = "<b>【热点新闻】" + rdxw1.Rows[0]["title"].ToString() + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;" + nr + "...";
-                this.read1.InnerHtml = "<a href=\"xw.aspx?xwid=" + rdxw1.Rows[0]["id"].ToString() + "\" class=\"btn btn-default\">阅读全文</a> ";
+                //rdxw.InnerHtml = "<b>【热点新闻】" + rdxw1.Rows[0]["title"].ToString() + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;" + nr + "...";
+                //this.read1.InnerHtml = "<a href=\"xw.aspx?xwid=" + rdxw1.Rows[0]["id"].ToString() + "\" class=\"btn btn-default\">阅读全文</a> ";
             
             
 
