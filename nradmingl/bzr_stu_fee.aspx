@@ -70,7 +70,11 @@
                             </select>
                         </div>
                     </div>
-
+                    <div class="layui-inline" style="margin-bottom:0px;">
+                         <a href="#" onclick="getstudent();" class="layui-btn layui-btn-small hidden-xs">
+					    <i class="layui-icon">&#x1002;</i> 刷新
+				        </a>
+                    </div> 
                     <div class="layui-inline">
                         <label class="layui-form-label" style="width:100px;" id="count">总计：0人</label>
                     </div>
