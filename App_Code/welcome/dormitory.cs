@@ -2484,10 +2484,29 @@ public class dormitory
         string nd = basic.dqnd();
        if(lx=="all")
        {
-           DataTable xss = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base]) a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed] ) b on 1=1");
+           DataTable xss = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base]) a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed]) b on 1=1");
            if(xss.Rows.Count>0)
            {
-               ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,准备床位数：<b>" + xss.Rows[0][1].ToString()+"</b></font>";
+               DataTable yfxs = Sqlhelper.Serach("SELECT count([Bed_NO])  FROM [yxxt_data].[dbo].[Fresh_Bed] where college_NO is not null");
+
+               DataTable xss1 = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base] where College_NO='" + yxid + "') a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed] where [College_NO]='" + yxid + "') b on 1=1");
+               string zz = "";
+               if (xss1.Rows.Count > 0)
+               {
+                   zz = ",分配到二级学院床位数：<b>" + xss1.Rows[0][1].ToString() + "</b>";
+               }
+
+
+               ts = "<font color=red>" + nd + "年全院招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,系统有" +xss.Rows[0][1].ToString() +"床位"+zz+"</font>";
+           }
+           DataTable fb = Sqlhelper.Serach("SELECT [FK_Bed_NO]  FROM [Fresh_Bed_Class_Log] where  FK_Class_NO is not null");
+           if (fb.Rows.Count > 0)
+           {
+               ts += "<font color=red>,已分配到班：<b>" + fb.Rows.Count.ToString() + "</b></font>";
+           }
+           else
+           {
+               ts += "<font color=red>,已分配到班：<b>0</b></font>";
            }
        }
        else
@@ -2495,7 +2514,13 @@ public class dormitory
              DataTable xss = Sqlhelper.Serach("select * from (SELECT count([PK_SNO]) 学生数  FROM [vw_fresh_student_base] where College_NO='"+yxid+"') a join (SELECT count([PK_Bed_NO]) 床位数  FROM [Fresh_Bed] where [College_NO]='"+yxid+"') b on 1=1");
              if (xss.Rows.Count > 0)
              {
-                 ts = "<font color=red>" + nd + "年"+yxmc+"招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,准备床位数：<b>" + xss.Rows[0][1].ToString() + "</b></font>";
+                 ts = "<font color=red>" + nd + "年"+yxmc+"招生：<b>" + xss.Rows[0][0].ToString() + "</b>人,分配到二级学院床位数：<b>" + xss.Rows[0][1].ToString() + "</b></font>";
+             }
+             DataTable fb = Sqlhelper.Serach("SELECT [FK_Bed_NO]  FROM [Fresh_Bed_Class_Log] where college_NO='"+yxid+"' and FK_Class_NO is not null");
+             if (fb.Rows.Count > 0) { ts += "<font color=red>,已分配到班：<b>" + fb.Rows.Count.ToString() + "</b></font>"; }
+             else
+             {
+                 ts += "<font color=red>,已分配到班：<b>0</b></font>";
              }
        }
           
@@ -2540,7 +2565,7 @@ public class dormitory
             }
             if(yxid!="0")
             {
-                sql += " and Fresh_Bed_Class_Log.College_NO='" + yxid + "' ";
+                sql += " and [Fresh_Bed].College_NO='" + yxid + "' ";
             }
             else
             {
@@ -2713,11 +2738,17 @@ public class dormitory
         DataTable ycw = Sqlhelper.Serach("SELECT     Fresh_Bed.Bed_NO AS 床位编号, Fresh_Bed.Bed_Name AS 床位描述, Fresh_Room.Room_NO AS 房间编号 FROM         Fresh_Room RIGHT OUTER JOIN                      Fresh_Bed ON Fresh_Room.PK_Room_NO = Fresh_Bed.FK_Room_NO WHERE     (Fresh_Room.Room_NO = '" + room + "')");
         if(ycw.Rows.Count>0)
         {
-            sycw = "预分配(" + ycw.Rows.Count.ToString()+")";
+            sycw = "院(" + ycw.Rows.Count.ToString()+")";
+            DataTable bj = Sqlhelper.Serach("SELECT     Fresh_Bed_Class_Log.FK_Bed_NO FROM         Fresh_Bed_Class_Log RIGHT OUTER JOIN                       Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO RIGHT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO WHERE     (Fresh_Room.Room_NO = '"+room+"') AND (Fresh_Bed_Class_Log.FK_Class_NO IS NOT NULL)");
+            if(bj.Rows.Count>0)
+            {
+                sycw += ",班(" + bj.Rows.Count.ToString() + ")";
+            }
+
             DataTable cw = Sqlhelper.Serach("SELECT     Fresh_Bed_Log.FK_Bed_NO AS 床位主键, Fresh_Bed.Bed_NO AS 床位编号, Fresh_Bed.Bed_Name AS 床位描述, Fresh_Room.Room_NO AS 房间编号, Fresh_Bed_Log.FK_SNO AS 学号, Base_STU.Name AS 姓名 FROM         Fresh_Bed_Log LEFT OUTER JOIN                      Base_STU ON Fresh_Bed_Log.FK_SNO = Base_STU.PK_SNO LEFT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO WHERE     (Fresh_Room.Room_NO = '" + room + "')");
             if (cw.Rows.Count > 0)
             {
-                sycw += ",被选(" + cw.Rows.Count.ToString()+")";
+                sycw += ",学生(" + cw.Rows.Count.ToString()+")";
             }
 
         }

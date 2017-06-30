@@ -466,11 +466,10 @@ img {
   </ul>
 </div>
 <!-- 轮播处理结束 --></div>
-                    <div class="post-content">
-                      <p id="rdxw" runat="server"><b><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs">【新生网上报到说明】</a></b><b>此处放置简要报到流程</b><br /><br /><br /><br /><br /><br /><br /></p><p style="text-align:right"></p>
+                    <div class="post-content" style="margin:10px 0 0 0">
+                      <p id="rdxw" runat="server" style="margin-bottom:0px;"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs"><asp:Image ID="Image1" runat="server" ImageUrl="~/img/bdlc.png"></asp:Image></a></p>
                     </div>
-                    <div class="post-permalink" id="read1" style="float: right;    margin-bottom: 10px;    margin-right: 10px;" runat="server"> <a href="#" class="btn btn-default">查看详细报到流程</a> </div>
-                  </article>
+                    </article>
               </main>
 
                 <aside class="col-md-4 sidebar">
@@ -488,11 +487,18 @@ img {
 </div>
 <!-- end tag cloud widget -->	
 
-
+<div class="widget" >
+	<h4 class="title" id="tzgg" runat="server"><span style="float:right;" ><p><a href="/list.aspx?id=12">更多</a></p></span>通知公告</h4>
+	<div class="content community" id="tzgglist" runat="server">
+		<p>暂无内容</p>
+		
+		
+	</div>
+</div>
 
 
 <!-- start tag cloud widget -->
-<div class="widget">
+<%--<div class="widget">
 	<h4 class="title" id="mydivtitle" runat="server"><span style="float:right;font-size:15px"><a href="#" onclick="layer.open({  type: 2,  title: '学生重置登陆密码',  maxmin: true,  shadeClose: true,  area : ['90%' , '80%'],  content: '/view/xsxx_pwd_reset.aspx'  });">>>忘记密码</a></span>新生网上报到登陆</h4>
 	<div class="content tag-cloud" id="mydiv" style="overflow:hidden; height:220px;" runat="server" >
 	<div style=" text-align:center;">
@@ -594,7 +600,7 @@ input[type="text"]{
 .labelbox input {width:266px;height:43px;}
 
 	</style>
-</div>
+</div>--%>
 <!-- end tag cloud widget -->	
 
 

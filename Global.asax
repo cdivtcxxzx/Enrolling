@@ -11,7 +11,7 @@
     public static string rename = "学院门户网站";//禁止访问后，能访问的站点的名称
     public static string word = "win.ini|boot.ini|concat|exec|insert|select|delete|update|master|truncate|declare|join|script|sysadmin|create|char|union|extractvalue|updatexml|xmlelement|<div style=\"display:none\">|substr|group by|unhex|(0x";
     public static string wzkey = "新生报到系统";
-    public static string noset = "login.aspx|xw.aspx|/404/";//不进行验证的页面或地址login.aspx|xw.aspx
+    public static string noset = "/loginsf.aspx|/login.aspx|/list.aspx|/404/|/nradmingl|/view";//不进行验证的页面或地址login.aspx|xw.aspx
     public static string noserver = "/loginsf.aspx|/view/|/login.aspx|/nradmin";//网站关闭情况下能访问的地址/login.aspx|/admin/
     public static string noczip = "10.35.|118.114.252.|222.209.216.75|171.221.255.5|118.122.122.237";//白名单，除白名单外，还可以在库中noip表中对IP对应的no设置为“0”，tsxx设置为“不限制”
     //private void myTime(object sender, System.Timers.ElapsedEventArgs e)
@@ -433,10 +433,10 @@
                 if (InText.ToString().Length > 200 || InText.ToLower().Contains(i) || (InText.ToLower().Contains("and") && InText.ToLower().Contains("or")))
                 {
                     //写入日志
-                    string fitmc = i.ToString() + "<br>";
+                    string fitmc = "" + "<br>";
                     if ((InText.ToLower().Contains("and") && InText.ToLower().Contains("or"))) fitmc += "andor";
                     if (InText.ToString().Length > 200) fitmc += "大于200字符";
-                    fitmc += "<br>非法信息：" + InText.ToString() + "<br>";
+                    //fitmc += "<br>非法信息：" + InText.ToString() + "<br>";
                     //获得当前IP
                     string ipok = GetHostAddress();
                     //获得当前页面

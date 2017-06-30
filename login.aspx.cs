@@ -139,7 +139,7 @@ public partial class admin_Default : System.Web.UI.Page
         }
         if (sf == "xs")
         {
-            this.login_title.InnerHtml = "学生网上自助报到登陆";
+            this.login_title.InnerHtml = "学生网上自助报到登录";
             this.txt_name.Attributes.Add("placeholder", "请输入高考报名号");
             this.txt_pwd.Attributes.Add("placeholder", "默认密码为身份证后八位");
             custom_display_64.Style.Add("display", "");
@@ -331,7 +331,7 @@ public partial class admin_Default : System.Web.UI.Page
                 Label1.Text = "<font color=red>验证码错误！</font>";
                 return;
             }
-            if (login_title.InnerText == "学生网上自助报到登陆")
+            if (login_title.InnerText == "学生网上自助报到登录")
             {
                 //验证时间
                 DataTable timeok = Sqlhelper.Serach("SELECT     TOP (1) Fresh_Batch.Batch_Name FROM         Fresh_Batch LEFT OUTER JOIN                      vw_fresh_student_base ON Fresh_Batch.PK_Batch_NO = vw_fresh_student_base.FK_Fresh_Batch WHERE     (Fresh_Batch.Service_Begin <= '" + DateTime.Now.ToString() + "') AND (Fresh_Batch.Service_End >= '" + DateTime.Now.ToString() + "') and (PK_SNO=@name or Test_NO=@name)", new SqlParameter("name", this.txt_name.Value));

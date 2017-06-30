@@ -70,7 +70,7 @@
         <!--顶部提示及导航-->
         <blockquote class="layui-elem-quote">
 
-            <i class="layui-icon">&#xe602;</i>迎新管理&gt;&gt;后台管理首页
+            <i class="layui-icon">&#xe602;</i>迎新管理&gt;&gt;后台管理首页【迎新系统管理员交流群：645341671】
             <span style="float: right">
                  <a href="/" class="layui-btn layui-btn-small">
                      <i class="layui-icon">&#xe603;</i>

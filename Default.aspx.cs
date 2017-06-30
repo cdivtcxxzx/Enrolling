@@ -133,18 +133,18 @@ public partial class _Default : System.Web.UI.Page
         {
             string nr = basic.ReplaceHtmlTag(rdxw1.Rows[0]["content"].ToString(),169);
             
-                rdxw.InnerHtml = "<b>【热点新闻】" + rdxw1.Rows[0]["title"].ToString() + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;" + nr + "...";
-                this.read1.InnerHtml = "<a href=\"xw.aspx?xwid=" + rdxw1.Rows[0]["id"].ToString() + "\" class=\"btn btn-default\">阅读全文</a> ";
+                //rdxw.InnerHtml = "<b>【热点新闻】" + rdxw1.Rows[0]["title"].ToString() + "</b><br>&nbsp;&nbsp;&nbsp;&nbsp;" + nr + "...";
+                //this.read1.InnerHtml = "<a href=\"xw.aspx?xwid=" + rdxw1.Rows[0]["id"].ToString() + "\" class=\"btn btn-default\">阅读全文</a> ";
             
             
 
         }
         #endregion
-        #region 通知公告
+        #region 报到须知
         //<b>【通知】</b>
         try
         {
-             DataTable toplm = Sqlhelper.Serach("SELECT top 1 *  FROM [xw_lanm] where sfdhxs='1' order by px asc");
+             DataTable toplm = Sqlhelper.Serach("SELECT top 1 *  FROM [xw_lanm] where sfdhxs='1'  order by px asc");
              string lmid2="12";
             if (toplm.Rows.Count > 0)
              {
@@ -175,16 +175,51 @@ public partial class _Default : System.Web.UI.Page
         }
         catch { }
         #endregion
-        #region 会员单位
+        #region 通知公告
         //<b>【通知】</b>
-        DataTable hydw = Sqlhelper.Serach("select top 1 * from[wangzxx] where xxgjz='幻灯旁ID'");
-        if (hydw.Rows.Count > 0)
+        try
         {
-            mydivtitle.InnerHtml = "<span style=\"float:right;font-size:15px\"><a href=\"/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs\">>></a></span>新生网上报到登陆";
+            DataTable toplm = Sqlhelper.Serach("SELECT top 1 *  FROM [xw_lanm] where sftop='1' order by px asc");
+            string lmid2 = "12";
+            if (toplm.Rows.Count > 0)
+            {
+                lmid2 = toplm.Rows[0]["lmid"].ToString();
+                tzgg.InnerHtml = "<span style=\"float:right;font-size:15px\" ><p><a href=\"/list.aspx?id=" + lmid2 + "\">更多</a></p></span>" + toplm.Rows[0]["lmmc"].ToString();
+            }
 
+            DataTable indexxw = Sqlhelper.Serach("SELECT TOP 8 *  FROM [xw_neirong] where isyn='1' and ( lmid=" + lmid2 + ") and readpower like '%00|%' order by fabutime desc");
+            if (indexxw.Rows.Count > 0)
+            {
+
+                tzgglist.InnerHtml = "";
+
+                for (int i = 0; i < indexxw.Rows.Count; i++)
+                {
+                    string time1 = Convert.ToDateTime(indexxw.Rows[i]["fabutime"].ToString()).Month + "月" + Convert.ToDateTime(indexxw.Rows[i]["fabutime"].ToString()).Day + "日";
+                    string nr = basic.ReplaceHtmlTag(indexxw.Rows[i]["title"].ToString(), 14);
+
+                    tzgglist.InnerHtml += "<span style=\"float:right\">" + time1 + "</span><p><a href=/xw.aspx?xwid=" + indexxw.Rows[i]["id"].ToString() + ">" + nr + "</a></p>";
+                }
+
+
+            }
+            else
+            {
+                tzgglist.InnerHtml = "<p>暂无内容!</p>";
+            }
         }
-        
+        catch { }
         #endregion
+        //#region 会员单位
+        //<b>【通知】</b>
+        //DataTable hydw = Sqlhelper.Serach("select top 1 * from[wangzxx] where xxgjz='幻灯旁ID'");
+        //if (hydw.Rows.Count > 0)
+        //{
+        //    mydivtitle.InnerHtml = "<span style=\"float:right;font-size:15px\"><a href=\"/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs\">>></a></span>新生网上报到登陆";
+
+        //}
+        
+        //#endregion
 
         //#region 首页新闻
         ////<b>【首页新闻】</b>

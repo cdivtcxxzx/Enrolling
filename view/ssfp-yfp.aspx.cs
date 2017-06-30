@@ -222,8 +222,8 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
     protected void zp()
     {
         //获取寝室照片信息
-        string zp = "../images/xsgysmall.jpg";
-        string zpbig = "../images/xsgysmall.jpg";
+        string zp = "images/xsgysmall.jpg";
+        string zpbig = "images/xsgysmall.jpg";
         DataTable zpok = dormitory.serch_dorm(xsxx_xh.Text, xq_dorm.SelectedValue);
         if (zpok.Rows.Count > 0)
         {
