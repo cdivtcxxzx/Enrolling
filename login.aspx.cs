@@ -139,7 +139,7 @@ public partial class admin_Default : System.Web.UI.Page
         }
         if (sf == "xs")
         {
-            this.login_title.InnerHtml = "学生网上自助报到登陆";
+            this.login_title.InnerHtml = "学生网上自助报到登录";
             this.txt_name.Attributes.Add("placeholder", "请输入高考报名号");
             this.txt_pwd.Attributes.Add("placeholder", "默认密码为身份证后八位");
             custom_display_64.Style.Add("display", "");
