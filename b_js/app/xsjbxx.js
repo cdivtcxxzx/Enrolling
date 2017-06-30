@@ -39,6 +39,7 @@
                                 $('#xsxx_xb').text(json_data.data[i].data.Gender_Code);
                                 $('#xsxx_sfzh').text(json_data.data[i].data.ID_NO);
                                 $('#xsxx_nj').text(json_data.data[i].data.Year);
+                                $('#xsxx_bmh').text(json_data.data[i].data.Test_NO);
                             }
                             if (json_data.data[i].name == 'spe') {
                                 $('#xsxx_zy').text(json_data.data[i].data.SPE_Name);
@@ -56,6 +57,9 @@
                         }//end for
                     }//end if length > 0
                 }//end code=success
+                $('#xszpxx').on('error', function () {
+                    $('#xszpxx').attr('src','../images/xstp/test.jpg');
+                });
             }//end success
         });//end ajax
 

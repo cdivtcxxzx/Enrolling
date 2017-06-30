@@ -117,11 +117,18 @@
            <div class="layui-form-mid layui-word-aux-ts xszp" style="margin-left:10px;text-align:center;float:none!important">
                <asp:Image ID="xszpxx" ImageUrl="../images/xstp/test.jpg" runat="server" /></div></div>
         </div></div>
-     <div class="xsxx2"  >   <div class="layui-form-item" pane="">
+     <div class="xsxx2"  >   
+         <div class="layui-form-item" pane="">
           <label class="layui-form-label">学号：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
                <asp:Label ID="xsxx_xh" runat="server" Text=""></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
+          <label class="layui-form-label">报名号：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
+               <asp:Label ID="xsxx_bmh" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
           <label class="layui-form-label">姓名：</label>
