@@ -3809,5 +3809,33 @@ public class batch
         return result;
     }
 
+    //获取注册信息有错误的学生列表
+    public System.Data.DataTable get_infoerror_stu(string PK_BATCH_NO)
+    {
+        System.Data.DataTable result = null;
+        try
+        {
+            string sqlstr = null;
+            sqlstr = "select a.*,c.Item_Name as Gender,d.Name as classname,e.Phone as counseller_phone,e.qq as counseller_qq,e.FK_Staff_NO,"
+                    +" f.name as counseller_name,b.Confirm_Date"
+                    +" from vw_fresh_student_base a,Fresh_Confirm b,Base_Code_Item c,"
+                    +" Fresh_Class d,Fresh_Counseller e,Base_Staff f"
+                    +" where a.PK_SNO=b.FK_SNO and b.Confirm_state=0 and a.Gender_Code=c.Item_NO and c.FK_Code='002'"
+                    +" and a.FK_Class_NO=d.PK_Class_NO and a.FK_Class_NO=e.FK_Class_NO and e.FK_Staff_NO=f.pk_staff_no"
+                    + " and a.FK_Fresh_Batch=@cs1";
+            result = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_BATCH_NO.Trim()));
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "get_InfoError_stu", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
 
 }

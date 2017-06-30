@@ -62,10 +62,14 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
             #region 检测用户是否登陆
             Object se_pk_sno = Session["pk_sno"];//获取学号
             Object se_pk_staff_no = Session["pk_staff_no"];//获取员工编号
+            Object logusername = Session["username"];//登陆用户编号
 
-            if ((se_pk_sno == null || se_pk_sno.ToString().Trim().Length == 0) && (se_pk_staff_no == null || se_pk_staff_no.ToString().Trim().Length == 0))
+            if ((se_pk_sno == null || se_pk_sno.ToString().Trim().Length == 0) && 
+                (se_pk_staff_no == null || se_pk_staff_no.ToString().Trim().Length == 0) &&
+                (logusername == null || logusername.ToString().Trim().Length == 0))
             {
-                result.message = "非授权访问";
+                throw new Exception("非授权访问");
+                //result.message = "非授权访问";
             }
             #endregion
 
@@ -2931,6 +2935,20 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
+                #region  获取注册信息有错误的学生列表(招就处和学生处管理模块)
+                if (cs.Trim().Equals("get_infoerror_stu"))
+                {
+                    string pk_batch_no = Request.QueryString.Get("pk_batch_no");
+                    if (pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        System.Data.DataTable jg = batch_logic.get_infoerror_stu(pk_batch_no);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = jg;
+                    }
+                }
+                #endregion
 
             }
         }
