@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="bzr_stu_fee.aspx.cs" Inherits="nradmingl_Default3" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="register_error_stu_list.aspx.cs" Inherits="nradmingl_Default3" %>
 
 <!DOCTYPE html>
 
@@ -40,11 +40,10 @@
 </head>
 <body>
     <form id="form1" runat="server" class="layui-form">
-              <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
-<%--              <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />--%>
+             <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
         <div class="admin-main">
             <blockquote class="layui-elem-quote">
-                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>查看学生缴费           
+                <i class="layui-icon">&#xe602;</i>信息有误学生           
             </blockquote>
             <div>                
                 <div class="layui-form-item">
@@ -57,30 +56,34 @@
                             </select>
                         </div>
                     </div>
-                    <!--班级下拉列表-->
-                    <div class="layui-inline">
-                        <label class="layui-form-label">班级：</label>
-                        <div class="layui-input-inline">
-                            <select name="classlist" id="classlist">
-                                <option value="">请选择班级</option>
-                                <option value="1">layer</option>
-                                <option value="2">form</option>
-                                <option value="3">layim</option>
-                                <option value="4">element</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-inline" style="margin-bottom:0px;">
-                         <a href="#" onclick="getstudent();" class="layui-btn layui-btn-small hidden-xs">
-					    <i class="layui-icon">&#x1002;</i> 刷新
-				        </a>
-                    </div> 
+
                     <div class="layui-inline">
                         <label class="layui-form-label" style="width:100px;" id="count">总计：0人</label>
                     </div>
                    
                     <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
-                     </table>
+                        <thead>
+                            <tr>        
+                                <th scope="col">序号</th>  
+                                <th scope="col">年级</th>                        
+                                <th scope="col">学院</th>
+                                <th scope="col" >专业</th>
+                                <th scope="col" >班级</th>
+                                <th scope="col">姓名</th>
+                                <th scope="col">性别</th>
+                                <th scope="col">高考报名号</th>
+                                <th scope="col">身份证号</th>
+                                <th scope="col">联系电话</th>
+                                <th scope="col">辅导员</th>
+                                <th scope="col">辅导员电话</th>
+                                <th scope="col">辅导员QQ</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
 
                 </div>
 
@@ -88,7 +91,7 @@
         </div>
     </form>
         <script type="text/javascript" src="../b_js/jquery.min2.js"></script>
-        <script type="text/javascript" src="../b_js/app/bzr_stu_fee.js"></script>
+        <script type="text/javascript" src="../b_js/app/register_error_stu_list.js"></script>
 
 <%--        <script type="text/javascript" src="plugins/layui/layui.js"></script>--%>
     <script>

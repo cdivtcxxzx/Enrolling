@@ -70,7 +70,11 @@
                             </select>
                         </div>
                     </div>
-
+                     <div class="layui-inline" style="margin-bottom:0px;">
+                         <a href="#" onclick="getclassbeds();" class="layui-btn layui-btn-small hidden-xs">
+					    <i class="layui-icon">&#x1002;</i> 刷新
+				        </a>
+                    </div> 
 
                 <div class="layui-form-item" style="margin-bottom:0px;">
                     <table class="site-table table-hover" cellspacing="0" rules="all" border="1" style="border-collapse: collapse;">
