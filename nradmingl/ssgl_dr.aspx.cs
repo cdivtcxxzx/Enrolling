@@ -29,7 +29,7 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
     //导入模板的字段
     private string zd = "序号,年度,校区,公寓名称,楼层,房间编号,房间类型,性别,房间人数,床位编号,床位位置说明,院系名称,班级名称";
     //错误提示时，要隐藏的字段
-    private  string removeok = "年度,校区,公寓名称,楼层,房间类型,房间人数,床位位置说明";
+    private  string removeok = "年度,校区,公寓名称,楼层,房间类型,房间人数,床位位置说明,高考报名号,学号,姓名,联系电话";
     
     private string pageqx1 = "浏览";//权限名称，根据页面的权限控制命名，与栏目管理中权限一致，最大设置为５个
     private string pageqx2 = "导入";
