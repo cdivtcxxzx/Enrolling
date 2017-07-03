@@ -1,4 +1,12 @@
-﻿function fillstr(str){
+﻿var greenlist=null;//绿色通道
+var single_must=null;//必交单项
+var multiple_must=null;//必交多项
+var single_nomust=null;//选交单项
+var multiple_nomust=null;//选交多项
+var feelist=null;//选择项
+var greenfeelist=null;
+
+function fillstr(str){
     if ($.trim(str).length >=8 ) {
         return str;
     }
@@ -66,19 +74,73 @@ function load(){
                         success: function (data) {
                             var json_data = JSON.parse(data);
                             if (json_data.code == 'success') {
-                                $('#tmpdata').val(data);
                                 var fee_id_list=new Array();
                                 var count=0;
 
-                                var single_must=json_data.data.single_must;//必交单项
-                                var multiple_must=json_data.data.multiple_must;//必交多项
-                                var single_nomust=json_data.data.single_nomust;//选交单项
-                                var multiple_nomust=json_data.data.multiple_nomust;//选交多项
+                                single_must=json_data.data.single_must;//必交单项
+                                multiple_must=json_data.data.multiple_must;//必交多项
+                                single_nomust=json_data.data.single_nomust;//选交单项
+                                multiple_nomust=json_data.data.multiple_nomust;//选交多项
                                 var showed=false;
 
+                                for(i=0;multiple_must!=null && i<multiple_must.length;i++){
+                                    var itemlist=multiple_must[i];
+                                    for(var j=itemlist.length-1;j>=0;j--){
+                                        if($.trim(itemlist[j].Fee_Name)==='助学贷款')
+                                        {
+                                            if(greenlist===null){
+                                                greenlist=new Array();
+                                                greenlist[0]=itemlist[j];
+                                            }else{
+                                                greenlist[greenlist.length]=itemlist[j];
+                                            }
+                                            itemlist.length=itemlist.length-1;
+                                        }
+                                    }
+                                }
+                                for(i=0;multiple_nomust!=null && i<multiple_nomust.length;i++){
+                                    var itemlist=multiple_nomust[i];
+                                    for(var j=itemlist.length-1;j>=0;j--){
+                                        if($.trim(itemlist[j].Fee_Name)=='助学贷款')
+                                        {
+                                            if(greenlist===null){
+                                                greenlist=new Array();
+                                                greenlist[0]=itemlist[j];
+                                            }else{
+                                                greenlist[greenlist.length]=itemlist[j];
+                                            }
+                                            itemlist.length=itemlist.length-1;
+                                        }
+                                    }
+                                }
+
+                                console.log(greenlist);
+
                                 $('#contents').append('<table>');
+
+                                if(greenlist!=null){
+                                    var msg='';
+                                    for(i=0;i<greenlist.length;i++){
+                                        console.log(greenlist[i].Fee_Code_Name);
+                                        if($.trim(msg).length===0){
+                                            msg=greenlist[i].Fee_Code_Name;
+                                        }else{
+                                            msg=msg+','+greenlist[i].Fee_Code_Name;
+                                        }
+                                    }
+                                    $('#contents').append('<tr><td>');
+                                    var str='<div class="layui-inline">';
+                                    str=str+'<label class="layui-form-label" style="color:red;">助学贷款项</label>';
+                                    str=str+'<div class="layui-input-inline">';
+                                    str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;color:red;"><label>'+msg+'</label></div>';
+                                    str=str+'</div>';
+                                    str=str+'</div>';
+                                    $('#contents').append(str);
+                                    $('#contents').append('</tr></td>');
+                                }
+
                                 for(i=0;single_must!=null && i<single_must.length;i++){
-                                    itemlist=single_must[i];
+                                    var itemlist=single_must[i];
                                     $('#contents').append('<tr><td>');
                                     var str='<div class="layui-inline" style="" id=_sm'+itemlist[0].Fee_Code+' ref-data='+itemlist[0].PK_Fee_Item+'>';
                                     str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
@@ -93,51 +155,7 @@ function load(){
                                     $('#sure').show();
                                 }
 
-                                var find_index=-1;
                                 for(i=0;multiple_must!=null && i<multiple_must.length;i++){
-                                    var itemlist=multiple_must[i];
-                                    for(var j=0;j<itemlist.length;j++){
-                                        if($.trim(itemlist[j].Fee_Name)=='绿色通道' || $.trim(itemlist[j].Fee_Name)=='助学贷款')
-                                        {
-                                            find_index=i;
-                                            break;
-                                        }
-                                    }
-                                    if(find_index!=-1){
-                                        $('#contents').append('<tr><td>');
-                                        var str='<div class="layui-inline" style="">';
-                                        str=str+'<label class="layui-form-label">'+itemlist[0].Fee_Code_Name+'*</label>';
-                                        str=str+'<div class="layui-input-inline">';
-                                        str=str+'<div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><label>'+fillstr(itemlist[0].Fee_Amount)+'元</label></div>';
-                                        str=str+'</div>';
-                                        str=str+'</div>';
-                                        $('#contents').append(str);
-                                        $('#contents').append('</tr></td>');
-
-                                        $('#TuitionClass').attr("ref-data",itemlist[0].Fee_Code);
-                                        for(var j=0;j<itemlist.length;j++){
-                                            if($.trim(itemlist[j].Fee_Name)=='绿色通道'){
-                                                $('#xf_green').val(itemlist[j].PK_Fee_Item);
-                                                $('#xf_green').attr('fee',itemlist[j].Fee_Amount);
-                                            }else{
-                                                if($.trim(itemlist[j].Fee_Name)=='助学贷款'){
-                                                    $('#xf_loan').val(itemlist[j].PK_Fee_Item);
-                                                    $('#xf_loan').attr('fee',itemlist[j].Fee_Amount);
-                                                } else{
-                                                    $('#xf_normal').val(itemlist[j].PK_Fee_Item);
-                                                    $('#xf_normal').attr('fee',itemlist[j].Fee_Amount);
-                                                    $('#xf_normal').attr('checked', 'checked');
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-
-                                for(i=0;multiple_must!=null && i<multiple_must.length;i++){
-                                    if(i==find_index){
-                                        continue;
-                                    }
                                     var itemlist=multiple_must[i];
                                     $('#contents').append('<tr><td>');
                                     var str='<div class="layui-inline" style="" id=_mm'+itemlist[0].Fee_Code+' ref-data="'+itemlist[0].PK_Fee_Item+'">';
@@ -202,6 +220,7 @@ function load(){
                                     count=count+1;
                                     $('#sure').show();
                                 }
+
                                 $('#contents').append('</table>');
 
                                 $('#contents').attr('fee_id_list',fee_id_list.join(","));
@@ -298,8 +317,6 @@ function load(){
             alert("错误");
         }
     });
-
-
 }
 
 function sure(){
@@ -315,7 +332,7 @@ function sure(){
 
     var fee_id_list=null;
     var i=0;
-    var feelist=null;
+    feelist=null;
 
     var data=$('#contents').attr('fee_id_list');
     if(data!=null && $.trim(data).length>0){
@@ -335,71 +352,9 @@ function sure(){
             }
         }
     }
-    code=$('#TuitionClass').attr('ref-data');
-    if(code!='none'){
-        var data=$('#tmpdata').val();
-        var json_data = JSON.parse(data);
-        var single_must=json_data.data.single_must;//必交单项
-        var multiple_must=json_data.data.multiple_must;//必交多项
-        var single_nomust=json_data.data.single_nomust;//选交单项
-        var multiple_nomust=json_data.data.multiple_nomust;//选交多项
-        var sum=0;
-        for(var i=0;i<feelist.length;i++){
-            var key_code=feelist[i].code;
-            var key_value=feelist[i].value;
-            var find=false;
-            for(var j=0;!find && single_must!=null && j<single_must.length;j++){
-                var itemlist=single_must[j];
-                if(itemlist[0].Fee_Code==key_code){
-                    for(var k=0;k<itemlist.length;k++){
-                        if(itemlist[k].PK_Fee_Item==key_value){
-                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
-                            find=true;
-                            break;
-                        }
-                    }
-                }
-            }
-            for(var j=0;!find && multiple_must!=null && j<multiple_must.length;j++){
-                var itemlist=multiple_must[j];
-                if(itemlist[0].Fee_Code==key_code){
-                    for(var k=0;k<itemlist.length;k++){
-                        if(itemlist[k].PK_Fee_Item==key_value){
-                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
-                            find=true;
-                            break;
-                        }
-                    }
-                }
-            }
-            for(var j=0;!find && single_nomust!=null && j<single_nomust.length;j++){
-                var itemlist=single_nomust[j];
-                if(itemlist[0].Fee_Code==key_code){
-                    for(var k=0;k<itemlist.length;k++){
-                        if(itemlist[k].PK_Fee_Item==key_value){
-                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
-                            find=true;
-                            break;
-                        }
-                    }
-                }
-            }
-            for(var j=0;!find && multiple_nomust!=null && j<multiple_nomust.length;j++){
-                var itemlist=multiple_nomust[j];
-                if(itemlist[0].Fee_Code==key_code){
-                    for(var k=0;k<itemlist.length;k++){
-                        if(itemlist[k].PK_Fee_Item==key_value){
-                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
-                            find=true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
 
-        $('#TuitionClass').attr('feesum',sum);
-        changesum();
+    changesum();
+    if(greenlist!=null){
         layer.open({
             title: '学费缴纳方式',
             type: 1,
@@ -408,11 +363,13 @@ function sure(){
             , btn: ['确定', '放弃']
             , btn1: function (index, layero) {
                 //按钮【按钮一】的回调
-                var val=$("#TuitionClass input[name='TuitionClass']:checked").val();
-                var code=$('#TuitionClass').attr('ref-data');
-                feelist[count]={"code":code,"value":val};
+                var id_name=$("#TuitionClass input[name='TuitionClass']:checked").attr('id');
                 layer.close(index);
-                submitfee(feelist,pk_batch_no,pk_sno,pk_affair_no);
+                if(id_name=='xf_normal'){
+                    submitfee(feelist,pk_batch_no,pk_sno,pk_affair_no);
+                }else{
+                    submitfee(greenfeelist,pk_batch_no,pk_sno,pk_affair_no);
+                }
             }
             , btn2: function (index, layero) {
                 //按钮【按钮二】的回调
@@ -488,13 +445,163 @@ function msg(title_t,msg_t){
         ,content: msg_t
     });
 }
+
 function changesum(){
-    var sum=$('#TuitionClass').attr('feesum');
+    var sum=0;
     var id_name=$("#TuitionClass input[name='TuitionClass']:checked").attr('id');
     if(id_name=='xf_normal'){
-        sum=parseFloat(sum)+parseFloat($('#'+id_name).attr('fee'));
-        sum = Math.round(sum*100)/100;
+        sum=normal();
+    }else{
+        sum=loan();
     }
-    console.log(sum);
+    sum = Math.round(sum*100)/100;
     $('#fee_sum').html(sum);
+    //console.log(sum);
+    //console.log(feelist);
+    //console.log(greenfeelist);
+    //console.log(greenlist);
 }
+
+function normal(){
+    var sum=0;
+    for(var i=0;i<feelist.length;i++){
+        var key_code=feelist[i].code;//Fee_Code
+        var key_value=feelist[i].value;//PK_Fee_Item
+        var find=false;
+        for(var j=0;!find && single_must!=null && j<single_must.length;j++){
+            var itemlist=single_must[j];
+            if(itemlist[0].Fee_Code==key_code){
+                for(var k=0;k<itemlist.length;k++){
+                    if(itemlist[k].PK_Fee_Item==key_value){
+                        sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                        find=true;
+                        break;
+                    }
+                }
+            }
+        }
+        for(var j=0;!find && multiple_must!=null && j<multiple_must.length;j++){
+            var itemlist=multiple_must[j];
+            if(itemlist[0].Fee_Code==key_code){
+                for(var k=0;k<itemlist.length;k++){
+                    if(itemlist[k].PK_Fee_Item==key_value){
+                        sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                        find=true;
+                        break;
+                    }
+                }
+            }
+        }
+        for(var j=0;!find && single_nomust!=null && j<single_nomust.length;j++){
+            var itemlist=single_nomust[j];
+            if(itemlist[0].Fee_Code==key_code){
+                for(var k=0;k<itemlist.length;k++){
+                    if(itemlist[k].PK_Fee_Item==key_value){
+                        sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                        find=true;
+                        break;
+                    }
+                }
+            }
+        }
+        for(var j=0;!find && multiple_nomust!=null && j<multiple_nomust.length;j++){
+            var itemlist=multiple_nomust[j];
+            if(itemlist[0].Fee_Code==key_code){
+                for(var k=0;k<itemlist.length;k++){
+                    if(itemlist[k].PK_Fee_Item==key_value){
+                        sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                        find=true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return sum;
+}
+
+function loan(){
+    greenfeelist=null;
+    greenfeelist=new Array();
+    for(var i=0;i<feelist.length;i++){
+        greenfeelist[i]={"code":feelist[i].code,"value":feelist[i].value};
+    }
+
+    var sum=0;
+    for(var i=0;i<greenfeelist.length;i++){
+        var key_code=greenfeelist[i].code;//Fee_Code
+        var key_value=greenfeelist[i].value;//PK_Fee_Item
+        var find=false;
+        for(var j=0;!find && single_must!=null && j<single_must.length;j++){
+            var itemlist=single_must[j];
+            if(itemlist[0].Fee_Code==key_code){
+                for(var k=0;k<itemlist.length;k++){
+                    if(itemlist[k].PK_Fee_Item==key_value){
+                        sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                        find=true;
+                        break;
+                    }
+                }
+            }
+        }
+        for(var j=0;!find && multiple_must!=null && j<multiple_must.length;j++){
+            var itemlist=multiple_must[j];
+            if(itemlist[0].Fee_Code==key_code){
+                for(var k=0;k<itemlist.length;k++){
+                    if(itemlist[k].PK_Fee_Item==key_value){
+                        var findgreen=false;
+                        for(var m=0;m<greenlist.length;m++){
+                            if(greenlist[m].Fee_Code==key_code && greenlist[m].Fee_Amount==itemlist[k].Fee_Amount){
+                                key_value=greenlist[m].PK_Fee_Item;
+                                greenfeelist[i].value=greenlist[m].PK_Fee_Item;
+                                findgreen=true;
+                                break;
+                            }
+                        }
+                        if(!findgreen){
+                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                        }
+                        find=true;
+                        break;
+                    }
+                }
+            }
+        }
+        for(var j=0;!find && single_nomust!=null && j<single_nomust.length;j++){
+            var itemlist=single_nomust[j];
+            if(itemlist[0].Fee_Code==key_code){
+                for(var k=0;k<itemlist.length;k++){
+                    if(itemlist[k].PK_Fee_Item==key_value){
+                        sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                        find=true;
+                        break;
+                    }
+                }
+            }
+        }
+        for(var j=0;!find && multiple_nomust!=null && j<multiple_nomust.length;j++){
+            var itemlist=multiple_nomust[j];
+            if(itemlist[0].Fee_Code==key_code){
+                for(var k=0;k<itemlist.length;k++){
+                    if(itemlist[k].PK_Fee_Item==key_value){
+                        var findgreen=false;
+                        for(var m=0;m<greenlist.length;m++){
+                            if(greenlist[m].Fee_Code==key_code && greenlist[m].Fee_Amount==itemlist[k].Fee_Amount){
+                                key_value=greenlist[m].PK_Fee_Item;
+                                greenfeelist[i].value=greenlist[m].PK_Fee_Item;
+                                break;
+                            }
+                        }
+                        if(!findgreen){
+                            sum=sum+parseFloat(itemlist[k].Fee_Amount);
+                        }
+                        find=true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return sum;
+}
+

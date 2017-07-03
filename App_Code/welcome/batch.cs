@@ -2112,8 +2112,6 @@ public class batch
         return result;
     }
 
-
-
     /// <summary>
     ///功能名称：获取当前有效的迎新批次目录
     ///功能描述：

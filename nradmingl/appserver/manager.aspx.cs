@@ -858,7 +858,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 #endregion
 
                 #region  获取学生未生成订单的交费列表（迎新批次号，学号）
-                if (cs.Trim().Equals("get_fee_no_order"))
+                if (cs.Trim().Equals("get_fee_no_order_old"))
                 {
                     string pk_sno = Request.QueryString["pk_sno"];
                     string pk_batch_no = Request.QueryString["pk_batch_no"];
@@ -1025,6 +1025,7 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                     {
                                         batch_logic.set_TuitionFee(pk_sno, TuitionClass);
                                     }
+
                                     result.code = "success";
                                     result.message = "成功";
                                     result.data = orderid_url;
@@ -1059,12 +1060,11 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                                 List<Financial.Fee_Item> data1 = logic_fee.get_feeitem_byorder(orderid);//根据订单获取学生收费款项列表
                                 if (data1 != null && data.Count > 0)
                                 {
-                                    for (int j = 0; j < data1.Count; j++)
+                                    for (int j = data1.Count-1; j>=0; j--)
                                     {
                                         if (data1[j].Fee_Name.Trim().Equals("绿色通道") || data1[j].Fee_Name.Trim().Equals("助学贷款"))
                                         {
                                             data1.RemoveAt(j);
-                                            break;
                                         }
                                     }
                                 }
@@ -2949,6 +2949,67 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                     }
                 }
                 #endregion
+
+                #region  获取学生未生成订单的交费列表（迎新批次号，学号）
+                if (cs.Trim().Equals("get_fee_no_order"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+                    string pk_batch_no = Request.QueryString["pk_batch_no"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_batch_no != null && pk_batch_no.Trim().Length != 0)
+                    {
+                        financial logic_fee = new financial();
+                        List<fee_list> data = logic_fee.get_fee_no_order(pk_batch_no, pk_sno);
+                        result.code = "success";
+                        result.message = "成功";
+                        result.data = new { single_must = data[0].single, multiple_must = data[0].multiple, single_nomust = data[1].single, multiple_nomust = data[1].multiple };
+                    }
+                }
+                #endregion
+
+                #region  获取学生已生成订单中助学贷款的交费列表（学号）
+                if (cs.Trim().Equals("get_fee_order_loan"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+
+                    if (pk_sno != null && pk_sno.Trim().Length != 0)
+                    {
+                        financial logic_fee = new financial();
+                        List<fresh_fee> data = logic_fee.get_fresh_fee(pk_sno);//获取本系统保存的学生订单
+                        if (data != null && data.Count > 0)
+                        {
+                            List<object> jg = new List<object>();
+                            for (int i = 0; i < data.Count; i++)
+                            {
+                                string orderid = data[i].FEE_ORDERID;
+                                string orderurl = data[i].FEE_ORDERID_URL;
+                                List<Financial.Fee_Item> data1 = logic_fee.get_feeitem_byorder(orderid);//根据订单获取学生收费款项列表
+                                if (data1 != null && data.Count > 0)
+                                {
+                                    for (int j = data1.Count - 1; j >= 0; j--)
+                                    {
+                                        if (!data1[j].Fee_Name.Trim().Equals("助学贷款"))
+                                        {
+                                            data1.RemoveAt(j);
+                                        }
+                                    }
+                                }
+                                jg.Add(new { order_id = orderid, order_url = orderurl, items = data1 });
+                            }
+                            result.code = "success";
+                            result.message = "成功";
+                            result.data = jg;
+                        }
+                        else
+                        {
+                            result.code = "success";
+                            result.message = "成功";
+                            result.data = null;
+                        }
+                    }
+                }
+                #endregion
+
 
             }
         }

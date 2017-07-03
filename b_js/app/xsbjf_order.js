@@ -48,7 +48,56 @@ function load(){
                             $('#xsxx_zymc').html(json_data.data[i].data.SPE_Name);
                         }
                     }
+
+                    //获取助学贷款信息
+                    $('#feetable_loan').hide();
+                    $.ajax({
+                        url: "/nradmingl/appserver/manager.aspx",
+                        type: "get",
+                        dataType: "text",
+                        data: { "cs": "get_fee_order_loan","pk_sno": pk_sno},
+                        success: function (data) {
+                            var json_data = JSON.parse(data);
+                            if (json_data.code == 'success') {
+                                if(json_data.data && json_data.data.length>0){
+                                    var str='';
+                                    for(var i=0;i<json_data.data.length;i++)
+                                    {
+                                        var items=json_data.data[i].items;
+                                        for(var j=0;j<items.length;j++){
+                                            str=str+'<tr>';
+                                            str=str+'<td>'
+                                            if(items[j].Fee_Code_Name==items[j].Fee_Name){
+                                                str=str+items[j].Fee_Code_Name;
+                                            }else{
+                                                str=str+items[j].Fee_Code_Name+'('+items[j].Fee_Name+')';
+                                            }
+                                            str=str+'</td>';
+                                            str=str+'<td>'
+                                            str=str+items[j].Fee_Amount;
+                                            str=str+'</td>';
+                                            str=str+'</tr>';
+                                        }
+                                    }
+                                    if(str.length>0){
+                                        $('#feetable_loan').show();
+                                        $('#feetable_loan').append(str);
+                                    }
+                                }else{
+
+                                }
+                            } else {
+                                alert(json_data.message);
+                            }
+                        },
+                        error: function (data) {
+                            alert("错误");
+                        }
+                    });
+
+
                     //获取交费订单信息
+                    $('#feetable').hide();
                     $.ajax({
                         url: "/nradmingl/appserver/manager.aspx",
                         type: "get",
@@ -125,7 +174,10 @@ function load(){
                                             }
                                             str=str+'</tr>';
                                         }
-                                        $('#feetable').append(str);
+                                        if(str.length>0){
+                                            $('#feetable').show();
+                                            $('#feetable').append(str);
+                                        }
                                     }
 
                                     for(var i=0;i<payed.length;i++)
@@ -151,7 +203,10 @@ function load(){
                                             }
                                             str=str+'</tr>';
                                         }
-                                        $('#feetable').append(str);
+                                        if(str.length>0){
+                                            $('#feetable').show();
+                                            $('#feetable').append(str);
+                                        }
                                     }
 
                                     layui.use(['form', 'layedit', 'laydate', 'element'], function () {
