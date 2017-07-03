@@ -334,7 +334,7 @@ public partial class admin_Default : System.Web.UI.Page
             if (login_title.InnerText == "学生网上自助报到登录")
             {
                 //验证时间
-                DataTable timeok = Sqlhelper.Serach("SELECT     TOP (1) Fresh_Batch.Batch_Name FROM         Fresh_Batch LEFT OUTER JOIN                      vw_fresh_student_base ON Fresh_Batch.PK_Batch_NO = vw_fresh_student_base.FK_Fresh_Batch WHERE     (Fresh_Batch.Service_Begin <= '" + DateTime.Now.ToString() + "') AND (Fresh_Batch.Service_End >= '" + DateTime.Now.ToString() + "') and (PK_SNO=@name or Test_NO=@name)", new SqlParameter("name", this.txt_name.Value));
+                DataTable timeok = Sqlhelper.Serach("SELECT   TOP (1) Fresh_Batch.Batch_Name FROM         Fresh_Batch LEFT OUTER JOIN                      vw_fresh_student_base ON Fresh_Batch.PK_Batch_NO = vw_fresh_student_base.FK_Fresh_Batch WHERE     (Fresh_Batch.Service_Begin <= '" + DateTime.Now.ToString() + "') AND (Fresh_Batch.Service_End >= '" + DateTime.Now.ToString() + "') and (PK_SNO=@name or Test_NO=@name)", new SqlParameter("name", this.txt_name.Value));
                 if (timeok.Rows.Count > 0)
                 {
 
@@ -344,6 +344,22 @@ public partial class admin_Default : System.Web.UI.Page
                     Label1.Text = "<font color=red>对不起，迎新服务还未开始，请稍侯再试!</font>";
                     return;
                 }
+
+                //验证是否分班
+                DataTable fb = Sqlhelper.Serach("SELECT TOP 1 [PK_SNO],[FK_Class_NO]  FROM [Base_STU] WHERE     PK_SNO=@name or Test_NO=@name", new SqlParameter("name", this.txt_name.Value));
+                if (fb.Rows.Count > 0)
+                {
+                    if (fb.Rows[0]["FK_Class_NO"].ToString().Length > 0)
+                    {
+
+                    }
+                    else
+                    {
+                        Label1.Text = "<font color=red>系统还未分班，请按照报到系统首页的“联系我们”联系相关管理人员!</font>";
+                        return;
+                    }
+                }
+                
 
 
                 DataTable userxs = Sqlhelper.Serach("SELECT TOP 1 [Name],[Password],right(ID_NO,6) depassword ,PK_SNO FROM [Base_STU] where Test_NO=@name or PK_SNO=@name", new SqlParameter("name", this.txt_name.Value));

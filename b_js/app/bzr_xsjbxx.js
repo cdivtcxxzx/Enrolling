@@ -32,6 +32,7 @@
                             $('#xsxx_xlcc').text(json_data.data[i].EDU_Level);
                             $('#xsxx_xy').text(json_data.data[i].collage);
                             $('#xsxx_bjmc').text(json_data.data[i].class_name);
+                            $('#xsxx_bmh').text(json_data.data[i].test_no);
 
                             $('#xsxx_dhhm').text(json_data.data[i].phone==null?'':json_data.data[i].phone);
                             $('#xsxx_qq').text(json_data.data[i].QQ==null?'':json_data.data[i].QQ);
@@ -46,6 +47,9 @@
                         }//end for
                     }//end if length > 0
                 }//end code=success
+                $('#xszpxx').on('error', function () {
+                    $('#xszpxx').attr('src', '../images/xstp/test.jpg');
+                });
             }//end success
         });//end ajax
 

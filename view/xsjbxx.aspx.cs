@@ -80,6 +80,8 @@ public partial class view_xsjbxx : System.Web.UI.Page
             xsxx_bzrdh.Text = "";
             //班主任QQ
             xsxx_bzrqq.Text = "";
+            //报名号
+            xsxx_bmh.Text = "";
             #endregion
             
             

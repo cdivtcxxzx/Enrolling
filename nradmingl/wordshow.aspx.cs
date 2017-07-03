@@ -313,4 +313,8 @@ public partial class upload_wordshow : System.Web.UI.Page
     {
         //Response.Write("<script type=\"text/javascript\" src=\"../files/common/jquery.js\"></script><script>callback('" + this.txtIdea.Text.Replace("此处显示源代码","") + "');</script>");
     }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+
+    }
 }

@@ -122,6 +122,12 @@
                <asp:Label ID="xsxx_xh" runat="server" Text=""></asp:Label></div></div>
         </div>
          <div class="layui-form-item" pane="">
+          <label class="layui-form-label">报名号：</label>
+          <div class="layui-input-block">
+           <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;">
+               <asp:Label ID="xsxx_bmh" runat="server" Text=""></asp:Label></div></div>
+        </div>
+         <div class="layui-form-item" pane="">
           <label class="layui-form-label">姓名：</label>
           <div class="layui-input-block">
            <div class="layui-form-mid layui-word-aux-ts" style="margin-left:10px;"><asp:Label ID="xsxx_xm" runat="server" Text=""></asp:Label></div></div>

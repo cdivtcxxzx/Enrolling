@@ -112,6 +112,9 @@
                         }//end for
                     }//end if length > 0
                 }//end code=success
+                $('#xszpxx').on('error', function () {
+                    $('#xszpxx').attr('src', '../images/xstp/test.jpg');
+                });
             }//end success
         });//end ajax
 
