@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
 
- <script type="text/javascript" src="../files/common/jquery.js"></script>
+ <script type="text/javascript" src="../b_js/common/jquery.js"></script>
  <script>
  //清除从word中粘贴自带的格式 
 
@@ -49,8 +49,7 @@ return html;
 &nbsp;<asp:Button style="border-right: #999999 1px solid; border-top: #999999 1px solid; font-size: 13pt;
             border-left: #999999 1px solid; width: 83px; border-bottom: #999999 1px solid;
             height: 20px"  ID="Button2"  OnClientClick="callback(cleanHtml($('#txtIdea').val()));" runat="server" 
-           Text="确定导入" 
-             />
+           Text="确定导入"  />
         <br />
 
        <asp:TextBox ID="txtIdea" runat="server" Height="59px" TextMode="MultiLine" 
