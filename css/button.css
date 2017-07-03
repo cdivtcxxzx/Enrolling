@@ -1,0 +1,22 @@
+@charset "utf-8";
+#gxz {
+	width: 6px;
+	height: 100%;
+}
+#oc_button {
+	background-image: url(../img/m_button01.gif);
+	height: 58px;
+	width: 6px;
+	display: block;
+	position: absolute;
+}
+#table_button {
+	text-align: left;
+}
+
+.open {
+	background-position: left -58px;
+}
+.close {
+	background-position: left top;
+}

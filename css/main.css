@@ -1,0 +1,199 @@
+#h1 {
+	position: absolute;
+	left: 7px;
+	top: 33px;
+}
+#gxz {
+	border: 1px solid #EAEAEA;
+	background-image: url(../img/mind01.gif);
+	background-repeat: repeat-x;
+	background-position: left top;
+	margin-right: 5px;
+	background-color: #FFF;
+}
+/*   new       */
+#g_top {
+	height: 29px;
+}
+#t_left {
+	display: block;
+	float: left;
+	margin-left: 15px;
+	margin-top: 3px;
+	color: #3a6486;
+}
+#t_left b {
+	color: #3a6486;
+}
+#t_right a {
+	background-image: url(../img/mind04.gif);
+	display: block;
+	height: 15px;
+	width: 46px;
+	float: left;
+	text-align: center;
+	margin-right: 5px;
+	padding-top: 3px;
+	color: #265d87;
+}
+#t_right {
+	display: block;
+	float: right;
+	margin-top: 5px;
+	margin-right: 5px;
+}
+#t_left img {
+	margin-bottom: -2px;
+	margin-right: 8px;
+}
+#g_top_tool {
+	height: 15px;
+}
+#tt_ul {
+	display: block;
+	float: left;
+	margin-right: 5px;
+	margin-top: 5px;
+	margin-left: 10px;
+}
+#tt_ul li {
+	display: block;
+	float: left;
+	background-image: url(../img/mind02.gif);
+	height: 21px;
+	margin-right: 5px;
+}
+#tt_ul li a {
+	display: block;
+	float: left;
+	height: 16px;
+	padding-right: 12px;
+	padding-left: 12px;
+	background-image: url(../img/mind03.gif);
+	background-repeat: no-repeat;
+	background-position: right top;
+	color: #265d87;
+	padding-top: 5px;
+}
+#tt_ul li a img {
+	margin-right: 3px;
+	margin-bottom: -2px;
+}
+#main_table {
+	margin-right: auto;
+	margin-left: auto;
+	width: 100%;
+	color:#3b5d78;
+	background-color: #fff;
+	border-right-width: 1px;
+	border-left-width: 1px;
+
+	background-color: #91cdf2;
+	border-right-color: #c6e2f7;
+	border-left-color: #c6e2f7;
+}
+#main_table td {
+	background-color: #FFF;
+	height: 24px;
+	color:#3b5d78;
+	text-align:center;
+
+}
+.tablelink{color:#ad8551;}
+#main_table th  {
+	height: 24px;
+	background-color: #FFF;
+	background-image: url(../img/mind06.gif);
+	font-weight: normal;
+}
+#main_table .checktd{
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-style: solid;
+	border-style: solid;
+	border-right-color: #FFF;
+	border-left-color: #FFF;
+	text-align: center;
+	background-image: url(../img/td.gif);
+}
+#main_table tr .checkTh{
+	width: 24px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-left-style: solid;
+	border-right-color: #FFF;
+	border-left-color: #FFF;
+}
+#footer_tool {
+	margin-right: auto;
+	margin-left: auto;
+	background-image: url(../img/mind06.gif);
+	height: 24px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-color: #c6e2f7;
+	border-bottom-color: #c6e2f7;
+	border-left-color: #c6e2f7;
+	padding-right: 7px;
+	padding-left: 7px;
+}
+#main {
+	width: 99%;
+	margin-right: auto;
+	margin-left: auto;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 0px;
+	border-left-width: 0px;
+	background-color: #FFF;
+}
+#ft_left {
+	display: block;
+	float: left;
+	color: #5380a3;
+	margin-top: 4px;
+}
+#ft_left a img {
+	margin-bottom: -4px;
+}
+
+#ft_right {
+	display: block;
+	float: right;
+	margin-top: 4px;
+}
+.text {
+	height: 12px;
+	border: 1 solid #acc3d5;
+	width: 20px;
+}
+
+tr.s4-itm-hover,tr.ms-itmhover:hover,tr.ms-ppanerow:hover > td,tr.ms-ppanerowalt:hover > td{
+/* [RecolorImage(themeColor:"Light1")] */ background:url("/_layouts/images/selbg.png") repeat-x left top;
+/* [ReplaceColor(themeColor:"Accent1",themeTint:"0.15")] */ background-color:#f2faff;
+/* [ReplaceColor(themeColor:"Accent1-Lightest")] */ border-top-color:#c6e5f8 !important;
+broder:1px;
+
+/* [ReplaceColor(themeColor:"Accent1-Lighter")] */ border-bottom-color:#91cdf2 !important;
+
+}
+tr.s4-itm-hover > td,tr.ms-itmhover:hover > td{
+/* [ReplaceColor(themeColor:"Accent1-Lightest")] */ border-top-color:#c6e5f8 !important;
+/* [ReplaceColor(themeColor:"Accent1-Lighter")] */ border-bottom-color:#91cdf2 !important;
+}
+td table.ms-listviewtable{
+border-collapse:separate;
+}
+table.ms-listviewtable > tbody > tr > td{
+border:1px solid transparent;
+border-width:1px 0px;
+}
+table.ms-listviewtable > tbody > tr.ms-selectednav > td{
+border:1px solid transparent;
+border-width:1px 1px;
+}
