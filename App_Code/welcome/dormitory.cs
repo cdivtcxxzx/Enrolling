@@ -2123,7 +2123,7 @@ public class dormitory
         DataTable bjbh = new DataTable();
         try
         {
-            bjbh = Sqlhelper.Serach("SELECT DISTINCT      TOP (1) Base_STU.PK_SNO AS 学号, Base_STU.Name AS 姓名, Base_Code_Item.Item_Name AS 性别, Base_STU.Test_NO AS 高考报名号,                      Fresh_Class.Name AS 班级名称, yonghqx.xm AS 班主任姓名, Fresh_Counseller.Phone AS 班主任电话 FROM         Fresh_Counseller LEFT OUTER JOIN                      yonghqx ON Fresh_Counseller.FK_Staff_NO = yonghqx.yhid RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Counseller.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_Code_Item RIGHT OUTER JOIN                     Base_STU ON Base_Code_Item.Item_NO = Base_STU.Gender_Code ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE     (Base_STU.PK_SNO = '"+PK_SNO+"') AND (Base_Code_Item.FK_Code = '002') ");
+            bjbh = Sqlhelper.Serach("SELECT DISTINCT      TOP (1) Base_STU.PK_SNO AS 学号, Base_STU.Name AS 姓名, Base_Code_Item.Item_Name AS 性别, Base_STU.Test_NO AS 高考报名号,                      Fresh_Class.Name AS 班级名称, yonghqx.xm AS 班主任姓名, Fresh_Counseller.Phone AS 班主任电话,Fresh_Class.PK_Class_NO AS 班级代码 FROM         Fresh_Counseller LEFT OUTER JOIN                      yonghqx ON Fresh_Counseller.FK_Staff_NO = yonghqx.yhid RIGHT OUTER JOIN                      Fresh_Class ON Fresh_Counseller.FK_Class_NO = Fresh_Class.PK_Class_NO RIGHT OUTER JOIN                      Base_Code_Item RIGHT OUTER JOIN                     Base_STU ON Base_Code_Item.Item_NO = Base_STU.Gender_Code ON Fresh_Class.PK_Class_NO = Base_STU.FK_Class_NO WHERE     (Base_STU.PK_SNO = '" + PK_SNO + "') AND (Base_Code_Item.FK_Code = '002') ");
         }
         catch (Exception err)
         {
