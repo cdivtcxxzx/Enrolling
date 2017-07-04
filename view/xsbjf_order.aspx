@@ -137,6 +137,18 @@
                 </div>
          </div>
 
+         <table id="feetable_loan" class="site-table table-hover" cellspacing="0" rules="all" border="1" style="border-collapse:collapse;display:none;">
+             <thead>
+                 <tr>
+                     <th>已申请的助学贷款项目</th>
+                     <th>金额</th>
+                 </tr>
+             </thead>
+             <tbody>
+ 
+             </tbody>
+         </table>
+
          <table id="feetable" class="site-table table-hover" cellspacing="0" rules="all" border="1" style="border-collapse: collapse;">
              <thead>
                  <tr>
