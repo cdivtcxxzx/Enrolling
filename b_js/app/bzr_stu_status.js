@@ -111,7 +111,7 @@ function getstudentstatus() {
                 if(json_data.data!=null && json_data.data.length>0){
                     var item=json_data.data[0];
                     var str='<thead>';
-                    str=str+'<tr><th  scope="col">序号</th>';
+                    str=str+'<tr><th  scope="col" >序号</th>';
                     for(var key in item){
                         if(key!='pk_sno'){
                             str=str+'<th  scope="col">'+key+'</th>';

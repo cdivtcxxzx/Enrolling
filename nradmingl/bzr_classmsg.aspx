@@ -32,7 +32,7 @@
                 <div class="layui-form-item">
                     <!--迎新批次下拉列表-->
                     <div class="layui-inline">
-                        <label class="layui-form-label">批次：</label>
+<%--                        <label class="layui-form-label">批次：</label>--%>
                         <div class="layui-input-inline" style="width:400px;">
                             <table>
                                 <tr>
@@ -70,14 +70,16 @@
 
         <div id="newmsg" style="display: none;">
             <div class="layui-form-item">
-                <label class="layui-form-label">标题</label>
-                <div class="layui-input-inline" style="width:400px;">
+                <label class="layui-form-label" style="padding:0px 0px;">标题</label>
+<%--                <div class="layui-input-inline" style="width:400px;">--%>
+                    <div class="layui-input-inline" style="width:80%;">
                     <input type="text" id="new_title" value=""  class="layui-input" />
                 </div>
             </div>
             <div  class="layui-form-item">
-                <label class="layui-form-label">内容</label>
-                <div class="layui-input-inline" style="width:400px;">
+                <label class="layui-form-label" style="padding:0px 0px;">内容</label>
+<%--                <div class="layui-input-inline" style="width:400px;">--%>
+                    <div class="layui-input-inline" style="width:80%;">
                     <textarea rows="10" col="300" id="new_content" class="layui-textarea"></textarea>
                 </div>
             </div>
