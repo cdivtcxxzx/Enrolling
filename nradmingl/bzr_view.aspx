@@ -44,7 +44,7 @@
               <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />
         <div class="admin-main">
             <blockquote class="layui-elem-quote">
-                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>网上报到情况           
+                <i class="layui-icon">&#xe602;</i>辅导员<i class="layui-icon">&#xe602;</i>网上报到情况           
             </blockquote>
             <div>
                 
