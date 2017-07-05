@@ -49,20 +49,20 @@
     {
         background:url(images/logobgyx.png);height:100px
     }
-    @media (max-width: 550px) 
+    @media (max-width: 500px) 
     {
         .main-navigation{ display: none;}
        
        #logook
     {
-        background:url(images/logobgyxs550.png)!important;height:100px
+        background:url(images/logobgyxs500.png)!important;height:100px
     }  
     }
     @media (max-width: 400px) 
     {
        #logook
     {
-        background:url(images/logobgyxs.png)!important;height:100px
+        background:url(images/logobgyxs500.png)!important;height:100px
     }  
     }
     #fix_header {
