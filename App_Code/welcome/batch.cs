@@ -3835,5 +3835,54 @@ public class batch
         return result;
     }
 
+    ///功能名称： 辅导员确认的学生现场报到
+    ///功能描述：
+    ///根据“学号”修改“学生基本状态”为“报到”。
+    ///编写人：胡元
+    ///参数：
+    ///PK_SNO：学号  
+    ///创建时间：2017-1-31
+    ///更新记录：无
+    ///版本记录：v0.0.1
+    public bool set_freshstudent_register_for_Counseller(string PK_SNO, string PK_STAFF_NO,string STAFF_NAME)
+    {
+        bool result = false;
+        try
+        {
+            System.Data.DataTable dt = null;
+            string sqlstr = null;
+            sqlstr = "select a.* from Fresh_Affair a, Base_STU b,Fresh_STU c"
+                    +" where b.PK_SNO=c.PK_SNO and c.FK_Fresh_Batch=a.FK_Batch_NO and b.pk_sno=@cs1";
+
+            dt = Sqlhelper.Serach(sqlstr, new SqlParameter("cs1", PK_SNO.Trim()));//学生迎新事务
+
+            if (dt != null && dt.Rows.Count>0)
+            {
+                for (int j = 0; j < dt.Rows.Count; j++)
+                {
+                    if (dt.Rows[j]["Affair_Index"].ToString().Trim().Equals("3"))//现场报到确认
+                    {
+                        string create_name = PK_STAFF_NO.Trim() + ":" + STAFF_NAME.Trim();
+                        string PK_Affair_NO = dt.Rows[j]["PK_Affair_NO"].ToString().Trim();
+                        set_freshstudent_register(PK_SNO);
+                        set_affairlog(PK_SNO, PK_Affair_NO, "已完成", create_name);
+                        result = true;
+                    }
+                }
+
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                new c_log().logAdd("batch.cs", "set_freshstudent_register_for_Counseller", ex.Message, "2", "huyuan");//记录错误日志
+            }
+            catch { }
+            throw ex;
+        }
+        return result;
+    }
+
 
 }
