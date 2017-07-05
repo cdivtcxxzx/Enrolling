@@ -117,7 +117,7 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
                 }
                 else
                 {
-                    this.xzts.InnerHtml = "您已选择寝室，但未找到你的选寝信息，请联系您的班主任！";
+                    this.xzts.InnerHtml = "您已选择寝室，但未找到你的选寝信息，请联系您的辅导员！";
                 }
 
                 //设置已选寝室照片信息
@@ -242,6 +242,31 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
         {
             this.xsxx_xm.Text = xsxxok.Rows[0]["姓名"].ToString();
             this.xsxx_bj.Text = xsxxok.Rows[0]["班级名称"].ToString();
+            //查询该班是否有足够的寝室
+            string bjxx = xsxxok.Rows[0]["班级代码"].ToString();
+            string xb = xsxxok.Rows[0]["性别"].ToString();
+
+            DataTable yzbj = Sqlhelper.Serach("SELECT     TOP (10) Fresh_Bed_Class_Log.PK_Bed_Class_Log, Fresh_Bed_Class_Log.FK_Bed_NO, Fresh_Bed_Class_Log.FK_Class_NO,                       Fresh_Bed_Class_Log.College_NO, Fresh_Bed_Class_Log.remark, Fresh_Room.Gender FROM         Fresh_Bed_Class_Log LEFT OUTER JOIN                      Fresh_Bed ON Fresh_Bed_Class_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                     Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO where Fresh_Room.Gender='"+xb+"' and FK_Class_NO='"+bjxx+"'");
+            if(yzbj.Rows.Count>0)
+            {
+
+            }
+            else
+            {
+                xzts.InnerHtml = "<font color=red>"+this.xsxx_bj.Text+"的"+xb+"生寝室已不足，暂时不能网上选择寝室，请联系您的辅导员！</font>";
+                //已分配，屏掉分配内容
+                // Response.Write("已分配寝室！");
+                sc_cwxc.Style.Add("display", "none");
+                sc_fjxc.Style.Add("display", "none");
+                sc_lc.Style.Add("display", "none");
+                sc_ld.Style.Add("display", "none");
+                sc_lx.Style.Add("display", "none");
+                sc_qsxz.Style.Add("display", "none");
+                R_room.Visible = false;
+                R_bed.Visible = false;
+                sc_qsxz.Visible = false;
+                return;
+            }
         }
 
     }

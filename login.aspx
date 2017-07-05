@@ -112,8 +112,8 @@
                       </label>
 
                         <label id="region-code" class="labelbox" for="">
-                            <div style="float:left;width:250px">
-                                <input runat="server"  class="item_account" autocomplete="off" type="text" name="txt_validate" id="txt_validate" placeholder="请输入验证码" />
+                            <div style="float:left;width:160px">
+                                <input runat="server"  class="item_account" style="width:160px" autocomplete="off" type="text" name="txt_validate" id="txt_validate" placeholder="请输入验证码" />
                             </div>
                             <div style="float:right;width:100px">
                                 <image src="nradmingl/yanzhengma.aspx" id="img_yzm" style="width:100px;height:45px;cursor:pointer" />

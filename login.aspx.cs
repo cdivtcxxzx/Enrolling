@@ -355,7 +355,7 @@ public partial class admin_Default : System.Web.UI.Page
                     }
                     else
                     {
-                        Label1.Text = "<font color=red>系统还未分班，请按照报到系统首页的“联系我们”联系相关管理人员!</font>";
+                        Label1.Text = "<font color=red>正在初始化您的注册信息，请改日再尝试登录!</font>";
                         return;
                     }
                 }
