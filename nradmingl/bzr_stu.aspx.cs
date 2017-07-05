@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -23,5 +24,45 @@ public partial class nradmingl_Default3 : System.Web.UI.Page
             throw new Exception("没登陆");
         }
         this.pk_staff_no.Value = Session["username"].ToString().Trim();
+    }
+
+
+    protected void btn_down_Click(object sender, EventArgs e)
+    {
+        if (hid_class_no.Value != null && hid_class_no.Value.Trim().Length > 0)
+        {
+            batch batch_logic = new batch();
+            DataTable dt = batch_logic.get_classstudent(hid_class_no.Value.Trim());
+            if (dt == null || dt.Rows.Count <= 0) { this.tsxx.Value = "<span style=\"font-size:Large;\"><font color=red>导出<b>失败</b>,请重试!</font></span>"; return; }
+            dt.Columns.Remove("year");
+            dt.Columns.Remove("collage");
+            dt.Columns.Remove("spe_name");
+            dt.Columns.Remove("Status_code");
+            dt.Columns.Remove("register");
+            dt.Columns.Remove("TuitionType");
+            dt.Columns["pk_sno"].ColumnName = "学号";
+            dt.Columns["name"].ColumnName = "姓名";
+            dt.Columns["gender"].ColumnName = "性别";
+            dt.Columns["id_no"].ColumnName = "身份证号";
+            dt.Columns["test_no"].ColumnName = "高考报名号";
+            dt.Columns["phone"].ColumnName = "联系电话";
+            #region 导出
+            //引用EXCEL导出类
+            toexcel xzfile = new toexcel();
+            string filen = xzfile.DatatableToExcel(dt, "学生信息");
+
+
+            if (filen.Length > 4)
+            {
+                this.tsxx.Value = "<span style=\"font-size:Large;\"> <font color=green>导出成功,请<a href=" + filen + " target=_blank >点此下载</a></font></span>";
+                //this.g_ts.Text = "<font color=green>生成导入模板成功,请<a href=" + filen + " target=_blank >点此下载模板</a></font>";
+
+            }
+            else
+            {
+                this.tsxx.Value = "<span style=\"font-size:Large;\"><font color=red>导出<b>失败</b>,请重试!</font></span>";
+            }
+            #endregion
+        }
     }
 }

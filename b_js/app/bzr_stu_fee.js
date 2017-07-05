@@ -106,7 +106,7 @@ function getstudent() {
         dataType: "text",
         data: { "cs": "get_classstudent_fee","pk_class_no":pk_class_no,"pk_batch_no":pk_batch_no},
         success: function (data) {
-            console.log(data);
+            //console.log(data);
             var json_data = JSON.parse(data);
             if (json_data.code == 'success') {
                 $('#studentlist thead').remove();

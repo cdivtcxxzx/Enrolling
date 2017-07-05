@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="bzr_stu_fee.aspx.cs" Inherits="nradmingl_Default3" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="bzr_stu_fee.aspx.cs" Inherits="nradmingl_Default3" validateRequest="false" %>
 
 <!DOCTYPE html>
 
@@ -40,11 +40,14 @@
 </head>
 <body>
     <form id="form1" runat="server" class="layui-form">
-              <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
+            <asp:HiddenField ID="pk_staff_no" Value="" runat="server" />
+            <asp:HiddenField ID="hid_class_no" Value="" runat="server" />
+            <asp:HiddenField ID="hid_batch_no" Value="" runat="server" />
+            <asp:HiddenField ID="tsxx" runat="server" Value="" />
 <%--              <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />--%>
         <div class="admin-main">
             <blockquote class="layui-elem-quote">
-                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>查看学生缴费           
+                <i class="layui-icon">&#xe602;</i>辅导员<i class="layui-icon">&#xe602;</i>查看学生缴费           
             </blockquote>
             <div>                
                 <div class="layui-form-item">
@@ -77,6 +80,7 @@
                     </div> 
                     <div class="layui-inline">
                         <label class="layui-form-label" style="width:100px;" id="count">总计：0人</label>
+                        <asp:Button Text="导出数据" ID="btn_down" CssClass="layui-btn" runat="server" OnClick="btn_down_Click" />
                     </div>
                    
                     <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
@@ -88,6 +92,7 @@
         </div>
     </form>
         <script type="text/javascript" src="../b_js/jquery.min2.js"></script>
+        <script type="text/javascript" src="plugins/layui/layui.js"></script>
         <script type="text/javascript" src="../b_js/app/bzr_stu_fee.js"></script>
 
 <%--        <script type="text/javascript" src="plugins/layui/layui.js"></script>--%>
@@ -96,6 +101,20 @@
         //layui.use('form', function () {
         //    var form = layui.form(); //只有执行了这一步，部分表单元素才会修饰成功
         //});
+        layui.use(['layer'], function () {
+            var layer = layui.layer;
+            if ($("#tsxx").val() != "") {
+                parent.layer.open({ content: $("#tsxx").val(), title: '提示信息(30秒后自动关闭)', btn: ['关闭'], time: 30000 });
+                $("#tsxx").value = "";
+            }
+            $('#btn_down').on('click', function () {
+                $('#hid_class_no').val($('#classlist').children('option:selected').val());
+                $('#hid_batch_no').val($('#batchlist').children('option:selected').val());
+            });
+        });
+        layui.config({
+            base: 'plugins/layui/modules/'
+        });
     </script>
 
 </body>
