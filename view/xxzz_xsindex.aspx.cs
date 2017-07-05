@@ -98,9 +98,9 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
                         if (affairlog_list!=null && !affairlog_list[0].Log_Status.Trim().Equals("未确认"))
                         {
                             this.xszt_bdzc.InnerHtml = "<font color=green>已完成</font>";
-                            zttp1.Src = "../images/xszt/1.png";//状态已完成：1.png 未完成1-1.png
+                            zttp2.Src = "../images/xszt/2.png";//状态已完成：1.png 未完成1-1.png
                             this.xszt_bdxz.InnerHtml = "<font color=green>已完成</font>";
-                            zttp2.Src = "../images/xszt/2.png";//状态已完成：2.png 未完成2-2.png
+                            zttp1.Src = "../images/xszt/1.png";//状态已完成：2.png 未完成2-2.png
                         }
                     }
                     if (affairlst_stu[j].Affair_Index == 6)//缴费项目确认
@@ -127,7 +127,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
                         if (affairlog_list != null && !affairlog_list[0].Log_Status.Trim().Equals("未选择"))
                         {
                             this.xszt_czqs.InnerHtml = "<font color=green>已完成</font>";
-                            zttp4.Src = "../images/xszt/4.png";//状态已完成：4.png 未完成4-4.png
+                            zttp5.Src = "../images/xszt/5.png";//状态已完成：4.png 未完成4-4.png
                         }
                     }
                     if (affairlst_stu[j].Affair_Index == 12)//信息完善
@@ -138,7 +138,7 @@ public partial class view_xxzz_xsindex : System.Web.UI.Page
                         if (affairlog_list != null && !affairlog_list[0].Log_Status.Trim().Equals("未完善"))
                         {
                             this.xszt_xxws.InnerHtml = "<font color=green>已完成</font>";
-                            zttp5.Src = "../images/xszt/5.png";//状态已完成：5.png 未完成5-5.png
+                            zttp4.Src = "../images/xszt/4.png";//状态已完成：5.png 未完成5-5.png
                         }
                     }
                 }

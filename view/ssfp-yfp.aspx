@@ -77,7 +77,7 @@
   <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                   <ContentTemplate>
             <div class="col-xs-12 col-sm-4" style="margin-top:15px;border:1px solid #eee;text-align:center;" >
-               <style>.noshow{display:none}</style> <p style="margin-top:20px;"><span>校区：</span><span id="xiaoqu" runat="server"><asp:Label ID="xqbh" runat="server" CssClass="noshow" Text="01"></asp:Label><asp:Label ID="xqmc" runat="server" Text="天府新区"></asp:Label></span></p>
+               <style>.noshow{display:none}</style> <p style="margin-top:20px;"><span>校区：</span><span id="xiaoqu" runat="server"><asp:Label ID="xqbh" runat="server" CssClass="noshow" Text="01"></asp:Label><asp:Label ID="xqmc" runat="server" Text="天府校区"></asp:Label></span></p>
                <%-- <p><span>类型：</span><span id="shuse" runat="server">男宿舍</span></p>--%>
 
                 <p style="margin-top:10px;margin-bottom:10px;">
