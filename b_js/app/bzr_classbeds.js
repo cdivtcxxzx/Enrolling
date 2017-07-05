@@ -148,14 +148,14 @@ function getclassbeds() {
                     var item=json_data.data[i];
                     var str='<tr>';
                     str=str+'<td>'+(i+1)+'</td>';
-                    str=str+'<td>'+item.Campus_Name+'</td>';
+                    str=str+'<td class="hidden-xs">'+item.Campus_Name+'</td>';
                     str=str+'<td>'+item.DormName+'</td>';
-                    str=str+'<td>'+item.Floor+'</td>';
-                    str=str+'<td>'+item.Type_Name+'</td>';
+                    str=str+'<td class="hidden-xs">'+item.Floor+'</td>';
+                    str=str+'<td class="hidden-xs">'+item.Type_Name+'</td>';
                     str=str+'<td>'+item.Room_NO+'</td>';
-                    str=str+'<td>'+item.Gender+'</td>';
-                    str=str+'<td>'+item.Bed_NO+'</td>';
-                    str=str+'<td>'+item.Bed_Name+'</td>';
+                    str=str+'<td class="hidden-xs">'+item.Gender+'</td>';
+                    str=str+'<td class="hidden-xs">'+item.Bed_NO+'</td>';
+                    str=str+'<td class="hidden-xs">'+item.Bed_Name+'</td>';
                     if($.trim(item.Gender)=='男'){
                         bed_boy_count=bed_boy_count+1;
                     }

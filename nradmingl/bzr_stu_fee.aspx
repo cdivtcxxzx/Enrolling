@@ -53,7 +53,7 @@
                 <div class="layui-form-item">
                     <!--迎新批次下拉列表-->
                     <div class="layui-inline">
-                        <label class="layui-form-label">批次：</label>
+<%--                        <label class="layui-form-label">批次：</label>--%>
                         <div class="layui-input-inline">
                             <select name="batchlist" id="batchlist">
 
@@ -62,7 +62,7 @@
                     </div>
                     <!--班级下拉列表-->
                     <div class="layui-inline">
-                        <label class="layui-form-label">班级：</label>
+<%--                        <label class="layui-form-label">班级：</label>--%>
                         <div class="layui-input-inline">
                             <select name="classlist" id="classlist">
                                 <option value="">请选择班级</option>

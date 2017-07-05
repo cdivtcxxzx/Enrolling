@@ -52,7 +52,7 @@
                 <div class="layui-form-item">
                     <!--迎新批次下拉列表-->
                     <div class="layui-inline">
-                        <label class="layui-form-label">批次：</label>
+<%--                        <label class="layui-form-label">批次：</label>--%>
                         <div class="layui-input-inline">
                             <select name="batchlist" id="batchlist">
 
@@ -61,7 +61,7 @@
                     </div>
                     <!--班级下拉列表-->
                     <div class="layui-inline">
-                        <label class="layui-form-label">班级：</label>
+<%--                        <label class="layui-form-label">班级：</label>--%>
                         <div class="layui-input-inline">
                             <select name="classlist" id="classlist">
                                 <option value="">请选择班级</option>
@@ -103,14 +103,14 @@
                         <thead>
                             <tr>        
                                 <th scope="col">序号</th>                        
-                                <th scope="col">校区</th>
+                                <th scope="col" class="hidden-xs">校区</th>
                                 <th scope="col">宿舍</th>
-                                <th scope="col">楼层</th>
-                                <th scope="col">房间类型</th>
+                                <th scope="col" class="hidden-xs">楼层</th>
+                                <th scope="col" class="hidden-xs">房间类型</th>
                                 <th scope="col">房间号</th>
-                                <th scope="col">类别</th>
-                                <th scope="col">床号</th>
-                                <th scope="col">位置</th>
+                                <th scope="col" class="hidden-xs">类别</th>
+                                <th scope="col" class="hidden-xs">床号</th>
+                                <th scope="col" class="hidden-xs">位置</th>
                                 <th scope="col">姓名</th>
                                 <th scope="col"></th>
                             </tr>

@@ -51,7 +51,7 @@
                 <div class="layui-form-item" style="margin-bottom:0px;">
                     <!--迎新批次下拉列表-->
                     <div class="layui-inline" style="margin-bottom:0px;">
-                        <label class="layui-form-label">批次：</label>
+<%--                        <label class="layui-form-label">批次：</label>--%>
                         <div class="layui-input-inline">
                             <select name="batchlist" id="batchlist">
 
@@ -61,7 +61,7 @@
 
                     <!--班级下拉列表-->
                     <div class="layui-inline" style="margin-bottom:0px;">
-                        <label class="layui-form-label">班级：</label>
+<%--                        <label class="layui-form-label">班级：</label>--%>
                         <div class="layui-input-inline">
                             <select name="classlist" id="classlist">
                                 <option value="">请选择班级</option>
@@ -117,10 +117,10 @@
                                 <th scope="col" >专业</th>--%>
                                 <th scope="col">姓名</th>
                                 <th scope="col">性别</th>
-                                <th scope="col">学号</th>
-                                <th scope="col">高考报名号</th>
-                                <th scope="col">身份证号</th>
-                                <th scope="col">联系电话</th>
+                                <th scope="col" class="hidden-xs">学号</th>
+                                <th scope="col" class="hidden-xs">高考报名号</th>
+                                <th scope="col" class="hidden-xs">身份证号</th>
+                                <th scope="col" class="hidden-xs">联系电话</th>
                                 <th scope="col">网上注册</th>
                                 <th scope="col">助学贷款</th>
                                 <th scope="col" id="itemname">项目情况</th>

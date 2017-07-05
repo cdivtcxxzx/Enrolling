@@ -114,21 +114,21 @@ function load(){
                                     }
                                 }
 
-                                console.log(greenlist);
+                                //console.log(greenlist);
 
                                 $('#contents').append('<table>');
 
                                 if(greenlist!=null){
                                     var msg='';
                                     for(i=0;i<greenlist.length;i++){
-                                        console.log(greenlist[i].Fee_Code_Name);
+                                        //console.log(greenlist[i].Fee_Code_Name);
                                         if($.trim(msg).length===0){
                                             msg=greenlist[i].Fee_Code_Name;
                                         }else{
                                             msg=msg+','+greenlist[i].Fee_Code_Name;
                                         }
                                     }
-                                    $('#contents').append('<tr><td>');
+/*                                    $('#contents').append('<tr><td>');
                                     var str='<div class="layui-inline">';
                                     str=str+'<label class="layui-form-label" style="color:red;">助学贷款项</label>';
                                     str=str+'<div class="layui-input-inline">';
@@ -136,7 +136,7 @@ function load(){
                                     str=str+'</div>';
                                     str=str+'</div>';
                                     $('#contents').append(str);
-                                    $('#contents').append('</tr></td>');
+                                    $('#contents').append('</tr></td>');*/
                                 }
 
                                 for(i=0;single_must!=null && i<single_must.length;i++){

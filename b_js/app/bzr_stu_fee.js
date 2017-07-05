@@ -118,7 +118,11 @@ function getstudent() {
                     str=str+'<tr><th  scope="col">序号</th>';
                     for(var key in item){
                         if(key!='pk_sno'){
-                            str=str+'<th  scope="col">'+key+'</th>';
+                            if(key=='电话'){
+                                str=str+'<th  scope="col" class="hidden-xs">'+key+'</th>';
+                            }else{
+                                str=str+'<th  scope="col">'+key+'</th>';
+                            }
                         }
                     }
                     str=str+'<th></th>';
@@ -140,7 +144,11 @@ function getstudent() {
                                 if(item[key]=='欠费'){
                                     str=str+'<td style="color:red">'+item[key]+'</td>';
                                 }else{
-                                    str=str+'<td>'+item[key]+'</td>';
+                                    if(key=='电话'){
+                                        str=str+'<td class="hidden-xs">'+item[key]+'</td>';
+                                    }else{
+                                        str=str+'<td>'+item[key]+'</td>';
+                                    }
                                 }
                             }
                         }

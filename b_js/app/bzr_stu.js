@@ -104,19 +104,19 @@ function getstudent() {
                 for(i=0;json_data.data!=null && i<json_data.data.length;i++){
                     var item=json_data.data[i];
                     var str='<tr>';
-                    str=str+'<td>'+(i+1)+'</td>';
+                    str=str+'<td >'+(i+1)+'</td>';
                     //str=str+'<td>'+item.year+'</td>';
                     //str=str+'<td>'+item.collage+'</td>';
                     //str=str+'<td>'+item.spe_name+'</td>';
                     str=str+'<td>'+item.name+'</td>';
                     str=str+'<td>'+item.gender+'</td>';
-                    str=str+'<td>'+item.pk_sno+'</td>';
-                    str=str+'<td>'+item.test_no+'</td>';
-                    str=str+'<td>'+item.id_no+'</td>';
+                    str=str+'<td class="hidden-xs">'+item.pk_sno+'</td>';
+                    str=str+'<td class="hidden-xs">'+item.test_no+'</td>';
+                    str=str+'<td  class="hidden-xs">'+item.id_no+'</td>';
                     if($.trim(item.phone)===','){
-                        str=str+'<td></td>';
+                        str=str+'<td class="hidden-xs"></td>';
                     }else{
-                        str=str+'<td>'+item.phone+'</td>';
+                        str=str+'<td class="hidden-xs">'+item.phone+'</td>';
                     }
 /*                    str=str+'<td>'+item.register+'</td>';
                     str=str+'<td>'+item.Status_Code+'</td>';
