@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head id="Head1">
-    <title>学生自助首页
+    <title>网上报到首页
     </title>
     <meta charset="UTF-8" content="编码" />
     <meta name="renderer" content="webkit" />
@@ -152,38 +152,39 @@
 
                          <tr><td style="vertical-align:bottom;width:60px;padding-bottom:5px;"><img  id="zttp1" runat="server" style="width:50px" src="../images/xszt/1-1.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="xsjbxx.aspx" id="xscz_bdzc" runat="server" >报到注册</a></label>
-                    <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_bdzc" runat="server"><font color="green"><b>已完成</b></font></span> <span  id="xsztxq_bdzc" runat="server"></span></div></div></div></td></tr>
-
-                       
-                         <tr><td style="vertical-align:bottom;width:60px;padding-bottom:5px;"><img  id="zttp2" runat="server" style="width:50px" src="../images/xszt/2-2.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" id="xscz_bdxz" runat="server" >报到需知</a></label>
+                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)" id="xscz_bdxz" runat="server" >查看须知</a></label>
                     <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_bdxz" runat="server"><font color="green"><b>已阅读</b></font></span> <span  id="xsztxq_bdxz" runat="server"></span></div></div></div></td></tr>
 
                    
 
-                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img id="zttp3" runat="server" style="width:50px"  src="../images/xszt/3.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img id="zttp2" runat="server" style="width:50px"  src="../images/xszt/2-2.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+                   
+                            <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="xsjbxx.aspx" id="xscz_bdzc" runat="server" >报到注册</a></label>
+                    <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_bdzc" runat="server"><font color="green"><b>已完成</b></font></span> <span  id="xsztxq_bdzc" runat="server"></span></div></div></div></td></tr>
+
+                       
+                         <tr><td style="vertical-align:bottom;width:60px;padding-bottom:5px;"><img  id="zttp3" runat="server" style="width:50px" src="../images/xszt/3.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
                     <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="xswsjf.aspx"  id="xscz_wsjf" runat="server" >网上缴费</a></label>
                     <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span  id="xszt_wsjf" runat="server"><font color="green"><b>已缴费</b></font></span> <span  id="xsztxq_wsjh" runat="server" ></span></div></div></div></td></tr>
 
-                       
+                         <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img  id="zttp4" runat="server"  style="width:50px"  src="../images/xszt/4.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+                    
+                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)"  id="xscz_xxws" runat="server">信息完善</a></label>
+                    <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_xxws" runat="server"><font color="red"><b>未完成</b></font></span> <span  id="xsztxq_xxws" runat="server"></span></div></div></div></td></tr>
 
-                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img  id="zttp4" runat="server"  style="width:50px"  src="../images/xszt/4-4.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
+
+                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img  id="zttp5" runat="server"  style="width:50px"  src="../images/xszt/5.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
                     <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)"  id="xscz_xzqs" runat="server" >寝室选择</a></label>
                     <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span  id="xszt_czqs" runat="server"><font color="red"><b>未完成</b></font></span> <span  id="xsztxq_xzqs" runat="server"></span></div></div></div></td></tr>
 
 
-                       <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img  id="zttp5" runat="server"  style="width:50px"  src="../images/xszt/5-5.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
-                    
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)"  id="xscz_xxws" runat="server">信息完善</a></label>
-                    <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_xxws" runat="server"><font color="red"><b>未完成</b></font></span> <span  id="xsztxq_xxws" runat="server"></span></div></div></div></td></tr>
-
+                     
                        <tr><td style="vertical-align: top;width:60px;padding-bottom:5px;"><img  id="zttp6" runat="server"  style="width:50px"  src="../images/xszt/w6-6.png" /></td><td style="vertical-align:top;"><div class="layui-form-item" pane="" style="min-height: 56px"> 
                     
-                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)"  id="xscz_tzgg" runat="server" >通知</a></label>
+                    <label class="layui-form-label" style="width: 100px;"><a class="layui-btn" style="width:100%;" href="javascript:void(0)"  id="xscz_tzgg" runat="server" >通知消息</a></label>
                     <div class="layui-input-block" style="margin-left: 100px;"><div class="layui-form-mid layui-word-aux-ts" style="margin-left: 40px; padding: 18px 0;"><span id="xszt_tzgg" runat="server"><font color="red"><b></b></font></span> <span  id="xsztxq_tzgg" runat="server" ></span></div></div></div></td></tr>
                       
 
