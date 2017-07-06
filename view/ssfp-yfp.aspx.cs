@@ -124,8 +124,8 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
                 DataTable qszp = dormitory.serch_dormyfp(xsxx_xh.Text);
                 if (qszp.Rows.Count > 0)
                 {
-                    this.shuseImg.Src = qszp.Rows[0]["小图"].ToString();
-                    this.shuseImg.Attributes.Add("onclick", "location.href='ssfp_zp.aspx?img=" + qszp.Rows[0]["大图"].ToString() + "'");
+                    if (qszp.Rows[0]["小图"].ToString().Length>4) this.shuseImg.Src = qszp.Rows[0]["小图"].ToString();
+                    if (qszp.Rows[0]["大图"].ToString().Length > 4) this.shuseImg.Attributes.Add("onclick", "location.href='ssfp_zp.aspx?img=" + qszp.Rows[0]["大图"].ToString() + "'");
                 }
                 else
                 {

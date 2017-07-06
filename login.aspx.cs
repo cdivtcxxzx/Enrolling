@@ -87,6 +87,70 @@ public partial class admin_Default : System.Web.UI.Page
     }
     protected void Page_Load(object sender, EventArgs e)
     {
+        #region 安全检查txt_pwd
+        if (Request["txt_name"] != null)
+        {
+            //长度检测
+            string tsxx = aqjc.requestjc(Request["txt_name"].ToString(), "", false, 20);
+
+            if (tsxx.Length > 0)
+            {
+                Response.Write(tsxx);
+                Response.End();
+            }
+            
+
+        }
+        #endregion
+        #region 安全检查txt_pwd
+        if (Request["txt_pwd"] != null)
+        {
+            //长度检测
+            string tsxx = aqjc.requestjc(Request["txt_pwd"].ToString(), "", false, 20);
+
+            if (tsxx.Length > 0)
+            {
+                Response.Write(tsxx);
+                Response.End();
+            }
+            
+
+        }
+        #endregion
+        #region 安全检查txt_pwd
+        if (Request["txt_name"] != null)
+        {
+            //长度检测
+            string tsxx = aqjc.requestjc(Request["txt_name"].ToString(), "", false, 20);
+
+            if (tsxx.Length > 0)
+            {
+                Response.Write(tsxx);
+                Response.End();
+            }
+            
+
+        }
+        #endregion
+        
+        #region 安全检查sf
+        if (Request["sf"] != null)
+        {
+            //长度检测
+            string tsxx = aqjc.requestjc(Request["sf"].ToString(), "", false, 5);
+
+            if (tsxx.Length > 0)
+            {
+                Response.Write(tsxx);
+                Response.End();
+            }
+           
+
+        }
+        #endregion
+
+
+
         #region 页面基本配置及标题标识
         btitle = pagelm1;
         try

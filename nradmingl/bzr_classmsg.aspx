@@ -26,7 +26,7 @@
 <%--              <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />--%>
         <div class="admin-main">
             <blockquote class="layui-elem-quote">
-                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>通知           
+                <i class="layui-icon">&#xe602;</i>辅导员<i class="layui-icon">&#xe602;</i>通知           
             </blockquote>
             <div>                
                 <div class="layui-form-item">
