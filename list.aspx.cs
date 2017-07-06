@@ -13,7 +13,7 @@ public partial class wblue_list : System.Web.UI.Page
     {
         #region 每页头部安全操作
         //SQL注入检测
-        basic.clearsqljc("bds250590547_db");
+        //basic.clearsqljc("bds250590547_db");
         //检查URL长度
         string jcurl = HttpContext.Current.Request.Url.PathAndQuery;
         if (jcurl.Length > 20)
