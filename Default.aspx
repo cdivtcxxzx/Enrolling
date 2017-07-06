@@ -460,9 +460,9 @@ img {
                     <div class="featured-media"><!-- 轮播处理 -->
 <div id="demo1" class="slideBox"  style="width:100%; height: 100%;border:0px solid #ccc">
   <ul class="items" id="tpshow" runat="server">
-   <li  style="width: 100%; height: 100%;" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="新生自助报到"><img style="width:auto;height:auto;"  src="img/img1.PNG" /></a></li>
-   <li  style="width: 100%;height: 100%;" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="新生资助政策"><img style="width:auto;height:auto;"   src="img/img2.PNG"   /></a></li>
-   <li  style="width: 100%;height: 100%;" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="到校交通路线查询"><img style="width:auto;height:auto;"   src="img/img3.PNG"  /></a></li>
+   <li  style="width: 100%; height: 100%;" onclick="location.href='/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs'"><a href="/login.aspx?url=/nradmingl/defaultxs.aspx&sf=xs" title="新生自助报到"><img  src="img/img1.PNG" /></a></li>
+   <li  style="width: 100%;height: 100%;" onclick="location.href='/list.aspx?id=8'"><a href="/list.aspx?id=8" title="新生资助政策"><img  src="img/img2.PNG"   /></a></li>
+   <li  style="width: 100%;height: 100%;" onclick="location.href='/list.aspx?id=7'"><a href="/list.aspx?id=7" title="到校交通路线查询"><img   src="img/img3.PNG"  /></a></li>
   </ul>
 </div>
 <!-- 轮播处理结束 --></div>
