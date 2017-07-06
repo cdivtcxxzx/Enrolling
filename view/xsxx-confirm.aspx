@@ -246,7 +246,7 @@
             <%--确认按钮--%>
             <div class="btn-confirm">
                 <asp:Button ID="btn_submit" CssClass="layui-btn layui-btn-big" style=""  runat="server" Text="确认注册"/>
-                
+                <br /><br />
             </div>
         </form>
         <div id="tip"><span>向下滑动</span></div>
