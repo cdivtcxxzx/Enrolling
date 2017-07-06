@@ -26,7 +26,7 @@
             text-align: left;
         }
 
-                .layui-form-select dl dd.layui-this {
+        .layui-form-select dl dd.layui-this {
             background-color: #196BAB;
             color: #fff;
         }
@@ -34,7 +34,15 @@
     display: inherit;
      height: 37px;
 }
-
+@media screen and (max-width: 450px){
+    .layui-form-item .layui-input-inline {
+        display: block;
+        float: none;
+        left: -1px;
+        width: auto;
+        margin: 0 0 10px 0px !important;
+    }
+}
     </style>
    
 </head>
@@ -44,37 +52,42 @@
 <%--              <asp:HiddenField ID="pk_batch_no" Value="" runat="server" />--%>
         <div class="admin-main">
             <blockquote class="layui-elem-quote">
-                <i class="layui-icon">&#xe602;</i>班主任<i class="layui-icon">&#xe602;</i>新生状态总览           
+                <i class="layui-icon">&#xe602;</i>辅导员<i class="layui-icon">&#xe602;</i>新生报到确认          
             </blockquote>
             <div>
                 
                 <div class="layui-form-item">
                     <!--迎新批次下拉列表-->
-                    <div class="layui-inline">
+                   <div class="layui-inline">
 <%--                        <label class="layui-form-label">批次：</label>--%>
-                        <div class="layui-input-inline">
-                            <select name="batchlist" id="batchlist">
-
-                            </select>
-                        </div>
+                        <%--<div class="layui-input-inline">
+                       
+                            
+                        </div>--%>
+                       <select name="batchlist" id="batchlist"></select>
                     </div>
+                
+
+                            
                     <!--班级下拉列表-->
                     <div class="layui-inline">
 <%--                        <label class="layui-form-label">班级：</label>--%>
-                        <div class="layui-input-inline">
-                            <select name="classlist" id="classlist">
+                        <%--<div class="layui-input-inline">
+                            
+                        </div>--%>
+                        <select name="classlist" id="classlist">
                                 <option value="">请选择班级</option>
                                 <option value="1">layer</option>
                                 <option value="2">form</option>
                                 <option value="3">layim</option>
                                 <option value="4">element</option>
                             </select>
-                        </div>
                     </div>
+                    
                     <div class="layui-inline">
-                        <label class="layui-form-label" style="width:100px;" id="count">总计：0人</label>
-                        <label class="layui-form-label" style="width:100px;" id="confirm_count">0人</label>
-                        <label class="layui-form-label" style="width:100px;" id="noConfirm_count">0人</label>
+                        <label   id="count">总计：0人</label>
+                        <label   id="confirm_count">0人</label>
+                        <label   id="noConfirm_count">0人</label>
                     </div>
                      <div class="layui-inline" style="margin-bottom:0px;">
                          <a href="#" onclick="getstudentstatus();" class="layui-btn layui-btn-small hidden-xs">

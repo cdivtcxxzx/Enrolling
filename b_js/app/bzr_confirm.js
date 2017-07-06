@@ -115,7 +115,7 @@ function getstudentstatus() {
                     var str = '<thead>';
                     str = str + '<tr><th  scope="col" >序号</th>';
                     for (var key in item) {
-                        if (key == '姓名' || key == '性别' ||  key=='选择宿舍') {
+                        if (key == '姓名' || key == '性别' || key == '选择宿舍') {
                             str = str + '<th scope="col">' + key + '</th>';
                             //str = str + '<th  scope="col" class="hidden-xs">' + key + '</th>';
                         }
@@ -138,29 +138,42 @@ function getstudentstatus() {
                         //if (key != 'pk_sno') {
                         //    str = str + '<td>' + item[key] + '</td>';
                         //}
-                        if (key == '姓名' || key == '性别' || key=='选择宿舍') {
+                        if (key == '姓名' || key == '性别' || key == '选择宿舍') {
                             str = str + '<td>' + item[key] + '</td>';
+                            //if (item[key] == '未报到') {
+                            //    str = str + '<td id="' + item.pk_sno + '" style="color:red">未报到</td>';
+                            //} else if (item[key] == '已完成') {
+                            //    str = str + '<td id="' + item.pk_sno + '" style="color:blue">已完成</td>';
+                            //} else {
+                            //    str = str + '<td>' + item[key] + '</td>';
+                            //}
                             
                         }
                         else if (key != 'pk_sno') {
                             if (item[key] == '未报到') {
-                                str = str + '<td class="hidden-xs" id="'+item.pk_sno+'" style="color:red">未报到</td>';
+                                str = str + '<td class="hidden-xs" id="' + item.pk_sno + '" style="color:red">未报到</td>';
                             } else if (item[key] == '已完成') {
                                 str = str + '<td class="hidden-xs" id="' + item.pk_sno + '" style="color:blue">已完成</td>';
                             } else {
                                 str = str + '<td class="hidden-xs">' + item[key] + '</td>';
                             }
+                            //str = str + '<td class="hidden-xs">' + item[key] + '</td>';
                         }
                     }
                     str = str + '<td>';
-                    str = str + '<a href="#" onclick="studentdetail(' + item.pk_sno + ')" class="layui-btn layui-btn-mini" title="学生信息">详情</a> <a href="#" onclick="studentConfrim(' + item.pk_sno + ')" class="layui-btn layui-btn-mini">确认报到</a>';
+                    if (item["现场报到确认"] == "已完成") {
+                        str = str + '<a href="#"  class="layui-btn layui-btn-mini  layui-btn-warm">已 报 到</a>  <a href="#" onclick="studentdetail(' + item.pk_sno + ')" class="layui-btn layui-btn-mini" title="学生信息">详情</a>';
+                    } else {
+                        str = str + '<a href="#" id="btn_' + item.pk_sno + '" onclick="studentConfrim(' + item.pk_sno + ')" class="layui-btn layui-btn-mini">确认报到</a> <a href="#" onclick="studentdetail(' + item.pk_sno + ')"  class="layui-btn layui-btn-mini" title="学生信息">详情</a>';
+                    }
+                    
                     str = str + '</td>';
                     str = str + '</tr>';
                     $('#studentlist').append(str);
-                    if ($.trim(item['现场报到确认']) == '已报到') {
+                    if ($.trim(item['现场报到确认']) == '已完成') {
                         yes_count = yes_count + 1;
                     }
-                    if ($.trim(item['现场报到确认']) == '已完成') {
+                    if ($.trim(item['现场报到确认']) == '未报到') {
                         no_count = no_count + 1;
                     }
                 }
@@ -189,25 +202,27 @@ function studentdetail(pk_sno) {
 }
 function studentConfrim(pk_sno) {
     var pk_staff_no = $('#pk_staff_no').val();
+    var this_btn = $('#btn_'+pk_sno);
     parent.layer.confirm('确认报到后将不能取消，是否继续？', {
         btn: ['确定', '取消']
     }, function () {
-         $.ajax({
-        url: "/nradmingl/appserver/manager.aspx",
-        type: "get",
-        dataType: "text",
-        data: { "cs": "set_freshstudent_register_for_Counseller", "pk_sno": pk_sno, "pk_staff_no": pk_staff_no },
-        success: function (data) {
-            var json_data = JSON.parse(data);
-            if (json_data.code == 'success') {
-                parent.layer.alert('确认成功！');
-                $('#' + pk_sno).attr("style", "color:blue").html("已完成");
-            } else {
-                parent.layer.alert('确认失败：' + json_data.message);
+        $.ajax({
+            url: "/nradmingl/appserver/manager.aspx",
+            type: "get",
+            dataType: "text",
+            data: { "cs": "set_freshstudent_register_for_Counseller", "pk_sno": pk_sno, "pk_staff_no": pk_staff_no },
+            success: function (data) {
+                var json_data = JSON.parse(data);
+                if (json_data.code == 'success') {
+                    parent.layer.alert('确认成功！');
+                    $('#' + pk_sno).attr("style", "color:blue").html("已完成");
+                    this_btn.html("已 报 到").attr("class", "layui-btn layui-btn-mini  layui-btn-warm");
+                } else {
+                    parent.layer.alert('确认失败：' + json_data.message);
+                }
             }
-        }
-    });
-    });
+        });
+    }, function () { });
 
    
 }
