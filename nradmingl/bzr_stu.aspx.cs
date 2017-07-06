@@ -34,10 +34,10 @@ public partial class nradmingl_Default3 : System.Web.UI.Page
             batch batch_logic = new batch();
             DataTable dt = batch_logic.get_classstudent(hid_class_no.Value.Trim());
             if (dt == null || dt.Rows.Count <= 0) { this.tsxx.Value = "<span style=\"font-size:Large;\"><font color=red>导出<b>失败</b>,请重试!</font></span>"; return; }
-            dt.Columns.Remove("year");
-            dt.Columns.Remove("collage");
-            dt.Columns.Remove("spe_name");
-            dt.Columns.Remove("Status_code");
+            //dt.Columns.Remove("year");
+            //dt.Columns.Remove("collage");
+            //dt.Columns.Remove("spe_name");
+            //dt.Columns.Remove("Status_code");
             dt.Columns.Remove("register");
             dt.Columns.Remove("TuitionType");
             dt.Columns["pk_sno"].ColumnName = "学号";
@@ -46,6 +46,11 @@ public partial class nradmingl_Default3 : System.Web.UI.Page
             dt.Columns["id_no"].ColumnName = "身份证号";
             dt.Columns["test_no"].ColumnName = "高考报名号";
             dt.Columns["phone"].ColumnName = "联系电话";
+
+            dt.Columns["year"].ColumnName = "年级";
+            dt.Columns["collage"].ColumnName = "学院";
+            dt.Columns["spe_name"].ColumnName = "专业";
+            dt.Columns["Status_code"].ColumnName = "状态";
             #region 导出
             //引用EXCEL导出类
             toexcel xzfile = new toexcel();

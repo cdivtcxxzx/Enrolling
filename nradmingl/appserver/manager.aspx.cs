@@ -3010,7 +3010,29 @@ public partial class nradmingl_appserver_manger : System.Web.UI.Page
                 }
                 #endregion
 
-
+                #region  班主任设置报到
+                if (cs.Trim().Equals("set_freshstudent_register_for_Counseller"))
+                {
+                    string pk_sno = Request.QueryString["pk_sno"];
+                    string pk_staff_no = Request.QueryString["pk_staff_no"];
+                    if (pk_sno != null && pk_sno.Trim().Length != 0 && pk_staff_no != null && pk_staff_no.Trim().Length != 0)
+                    {
+                        batch batch_logic = new batch();
+                        bool jg = batch_logic.set_freshstudent_register_for_Counseller(pk_sno,pk_staff_no,pk_staff_no);
+                        if (jg)
+                        {
+                            result.code = "success";
+                            result.message = "成功";
+                            result.data = jg;
+                        }
+                        else
+                        {
+                            result.message = "服务器端操作失败！";
+                        }
+                        
+                    }
+                }
+                #endregion
             }
         }
         catch (Exception ex)
