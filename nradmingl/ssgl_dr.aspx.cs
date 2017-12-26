@@ -49,15 +49,8 @@ public partial class nradmingl_ssgl_dr : System.Web.UI.Page
             try
             {
                 //读取cookies中的当前网址信息,如果没有使用服务器获取
-                if (Request.Cookies["xurl"] != null)
-                {
-                    HttpCookie cookiesurl = Request.Cookies["xurl"];
-                    webpage = cookiesurl.Value.ToString().Replace("%3A", ":").Replace("%3F", "?").Replace("%3D", "=").Replace("%26", "&");
-                }
-                else
-                {
-                    webpage = Request.Url.GetLeftPart(UriPartial.Query).ToString().Replace(Request.Url.Port.ToString(), Sqlhelper.serverport);
-                }
+                webpage = Request.Url.GetLeftPart(UriPartial.Query).ToString().Replace(Request.Url.Port.ToString(), Sqlhelper.serverport);
+            
 
             }
             catch (Exception e1) { Response.Write(e1.Message); }

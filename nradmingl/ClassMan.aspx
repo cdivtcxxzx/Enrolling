@@ -31,7 +31,7 @@
 				</a>--%>
                 <div class="layui-input-inline hidden-xs"></div>
                 <span style="float:right">
-                    <a href="" class="layui-btn layui-btn-small hidden-xs">
+                    <a href="ClassMan.aspx" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#x1002;</i> 刷新
 				</a>
 				<%--<a href="javascript:" id="test1" class="layui-btn layui-btn-small">
