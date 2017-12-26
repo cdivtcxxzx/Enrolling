@@ -147,7 +147,7 @@
                       <span id="custom_display_8" class="sns-default-container sns_default_container" style="display: none;">
                       </span>
                       <asp:Label ID="Label1" runat="server" Font-Size="Medium" Font-Strikeout="False" 
-                          ForeColor="#CC0000"></asp:Label>
+                          ForeColor="#CC0000"  Text="如果系统使用异常，请选择谷歌浏览器访问！"></asp:Label>
                     </div>
                     <!-- 其他登录方式 s -->
                     <div style="display: none;" class="other_login_type sns-login-container" id="custom_display_16">

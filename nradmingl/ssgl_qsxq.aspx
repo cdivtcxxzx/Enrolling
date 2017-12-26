@@ -72,7 +72,7 @@
 
                 <asp:GridView  CssClass="site-table table-hover"  ID="GridView2" runat="server" AutoGenerateColumns="true" 
                     DataSourceID="SqlDataSource1">
-                   
+                    
                 </asp:GridView>
 
 
@@ -117,6 +117,12 @@
                     </tbody>
                 </table>--%>
             </fieldset>
+            <style>
+            .layui-form input[type=checkbox]
+            {
+                display:block;
+            }
+            </style>
             <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
                 <ul class="layui-tab-title">
                     <li class="layui-this">床位及入住学生信息</li>
@@ -124,10 +130,43 @@
                 </ul>
                 <div class="layui-tab-content" style="height: 100%;">
                     <div class="layui-tab-item layui-show">
-
-                     <asp:GridView  CssClass="site-table table-hover"  ID="GridView3" runat="server" AutoGenerateColumns="true" 
+                    <asp:HiddenField ID="hdfWPBH" runat="server" /><asp:HiddenField ID="ssh" runat="server" />
+                     <asp:GridView  CssClass="site-table table-hover"  ID="GridView3" runat="server" AutoGenerateColumns="false" 
                     DataSourceID="SqlDataSource2">
-                   
+                   <Columns>
+    <asp:TemplateField>
+                <HeaderTemplate>
+                      <input type="checkbox"  id="BoxIdAll"  name="BoxIdAll" onclick="onclicksel();" />  
+                </HeaderTemplate>
+                <ItemTemplate>
+                     <input id="BoxId" name="BoxId"  class="icheck" value='<%#(Convert.ToString(Eval("房间id")))%>' type="checkbox" /> 
+                </ItemTemplate>
+                <ItemStyle HorizontalAlign="Center" />
+                <HeaderStyle Width="2%"  HorizontalAlign="Center" />
+            </asp:TemplateField>
+
+             <asp:BoundField DataField="房间编号" HeaderText="房间编号" SortExpression="房间编号"/>
+              <asp:BoundField DataField="床位编号" HeaderText="床位编号" SortExpression="床位编号"/>
+               <asp:BoundField DataField="床位位置描述" HeaderText="床位位置描述" SortExpression="床位位置描述"/>
+                <asp:BoundField DataField="已分配院系" HeaderText="已分配院系" SortExpression="已分配院系"/>
+                 <asp:BoundField DataField="已分配班级" HeaderText="已分配班级" SortExpression="已分配班级"/>
+                  <asp:BoundField DataField="学生学号" HeaderText="学生学号" SortExpression="学生学号"/>
+                   <asp:BoundField DataField="学生姓名" HeaderText="学生姓名" SortExpression="学生姓名"/>
+                    <asp:BoundField DataField="联系电话" HeaderText="联系电话" SortExpression="联系电话"/>
+
+                    <asp:TemplateField HeaderText="" >
+                    <HeaderTemplate>
+
+                <a onclick="return batchAudit(this.id);" class="layui-btn layui-btn-mini"  id="btnDelete" href="javascript:__doPostBack('btnDelete','')"><span id="plcz" runat="server">批量调整</span></a>
+                </HeaderTemplate>
+                <ItemTemplate>
+
+             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室调整－【当前：<%# Eval("房间编号").ToString() %>第<%# Eval("床位编号").ToString() %>床位】',  shadeClose: true,  shade: 0.8,  area: ['80%', '80%'],  content: 'ssgl_qstz.aspx?roomno=<%# Eval("房间编号").ToString() %>&cwid=<%# Eval("房间id").ToString() %>',cancel: function(index, layero){ location.reload(true)  }});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="将该寝室床位调整到其它班级">调整寝室</a>  
+             
+            </ItemTemplate>
+                
+                </asp:TemplateField>
+             </Columns>
                 </asp:GridView>
 
 
@@ -137,7 +176,7 @@
                 <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
                     ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
                     SelectCommand="SELECT     TOP (20) Fresh_Room.Room_NO AS 房间编号, Fresh_Bed.Bed_NO AS 床位编号,Fresh_Bed.Bed_Name AS 床位位置描述,  Base_College.Name AS 已分配院系, 
-                      Fresh_Class.Name AS 已分配班级, Fresh_Bed_Log.FK_SNO AS 学生学号, Base_STU.Name AS 学生姓名, Base_STU.Phone AS 联系电话
+                      Fresh_Class.Name AS 已分配班级, Fresh_Bed_Log.FK_SNO AS 学生学号, Base_STU.Name AS 学生姓名, Base_STU.Phone AS 联系电话,Fresh_Bed.PK_Bed_NO AS 房间id
 FROM         Fresh_Bed LEFT OUTER JOIN
                       Fresh_Bed_Log LEFT OUTER JOIN
                       Base_STU ON Fresh_Bed_Log.FK_SNO = Base_STU.PK_SNO ON Fresh_Bed.PK_Bed_NO = Fresh_Bed_Log.FK_Bed_NO LEFT OUTER JOIN
@@ -153,60 +192,7 @@ ORDER BY 床位编号">
                             Type="String" />
                     </SelectParameters>
                 </asp:SqlDataSource>
-                       <%-- <table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="GridView1" style="border-collapse: collapse;">
-                            <tbody>
-                                <tr align="center">
-                                    <th scope="col">序号</th>
-                                    <th class="hidden-xs" scope="col">学生姓名</th>
-                                    <th scope="col">学生编号</th>
-                                    <th scope="col">院系</th>
-                                    <th class="hidden-xs" scope="col">专业</th>
-                                    <th class="hidden-xs" scope="col">班级</th>
-                                    <th class="hidden-xs" scope="col">床位号</th>
-                                    <th class="hidden-xs" scope="col">床位描述</th>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td class="hidden-xs">李莉</td>
-                                    <td>2017020105</td>
-                                    <td>建筑工程学院</td>
-                                    <td class="hidden-xs">建筑装饰工程技术</td>
-                                    <td class="hidden-xs">1班</td>
-                                    <td class="hidden-xs">1</td>
-                                    <td class="hidden-xs">上铺靠窗</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td class="hidden-xs">刘筱幽</td>
-                                    <td>2017030507</td>
-                                    <td>财经管理学院</td>
-                                    <td class="hidden-xs">会计</td>
-                                    <td class="hidden-xs">2班</td>
-                                    <td class="hidden-xs">3</td>
-                                    <td class="hidden-xs">下铺靠窗</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td class="hidden-xs">张婷</td>
-                                    <td>2017030523</td>
-                                    <td>财经管理学院</td>
-                                    <td class="hidden-xs">会计</td>
-                                    <td class="hidden-xs">2班</td>
-                                    <td class="hidden-xs">4</td>
-                                    <td class="hidden-xs">下铺靠门</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td class="hidden-xs">陈艳</td>
-                                    <td>2017060955</td>
-                                    <td>物流工程学院</td>
-                                    <td class="hidden-xs">物流管理</td>
-                                    <td class="hidden-xs">2班</td>
-                                    <td class="hidden-xs">6</td>
-                                    <td class="hidden-xs">上铺靠门</td>
-                                </tr>
-                            </tbody>
-                        </table>--%>
+                     
                     </div>
                     <div class="layui-tab-item">
 
@@ -232,6 +218,75 @@ ORDER BY 床位编号">
             </div>
         </div>
     </form>
+        <script type="text/javascript">
+
+            function onclicksel() {
+                var chkobj = document.getElementById("BoxIdAll");
+                if (chkobj.checked == true) {
+                    selAll();
+                }
+                else {
+                    removeAll();
+                }
+            }
+            function selAll() {
+                var selobj = document.getElementsByName("BoxId");
+                for (var i = 0; i < selobj.length; i++) {
+                    if (!selobj[i].disabled) {
+                        selobj[i].checked = true;
+                    }
+                }
+            }
+
+            function removeAll() {
+                var selobj = document.getElementsByName("BoxId");
+                for (var i = 0; i < selobj.length; i++) {
+                    selobj[i].checked = false;
+                }
+            }
+            //批量操作
+
+            function batchAudit(id) {
+                var AuditVal = "";
+                //var roomno = document.getElementsByName("roomno")[0].value;
+                var bid = document.getElementsByName("BoxId");
+                for (var i = 0; i < bid.length; i++) {
+                    if (bid[i].checked == true) {
+                        AuditVal = AuditVal + bid[i].value + ",";
+                    }
+                }
+                if (AuditVal.length <= 0) {
+                    parent.layer.msg("请先选择一条记录,在记录前打勾!");
+
+                    return false;
+                }
+                else {
+                    if (id == "btnDelete") {
+                        parent.layer.open({ type: 2, title: '寝室调整－【多床位同时调整】' + AuditVal, shadeClose: true, shade: 0.8, area: ['80%', '80%'], content: 'ssgl_qstz.aspx?cwid=' + AuditVal, cancel: function (index, layero) { location.reload(true) } });
+                        return true;
+                        document.getElementById("hdfWPBH").value = AuditVal;
+                        return true;
+                        //                             layer.open({ content: '您确认要批量删除这' + String(AuditVal.length / 4) + '条记录吗？'
+                        //                                      , btn: ['确认', '取消']
+                        //                                      , yes: function (index, layero) {
+                        //                                          document.getElementById("hdfWPBH").value = AuditVal;
+                        //                                          //此处写传给删除页面的参数
+                        //                                          return true;
+                        //                                          //使用AJAX回调删除
+                        //                                          layer.close(index);
+
+                        //                                      }, btn2: function (index, layero) {
+                        //                                          return false;
+                        //                                      }
+                        //                                      , cancel: function () {
+                        //                                          return false;
+                        //                                      }
+                        //                             });
+                        return false;
+                    }
+                }
+            }  
+    </script>
     <script type="text/javascript" src="plugins/layui/layui.js"></script>
     <script>
 layui.use('element', function(){
@@ -272,10 +327,16 @@ layui.use('element', function(){
   
   element.on('tab(test)', function(elem){
     location.hash = 'test='+ $(this).attr('lay-id');
-  });
+});
+
+
   
 });
 </script>
+
+   
+
+
 </body>
 
 </html>

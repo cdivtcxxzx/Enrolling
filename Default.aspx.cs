@@ -196,9 +196,13 @@ public partial class _Default : System.Web.UI.Page
                 for (int i = 0; i < indexxw.Rows.Count; i++)
                 {
                     string time1 = Convert.ToDateTime(indexxw.Rows[i]["fabutime"].ToString()).Month + "月" + Convert.ToDateTime(indexxw.Rows[i]["fabutime"].ToString()).Day + "日";
-                    string nr = basic.ReplaceHtmlTag(indexxw.Rows[i]["title"].ToString(), 14);
-
-                    tzgglist.InnerHtml += "<span style=\"float:right\">" + time1 + "</span><p><a href=/xw.aspx?xwid=" + indexxw.Rows[i]["id"].ToString() + ">" + nr + "</a></p>";
+                   // string nr = basic.ReplaceHtmlTag(indexxw.Rows[i]["title"].ToString(), 14);
+                    //关于2017级新生网上缴费受银行限额影响不能一次全额支付的处理的通知
+                    string nr = indexxw.Rows[i]["title"].ToString();
+                    if(nr=="关于2017级新生网上缴费受银行限额影响不能一次全额支付的处理的通知")
+                    {nr="<font color=red><b>"+nr+"</b></font>";
+                    }
+                    tzgglist.InnerHtml += "<p><a href=/xw.aspx?xwid=" + indexxw.Rows[i]["id"].ToString() + ">" + nr + "</a>&nbsp;&nbsp;["+time1+"]</p>";
                 }
 
 

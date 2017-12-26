@@ -201,15 +201,26 @@
   <div class="layui-field-box" style="    padding: 10px 5px;">
      <div class="layui-input-block" style="    margin-left:2px;">
           <asp:RadioButtonList RepeatDirection="Horizontal" ID="R_bed" runat="server" AutoPostBack="True" 
-             DataSourceID="ObjectDataSource5"  DataTextField="name"  onselectedindexchanged="R_bed_SelectedIndexChanged"  DataValueField="id">
+             DataSourceID="SqlDataSource1"  DataTextField="name"  
+              onselectedindexchanged="R_bed_SelectedIndexChanged"  DataValueField="id">
          </asp:RadioButtonList>
-         <asp:ObjectDataSource ID="ObjectDataSource5" runat="server" 
-             SelectMethod="serch_bed" TypeName="dormitory">
-             <SelectParameters>
-                 <asp:ControlParameter ControlID="R_room" Name="roomid" 
-                     PropertyName="SelectedValue" Type="String" />
-             </SelectParameters>
-         </asp:ObjectDataSource>
+          <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+              ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="SELECT     TOP (50) t1.PK_Bed_NO AS id, t1.Bed_NO AS name, t1.Bed_Name AS bz, Fresh_Bed_Class_Log.FK_Class_NO, Fresh_Class.Name AS 班级名称
+FROM         Fresh_Bed AS t1 LEFT OUTER JOIN
+                      Fresh_Bed_Class_Log ON t1.PK_Bed_NO = Fresh_Bed_Class_Log.FK_Bed_NO RIGHT OUTER JOIN
+                      Fresh_Class ON Fresh_Bed_Class_Log.FK_Class_NO = Fresh_Class.PK_Class_NO
+WHERE     (NOT EXISTS
+                          (SELECT     PK_Bed_Log, FK_Bed_NO, FK_SNO, Updater, Update_DT
+                            FROM          Fresh_Bed_Log
+                            WHERE      (FK_Bed_NO = t1.PK_Bed_NO))) AND (t1.FK_Room_NO = @room_no) and Fresh_Class.Name=@classname 
+ORDER BY name">
+              <SelectParameters>
+                  <asp:ControlParameter ControlID="R_room" Name="room_no" 
+                      PropertyName="SelectedValue" />
+                  <asp:ControlParameter ControlID="xsxx_bj" Name="classname" 
+                      PropertyName="Text" />
+              </SelectParameters>
+          </asp:SqlDataSource>
          <br />
       <div style="margin-left:20px;">
                <asp:Label  ID="cwts"  runat="server" Text=""></asp:Label>

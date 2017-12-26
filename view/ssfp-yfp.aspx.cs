@@ -11,6 +11,13 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+
+
+        //this.ObjectDataSource5.FilterExpression = "";
+            // this.SqlDataSource6.FilterExpression = sx;//院系筛选
+
+
+
         cwts.Text = "";
         //获取传递参数
         string pk_sno = "";
@@ -54,15 +61,20 @@ public partial class view_ssfp_yfp : System.Web.UI.Page
             {
                 session_pk_staff_no = Session["pk_staff_no"].ToString();
             }
-
-            batch batch_logic = new batch();
-            affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xzss_01a");
-            if (!jg.isauth)
+            if (Request["view"] != null)
             {
-                Response.Write("<script>alert('" + jg.msg + "');location.href='xxzz_xsindex.aspx';</script>");
-                Response.End();
-                return;
+            }
+            else
+            {
+                batch batch_logic = new batch();
+                affair_operate_auth_msg jg = batch_logic.affair_operate_auth(pk_affair_no, pk_sno, session_pk_sno, pk_staff_no, session_pk_staff_no, "cdivtc_xzss_01a");
+                if (!jg.isauth)
+                {
+                    Response.Write("<script>alert('" + jg.msg + "');location.href='xxzz_xsindex.aspx';</script>");
+                    Response.End();
+                    return;
 
+                }
             }
 
 

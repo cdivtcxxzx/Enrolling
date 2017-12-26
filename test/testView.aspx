@@ -24,8 +24,9 @@
                 <asp:ControlParameter ControlID="DropDownList1" DefaultValue="“0”" Name="batch" PropertyName="SelectedValue" Type="String" />
             </SelectParameters>
         </asp:ObjectDataSource>
-        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />--%>
-        <img src="../nradmingl/yanzhengma.aspx"  style="width:100px;height:38px" />
+        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Button" />
+        <img src="../nradmingl/yanzhengma.aspx"  style="width:100px;height:38px" />--%>
+
     </form>
 </body>
 

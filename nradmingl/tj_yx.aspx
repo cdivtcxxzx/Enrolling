@@ -1,12 +1,40 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="jk_wsbd.aspx.cs" Inherits="nradmingl_jk_wsbd" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="tj_yx.aspx.cs" Inherits="nradmingl_tj_yx" %>
 
+<%
+    
+    string agent = (Request.UserAgent + "").ToLower().Trim();
+   
 
+    if (agent == "" ||
+        agent.IndexOf("mobile") != -1 ||
+        agent.IndexOf("mobi") != -1 ||
+        agent.IndexOf("nokia") != -1 ||
+        agent.IndexOf("samsung") != -1 ||
+        agent.IndexOf("sonyericsson") != -1 ||
+        agent.IndexOf("mot") != -1 ||
+        agent.IndexOf("blackberry") != -1 ||
+        agent.IndexOf("lg") != -1 ||
+        agent.IndexOf("htc") != -1 ||
+        agent.IndexOf("j2me") != -1 ||
+        agent.IndexOf("ucweb") != -1 ||
+        agent.IndexOf("opera mini") != -1 ||
+        agent.IndexOf("mobi") != -1)
+    {
+        //终端可能是手机
+       
 
-<!DOCTYPE html>
+        Response.Write("<?xml version='1.0'?><!DOCTYPE html PUBLIC '-//WAPFORUM//DTD XHTML Mobile 1.0//EN' 'http://www.wapforum.org/DTD/xhtml-mobile10.dtd'><HTML xmlns='http://www.w3.org/1999/xhtml'>");
+
+    }
+    else
+    {
+        Response.Write(" <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\">");
+    }
+     %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>网上报到进度监控</title>
+<head id="Head1" runat="server">
+    <title>报到注册详情（院系）</title>
     <!--引用ＬＡＹＵＩ前端必须ＣＳＳ-->
 
         <link rel="stylesheet" href="plugins/layui/css/layui.css" media="all" />
@@ -35,21 +63,19 @@
     </style>
     <form id="form1"  runat="server">
     <div class="admin-main">
-      <blockquote class="layui-elem-quote">&nbsp;<span class=" hidden-xs">
-          <i class="layui-icon">&#xe602;</i>网上报到进度监控<i class="layui-icon">&#xe602;</i>按院系查看</span>
+      <blockquote class="layui-elem-quote">&nbsp;
+          <i class="layui-icon">&#xe602;</i>按班查看迎新详情
            <span style="float:right">
 
             <!--调用C#原生按钮设置样式举例OVER-->
  <%--               <a href="#" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-             --%><a href="jk_wsbd.aspx" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#x1002;</i> 刷新
+             --%><a id="ljurl" runat="server" href="/apptj/apptjbd.aspx" class="layui-btn layui-btn-small">
+					 返回
 				</a>
 
-               
-                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出<span class=" hidden-xs">数据</span></asp:LinkButton>
-
+         
 		  </span>       
       </blockquote>
 
@@ -60,7 +86,8 @@
             <div class="layui-form-item">
                        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                   <ContentTemplate>
-                                      <asp:Label ID="g_ts" runat="server"  Font-Size="Larger"></asp:Label>
+                
+                   
                     </ContentTemplate></asp:UpdatePanel>
 
             </div>
@@ -70,9 +97,9 @@
                   <ContentTemplate>
                       
   <asp:HiddenField ID="hdfWPBH" runat="server" />
-    <asp:GridView ID="GridView1"  CssClass="site-table table-hover"   runat="server">
+    <asp:GridView ID="GridView1" CssClass="site-table table-hover"  runat="server">
     </asp:GridView>
-
+ 
 
            
 

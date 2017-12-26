@@ -1,12 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="tj_bd.aspx.cs" Inherits="nradmingl_tj_bd" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation = "false"  CodeFile="tj_bd.aspx.cs" Inherits="nradmingl_tj_bd" %>
+
 
 
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>收费统计</title>
+<head id="Head1" runat="server">
+    <title>报到统计</title>
     <!--引用ＬＡＹＵＩ前端必须ＣＳＳ-->
 
         <link rel="stylesheet" href="plugins/layui/css/layui.css" media="all" />
@@ -36,19 +37,19 @@
     <form id="form1"  runat="server">
     <div class="admin-main">
       <blockquote class="layui-elem-quote">&nbsp;<span class=" hidden-xs">
-          <i class="layui-icon">&#xe602;</i>新生缴费情况统计<i class="layui-icon">&#xe602;</i>按院系班级</span>
+          <i class="layui-icon">&#xe602;</i>报到统计<i class="layui-icon">&#xe602;</i>按院系查看</span>
            <span style="float:right">
 
             <!--调用C#原生按钮设置样式举例OVER-->
  <%--               <a href="#" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-             --%><a href="ssgl.aspx" class="layui-btn layui-btn-small">
+             --%><a href="tj_bd.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#x1002;</i> 刷新
 				</a>
 
                
-                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出<span class=" hidden-xs">统计数据</span></asp:LinkButton>
+                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出<span class=" hidden-xs">数据</span></asp:LinkButton>
 
 		  </span>       
       </blockquote>
@@ -60,8 +61,7 @@
             <div class="layui-form-item">
                        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                   <ContentTemplate>
-                
-                   
+                                      <asp:Label ID="g_ts" runat="server"  Font-Size="Larger"></asp:Label>
                     </ContentTemplate></asp:UpdatePanel>
 
             </div>
@@ -71,22 +71,82 @@
                   <ContentTemplate>
                       
   <asp:HiddenField ID="hdfWPBH" runat="server" />
-<table  class="site-table table-hover" cellspacing="0" rules="all" border="1" style="border-collapse: collapse;">
-
-                    <thead>
-<tr><th scope="col">序号</th><th scope="col">院系</th><th scope="col">新生数</th><th scope="col">网上注册</th><th scope="col">已缴费</th><th scope="col">已选寝</th><th scope="col">信息完善</th><th scope="col">现场报到</th><th scope="col">班级缴费详情</th></tr></thead>
+    <asp:GridView ID="GridView1"  CssClass="site-table table-hover"   AutoGenerateColumns="False"   runat="server">
+    <Columns>
+    <asp:BoundField DataField="学院名称" HeaderText="学院名称" SortExpression="学院名称" 
+            InsertVisible="False" ReadOnly="True"/>
+            <asp:BoundField DataField="录取人数"  HeaderText="录取人数" SortExpression="录取人数" 
+            InsertVisible="False" ReadOnly="True"/>
+            <asp:BoundField DataField="网上注册"  
+            ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs"  HeaderText="网上注册"  
+           SortExpression="网上注册"/>
     
-    <tbody>
-<tr><td >1</td><td >财经管理学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >2</td><td >轨道交通学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >3</td><td >汽车工程学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >4</td><td >物流工程学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >5</td><td >信息工程学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >6</td><td >装备制造学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
+    <asp:BoundField DataField="缴费总数"  
+            ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs"  HeaderText="缴费总数"  
+           SortExpression="缴费总数"/>
+    
+             <asp:BoundField DataField="网上缴学费" HeaderText="网上缴学费"  
+            ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs" SortExpression="网上缴学费"/>
+             <asp:BoundField DataField="现场缴费" HeaderText="现场缴费"  
+            ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs" SortExpression="现场缴费"/>
 
-       
-        </tbody></table> 
+            <asp:TemplateField ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs" HeaderText="申请助学贷款">
+        
+            <ItemTemplate>
+            <%# zxdk(Eval("申请助学贷款").ToString(), Eval("缴费总数").ToString(), Eval("网上缴学费").ToString(), Eval("现场缴费").ToString())%>
+            </ItemTemplate>
 
+            <ItemStyle  />
+            </asp:TemplateField>
+
+
+       <%--    <asp:BoundField DataField="缴费总数" HeaderText="缴费总数"  
+            ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs" SortExpression="缴费总数"/>--%>
+           
+    <asp:BoundField DataField="选寝人数"  
+            ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs"  HeaderText="选寝人数"  
+           SortExpression="选寝人数"/>
+             <asp:BoundField DataField="完善信息"  
+            ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs"  HeaderText="完善信息"  
+           SortExpression="完善信息"/>
+            <asp:BoundField DataField="来校报到" HeaderText="来校报到"  
+           SortExpression="来校报到"/>
+             <asp:TemplateField HeaderText="报到率">
+        
+            <ItemTemplate>
+            <font color=blue><b><%# bdl(Eval("来校报到").ToString(), Eval("录取人数").ToString())%></b></font>
+            </ItemTemplate>
+
+            <ItemStyle  />
+            </asp:TemplateField>
+
+            
+
+              <asp:TemplateField  HeaderText="查看班级详情"  >
+            
+            <ItemTemplate>
+         <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '',  shadeClose: true,  shade: 0.8,  area: ['80%', '98%'],  content: 'tj_yx.aspx?id=<%# Eval("yxdm").ToString() %>&view=qxsh',cancel: function(index, layero){ location.reload(true)  }});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看班级详情">查看详情</a>  
+    
+       </ItemTemplate></asp:TemplateField></Columns>
+
+    </asp:GridView>
+
+    
+    <div style="width:90%">
+    提示：<br />
+    缴费总数=网上缴学费+助学贷款学生缴其它费+现场缴费;<br />
+    申请助学贷款后括号中为在网上缴纳其它费用的人数;
+    
+
+    </div>
            
 
 

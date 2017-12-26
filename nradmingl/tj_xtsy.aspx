@@ -71,19 +71,6 @@
             </asp:SqlDataSource>
 
                      
-                    <asp:DropDownList ID="bj" runat="server" DataSourceID="SqlDataSource5" 
-                        DataTextField="Name" DataValueField="PK_Class_NO" AutoPostBack="True" 
-                        onselectedindexchanged="bj_SelectedIndexChanged" Font-Size="Medium">
-                        <asp:ListItem Selected="True" Value=" ">全部班级</asp:ListItem>
-                    </asp:DropDownList>
-                    <asp:SqlDataSource ID="SqlDataSource5" runat="server" 
-                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-                        SelectCommand="select ' ' PK_Class_NO,'全部班级' Name union ( SELECT DISTINCT Fresh_Class.PK_Class_NO, Fresh_Class.Name FROM         Fresh_Class LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE  where Fresh_SPE.FK_College_Code=@yxdm)  ORDER BY [PK_Class_NO]">
-                     <SelectParameters>
-                            <asp:ControlParameter ControlID="yx" Name="yxdm" 
-                                PropertyName="SelectedValue" Type="String" />
-                        </SelectParameters>
-                    </asp:SqlDataSource>
                     &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
                     </ContentTemplate></asp:UpdatePanel>
 
@@ -94,23 +81,10 @@
                   <ContentTemplate>
                       
   <asp:HiddenField ID="hdfWPBH" runat="server" />
-<table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
+    <asp:GridView ID="GridView1" CssClass="site-table table-hover"  runat="server">
+    </asp:GridView>
 
-                    <thead>
-<tr><th scope="col">序号</th><th scope="col">院系</th><th scope="col">班级</th><th scope="col">分配学生</th><th scope="col">分配寝室</th><th scope="col">辅导员</th><th scope="col">辅导员电话</th><th scope="col">网上报到</th><th scope="col">网上缴费</th><th scope="col">选择宿舍</th><th>访问次数</th></tr></thead>
-    
-    <tbody>
-<tr><td>1</td><td>信息工程学院</td><td>信安1701班</td><td>50</td><td>45</td><td>张明</td><td>13438487878</td><td>0</td><td>0</td><td>0</td><td>25次</td></tr>
-       <tr><td>2</td><td>信息工程学院</td><td>Z移动1701</td><td>50</td><td>45</td><td>廖诗雨</td><td>13212341234</td><td>0</td><td>0</td><td>0</td><td>5次</td></tr>
-        <tr><td>3</td><td>信息工程学院</td><td>Z移动1702</td><td>50</td><td>45</td><td></td><td></td><td>0</td><td>0</td><td>0</td><td></td></tr>
-        <tr><td>4</td><td>信息工程学院</td><td>Z移动1703</td><td></td><td></td><td></td><td></td><td>0</td><td>0</td><td>0</td><td></td></tr>
-        <tr><td>5</td><td>信息工程学院</td><td>Z移动1704</td><td></td><td></td><td></td><td></td><td>0</td><td>0</td><td>0</td><td></td></tr>
-        <tr><td>6</td><td>信息工程学院</td><td>Z信安1701</td><td></td><td></td><td></td><td></td><td>0</td><td>0</td><td>0</td><td></td></tr>
-        <tr><td>7</td><td>信息工程学院</td><td>Z信安1701</td><td></td><td></td><td></td><td></td><td>0</td><td>0</td><td>0</td><td></td></tr>
-        <tr><td>8</td><td>信息工程学院</td><td>Z信安1701</td><td></td><td></td><td></td><td></td><td>0</td><td>0</td><td>0</td><td></td></tr>
-        <tr><td>9</td><td>信息工程学院</td><td>Z信安1701</td><td></td><td></td><td></td><td></td><td>0</td><td>0</td><td>0</td><td></td></tr>
-       
-        </tbody></table> 
+
    </ContentTemplate></asp:UpdatePanel>
    
 

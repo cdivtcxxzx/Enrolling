@@ -138,6 +138,9 @@ public partial class test_testView : System.Web.UI.Page
         //string code = v.CreateVerifyCode();
         //v.CreateImageOnPage(code, this.Context);
         
+
+        //GUID
+        Response.Write(Guid.NewGuid(''));
         
     }
     //测试导出

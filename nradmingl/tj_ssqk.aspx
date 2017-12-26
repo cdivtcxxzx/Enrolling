@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="tj_ssqk.aspx.cs" Inherits="nradmingl_tj_ssqk" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  EnableEventValidation = "false"  CodeFile="tj_ssqk.aspx.cs" Inherits="nradmingl_tj_ssqk" %>
 
 
 <!DOCTYPE html>
@@ -42,23 +42,22 @@
  <%--               <a href="#" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-             --%><a href="ssgl.aspx" class="layui-btn layui-btn-small">
+             --%><a href="tj_ssqk.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#x1002;</i> 刷新
 				</a>
 
                
                 <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出<span class=" hidden-xs">统计数据</span></asp:LinkButton>
+                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel2" onclick="exportexcel2"  txttop="txttop" ToolTip="导出寝室详情" ID="LinkButton1" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出<span class=" hidden-xs">寝室详情</span></asp:LinkButton>
 
 		  </span>       
       </blockquote>
 
-                    <asp:ScriptManager ID="ScriptManager1" runat="server">
-                </asp:ScriptManager>
+           
         
         <div>
             <div class="layui-form-item">
-                       <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                  <ContentTemplate>
+              
                 
                     统计筛选：
                       <asp:DropDownList ID="yx"  Font-Size="Medium" runat="server" DataSourceID="SqlDataSource6" DataTextField="yxmc" DataValueField="yxdm" AutoPostBack="True" OnSelectedIndexChanged="yx_SelectedIndexChanged">
@@ -72,9 +71,14 @@
             </asp:SqlDataSource>
 
                      
+                      <asp:CheckBox ID="CheckBox1" runat="server" AutoPostBack="True" 
+                          Text="包含3+2学生" />
+
+                     
                     <asp:DropDownList ID="bj" runat="server" DataSourceID="SqlDataSource5" 
                         DataTextField="Name" DataValueField="PK_Class_NO" AutoPostBack="True" 
-                        onselectedindexchanged="bj_SelectedIndexChanged" Font-Size="Medium">
+                        onselectedindexchanged="bj_SelectedIndexChanged" Font-Size="Medium" 
+                          Visible="False">
                         <asp:ListItem Selected="True" Value=" ">全部班级</asp:ListItem>
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSource5" runat="server" 
@@ -86,16 +90,51 @@
                         </SelectParameters>
                     </asp:SqlDataSource>
                     &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
-                    </ContentTemplate></asp:UpdatePanel>
+                  
 
             </div>
         </div>    
   <div>   
-                       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                  <ContentTemplate>
+  
                       
   <asp:HiddenField ID="hdfWPBH" runat="server" />
-<table  class="site-table table-hover" cellspacing="0" rules="all" border="1" style="border-collapse: collapse;">
+    <asp:GridView ID="GridView1" CssClass="site-table table-hover" runat="server" AutoGenerateColumns="False" 
+                        EmptyDataText="未获取到数据!" 
+           >
+
+              <Columns>
+
+               <asp:BoundField DataField="序号" HeaderText="序号" SortExpression="序号"/>
+                <asp:BoundField DataField="院系名称" HeaderText="院系名称" SortExpression="院系名称"/>
+                 <asp:BoundField DataField="性别" HeaderText="性别" SortExpression="性别"/>
+                  <asp:BoundField DataField="录取人数" HeaderText="录取人数" SortExpression="录取人数"/>
+                   <asp:BoundField DataField="缴费学生数" HeaderText="缴费学生数" SortExpression="缴费学生数"/>
+                    <asp:BoundField DataField="准备床位" HeaderText="准备床位" SortExpression="准备床位"/>
+                     <asp:BoundField DataField="已选床位" HeaderText="已选床位" SortExpression="已选床位"/>
+                      <asp:TemplateField HeaderText="剩余床位" SortExpression="剩余床位">
+        
+            <ItemTemplate>
+            <%# sycw(Eval("剩余床位").ToString())%>
+            </ItemTemplate>
+
+            <ItemStyle  />
+            </asp:TemplateField>
+  
+   <asp:TemplateField HeaderText="床位预警"    SortExpression="床位预警">
+        
+            <ItemTemplate>
+          <%# cwyj(Eval("剩余床位").ToString(), Eval("准备床位").ToString(), Eval("已选床位").ToString(), Eval("录取人数").ToString(), Eval("缴费学生数").ToString())%>
+            </ItemTemplate>
+
+            <ItemStyle  />
+            </asp:TemplateField>
+  
+
+
+
+              </Columns>
+    </asp:GridView>
+<table  class="site-table table-hover" style="display:none" cellspacing="0" rules="all" border="1" style="border-collapse: collapse;">
 
                     <thead>
 <tr><th scope="col">序号</th><th scope="col">院系</th><th scope="col">性别</th><th scope="col">学生数</th><th scope="col">准备床位数</th><th scope="col">已缴费学生数</th><th scope="col">已选寝室学生数</th><th scope="col">剩余床位</th><th scope="col">预警提示</th></tr></thead>
@@ -109,54 +148,49 @@
 
                       <div  id="bjlist" runat="server" style="display:none">
 
-<table class="site-table table-hover" cellspacing="0" rules="all" border="1" id="studentlist" style="border-collapse: collapse;">
 
-                    <thead>
-<tr><th scope="col">序号</th><th scope="col">班级</th><th scope="col">性别</th><th scope="col">学生数</th><th scope="col">准备床位数</th><th scope="col">已缴费学生数</th><th scope="col">已选寝室学生数</th><th scope="col">剩余床位</th><th scope="col">预警提示</th></tr></thead>
-    
-    <tbody>
-<tr><td rowspan="3">1</td><td rowspan="3">信安1701班</td><td>男</td><td>50</td><td>45</td><td>40</td><td>40</td><td>5</td><td><font clor=red>准备床位已不足<b>5</b>个</font></td></tr>
-<tr><td>女</td><td>40</td><td>35</td><td>32</td><td>32</td><td>3</td><td><font clor=red>准备床位已不足3个</font></td></tr>
-<tr><td>合计</td><td>90</td><td>95</td><td>72</td><td>72</td><td>5</td><td><font clor=red>准备床位已不足8个</font></td></tr>
+        <asp:GridView ID="GridView2"  CssClass="site-table table-hover" AutoGenerateColumns="False" 
+                        EmptyDataText="未获取到数据!"   runat="server">
 
-        <tr><td rowspan="3">2</td><td rowspan="3">Z移动1701</td><td>男</td><td>50</td><td>45</td><td>40</td><td>40</td><td>5</td><td><font clor=red>准备床位已不足<b>5</b>个</font></td></tr>
-<tr><td>女</td><td>40</td><td>35</td><td>32</td><td>32</td><td>3</td><td><font clor=red>准备床位已不足3个</font></td></tr>
-<tr><td>合计</td><td>90</td><td>95</td><td>72</td><td>72</td><td>5</td><td><font clor=red>准备床位已不足8个</font></td></tr>
+                        
+              <Columns>
 
-        <tr><td rowspan="3">3</td><td rowspan="3">Z移动1702</td><td>男</td><td>50</td><td>45</td><td>40</td><td>40</td><td>5</td><td><font clor=red>准备床位已不足<b>5</b>个</font></td></tr>
-<tr><td>女</td><td>40</td><td>35</td><td>32</td><td>32</td><td>3</td><td><font clor=red>准备床位已不足3个</font></td></tr>
-<tr><td>合计</td><td>90</td><td>95</td><td>72</td><td>72</td><td>5</td><td><font clor=red>准备床位已不足8个</font></td></tr>
+               <asp:BoundField DataField="序号" HeaderText="序号" SortExpression="序号"  HeaderStyle-Width="70px" HeaderStyle-BackColor="#f2f2f2" ItemStyle-Width="70px" />
+                <asp:BoundField DataField="班级名称" HeaderText="班级名称" SortExpression="班级名称" HeaderStyle-Width="15%" HeaderStyle-BackColor="#f2f2f2"  ItemStyle-Width="15%"  />
+                 <asp:BoundField DataField="性别" HeaderText="性别" SortExpression="性别"  HeaderStyle-Width="5%" HeaderStyle-BackColor="#f2f2f2" ItemStyle-Width="5%"  />
+                  <asp:BoundField DataField="录取人数" HeaderText="录取人数" SortExpression="录取人数"  HeaderStyle-Width="12%" HeaderStyle-BackColor="#f2f2f2"  ItemStyle-Width="12%" />
+                   <asp:BoundField DataField="缴费学生数" HeaderText="缴费学生数" SortExpression="缴费学生数" HeaderStyle-Width="12%" HeaderStyle-BackColor="#f2f2f2" ItemStyle-Width="12%"  />
+                    <asp:BoundField DataField="准备床位" HeaderText="准备床位" SortExpression="准备床位" HeaderStyle-Width="12%" HeaderStyle-BackColor="#f2f2f2"  ItemStyle-Width="12%" />
+                     <asp:BoundField DataField="已选床位" HeaderText="已选床位" SortExpression="已选床位" HeaderStyle-Width="12%" HeaderStyle-BackColor="#f2f2f2" ItemStyle-Width="12%"  />
+                      <asp:TemplateField HeaderText="剩余床位" SortExpression="剩余床位" HeaderStyle-Width="12%" HeaderStyle-BackColor="#f2f2f2" ItemStyle-Width="12%"  >
+        
+            <ItemTemplate>
+            <%# sycw(Eval("剩余床位").ToString())%>
+            </ItemTemplate>
 
-        <tr><td rowspan="3">4</td><td rowspan="3">Z移动1703</td><td>男</td><td>50</td><td>45</td><td>40</td><td>40</td><td>5</td><td><font clor=red>准备床位已不足<b>5</b>个</font></td></tr>
-<tr><td>女</td><td>40</td><td>35</td><td>32</td><td>32</td><td>3</td><td><font clor=red>准备床位已不足3个</font></td></tr>
-<tr><td>合计</td><td>90</td><td>95</td><td>72</td><td>72</td><td>5</td><td><font clor=red>准备床位已不足8个</font></td></tr>
+            <ItemStyle  />
+            </asp:TemplateField>
+  
+   <asp:TemplateField HeaderText="床位预警"    SortExpression="床位预警" HeaderStyle-Width="15%" HeaderStyle-BackColor="#f2f2f2" ItemStyle-Width="15%"  >
+        
+            <ItemTemplate>
+           <%# cwyj(Eval("剩余床位").ToString(), Eval("准备床位").ToString(), Eval("已选床位").ToString(), Eval("录取人数").ToString(), Eval("缴费学生数").ToString())%>
+            </ItemTemplate>
 
-        <tr><td rowspan="3">5</td><td rowspan="3">Z移动1704</td><td>男</td><td>50</td><td>45</td><td>40</td><td>40</td><td>5</td><td><font clor=red>准备床位已不足<b>5</b>个</font></td></tr>
-<tr><td>女</td><td>40</td><td>35</td><td>32</td><td>32</td><td>3</td><td><font clor=red>准备床位已不足3个</font></td></tr>
-<tr><td>合计</td><td>90</td><td>95</td><td>72</td><td>72</td><td>5</td><td><font clor=red>准备床位已不足8个</font></td></tr>
+            <ItemStyle  />
+            </asp:TemplateField>
+  
 
-        <tr><td rowspan="3">6</td><td rowspan="3">Z信安1701</td><td>男</td><td>50</td><td>45</td><td>40</td><td>40</td><td>5</td><td><font clor=red>准备床位已不足<b>5</b>个</font></td></tr>
-<tr><td>女</td><td>40</td><td>35</td><td>32</td><td>32</td><td>3</td><td><font clor=red>准备床位已不足3个</font></td></tr>
-<tr><td>合计</td><td>90</td><td>95</td><td>72</td><td>72</td><td>5</td><td><font clor=red>准备床位已不足8个</font></td></tr>
 
-        <tr><td rowspan="3">7</td><td rowspan="3">Z信安1702</td><td>男</td><td>50</td><td>45</td><td>40</td><td>40</td><td>5</td><td><font clor=red>准备床位已不足<b>5</b>个</font></td></tr>
-<tr><td>女</td><td>40</td><td>35</td><td>32</td><td>32</td><td>3</td><td><font clor=red>准备床位已不足3个</font></td></tr>
-<tr><td>合计</td><td>90</td><td>95</td><td>72</td><td>72</td><td>5</td><td><font clor=red>准备床位已不足8个</font></td></tr>
 
-        <tr><td rowspan="3">8</td><td rowspan="3">Z信安1703</td><td>男</td><td>50</td><td>45</td><td>40</td><td>40</td><td>5</td><td><font clor=red>准备床位已不足<b>5</b>个</font></td></tr>
-<tr><td>女</td><td>40</td><td>35</td><td>32</td><td>32</td><td>3</td><td><font clor=red>准备床位已不足3个</font></td></tr>
-<tr><td>合计</td><td>90</td><td>95</td><td>72</td><td>72</td><td>5</td><td><font clor=red>准备床位已不足8个</font></td></tr>
+              </Columns>
 
-        <tr><td rowspan="3">9</td><td rowspan="3">Z信安1704</td><td>男</td><td>50</td><td>45</td><td>40</td><td>40</td><td>5</td><td><font clor=red>准备床位已不足<b>5</b>个</font></td></tr>
-<tr><td>女</td><td>40</td><td>35</td><td>32</td><td>32</td><td>3</td><td><font clor=red>准备床位已不足3个</font></td></tr>
-<tr><td>合计</td><td>90</td><td>95</td><td>72</td><td>72</td><td>5</td><td><font clor=red>准备床位已不足8个</font></td></tr>
-       
-        </tbody></table> 
+
+        </asp:GridView> 
 
                       </div>
 
 
-   </ContentTemplate></asp:UpdatePanel>
    
 
       
@@ -317,6 +351,62 @@
                      }
                  }  
     </script>
+
+<script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js"></script> 
+
+<script type="text/javascript">
+
+    table = document.getElementById('GridView2');
+
+    var tds = table.getElementsByTagName('tr');
+    //alert(tds.length);
+    for (var i = tds.length - 1; i >= 0; i--) {
+        var td = tds[i];
+        if (i == 0) {
+            td.id = "fixedMenu";
+        }
+        if (i == 1) {
+            td.id = "cankao";
+        }
+    }
+
+    $(document).ready(function (e) {
+        //预加载固定方法
+        adsorption_top();
+        /*当窗口大小调整时也执行顶部固定修复*/
+        $(window).resize(function () {
+            var ie6 = document.all;
+            var dv = $('#fixedMenu'), st, tr_kd;
+            st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
+            if (st > parseInt(dv.attr('otop'))) {
+                if ($(document).width() < 755) { tr_kd = $("#cankao").width(); }
+                else { tr_kd = $("#cankao").width() + 1; }
+                dv.css({ 'position': 'fixed', top: 0, 'width': '98%' });
+            }
+        });
+    });
+
+    function adsorption_top() {
+        var ie6 = document.all;
+        var dv = $('#fixedMenu'), st, tr_kd;
+        dv.attr('otop', dv.offset().top); //存储原来的距离顶部的距离 
+        $(window).scroll(function () {
+            st = Math.max(document.body.scrollTop || document.documentElement.scrollTop);
+            var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            //检查GoogleChrome，如果是则宽度+1,修复不对齐问题，否则设置与下面的tr宽度一致
+            if (isChrome) { tr_kd = $("#cankao").width() + 1; }
+            else { tr_kd = $("#cankao").width(); }
+            if (st > parseInt(dv.attr('otop'))) {
+                if (ie6) {//IE6不支持fixed属性，所以只能靠设置position为absolute和top实现此效果 
+                    dv.css({ position: 'absolute', top: st });
+                }
+                else if (dv.css('position') != 'fixed'); dv.css({ 'position': 'fixed', top: 0, 'width': '98%' });
+            } else if (dv.css('position') != 'static') dv.css({ 'position': 'static' });
+        });
+    }; 
+</script>
+
+
     </form>
 </body>
 </html>

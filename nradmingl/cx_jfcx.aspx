@@ -1,12 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="jk_wsbd.aspx.cs" Inherits="nradmingl_jk_wsbd" %>
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="cx_jfcx.aspx.cs" Inherits="nradmingl_cx_jfcx" %>
 
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>网上报到进度监控</title>
+<head id="Head1" runat="server">
+    <title>学生缴费情况查询</title>
     <!--引用ＬＡＹＵＩ前端必须ＣＳＳ-->
 
         <link rel="stylesheet" href="plugins/layui/css/layui.css" media="all" />
@@ -31,54 +30,79 @@
             display:inline-block;
             height: 37px;
         }
+        .layui-input, .layui-textarea {
+    display: inline;
+    width: 50%;
+        }
 
     </style>
     <form id="form1"  runat="server">
     <div class="admin-main">
       <blockquote class="layui-elem-quote">&nbsp;<span class=" hidden-xs">
-          <i class="layui-icon">&#xe602;</i>网上报到进度监控<i class="layui-icon">&#xe602;</i>按院系查看</span>
+          <i class="layui-icon">&#xe602;</i>学生缴费情况查询<i class="layui-icon">&#xe602;</i>按院系班级</span>
            <span style="float:right">
 
             <!--调用C#原生按钮设置样式举例OVER-->
  <%--               <a href="#" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-             --%><a href="jk_wsbd.aspx" class="layui-btn layui-btn-small">
+             --%><a href="cx_jfcx.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#x1002;</i> 刷新
 				</a>
 
                
-                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出<span class=" hidden-xs">数据</span></asp:LinkButton>
+                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" 
+              onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" 
+              runat="server"    Text='' Visible="False" ></asp:LinkButton>
 
 		  </span>       
       </blockquote>
 
-                    <asp:ScriptManager ID="ScriptManager1" runat="server">
-                </asp:ScriptManager>
-        
+          
         <div>
             <div class="layui-form-item">
-                       <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                  <ContentTemplate>
-                                      <asp:Label ID="g_ts" runat="server"  Font-Size="Larger"></asp:Label>
-                    </ContentTemplate></asp:UpdatePanel>
+                      
+                
+                    
+                      <asp:DropDownList ID="yx"  Font-Size="Medium" runat="server" DataSourceID="SqlDataSource6" DataTextField="yxmc" DataValueField="yxdm" AutoPostBack="True" OnSelectedIndexChanged="yx_SelectedIndexChanged">
+                <asp:ListItem Selected="True">全部院系</asp:ListItem>
+            </asp:DropDownList>
+            <asp:SqlDataSource ID="SqlDataSource6" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="select '0' yxdm,'全部院系' yxmc union(SELECT [YXDM], [YXMC] FROM [DM_YUANXI] WHERE (([isjx] = @isjx) AND ([zt] = @zt))) ORDER BY [YXDM]">
+                <SelectParameters>
+                    <asp:Parameter DefaultValue="true" Name="isjx" Type="Boolean" />
+                    <asp:Parameter DefaultValue="true" Name="zt" Type="Boolean" />
+                </SelectParameters>
+            </asp:SqlDataSource>
+
+                      <asp:DropDownList ID="bj" runat="server" DataSourceID="SqlDataSource5" 
+                        DataTextField="Name" DataValueField="PK_Class_NO" AutoPostBack="True" 
+                        onselectedindexchanged="bj_SelectedIndexChanged" Font-Size="Medium">
+                        <asp:ListItem Selected="True" Value=" ">全部班级</asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SqlDataSource5" runat="server" 
+                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                        SelectCommand="select ' ' PK_Class_NO,'全部班级' Name union ( SELECT DISTINCT Fresh_Class.PK_Class_NO, Fresh_Class.Name FROM         Fresh_Class LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE  where Fresh_SPE.FK_College_Code=@yxdm)  ORDER BY [PK_Class_NO]">
+                     <SelectParameters>
+                            <asp:ControlParameter ControlID="yx" Name="yxdm" 
+                                PropertyName="SelectedValue" Type="String" />
+                        </SelectParameters>
+                    </asp:SqlDataSource><asp:TextBox ID="TextBox1"  CssClass="layui-input"  placeholder="输入姓名、高考报名号、身份证号"   runat="server"></asp:TextBox>
+                      <span >
+                      <asp:LinkButton ID="cx" runat="server" CssClass="layui-btn " 
+                          name="exportexcel1" onclick="exportexcel" Text="缴费查询" ToolTip="数据查询" 
+                          txttop="txttop"></asp:LinkButton>
+                      </span>&nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
+                  
 
             </div>
         </div>    
   <div>   
-                       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                  <ContentTemplate>
-                      
+                    
   <asp:HiddenField ID="hdfWPBH" runat="server" />
-    <asp:GridView ID="GridView1"  CssClass="site-table table-hover"   runat="server">
+    <asp:GridView ID="GridView1" CssClass="site-table table-hover"  runat="server">
     </asp:GridView>
 
 
-           
-
-
-   </ContentTemplate></asp:UpdatePanel>
-   
 
       
              

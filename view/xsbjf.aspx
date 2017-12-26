@@ -198,12 +198,12 @@
             <div style="margin-top:10px;color:red;"><label>需要支付的金额总计：</label><label id="fee_sum">0</label><label>元</label></div>
         <div style="margin-top:10px;">
         <label><input id="xf_normal" name="TuitionClass" type="radio" value="normal" checked onclick="changesum();" />正常缴费 </label> 
-        <label><input id="xf_loan" name="TuitionClass" type="radio" value="loan" onclick="msg('提示', '助学贷款需要到校现场申请办理，并且不能在网上选择宿舍'); changesum();" />助学贷款 </label> 
+        <label><input id="xf_loan" name="TuitionClass" type="radio" value="loan" onclick="msg('提示', '助学贷款需要到校现场申请办理'); changesum();" />助学贷款 </label> 
         </div>
         <div style="margin-top:10px;">            
             <div >
                 <label style="color:red;font:bold;">提示：</label><br />
-                <label style="color:orangered;font:bold;">“助学贷款”需要到校现场申请办理，并且不能在网上选择宿舍</label>
+                <label style="color:orangered;font:bold;">“助学贷款”需要到校现场申请办理</label>
             </div>
         </div>
     </div>

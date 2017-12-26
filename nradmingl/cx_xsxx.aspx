@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" EnableEventValidation="false"  CodeFile="ssgl.aspx.cs" Inherits="nradmingl_Default2" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  EnableEventValidation = "false"  CodeFile="cx_xsxx.aspx.cs" Inherits="nradmingl_cx_xsxx" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>宿舍管理</title>
+<head id="Head1" runat="server">
+    <title>学生信息查询</title>
     <!--引用ＬＡＹＵＩ前端必须ＣＳＳ-->
 
         <link rel="stylesheet" href="plugins/layui/css/layui.css" media="all" />
@@ -26,87 +26,42 @@
         }
         select
         {
-            display:inline-block; 
+            display:inline-block;
             height: 37px;
         }
 
     </style>
     <form id="form1"  runat="server">
     <div class="admin-main">
-      <blockquote class="layui-elem-quote">&nbsp;<span class=" hidden-xs">
-          <i class="layui-icon">&#xe602;</i>学生寝室预分配<i class="layui-icon">&#xe602;</i>宿舍信息</span>
+      <blockquote class="layui-elem-quote">&nbsp;
+          <i class="layui-icon">&#xe602;</i>学生信息查询<span class=" hidden-xs"><i class="layui-icon">&#xe602;</i>二级学院管理员</span>
            <span style="float:right">
 
             <!--调用C#原生按钮设置样式举例OVER-->
  <%--               <a href="#" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-             --%><a href="ssgl.aspx" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#x1002;</i> 刷新
+             --%>
+             
+             <a href="cx_xsxx.aspx" class="layui-btn layui-btn-small">
+					刷新
 				</a>
-
-               <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据清除',  shadeClose: true,  shade: 0.8,  area: ['80%', '98%'],  content: 'ssgl_clear.aspx',btn:'完成'});" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe630;</i>清空<span class=" hidden-xs">预分配数据</span>
-				</a>
-                  
-                 <a href="javascript:" onclick="parent.layer.open({  type: 2,  title: '寝室预分配数据导入',  shadeClose: true,  shade: 0.8,  area: ['98%', '98%'],  content: 'ssgl_dr.aspx?setp=1&mb=auto',btn:'完成'});" class="layui-btn layui-btn-small">
-					<i class="layui-icon">&#xe62f;</i>导入<span class=" hidden-xs">预分配数据</span>
-				</a>
-               
-                <asp:LinkButton CssClass="layui-btn layui-btn-small" name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" ID="LinkButton13" runat="server"    Text='' ><i class="layui-icon">&#xe61e;</i>导出<span class=" hidden-xs">所选数据</span></asp:LinkButton>
-
+                     <asp:LinkButton CssClass="layui-btn layui-btn-small" 
+              name="exportexcel1" onclick="exportexcel"  txttop="txttop" ToolTip="数据导出" 
+              ID="LinkButton13" runat="server"    Text='' ><span class=" hidden-xs">学生数据</span>导出</asp:LinkButton>
+          
+        
 		  </span>       
       </blockquote>
 
-                    <asp:ScriptManager ID="ScriptManager1" runat="server">
-                </asp:ScriptManager>
+          
         
         <div>
-            <div class="layui-form-item">
-                       <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                  <ContentTemplate>
-                
-                    <asp:DropDownList ID="xq" runat="server" AutoPostBack="True" 
-                        DataSourceID="SqlDataSource2" DataTextField="Campus_Name" 
-                        DataValueField="Campus_NO" 
-                        onselectedindexchanged="xq_SelectedIndexChanged" Font-Size="Medium">
-                        <asp:ListItem Selected="True" Value=" ">全部校区</asp:ListItem>
-                    </asp:DropDownList>
-                    <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
-                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-                        SelectCommand="select ' ' Campus_NO,'全部校区' Campus_Name union( SELECT [Campus_NO], [Campus_Name] FROM [Base_Campus] WHERE ([Enabled] = @Enabled))">
-                        <SelectParameters>
-                            <asp:Parameter DefaultValue="true" Name="Enabled" Type="String" />
-                        </SelectParameters>
-                    </asp:SqlDataSource>
-                    <asp:DropDownList ID="dorm" runat="server" AutoPostBack="True" 
-                        DataSourceID="SqlDataSource3" DataTextField="Name" 
-                        DataValueField="PK_Dorm_NO" 
-                          onselectedindexchanged="dorm_SelectedIndexChanged" Font-Size="Medium">
-                        <asp:ListItem Value=" ">全部公寓</asp:ListItem>
-                    </asp:DropDownList>
-                    <asp:SqlDataSource ID="SqlDataSource3" runat="server" 
-                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-                        SelectCommand="select ' ' PK_Dorm_NO , '' Dorm_NO,'全部公寓' Name union(SELECT DISTINCT PK_Dorm_NO,[Dorm_NO], [Name] FROM [Fresh_Dorm] WHERE ([Campus_NO] = @Campus_NO) ) ORDER BY [Dorm_NO]">
-                        <SelectParameters>
-                            <asp:ControlParameter ControlID="xq" Name="Campus_NO" 
-                                PropertyName="SelectedValue" Type="String" />
-                        </SelectParameters>
-                    </asp:SqlDataSource>
-                    <asp:DropDownList ID="floor" runat="server" DataSourceID="SqlDataSource4" 
-                        DataTextField="Floor" DataValueField="Floor" AutoPostBack="True" 
-                        onselectedindexchanged="floor_SelectedIndexChanged" Font-Size="Medium">
-                        <asp:ListItem Selected="True" Value=" ">全部楼层</asp:ListItem>
-                    </asp:DropDownList>
-                    <asp:SqlDataSource ID="SqlDataSource4" runat="server" 
-                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-                        SelectCommand="select ' ' id,'全部楼层' Floor union( SELECT DISTINCT [Floor] id,[floor] FROM [Fresh_Room] WHERE ([FK_Dorm_NO] = @FK_Dorm_NO))  ORDER BY [Floor] DESC">
-                        <SelectParameters>
-                            <asp:ControlParameter ControlID="dorm" Name="FK_Dorm_NO" 
-                                PropertyName="SelectedValue" Type="String" />
-                        </SelectParameters>
-                    </asp:SqlDataSource>
-                      <asp:DropDownList ID="yx"  Font-Size="Medium" runat="server" DataSourceID="SqlDataSource6" DataTextField="yxmc" DataValueField="yxdm" AutoPostBack="True" OnSelectedIndexChanged="yx_SelectedIndexChanged">
+            <asp:ScriptManager ID="ScriptManager1" runat="server">
+            </asp:ScriptManager>
+       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                            <ContentTemplate>
+                             <asp:DropDownList ID="yx"  Font-Size="Medium" runat="server" DataSourceID="SqlDataSource6" DataTextField="yxmc" DataValueField="yxdm" AutoPostBack="True" OnSelectedIndexChanged="yx_SelectedIndexChanged">
                 <asp:ListItem Selected="True">全部院系</asp:ListItem>
             </asp:DropDownList>
             <asp:SqlDataSource ID="SqlDataSource6" runat="server" ConnectionString="<%$ ConnectionStrings:SqlConnString %>" SelectCommand="select '0' yxdm,'全部院系' yxmc union(SELECT [YXDM], [YXMC] FROM [DM_YUANXI] WHERE (([isjx] = @isjx) AND ([zt] = @zt))) ORDER BY [YXDM]">
@@ -116,63 +71,137 @@
                 </SelectParameters>
             </asp:SqlDataSource>
 
-                     
-                    <asp:DropDownList ID="bj" runat="server" DataSourceID="SqlDataSource5" 
-                        DataTextField="Name" DataValueField="PK_Class_NO" AutoPostBack="True" 
-                        onselectedindexchanged="bj_SelectedIndexChanged" Font-Size="Medium">
-                        <asp:ListItem Selected="True" Value=" ">全部班级</asp:ListItem>
-                    </asp:DropDownList>
-                    <asp:SqlDataSource ID="SqlDataSource5" runat="server" 
-                        ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-                        SelectCommand="select ' ' PK_Class_NO,'全部班级' Name union ( SELECT DISTINCT Fresh_Class.PK_Class_NO, Fresh_Class.Name FROM         Fresh_Class LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE  where Fresh_SPE.FK_College_Code=@yxdm)  ORDER BY [PK_Class_NO]">
-                     <SelectParameters>
-                            <asp:ControlParameter ControlID="yx" Name="yxdm" 
-                                PropertyName="SelectedValue" Type="String" />
-                        </SelectParameters>
-                    </asp:SqlDataSource>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<asp:Label ID="g_ts" runat="server" Font-Size="Larger"></asp:Label>
-                    </ContentTemplate></asp:UpdatePanel>
+                        <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" 
+                            DataSourceID="SqlDataSource2" DataTextField="Name" DataValueField="PK_Class_NO" 
+                            Font-Size="Medium" 
+                            onselectedindexchanged="DropDownList1_SelectedIndexChanged">
+                        </asp:DropDownList>
+                        <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+                            ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
+                                    SelectCommand="select '0' PK_Class_NO,'全部班级' Name union(SELECT     TOP (1000) Fresh_Class.PK_Class_NO ,Fresh_Class.Name FROM         Fresh_Class LEFT OUTER JOIN                      Fresh_SPE ON Fresh_Class.FK_SPE_NO = Fresh_SPE.PK_SPE where Fresh_SPE.FK_College_Code=@yxdm)">
+                            <SelectParameters>
+                                <asp:ControlParameter ControlID="yx" Name="yxdm" PropertyName="SelectedValue" />
+                            </SelectParameters>
+                        </asp:SqlDataSource>
 
-            </div>
-        </div>    
+                        
+                        
+                        
+                        
+                        
+                            
+                        
+                        
+                        
+                        
+                        <div class="layui-input-inline" style="width:30%">
+                        <asp:TextBox ID="TextBox1"  CssClass="layui-input"  placeholder="可输入学生姓名、身份证号、高考报名号"   runat="server"></asp:TextBox>
+                        </div><asp:Button ID="Button1"  CssClass="layui-btn"  runat="server" Text="查询" 
+                            onclick="Button1_Click1" />
+                        <asp:Label ID="g_ts" runat="server" Text="<font color=red>由于查询数据较多，点击查询后，稍等一会！</font>" Font-Size="Larger"></asp:Label>
+                   
+                       
+                            </ContentTemplate>
+            </asp:UpdatePanel>
+
+        
   <div>   
-                       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                  <ContentTemplate>
-                      
+                     
+              <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                            <ContentTemplate>        
   <asp:HiddenField ID="hdfWPBH" runat="server" />
   <asp:GridView  OnRowCommand="GridView1_RowCommand"  ID="GridView1"  
           OnDataBound="GridView1_DataBound"  runat="server" AutoGenerateColumns="False" 
             DataSourceID="SqlDataSource1" CssClass="site-table table-hover" OnRowDataBound="GridView1_RowDataBound"
             EmptyDataText="未获取到数据!" 
-            AllowPaging="True" AllowSorting="True">
+            AllowPaging="false" AllowSorting="True">
     <Columns>
-    <asp:TemplateField>
-                <HeaderTemplate>
-                      <input type="checkbox"  id="selected-all" class="noshow" name="selected-all" onclick="onclicksel();" />  
-                </HeaderTemplate>
-                <ItemTemplate>
-                     <input id="BoxId" name="BoxId"  class="icheck noshow" value='<%#(Convert.ToString(Eval("id")))%>' type="checkbox" /> 
-                </ItemTemplate>
-                <ItemStyle HorizontalAlign="Center" />
-                <HeaderStyle Width="2%"  HorizontalAlign="Center" />
-            </asp:TemplateField>
-    <asp:BoundField DataField="序号" HeaderText="序号" SortExpression="序号"/>
-    <asp:BoundField DataField="校区" HeaderText="校区"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="校区"/>
-    <asp:BoundField DataField="公寓楼名称" HeaderText="公寓名称"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="公寓楼名称"/>
-    <asp:BoundField DataField="楼层" HeaderText="楼层"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs" SortExpression="楼层"/>
-    <asp:BoundField DataField="房间编号" HeaderText="房间编号" SortExpression="房间编号"/>
-    <asp:BoundField DataField="房间类型" HeaderText="房间类型"   SortExpression="房间类型"/>
-    <asp:BoundField DataField="性别" HeaderText="性别"   SortExpression="性别"/>
+    <asp:BoundField DataField="序号" HeaderText="序号" SortExpression="序号" 
+            InsertVisible="False" ReadOnly="True"/>
+            <asp:BoundField DataField="班级名称"   HeaderText="班级名称" SortExpression="班级名称" 
+            InsertVisible="False" ReadOnly="True"/>
+            <asp:BoundField DataField="姓名" HeaderText="姓名"  
+           SortExpression="姓名"/>
+     <asp:BoundField DataField="性别" HeaderText="性别"  
+           SortExpression="性别"/>
+     
+    
+             <asp:BoundField DataField="身份证号" HeaderText="身份证号"  
+            ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs" SortExpression="身份证号">
+           
   
-<%--    
-     <asp:TemplateField HeaderText="学生"  SortExpression="title">
+    
+        <ControlStyle CssClass="hidden-xs" />
+        <HeaderStyle CssClass="hidden-xs" />
+        <ItemStyle CssClass="hidden-xs" />
+        </asp:BoundField>
+           
+  
+    
+     <asp:TemplateField HeaderText="网上注册"   ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs"   SortExpression="网上注册">
         
             <ItemTemplate>
-           <%# imagestu(Eval("床位主键").ToString())%>
+           <%# imagestu(Eval("网上注册").ToString())%>
+            </ItemTemplate>
+
+            <ControlStyle CssClass="hidden-xs" />
+            <HeaderStyle CssClass="hidden-xs" />
+
+            <ItemStyle  />
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="网上缴费"   ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs"   SortExpression="网上缴费">
+        
+            <ItemTemplate>
+           <%# imagejs(Eval("网上缴费").ToString())%>
+            </ItemTemplate>
+
+                <ControlStyle CssClass="hidden-xs" />
+                <HeaderStyle CssClass="hidden-xs" />
+
+            <ItemStyle  />
+            </asp:TemplateField>
+          <asp:TemplateField HeaderText="学费"   ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs"   SortExpression="学费">
+        
+            <ItemTemplate>
+           <%# imagejs4(Eval("学费").ToString())%>
+            </ItemTemplate>
+
+                <ControlStyle CssClass="hidden-xs" />
+                <HeaderStyle CssClass="hidden-xs" />
+
+            <ItemStyle  />
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="住宿费"   ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  
+            ItemStyle-CssClass="hidden-xs"   SortExpression="住宿费">
+        
+            <ItemTemplate>
+           <%# imagejs4(Eval("住宿费").ToString())%>
+            </ItemTemplate>
+
+                <ControlStyle CssClass="hidden-xs" />
+                <HeaderStyle CssClass="hidden-xs" />
+
+            <ItemStyle  />
+            </asp:TemplateField>
+
+                 
+            <asp:BoundField DataField="寝室" HeaderText="寝室"  
+           SortExpression="寝室" />
+           <asp:BoundField DataField="联系电话" HeaderText="联系电话"  
+           SortExpression="联系电话" />
+            <asp:TemplateField HeaderText="报到状态"  SortExpression="报到状态">
+        
+            <ItemTemplate>
+           <%# imagezt(Eval("报到状态").ToString())%>
             </ItemTemplate>
 
             <ItemStyle  />
-            </asp:TemplateField>--%>
+            </asp:TemplateField>
+            
             <%-- <asp:TemplateField HeaderText="班级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  SortExpression="title">
         
             <ItemTemplate>
@@ -182,38 +211,7 @@
             <ItemStyle  />
             </asp:TemplateField>--%>
 
-         <asp:TemplateField HeaderText="预分配院系班级"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  >
-        
-            <ItemTemplate>
-            <a href="#" class="hidden-xs"><%# yfpbj(Eval("房间编号").ToString())%></a>
-            </ItemTemplate>
-
-            <ItemStyle  />
-            </asp:TemplateField>
-   <asp:TemplateField HeaderText="床位信息"  ControlStyle-CssClass="hidden-xs" HeaderStyle-CssClass="hidden-xs"  ItemStyle-CssClass="hidden-xs"  >
-        
-            <ItemTemplate>
-            <a href="#" class="hidden-xs"><%# sycw(Eval("房间编号").ToString())%></a>
-            </ItemTemplate>
-
-            <ItemStyle  />
-            </asp:TemplateField>
-  
-   
-        
-        <asp:TemplateField HeaderText="" >
-                 
-                <HeaderTemplate>管理操作
-
-                <%--<a onclick="return batchAudit(this.id);" id="btnDelete" href="javascript:__doPostBack('btnDelete','')"><span id="plcz" runat="server">点此批量发放毕业证</span></a>--%>
-                </HeaderTemplate>
-                <ItemTemplate>
-             <a href="javascript: " onclick="parent.layer.open({  type: 2,  title: '寝室详情－【<%# Eval("公寓楼名称").ToString() %>】<%# Eval("房间编号").ToString() %>',  shadeClose: true,  shade: 0.8,  area: ['100%', '90%'],  content: 'ssgl_qsxq.aspx?roomno=<%# Eval("房间编号").ToString() %>'});"  txttop="txttop" class="layui-btn layui-btn-mini"  title="查看详情">详情查看</a>  
-              </asp:LinkButton>
-            </ItemTemplate>
-                
-                </asp:TemplateField>
-
+            
 
     </Columns>
     <PagerTemplate>
@@ -265,27 +263,22 @@
             <asp:LinkButton ID="LinkButtonGo" runat="server" class="layui-btn layui-btn-mini" Text="跳转" OnClick="LinkButtonGo_Click" /></span><span class="hidden-xs" style="float:right;padding-bottom: 8px;padding-top: 8px;">&nbsp;&nbsp;&nbsp;每页显示<asp:TextBox ID="PageSize_Set" runat="server" Height="16px" Width="32px" CssClass=" borderSolid1CCC"></asp:TextBox>条<asp:LinkButton ID="buttion2" runat="server"  class="layui-btn layui-btn-mini" Text="设置"   OnClick="PageSize_Go" /></span><span style="float:right;padding-bottom: 8px;padding-top: 8px;"><b>总记录:<%#ViewState["count"].ToString()%>条</b>&nbsp;</b></font></span>
         </PagerTemplate>
     </asp:GridView>
-                      <asp:SqlDataSource ID="SqlDataSource1"  onselected="SqlDataSource1_Selected"  runat="server" 
-                          ConnectionString="<%$ ConnectionStrings:SqlConnString %>" 
-                          SelectCommand="">
+                      <asp:SqlDataSource ID="SqlDataSource1"  
+          onselected="SqlDataSource1_Selected"  runat="server" 
+                          ConnectionString="<%$ ConnectionStrings:tjConnectionString %>" 
+                          
+                          
+                          
+          SelectCommand="SELECT TOP 100 row_number() over (order by  a.bjmc )  AS 序号,a.yxmc 院系名称,bjmc 班级名称,a.xh 学号,[gkbmh] 高考报名号,[xm] 姓名,case when a.[gender_code]='01' then '男' else '女' end 性别,[sfzjh] 身份证号,case when [zc_zt]='1' then '已注册' else '未注册' end  网上注册,case when [ol_zt]='1' then '已缴费' else '未在网上缴费' end 网上缴费,[ol_je] 网上缴费金额,sfxm.qfje 现场缴学费,sfxmzs.qfje 现场缴住宿费,case when zxdk.Fee_Name='助学贷款' then '已办理' else '未办理' end 助学贷款,qsxx.qsh 寝室,qsxx.cwxx 床位,b.[Status_Code] 报到状态,b.[QQ]      ,b.[Phone] 联系电话   ,b.[Home_add] 家庭地址 ,b.[Phone_dr] 高考时电话,b.[Phone_fa] 父亲电话      ,b.[Phone_ma] 母亲电话      ,b.[Huji_add] 户籍地址      ,b.[Note] 学生性质  FROM [TJ].[dbo].[Fresh_STU] a left join enrollment.yxxt_data.dbo.base_stu b on a.xh=b.pk_sno left join  (select qfje,xh from [SF].[cdgyzy].[dbo].v_jk_jfxx where qfje>0 and sfnd=2017 and sfxmdm='01') sfxm on sfxm.xh=a.xh  left join  (select qfje,xh from [SF].[cdgyzy].[dbo].v_jk_jfxx where qfje>0 and sfnd=2017 and sfxmdm='02') sfxmzs on sfxmzs.xh=a.xh left join (SELECT     Fresh_Bed_Log.FK_SNO xh, Fresh_Room.Room_NO qsh,Fresh_Bed.Bed_Name cwxx FROM         enrollment.yxxt_data.dbo.Fresh_Bed_Log LEFT OUTER JOIN                      enrollment.yxxt_data.dbo.Fresh_Bed ON Fresh_Bed_Log.FK_Bed_NO = Fresh_Bed.PK_Bed_NO LEFT OUTER JOIN                      enrollment.yxxt_data.dbo.Fresh_Room ON Fresh_Bed.FK_Room_NO = Fresh_Room.PK_Room_NO) qsxx on qsxx.xh=a.xh left join (select pay_list.sno xh,Fee_name from FreshMan.dbo.Pay_List left join FreshMan.dbo.Pay_List_Detail on pay_list.pk_pay_list=pay_list_detail.fk_pay_list left join FreshMan.dbo.Fee_Item on pay_list_detail.fk_fee_item=fee_item.pk_fee_item where pay_list.fk_fee=1 and fee_item.fee_code='01' and pay_list_detail.is_in_olorder=0) zxdk on zxdk.xh=a.xh where 1=1 and yxmc=@yxmc order by a.bjmc ">
+                          <SelectParameters>
+                              <asp:ControlParameter ControlID="yx" Name="yxmc" 
+                                  PropertyName="SelectedItem.Text" Type="String" />
+                                 
+                          </SelectParameters>
                       </asp:SqlDataSource>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
-          SelectMethod="serch_yfpgl" TypeName="dormitory">
-            <SelectParameters>
-                <asp:ControlParameter ControlID="xq" Name="xq" PropertyName="SelectedValue" 
-                    Type="String" />
-                <asp:ControlParameter ControlID="dorm" Name="dorm" PropertyName="SelectedValue" 
-                    Type="String" />
-                <asp:ControlParameter ControlID="floor" Name="floor" 
-                    PropertyName="SelectedValue" Type="String" />
-                <asp:ControlParameter ControlID="bj" Name="bjbh" PropertyName="SelectedValue" 
-                    Type="String" />
-            </SelectParameters>
-      </asp:ObjectDataSource>
-       
-   </ContentTemplate></asp:UpdatePanel>
-   
 
+   
+ 
       
              
 
@@ -300,15 +293,20 @@
             <input id="tsxx" type="text" runat="server" value="" style="display:none" />
             <input id="tsbox" type="text" runat="server" value="" style="display:none" />
 			<!--与后台配合的提示信息隐藏域OVER-->
-            
+                    </ContentTemplate>
+            </asp:UpdatePanel>
 			<div class="admin-table-page" style="display:none">
 				<div id="page" class="page">
 				</div>
 			</div>
 		</div>
      
+
+
+
+
 		<!--引发ＬＡＹＵＩ前端必须ＪＳ-->
-    <script type="text/javascript" src="plugins/layui/layui.js"></script>
+     <script type="text/javascript" src="plugins/layui/layui.js"></script>
   
     <!--引发ＬＡＹＵＩ前端必须ＪＳ　ＯＶＥＲ-->
    
@@ -444,6 +442,14 @@
                      }
                  }  
     </script>
+
+  
+    <!--引发ＬＡＹＵＩ前端必须ＪＳ　ＯＶＥＲ-->
+   
+
+
+   	<!--引发ＬＡＹＵＩ前端必须ＪＳ-->
+   
     </form>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="tj_sf.aspx.cs" Inherits="nradmingl_tj_sf" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  EnableEventValidation = "false"  CodeFile="tj_sf.aspx.cs" Inherits="nradmingl_tj_sf" %>
 
 
 
@@ -36,14 +36,14 @@
     <form id="form1"  runat="server">
     <div class="admin-main">
       <blockquote class="layui-elem-quote">&nbsp;<span class=" hidden-xs">
-          <i class="layui-icon">&#xe602;</i>新生缴费情况统计<i class="layui-icon">&#xe602;</i>按院系班级</span>
+          <i class="layui-icon">&#xe602;</i>新生缴费情况统计<i class="layui-icon">&#xe602;</i>按院系【是否缴费按是否缴纳学费为标准来统计】</span>
            <span style="float:right">
 
             <!--调用C#原生按钮设置样式举例OVER-->
  <%--               <a href="#" class="layui-btn layui-btn-small hidden-xs">
 					<i class="layui-icon">&#xe630;</i> 一卡通更新
 				</a>
-             --%><a href="ssgl.aspx" class="layui-btn layui-btn-small">
+             --%><a href="tj_sf.aspx" class="layui-btn layui-btn-small">
 					<i class="layui-icon">&#x1002;</i> 刷新
 				</a>
 
@@ -71,21 +71,9 @@
                   <ContentTemplate>
                       
   <asp:HiddenField ID="hdfWPBH" runat="server" />
-<table  class="site-table table-hover" cellspacing="0" rules="all" border="1" style="border-collapse: collapse;">
-
-                    <thead>
-<tr><th scope="col">序号</th><th scope="col">院系</th><th scope="col">学生数</th><th scope="col">已缴费</th><th scope="col">网上缴费</th><th scope="col">现场缴费</th><th scope="col">助学贷款</th><th scope="col">班级缴费详情</th></tr></thead>
-    
-    <tbody>
-<tr><td >1</td><td >财经管理学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >2</td><td >轨道交通学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >3</td><td >汽车工程学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >4</td><td >物流工程学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >5</td><td >信息工程学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-<tr><td >6</td><td >装备制造学院</td><td>200</td><td>150</td><td>90</td><td>60</td><td>20</td><td><a href="#" onclick="studentdetail(201761021103005)" class="layui-btn layui-btn-mini" title="按班查看详情">按班查看详情</a></td></tr>
-
-       
-        </tbody></table> 
+    <asp:GridView ID="GridView1" CssClass="site-table table-hover"  runat="server">
+    </asp:GridView>
+ 
 
            
 

@@ -55,6 +55,24 @@ type=text/css href="../css/AdminLTE.css">
 {
 FONT-SIZE: 11px !important;
 }
+.box-header {
+    
+    PADDING-TOP: 0px;
+}
+.box-body {
+
+    PADDING-TOP: 0px;
+}
+.box {
+
+    border-left: #00a65a 1px solid;
+     border-right: #00a65a 1px solid;
+      border-bottom: #00a65a 1px solid;
+}
+.progress {
+    MARGIN-BOTTOM: 10px;
+    margin-top: 10px;
+}
 </style><!--[if lt IE 9]>
 
 <![endif]-->
@@ -73,47 +91,63 @@ FONT-SIZE: 11px !important;
 <DIV class=wrapper><SECTION class=content>
 
 
-<br />
 
-    <div style="width:100%; text-align:center; font-size:20px;"><b>2017年迎新情况统计</b>
+
+    <div style="width:100%; text-align:center; font-size:20px;"><b>2017年高职迎新情况统计</b>
     
           
         
                 </div>
-                <br /><br />
+                <br />
     
                 
 <DIV style="CLEAR: both" class=clear></DIV>
-
-<DIV class=col-md-4 onmousedown="location.href='appbaodao2.aspx?id=2'">
+<DIV class=col-md-4 onmousedown="location.href='apptjbd.aspx?id=2'">
 <DIV class="box box-success">
 <DIV class="box-header with-border" >
 <br />
-<H3 class=box-title>【高职统计】</H3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN class=progress-number>点击查看详情</SPAN>
+<H3 class=box-title>【来校报到】</H3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN class=progress-number>点击查看详情</SPAN>
 <DIV class="box-tools pull-right"> </DIV></DIV>
 <DIV class=box-body><br />
-<DIV class=progress-group id="gzshow" runat="server"><SPAN class=progress-text style="font-size:20px;">完成进度:未开始</SPAN> <br /><br />
+<DIV class=progress-group id="bd" runat="server"><SPAN class=progress-text style="font-size:20px;">完成进度:2017年8月17日0时开始网上注册</SPAN> <br /><br />
 
 <DIV class="progress progress-sm active">
 <DIV style="WIDTH: 0%" 
 class="progress-bar progress-bar-yellow progress-bar-striped" 
 role=progressbar></DIV></DIV>
-<SPAN class=progress-number><B>网上报到人数：0人</B> / 招生人数：0人</SPAN> 
+<SPAN class=progress-number><B>网上注册人数：0人</B> / 招生人数：0人</SPAN> 
 </DIV></DIV></DIV></DIV>
-<DIV class=col-md-4  onmousedown="location.href='appbaodao2.aspx?id=1'">
-<DIV class="box box-info">
-<DIV class="box-header with-border">
+<DIV class=col-md-4 onmousedown="location.href='apptjgz.aspx?id=2'">
+<DIV class="box box-success">
+<DIV class="box-header with-border" >
 <br />
-<H3 class=box-title>【中职统计】</H3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN class=progress-number>点击查看详情</SPAN>
+<H3 class=box-title>【网上注册】</H3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN class=progress-number>点击查看详情</SPAN>
 <DIV class="box-tools pull-right"> </DIV></DIV>
 <DIV class=box-body><br />
-<DIV class=progress-group id="zzshow" runat="server"><SPAN class=progress-text  style="font-size:20px;">完成进度:未开始</SPAN> 
- <br /><br />
-<DIV class="progress sm active">
-<DIV style="WIDTH: 91.66%" 
-class="progress-bar progress-bar-aqua progress-bar-striped"></DIV></DIV>
-<SPAN class=progress-number><B>报到人数：0</B> / 招生人数：0</SPAN>
+<DIV class=progress-group id="gzshow" runat="server"><SPAN class=progress-text style="font-size:20px;">完成进度:2017年8月17日0时开始网上注册</SPAN> <br /><br />
+
+<DIV class="progress progress-sm active">
+<DIV style="WIDTH: 0%" 
+class="progress-bar progress-bar-yellow progress-bar-striped" 
+role=progressbar></DIV></DIV>
+<SPAN class=progress-number><B>网上注册人数：0人</B> / 招生人数：0人</SPAN> 
 </DIV></DIV></DIV></DIV>
+<DIV class=col-md-4 onmousedown="location.href='apptjgzsf.aspx?id=2'">
+<DIV class="box box-success">
+<DIV class="box-header with-border" >
+<br />
+<H3 class=box-title>【缴费情况】</H3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN class=progress-number>点击查看详情</SPAN>
+<DIV class="box-tools pull-right"> </DIV></DIV>
+<DIV class=box-body><br />
+<DIV class=progress-group id="jf" runat="server"><SPAN class=progress-text style="font-size:20px;">完成进度:2017年8月17日0时开始网上注册</SPAN> <br /><br />
+
+<DIV class="progress progress-sm active">
+<DIV style="WIDTH: 0%" 
+class="progress-bar progress-bar-yellow progress-bar-striped" 
+role=progressbar></DIV></DIV>
+<SPAN class=progress-number><B>网上注册人数：0人</B> / 招生人数：0人</SPAN> 
+</DIV></DIV></DIV></DIV>
+
 
 
 </SECTION><!-- Main Footer --></DIV>
